@@ -1,7 +1,7 @@
 <script>
-    const getAllImage = document.querySelectorAll('.lest_img'); 
-    const getAllContent = document.querySelectorAll('.content_item'); 
-    function removeActive(){
+    const getAllImage = document.querySelectorAll('.lest_img');
+    const getAllContent = document.querySelectorAll('.content_item');
+    function removeActive() {
         getAllImage.forEach(item => item.setAttribute('show_status', false));
         getAllContent.forEach(item => item.setAttribute('show_status', false));
     }
@@ -15,46 +15,105 @@
 
     // headmenue
     document.addEventListener('DOMContentLoaded', function () {
-  const menu = document.querySelector('.head-menue-content'); 
-  const menuItems = document.querySelectorAll('.head-menue-item .menu-item');
-  const contents  = document.querySelectorAll('.head-menue-content');
-// 	  const contents = document.querySelectorAll('.sub-menu-content');
- 
-  menuItems.forEach((item, index) => {
-// 		if (contents.length > 0) {
-//     contents[0].classList.add('active');
-//   }
+        const menu = document.querySelector('.head-menue-content');
+        const menuItems = document.querySelectorAll('.head-menue-item .menu-item');
+        const contents = document.querySelectorAll('.head-menue-content');
+        // 	  const contents = document.querySelectorAll('.sub-menu-content');
 
-    item.addEventListener('mouseenter', () => {
-      contents.forEach(c => c.classList.remove('active'));
-      if (contents[index]) {
-        contents[index].classList.add('active');
-      }
+        menuItems.forEach((item, index) => {
+            // 		if (contents.length > 0) {
+            //     contents[0].classList.add('active');
+            //   }
+
+            item.addEventListener('mouseenter', () => {
+                contents.forEach(c => c.classList.remove('active'));
+                if (contents[index]) {
+                    contents[index].classList.add('active');
+                }
+            });
+        });
+
+        menu.addEventListener('mouseleave', () => {
+            contents.forEach(c => c.classList.remove('active'));
+        });
     });
-  });
+    // end headmenue
 
-  menu.addEventListener('mouseleave', () => {
-    contents.forEach(c => c.classList.remove('active'));
-  });
-});
-// end headmenue
-
-const getAllHeadContent = document.querySelectorAll('.head-menue-content');
-function removeHeadActive(){
-    getAllHeadContent.forEach(item => item.setAttribute('show_status', false));
-}
-document.querySelectorAll('.head-menue-item .menu-item').forEach((item, index) => {
-    item.addEventListener('mouseover', () => {
-        removeHeadActive();
-        getAllHeadContent[index].setAttribute('show_status', true);
-    })
-});
-
-getAllHeadContent.forEach(item => {
-    item.addEventListener('mouseleave', () => {
-        removeHeadActive();
+    const getAllHeadContent = document.querySelectorAll('.head-menue-content');
+    function removeHeadActive() {
+        getAllHeadContent.forEach(item => item.setAttribute('show_status', false));
+    }
+    document.querySelectorAll('.head-menue-item .menu-item').forEach((item, index) => {
+        item.addEventListener('mouseover', () => {
+            removeHeadActive();
+            getAllHeadContent[index].setAttribute('show_status', true);
+        })
     });
-});
+
+    getAllHeadContent.forEach(item => {
+        item.addEventListener('mouseleave', () => {
+            removeHeadActive();
+        });
+    });
+
+
+    // Submenu
+    document.addEventListener('DOMContentLoaded', function () {
+        const iconItems = document.querySelectorAll(
+            '.sub-menu-item .elementor-icon-list-item'
+        );
+        const contents = document.querySelectorAll('.sub-menu-content');
+        if (contents.length > 0) {
+            contents[0].classList.add('active');
+        }
+        iconItems.forEach((item, index) => {
+            item.addEventListener('mouseenter', () => {
+                contents.forEach(c => c.classList.remove('active'));
+                if (contents[index]) {
+                    contents[index].classList.add('active');
+                }
+            });
+        });
+    });
+
+
+    // atribute for submenu
+    // submenu 1
+    const getAllSubContent = document.querySelectorAll('.sub-menu-content');
+    function removeSubActive() {
+        getAllSubContent.forEach(item => item.setAttribute('show_status', false));
+    }
+    document.querySelectorAll('.sub-menu-item .elementor-icon-list-item').forEach((item, index) => {
+        item.addEventListener('mouseover', () => {
+            removeSubActive();
+            getAllSubContent[index].setAttribute('show_status', true);
+        })
+    });
+    // submenu 2
+    const getAllSubContent2 = document.querySelectorAll('.sub-menu-content2');
+    function removeSubActive2() {
+        getAllSubContent2.forEach(item => item.setAttribute('show_status', false));
+    }
+    document.querySelectorAll('.sub-menu-item2 .elementor-icon-list-item').forEach((item, index) => {
+        item.addEventListener('mouseover', () => {
+            removeSubActive2();
+            getAllSubContent2[index].setAttribute('show_status', true);
+        })
+    });
+    // submenu3
+    const getAllSubContent3 = document.querySelectorAll('.sub-menu-content3');
+    function removeSubActive3() {
+        getAllSubContent3.forEach(item => item.setAttribute('show_status', false));
+    }
+    document.querySelectorAll('.sub-menu-item3 .elementor-icon-list-item').forEach((item, index) => {
+        item.addEventListener('mouseover', () => {
+            removeSubActive3();
+            getAllSubContent3[index].setAttribute('show_status', true);
+        })
+    });
+
+
+    // end submenu
 
 
     // offcanvas section
@@ -63,17 +122,17 @@ getAllHeadContent.forEach(item => {
 
 
 
-// animation
+    // animation
     const sectionContainer = document.querySelector('.e-off-canvas__content')
     sectionOpenBtn.addEventListener('click', () => {
-    sectionContainer.style.clipPath = 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)';
-    sectionContainer.style.pointerEvents = 'all'
-    document.body.style.overflowY = 'hidden';
-});
+        sectionContainer.style.clipPath = 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)';
+        sectionContainer.style.pointerEvents = 'all'
+        document.body.style.overflowY = 'hidden';
+    });
 
-sectionCloseBtn.addEventListener('click', () => {
-    sectionContainer.style.clipPath = 'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)'
-    sectionContainer.style.pointerEvents = 'none'
-    document.body.style.overflowY = 'auto';
-});
-</script>   
+    sectionCloseBtn.addEventListener('click', () => {
+        sectionContainer.style.clipPath = 'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)'
+        sectionContainer.style.pointerEvents = 'none'
+        document.body.style.overflowY = 'auto';
+    });
+</script>
