@@ -1,0 +1,70 @@
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBj5d5HIe1cMxkfb8x9Sz-MmT0QIGWLLk&callback=initMap" async defer ></script>
+
+<script>
+    const locations = [];
+    let map;
+    let markers = [];
+    let activeInfoWindow = null;
+    let defultLocation = { lat: 40.76725247502618, lng: -73.98109048722709 };
+
+    function initMap() {
+        map = new google.maps.Map(document.getElementById("map"), {
+        center: defultLocation,
+        zoom: 14,
+        styles: [
+            {
+            featureType: "all",
+            elementType: "all",
+            stylers: [{ saturation: -100 }]
+            }
+        ]
+        });
+
+        new google.maps.Marker({
+            position: defultLocation,
+            map,
+            icon: {
+            url: "https://www.elliman.com/icons/pin.svg",
+            scaledSize: new google.maps.Size(40, 40)
+            }
+        })
+        schoolsLocations();
+    }
+
+    const getSchoolList = document.querySelector(".school_list_con");
+    function schoolsLocations(){
+        locations.forEach(item => {
+            const marker = new google.maps.Marker({
+                position: { lat: item.lat, lng: item.lng },
+                map,
+                icon: {
+                    url: "https://maps.gstatic.com/mapfiles/ms2/micons/blue-dot.png",
+                    scaledSize: new google.maps.Size(40, 40)
+                }
+            });
+
+            const listContainer = document.createElement("div");
+            listContainer.className = "location-item";
+            listContainer.innerHTML = `<strong>${item.title}</strong><br>${item.address}`;
+            getSchoolList.appendChild(listContainer);
+            marker.setOpacity(0.5);
+            listContainer.addEventListener("mouseover", () => marker.setOpacity(1));
+            listContainer.addEventListener("mouseout", () => marker.setOpacity(0.5));
+        });
+    }
+
+    // content controller
+    const getMapContent = document.querySelector(".map_content");
+    const getSclListBtn = getMapContent.querySelector(".school_list_btn");
+    const getTransportListBtn = getMapContent.querySelector(".transport_list_btn");
+    const getBackToTheFirst = getMapContent.querySelector(".back_to_the_first");
+    getSclListBtn.addEventListener("click", () => {
+        getMapContent.setAttribute("map_state", "school_list");
+    })
+    getTransportListBtn.addEventListener("click", () => {
+        getMapContent.setAttribute("map_state", "transport_list");
+    })
+    getBackToTheFirst.addEventListener("click", () => {
+        getMapContent.setAttribute("map_state", "initial_step");
+    })
+</script>

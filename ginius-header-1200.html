@@ -1,0 +1,79 @@
+<script>
+    const getAllImage = document.querySelectorAll('.lest_img'); 
+    const getAllContent = document.querySelectorAll('.content_item'); 
+    function removeActive(){
+        getAllImage.forEach(item => item.setAttribute('show_status', false));
+        getAllContent.forEach(item => item.setAttribute('show_status', false));
+    }
+    document.querySelectorAll('.offcanvas_menu .elementor-icon-list-items li').forEach((item, index) => {
+        item.addEventListener('mouseover', () => {
+            removeActive();
+            getAllImage[index].setAttribute('show_status', true);
+            getAllContent[index].setAttribute('show_status', true);
+        })
+    });
+
+    // headmenue
+    document.addEventListener('DOMContentLoaded', function () {
+  const menu = document.querySelector('.head-menue-content'); 
+  const menuItems = document.querySelectorAll('.head-menue-item .menu-item');
+  const contents  = document.querySelectorAll('.head-menue-content');
+// 	  const contents = document.querySelectorAll('.sub-menu-content');
+ 
+  menuItems.forEach((item, index) => {
+// 		if (contents.length > 0) {
+//     contents[0].classList.add('active');
+//   }
+
+    item.addEventListener('mouseenter', () => {
+      contents.forEach(c => c.classList.remove('active'));
+      if (contents[index]) {
+        contents[index].classList.add('active');
+      }
+    });
+  });
+
+  menu.addEventListener('mouseleave', () => {
+    contents.forEach(c => c.classList.remove('active'));
+  });
+});
+// end headmenue
+
+const getAllHeadContent = document.querySelectorAll('.head-menue-content');
+function removeHeadActive(){
+    getAllHeadContent.forEach(item => item.setAttribute('show_status', false));
+}
+document.querySelectorAll('.head-menue-item .menu-item').forEach((item, index) => {
+    item.addEventListener('mouseover', () => {
+        removeHeadActive();
+        getAllHeadContent[index].setAttribute('show_status', true);
+    })
+});
+
+getAllHeadContent.forEach(item => {
+    item.addEventListener('mouseleave', () => {
+        removeHeadActive();
+    });
+});
+
+
+    // offcanvas section
+    const sectionOpenBtn = document.querySelector('.offcanvas_open_btn');
+    const sectionCloseBtn = document.querySelector('.e-off-canvas__close-button');
+
+
+
+// animation
+    const sectionContainer = document.querySelector('.e-off-canvas__content')
+    sectionOpenBtn.addEventListener('click', () => {
+    sectionContainer.style.clipPath = 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)';
+    sectionContainer.style.pointerEvents = 'all'
+    document.body.style.overflowY = 'hidden';
+});
+
+sectionCloseBtn.addEventListener('click', () => {
+    sectionContainer.style.clipPath = 'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)'
+    sectionContainer.style.pointerEvents = 'none'
+    document.body.style.overflowY = 'auto';
+});
+</script>   

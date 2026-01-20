@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+
+<style>
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+
+    </style>
+</head>
+<body>
+
+
+    
+    <div id="map"></div>
+    
+    <script>
+        var locations = [
+            { lat: 37.7749, lng: -122.4194, title: 'Chillout Boat', content: 'Chillout Boat' },
+            { lat: 34.0522, lng: -118.2437, title: 'BBQ & Swim', content: 'BBQ & Swim' },
+            { lat: 31.0522, lng: -114.2437, title: 'BBQ & Swim', content: 'BBQ & Swim' },
+        ];
+    
+        function initMap() {
+
+            var mapStyles = [
+            {
+                featureType: 'all',
+                elementType: 'all',
+                stylers: [
+                    { saturation: -100 } // Set saturation to -100 for black and white
+                ]
+            }
+            ];
+
+            var map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 37.7749, lng: -122.4194 },
+                zoom: 5,
+                styles: mapStyles
+            });
+    
+            locations.forEach(function (location, inx) {
+
+                let abx = document.createElement("h1");
+
+                var marker = new google.maps.Marker({
+                    position: { lat: location.lat, lng: location.lng },
+                    map: map,
+                    title: location.title,
+                    label: {
+                        color: 'white', // text color
+                        fontWeight: 'bold', // font weight
+                        text: `${inx+1}` // HTML content
+                    },
+                    icon: 'https://new.barcelonaboatparty.com/wp-content/uploads/2023/11/Numbersa.png'
+                });
+    
+                var infowindow = new google.maps.InfoWindow({
+                    content: location.content,
+                });
+                infowindow.open(map, marker);
+            });
+        }
+    </script>
+    
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBj5d5HIe1cMxkfb8x9Sz-MmT0QIGWLLk&callback=initMap" async defer></script>
+
+</body>
+</html>
