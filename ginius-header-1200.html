@@ -177,3 +177,45 @@ document.addEventListener('DOMContentLoaded', () => {
   resetItems(); // ensure initial state
 });
 </script>
+
+<!-- Workable Code for line by line animation of offcanvas menu item -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const offCanvas = document.querySelector('.e-off-canvas'); // Elementor offcanvas wrapper
+  const menuItems = document.querySelectorAll('.offcanvas_menu li');
+
+  if (!offCanvas || menuItems.length === 0) return;
+
+  // Reset items to initial state
+  const resetMenu = () => {
+    menuItems.forEach(item => {
+      item.style.transition = 'none';
+      item.style.opacity = '0';
+      item.style.transform = 'translateY(20px)';
+    });
+  };
+
+  // Animate items line by line
+  const animateMenu = () => {
+    menuItems.forEach((item, index) => {
+      item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+      item.style.transitionDelay = `${index * 100}ms`; // 100ms between lines
+      item.style.opacity = '1';
+      item.style.transform = 'translateY(0)';
+    });
+  };
+
+  // Observe offcanvas open/close changes
+  const observer = new MutationObserver(() => {
+    const isOpen = offCanvas.getAttribute('aria-hidden') === 'false';
+    if (isOpen) {
+      animateMenu();
+    } else {
+      resetMenu();
+    }
+  });
+
+  observer.observe(offCanvas, { attributes: true });
+  resetMenu(); // ensure hidden initially
+});
+</script>
