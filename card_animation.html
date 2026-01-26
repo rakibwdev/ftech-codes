@@ -89,21 +89,23 @@ document.addEventListener('DOMContentLoaded', () => {
   const section = document.querySelector('.scroll-flip-section');
   if (!section) return;
 
+  const endPoint = { x: 0, y: 0, r: 0, scale: 1 };
+
   const cards = [
     {
       el: document.querySelector('.solution-card-1'),
-      start: { x: 668.3, y: -633.3, scale: 0.7034 },
-      end:   { x: 23.34,  y: -22.11,  scale: 0.9896 }
+      start: { x: 688.3, y: -633.3, scale: 0.4034 },
+     end: endPoint
     },
     {
       el: document.querySelector('.solution-card-2'),
-      start: { x: 310.3, y: -619.3, r: 12, scale: 0.6753 },
-      end:   { x: 3.33,  y: -6.64,  r: 0.128, scale: 0.9965 }
+      start: { x: 235.3, y: -617.3, r: 12, scale: 0.4753 },
+      end: endPoint
     },
     {
       el: document.querySelector('.solution-card-3'),
-      start: { x: -46.7, y: -605.3, r: 24, scale: 0.6471 },
-      end:   { x: -0.01, y: -0.25, r: 0.009, scale: 0.9999 }
+      start: { x: -235.7, y: -605.3, r: 24, scale: 0.4471 },
+      end: endPoint
     }
   ];
 
@@ -132,4 +134,56 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 </script>
+<!-- 
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const section = document.querySelector('.scroll-flip-section');
+  if (!section) return;
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const cards = [
+    {
+      el: '.solution-card-1',
+      start: { x: 668.3, y: -633.3, scale: 0.7034 },
+      end:   { x: 23.34,  y: -22.11,  scale: 0.9896 }
+    },
+    {
+      el: '.solution-card-2',
+      start: { x: 310.3, y: -619.3, rotation: 12, scale: 0.6753 },
+      end:   { x: 3.33,  y: -6.64,  rotation: 0.128, scale: 0.9965 }
+    },
+    {
+      el: '.solution-card-3',
+      start: { x: -46.7, y: -605.3, rotation: 24, scale: 0.6471 },
+      end:   { x: -0.01, y: -0.25, rotation: 0.009, scale: 0.9999 }
+    }
+  ];
+
+  cards.forEach(card => {
+    gsap.fromTo(
+      card.el,
+      {
+        x: card.start.x,
+        y: card.start.y,
+        scale: card.start.scale,
+        rotation: card.start.rotation || 0
+      },
+      {
+        x: card.end.x,
+        y: card.end.y,
+        scale: card.end.scale,
+        rotation: card.end.rotation || 0,
+        ease: "none",
+        scrollTrigger: {
+          trigger: section,
+          start: "top bottom",
+          end: "top top",
+          scrub: true
+        }
+      }
+    );
+  });
+});
+</script> -->
 
