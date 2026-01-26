@@ -201,4 +201,43 @@
         resetMenu(); // ensure hidden initially
         resetContent();
     });
+
+
+
+// mobile bottom border
+
+document.addEventListener('DOMContentLoaded', () => {
+  const button = document.querySelector('.button-group');
+  if (!button) return;
+
+  let lastScrollY = window.scrollY;
+
+  window.addEventListener('scroll', () => {
+    const currentScroll = window.scrollY;
+    const pageHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const scrollPercent = (currentScroll / pageHeight) * 100;
+
+    // Only work after 50% scroll
+    if (scrollPercent < 50) {
+      button.classList.remove('is-visible');
+      button.classList.add('is-hidden');
+      return;
+    }
+
+    // Scroll DOWN → hide
+    if (currentScroll > lastScrollY) {
+      button.classList.remove('is-visible');
+      button.classList.add('is-hidden');
+    }
+    // Scroll UP → show
+    else {
+      button.classList.add('is-visible');
+      button.classList.remove('is-hidden');
+    }
+
+    lastScrollY = currentScroll;
+  });
+});
+
+
 </script>
