@@ -217,8 +217,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const pageHeight = document.documentElement.scrollHeight - window.innerHeight;
     const scrollPercent = (currentScroll / pageHeight) * 100;
 
-    // Only work after 50% scroll
-    if (scrollPercent < 50) {
+    // Only work after 30% scroll
+    if (scrollPercent < 30) {
       button.classList.remove('is-visible');
       button.classList.add('is-hidden');
       return;
