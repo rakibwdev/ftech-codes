@@ -406,11 +406,8 @@
             const data = await res.json();
 
             if (data.authorization_url) {
-                window.open(
-                    data.authorization_url,
-                    "SSOLogin",
-                    "width=500,height=600,top=100,left=100"
-                );
+                setLoginSession(); // mark session
+                window.location.href = data.authorization_url;
             }
         } catch (err) {
             console.error("SSO error:", err);
