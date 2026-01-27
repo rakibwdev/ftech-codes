@@ -390,7 +390,7 @@
     /* ---------- SSO redirect ---------- */
     const initiateSSO = async (provider) => {
         try {
-            const redirect_uri = window.location.origin + "/auth/callback";
+            const redirect_uri = window.location.href;
 
             const res = await fetch(`${BASE_URL}/auth/sso/${provider}/initiate/`, {
                 method: "POST",
