@@ -1,89 +1,3 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-
-<script>
-    // gsap.registerPlugin(ScrollTrigger);
-
-    gsap.set('.solution-card-1, .solution-card-2, .solution-card-3', {
-        x: 0,
-        y: 0,
-        scale: 1,
-        rotation: 0,
-        transformOrigin: '50% 50%'
-    });
-
-    gsap.registerPlugin(ScrollTrigger);
-
-    gsap.fromTo('.solution-card-1',
-        {
-            x: 0,
-            y: 0,
-            scale: 1,
-            rotation: 0
-        },
-        {
-            x: 102,
-            y: -96,
-            scale: 0.954,
-            rotation: 0,
-            ease: 'none',
-            scrollTrigger: {
-                trigger: '.wrapper-solutions-animation',
-                start: 'top top',
-                end: 'bottom center',
-                scrub: true
-            }
-        }
-    );
-
-    gsap.fromTo('.solution-card-2',
-        {
-            x: 0,
-            y: 0,
-            scale: 1,
-            rotation: 0
-        },
-        {
-            x: 81,
-            y: -161,
-            scale: 0.915,
-            rotation: 3.12,
-            ease: 'none',
-            scrollTrigger: {
-                trigger: '.wrapper-solutions-animation',
-                start: 'top top',
-                end: 'bottom center',
-                scrub: true
-            }
-        }
-    );
-
-    gsap.fromTo('.solution-card-3',
-        {
-            x: 0,
-            y: 0,
-            scale: 1,
-            rotation: 0
-        },
-        {
-            x: -19,
-            y: -241,
-            scale: 0.858,
-            rotation: 9.53,
-            ease: 'none',
-            scrollTrigger: {
-                trigger: '.wrapper-solutions-animation',
-                start: 'top top',
-                end: 'bottom center',
-                scrub: true
-            }
-        }
-    );
-
-</script>
-
-
-
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const section = document.querySelector('.scroll-flip-section');
@@ -99,12 +13,12 @@
             },
             {
                 el: document.querySelector('.solution-card-2'),
-                start: { x: 335.3, y: -617.3, r: 12, scale: 0.4753 },
+                start: { x: 355.3, y: -617.3, r: 12, scale: 0.4753 },
                 end: endPoint
             },
             {
                 el: document.querySelector('.solution-card-3'),
-                start: { x: -135.7, y: -605.3, r: 24, scale: 0.4471 },
+                start: { x: -70.7, y: -605.3, r: 24, scale: 0.4471 },
                 end: endPoint
             }
         ];
@@ -116,8 +30,12 @@
             const rect = section.getBoundingClientRect();
             const vh = window.innerHeight;
 
-            let progress = 1 - rect.top / vh;
+            const startOffset = vh * 0.9;  
+            const endOffset = vh * 0.2;   
+
+            let progress = (startOffset - rect.top) / (startOffset - endOffset);
             progress = Math.min(Math.max(progress, 0), 1);
+
 
             cards.forEach(card => {
                 if (!card.el) return;
@@ -139,55 +57,3 @@
 
     });
 </script>
-<!-- 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const section = document.querySelector('.scroll-flip-section');
-  if (!section) return;
-
-  gsap.registerPlugin(ScrollTrigger);
-
-  const cards = [
-    {
-      el: '.solution-card-1',
-      start: { x: 668.3, y: -633.3, scale: 0.7034 },
-      end:   { x: 23.34,  y: -22.11,  scale: 0.9896 }
-    },
-    {
-      el: '.solution-card-2',
-      start: { x: 310.3, y: -619.3, rotation: 12, scale: 0.6753 },
-      end:   { x: 3.33,  y: -6.64,  rotation: 0.128, scale: 0.9965 }
-    },
-    {
-      el: '.solution-card-3',
-      start: { x: -46.7, y: -605.3, rotation: 24, scale: 0.6471 },
-      end:   { x: -0.01, y: -0.25, rotation: 0.009, scale: 0.9999 }
-    }
-  ];
-
-  cards.forEach(card => {
-    gsap.fromTo(
-      card.el,
-      {
-        x: card.start.x,
-        y: card.start.y,
-        scale: card.start.scale,
-        rotation: card.start.rotation || 0
-      },
-      {
-        x: card.end.x,
-        y: card.end.y,
-        scale: card.end.scale,
-        rotation: card.end.rotation || 0,
-        ease: "none",
-        scrollTrigger: {
-          trigger: section,
-          start: "top bottom",
-          end: "top top",
-          scrub: true
-        }
-      }
-    );
-  });
-});
-</script> -->
