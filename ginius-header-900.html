@@ -1,209 +1,146 @@
 <style>
-    selector [show_status="false"]{
-    display: none !important;
-}
+    selector [show_status="false"] {
+        display: none !important;
+    }
 
 
-.head-menue-content {
-  transform: translateY(10px);
-    animation: fadeDown 0.9s ease forwards;
-}
+    .head-menue-content {
+        transform: translateY(10px);
+        animation: fadeDown 0.9s ease forwards;
+    }
 
 
-@keyframes fadeDown {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+    @keyframes fadeDown {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
 
 
-.sub-menu-content, .sub-menu-content2, .sub-menu-content3, .content_item{
-  transform: translateY(10px);
-    animation: fadeUp 0.9s ease forwards;
-}
+    .sub-menu-content,
+    .sub-menu-content2,
+    .sub-menu-content3,
+    .content_item {
+        transform: translateY(10px);
+        animation: fadeUp 0.9s ease forwards;
+    }
 
 
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+    @keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
 
 
- #offcanvasMenu .elementor-icon-list-item {
-    flex-direction: row-reverse;
-    justify-content: space-between;
-    margin-right: 10px;
-}
+    #offcanvasMenu .elementor-icon-list-item {
+        flex-direction: row-reverse;
+        justify-content: space-between;
+        margin-right: 10px;
+    }
 
-#off-canvas-64b8ce2.e-off-canvas[aria-hidden="false"] .e-off-canvas__content {
-  transform: scaleX(1);
-  transition: transform 0.45s ease-out;
-}
+    #off-canvas-64b8ce2.e-off-canvas[aria-hidden="false"] .e-off-canvas__content {
+        transform: scaleX(1);
+        transition: transform 0.45s ease-out;
+    }
 
-#off-canvas-64b8ce2.e-off-canvas[aria-hidden="true"] .e-off-canvas__content {
-  transform: scaleX(0);
-  transition: transform 0.4s cubic-bezier(.4,0,.2,1);
-}
-
-
-
-.offcanvas_menu li, .content_item li {
-  opacity: 0;
-  transform: translateY(20px);
-  list-style: none
-}
-
-.button-group {
-  opacity: 0;
-  transform: translateY(30px);
-  pointer-events: none;
-  transition: opacity 0.4s ease,
-  transform 0.4s ease;
-}
-
-.button-group.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-}
-
-.button-group.is-hidden {
-  opacity: 0;
-  transform: translateY(30px);
-  pointer-events: none;
-}
+    #off-canvas-64b8ce2.e-off-canvas[aria-hidden="true"] .e-off-canvas__content {
+        transform: scaleX(0);
+        transition: transform 0.4s cubic-bezier(.4, 0, .2, 1);
+    }
 
 
-/*button animation*/
 
-/* base button */
-.rt-hover-btn {
-  position: relative;
-  overflow: hidden;
-  color: transparent !important; /* hide original text */
-}
+    .offcanvas_menu li,
+    .content_item li {
+        opacity: 0;
+        transform: translateY(20px);
+        list-style: none
+    }
 
-/* animated text layers */
-.rt-hover-btn::before,
-.rt-hover-btn::after {
-  content: attr(aria-label);
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  white-space: nowrap;
-  transition: transform 0.45s cubic-bezier(.4,0,.2,1);
-  color: #fff;
-}
+    .button-group {
+        opacity: 0;
+        transform: translateY(30px);
+        pointer-events: none;
+        transition: opacity 0.4s ease,
+            transform 0.4s ease;
+    }
 
-/* visible text */
-.rt-hover-btn::before {
-  transform: translate(-50%, -50%);
-}
+    .button-group.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+    }
 
-/* hidden text below */
-.rt-hover-btn::after {
-  transform: translate(-50%, 50%);
-}
-
-/* hover effect */
-.rt-hover-btn:hover::before {
-  transform: translate(-50%, -150%);
-}
-
-.rt-hover-btn:hover::after {
-  transform: translate(-50%, -50%);
-}
+    .button-group.is-hidden {
+        opacity: 0;
+        transform: translateY(30px);
+        pointer-events: none;
+    }
 
 
+    /*button animation*/
+
+    /* base button */
+    .rt-hover-btn {
+        position: relative;
+        overflow: hidden;
+        color: transparent !important;
+        /* hide original text */
+    }
+
+    /* animated text layers */
+    .rt-hover-btn::before,
+    .rt-hover-btn::after {
+        content: attr(aria-label);
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        white-space: nowrap;
+        transition: transform 0.45s cubic-bezier(.4, 0, .2, 1);
+        color: #fff;
+    }
+
+    /* visible text */
+    .rt-hover-btn::before {
+        transform: translate(-50%, -50%);
+    }
+
+    /* hidden text below */
+    .rt-hover-btn::after {
+        transform: translate(-50%, 50%);
+    }
+
+    /* hover effect */
+    .rt-hover-btn:hover::before {
+        transform: translate(-50%, -150%);
+    }
+
+    .rt-hover-btn:hover::after {
+        transform: translate(-50%, -50%);
+    }
 </style>
 
 <script>
-// 	nav menu hover
-const getAllHeadContent = document.querySelectorAll('.head-menue-content');
-function removeHeadActive(){
-    getAllHeadContent.forEach(item => item.setAttribute('show_status', false));
-}
-document.querySelectorAll('.head-menue-item .menu-item').forEach((item, index) => {
-    item.addEventListener('mouseover', () => {
-        removeHeadActive();
-        getAllHeadContent[index].setAttribute('show_status', true);
-    })
-});
-	getAllHeadContent.forEach(item => {
-    item.addEventListener('mouseleave', () => {
-        removeHeadActive();
-    });
-});
-	
-  // atribute for submenu
-    // submenu 1
-    const getAllSubContent = document.querySelectorAll('.sub-menu-content');
-    function removeSubActive() {
-        getAllSubContent.forEach(item => item.setAttribute('show_status', false));
-    }
-    document.querySelectorAll('.sub-menu-item .elementor-icon-list-item').forEach((item, index) => {
-        item.addEventListener('mouseover', () => {
-            removeSubActive();
-            getAllSubContent[index].setAttribute('show_status', true);
-        })
-    });
-    // submenu 2
-    const getAllSubContent2 = document.querySelectorAll('.sub-menu-content2');
-    function removeSubActive2() {
-        getAllSubContent2.forEach(item => item.setAttribute('show_status', false));
-    }
-    document.querySelectorAll('.sub-menu-item2 .elementor-icon-list-item').forEach((item, index) => {
-        item.addEventListener('mouseover', () => {
-            removeSubActive2();
-            getAllSubContent2[index].setAttribute('show_status', true);
-        })
-    });
-    // submenu3
-    const getAllSubContent3 = document.querySelectorAll('.sub-menu-content3');
-    function removeSubActive3() {
-        getAllSubContent3.forEach(item => item.setAttribute('show_status', false));
-    }
-    document.querySelectorAll('.sub-menu-item3 .elementor-icon-list-item').forEach((item, index) => {
-        item.addEventListener('mouseover', () => {
-            removeSubActive3();
-            getAllSubContent3[index].setAttribute('show_status', true);
-        })
-    });
+    // 	nav menu hover
+ 
 
 
-    // end submenu
-	
-// 	offcanvas menue
-   const getAllImage = document.querySelectorAll('.lest_img'); 
-    const getAllContent = document.querySelectorAll('.content_item'); 
-    function removeActive(){
-        getAllImage.forEach(item => item.setAttribute('show_status', false));
-        getAllContent.forEach(item => item.setAttribute('show_status', false));
-    }
-    document.querySelectorAll('.offcanvas_menu .elementor-icon-list-items li').forEach((item, index) => {
-        item.addEventListener('mouseover', () => {
-            removeActive();
-            getAllImage[index].setAttribute('show_status', true);
-            getAllContent[index].setAttribute('show_status', true);
-        });
-    });
-	
-	
-// 	Offcanvas content animation
-  document.addEventListener('DOMContentLoaded', () => {
+
+    // 	Offcanvas content animation
+    document.addEventListener('DOMContentLoaded', () => {
         const offCanvas = document.querySelector('.e-off-canvas'); // Elementor offcanvas wrapper
         const menuItems = document.querySelectorAll('.offcanvas_menu li');
-        const subMenuContent = document.querySelectorAll('.content_item li');
 
-        if (!offCanvas || menuItems.length === 0 || subMenuContent.length === 0) return;
+        if (!offCanvas || menuItems.length === 0) return;
 
         // Reset items to initial state
         const resetMenu = () => {
@@ -214,13 +151,6 @@ document.querySelectorAll('.head-menue-item .menu-item').forEach((item, index) =
             });
         };
 
-        const resetContent = () => {
-            subMenuContent.forEach(item => {
-                item.style.transition = 'none';
-                item.style.opacity = '0';
-                item.style.transform = 'translateY(20px)';
-            });
-        };
 
 
 
@@ -233,14 +163,6 @@ document.querySelectorAll('.head-menue-item .menu-item').forEach((item, index) =
                 item.style.transform = 'translateY(0)';
             });
         };
-        const animateContent = () => {
-            subMenuContent.forEach((item, index) => {
-                item.style.transition = 'opacity 0.9s ease, transform 0.9s ease';
-                item.style.transitionDelay = `${index * 200}ms`; // 100ms between lines 
-                item.style.opacity = '1';
-                item.style.transform = 'translateY(0)';
-            });
-        };
 
 
         // Observe offcanvas open/close changes
@@ -248,50 +170,15 @@ document.querySelectorAll('.head-menue-item .menu-item').forEach((item, index) =
             const isOpen = offCanvas.getAttribute('aria-hidden') === 'false';
             if (isOpen) {
                 animateMenu();
-                animateContent();
             } else {
                 resetMenu();
-                resetContent();
             }
         });
 
         observer.observe(offCanvas, { attributes: true });
         resetMenu(); // ensure hidden initially
-        resetContent();
     });
 
-// 	Offcanvas content animation end
+    // 	Offcanvas content animation end
 
-// 	bottom button mobile
-    document.addEventListener('DOMContentLoaded', () => {
-        const button = document.querySelector('.button-group');
-        if (!button) return;
-
-        let lastScrollY = window.scrollY;
-
-        window.addEventListener('scroll', () => {
-            const currentScroll = window.scrollY;
-            const pageHeight = document.documentElement.scrollHeight - window.innerHeight;
-            const scrollPercent = (currentScroll / pageHeight) * 100;
-
-            // Only work after 30% scroll
-            if (scrollPercent < 30) {
-                button.classList.remove('is-visible');
-                button.classList.add('is-hidden');
-                return;
-            }
-
-            if (currentScroll > lastScrollY) {
-
-                button.classList.add('is-visible');
-                button.classList.remove('is-hidden');
-            }
-            else {
-                button.classList.remove('is-visible');
-                button.classList.add('is-hidden');
-            }
-
-            lastScrollY = currentScroll;
-        });
-    });
 </script>
