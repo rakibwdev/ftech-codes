@@ -132,7 +132,7 @@
 <script>
     // 	nav menu hover
     document.addEventListener('DOMContentLoaded', () => {
-        const pagesMenu = document.getElementById('sm-17695865109328533-3');
+        const pagesMenu = document.querySelector('.menu-item-1308');
         const headContent = document.querySelector('.head-menue-content');
 
         if (!pagesMenu || !headContent) return;
@@ -141,12 +141,14 @@
             headContent.setAttribute('show_status', false);
         };
 
-        pagesMenu.addEventListener('mouseenter', () => {
+        pagesMenu.addEventListener('mouseenter', (e) => {
+            console.log(e.target);
             hideAll();
             headContent.setAttribute('show_status', true);
         });
 
         headContent.addEventListener('mouseleave', () => {
+            console.log(e.target);
             hideAll();
         });
     });
