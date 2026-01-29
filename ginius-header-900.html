@@ -1,184 +1,161 @@
 <style>
-    selector [show_status="false"] {
+    selector [show_status="false"]{
+    display: none !important;
+}
+
+.scrolled {
+  background: #000 !important;
+  border-bottom: 1px solid #fcfcfcbd !important;
+}
+
+.nav-content-list {
+    height: 200px;
+}
+.nav-content-list li{
+ transition: transform 0.8s ease;
+
+}
+.nav-content-list li:hover{
+ transition: transform 0.8s ease;
+  transform: translateX(20px);
+}
+
+/* Hide default submenu for PAGES only */
+@media (min-width: 1025px) {
+    .menu-item-1750, .menu-item-2765, .menu-item-2766, .menu-item-2767 {
         display: none !important;
     }
+}
 
-    .scrolled {
-        background: #000 !important;
-        border-bottom: 1px solid #fcfcfcbd !important;
-    }
+@media(max-width: 1024px) {
+.elementor-nav-menu ul {
+    position: static !important;
+    /*border-bottom: 1px solid #3f444b;*/
+}
+    .elementor-nav-menu a{
+    border-bottom: 1px solid #777777a6;
+     transition: transform 0.6s ease;
+}
+    .elementor-nav-menu a:hover{
+    /*border-bottom: 1px solid #777777a6;*/
+     transition: transform 0.6s ease;
+  transform: translateX(15px);
+}
 
-    .nav-content-list {
-        height: 200px;
-    }
+.elementor-1187 .elementor-element .elementor-item {
+    display: flex;
+    justify-content: space-between;
+}
 
-    .nav-content-list li {
-        transition: transform 0.8s ease;
+}
 
-    }
+.offcanvas_menu li {
+  /*opacity: 0;*/
+  /*list-style: none*/
+}
 
-    .nav-content-list li:hover {
-        transition: transform 0.8s ease;
-        transform: translateX(20px);
-    }
+/*hover animation*/
 
-    /* Hide default submenu for PAGES only */
-    @media (min-width: 1025px) {
+.offcanvas_menu li a,
+.offcanvas_menu li .elementor-icon-list-text {
+    transition: transform 0.6s ease !important;
+}
+.offcanvas_menu li:hover a,
+.offcanvas_menu li:hover .elementor-icon-list-text {
+    transition: transform 0.6s ease !important;
+  transform: translateX(25px);
+}
 
-        .menu-item-1750,
-        .menu-item-2765,
-        .menu-item-2766,
-        .menu-item-2767 {
-            display: none !important;
-        }
-    }
+/*button animation*/
 
-    @media(max-width: 1024px) {
-        .elementor-nav-menu ul {
-            position: static !important;
-            /*border-bottom: 1px solid #3f444b;*/
-        }
+.rt-hover-btn {
+  position: relative;
+  overflow: hidden;
+}
 
-        .elementor-nav-menu a {
-            border-bottom: 1px solid #777777a6;
-            transition: transform 0.6s ease;
-        }
+/* animated nav button */
+.rt-hover-btn::before,
+.rt-hover-btn::after {
+  content: attr(aria-label);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  transition: transform 0.45s cubic-bezier(.4,0,.2,1);
+  color: #000000;
+  font-weight: 500;
+}
 
-        .elementor-nav-menu a:hover {
-            /*border-bottom: 1px solid #777777a6;*/
-            transition: transform 0.6s ease;
-            transform: translateX(15px);
-        }
+.rt-hover-btn::before {
+  transform: translate(-50%, -50%);
+}
 
-        .elementor-1187 .elementor-element .elementor-item {
-            display: flex;
-            justify-content: space-between;
-        }
+.rt-hover-btn::after {
+  transform: translate(-50%, 50%);
+}
 
-    }
+.rt-hover-btn:hover::before {
+  transform: translate(-50%, -150%);
+}
 
-    .offcanvas_menu li {
-        opacity: 0;
-        /*list-style: none*/
-    }
+.rt-hover-btn:hover::after {
+  transform: translate(-50%, -50%);
+}
 
-    /*hover animation*/
 
-    .offcanvas_menu li a,
-    .offcanvas_menu li .elementor-icon-list-text {
-        transition: transform 0.6s ease !important;
-    }
-
-    .offcanvas_menu li:hover a,
-    .offcanvas_menu li:hover .elementor-icon-list-text {
-        transition: transform 0.6s ease !important;
-        transform: translateX(25px);
-    }
-
-    /*button animation*/
-
-    .rt-hover-btn {
-        position: relative;
-        overflow: hidden;
-    }
-
-    /* animated nav button */
-    .rt-hover-btn::before,
-    .rt-hover-btn::after {
-        content: attr(aria-label);
+/*nav menu hover*/
+selector .menu-item-1308{
+    position: relative !important;
+    &::after{
+        content: "" !important;
+        height: 100px !important;
+        width: 100% !important;
         position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        white-space: nowrap;
-        transition: transform 0.45s cubic-bezier(.4, 0, .2, 1);
-        color: #000000;
-        font-weight: 500;
-    }
-
-    .rt-hover-btn::before {
-        transform: translate(-50%, -50%);
-    }
-
-    .rt-hover-btn::after {
-        transform: translate(-50%, 50%);
-    }
-
-    .rt-hover-btn:hover::before {
-        transform: translate(-50%, -150%);
-    }
-
-    .rt-hover-btn:hover::after {
-        transform: translate(-50%, -50%);
-    }
-
-
-    /*nav menu hover*/
-    selector .menu-item-1308 {
-        position: relative !important;
-
-        &::after {
-            content: "" !important;
-            height: 100px !important;
-            width: 100% !important;
-            position: absolute;
-            z-index: 0;
-            pointer-events: none !important;
-            border: none !important;
-        }
-
-        &:hover::after {
-            pointer-events: all !important;
-        }
-
-        >* {
-            z-index: 1;
-        }
-    }
-
-    selector .head-menue-content {
-        opacity: 0 !important;
+        z-index: 0;
         pointer-events: none !important;
-        z-index: 1000;
-        transition: 0.3s;
-
+        border: none !important;
     }
-
-    selector:has(.menu-item-1308:hover, .head-menue-content:hover) .head-menue-content {
-        opacity: 1 !important;
+    &:hover::after{
         pointer-events: all !important;
-        top: 90px;
     }
+    > *{
+        z-index: 1;
+    }
+}
+
+selector .head-menue-content{
+    opacity: 0 !important;
+    pointer-events: none !important;
+    z-index: 1000;
+    transition: 0.3s;
+    
+}
+
+selector:has(.menu-item-1308:hover, .head-menue-content:hover) .head-menue-content{
+    opacity: 1 !important;
+    pointer-events: all !important;
+    top: 90px;
+}
 </style>
 
 <script>
-    // 	nav menu hover
-    document.addEventListener('DOMContentLoaded', () => {
-        const pagesMenu = document.querySelector('.menu-item-1308');
-        const headContent = document.querySelector('.head-menue-content');
+// scroll header color change
+ 		document.addEventListener("DOMContentLoaded", function () {
+        const header = document.querySelector(".custom-header");
+        if (!header) return;
 
-        if (!pagesMenu || !headContent) return;
-
-        const hideAll = () => {
-            headContent.setAttribute('show_status', false);
-        };
-
-        pagesMenu.addEventListener('mouseenter', (e) => {
-            console.log(e.target);
-            hideAll();
-            headContent.setAttribute('show_status', true);
-        });
-
-        headContent.addEventListener('mouseleave', () => {
-            console.log(e.target);
-            hideAll();
+        window.addEventListener("scroll", function () {
+            if (window.scrollY > 50) {
+                header.classList.add("scrolled");
+            } else {
+                header.classList.remove("scrolled");
+            }
         });
     });
 
-
-
     // 	Offcanvas content animation
-    document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('DOMContentLoaded', () => {
         const offCanvases = document.querySelectorAll('.e-off-canvas'); // all offcanvas wrappers
         const menuItems = document.querySelectorAll('.offcanvas_menu li'); // desktop menu items
         const mobMenu = document.querySelectorAll('.e-off-canvas .elementor-nav-menu--main.elementor-nav-menu--layout-vertical a');
@@ -221,18 +198,4 @@
 
     // 	Offcanvas content animation end
 
-
-    // Scorll Color Change
-    document.addEventListener("DOMContentLoaded", function () {
-        const header = document.querySelector(".custom-header");
-        if (!header) return;
-
-        window.addEventListener("scroll", function () {
-            if (window.scrollY > 50) {
-                header.classList.add("scrolled");
-            } else {
-                header.classList.remove("scrolled");
-            }
-        });
-    });
 </script>
