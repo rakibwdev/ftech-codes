@@ -1,3 +1,32 @@
+<style>
+    .dx-offcanvas-btn:hover i,
+    .dx-offcanvas-btn:hover span,
+    .dx-offcanvas-btn:hover svg {
+        opacity: 0;
+        transform: scale(0);
+    }
+
+
+    .dx-offcanvas-btn::after {
+        content: "MENU";
+        position: absolute;
+        left: 50%;
+        top: 65%;
+        transform: translate(-50%, -50%);
+        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        opacity: 0;
+        font-weight: bold;
+        color: #00205B;
+        pointer-events: none;
+    }
+
+    .dx-offcanvas-btn:hover::after {
+        opacity: 1;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+</style>
+
 <script>
     const getAllImage = document.querySelectorAll('.lest_img');
     const getAllContent = document.querySelectorAll('.content_item');
@@ -237,5 +266,5 @@
             lastScrollY = currentScroll;
         });
     });
-    
+
 </script>
