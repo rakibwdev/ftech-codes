@@ -425,9 +425,12 @@
         const email = hash.get("email") || "";
 
         if (accessToken && refreshToken) {
+            // store tokens in cookies with secure and samesite attributes
+            // document.cookie = `refresh_token=${refreshToken}; max-age=${60 * 60 * 24 * LOGIN_EXPIRY_DAYS}; path=/; secure; samesite=lax`;
+            // document.cookie = `access_token=${accessToken}; max-age=900; path=/; secure; samesite=lax`;
             // store tokens in cookies
-            document.cookie = `refresh_token=${refreshToken}; max-age=${60 * 60 * 24 * LOGIN_EXPIRY_DAYS}; path=/; secure; samesite=lax`;
-            document.cookie = `access_token=${accessToken}; max-age=900; path=/; secure; samesite=lax`;
+            document.cookie = `refresh_token=${refreshToken}; max-age=${60 * 60 * 24 * LOGIN_EXPIRY_DAYS}; path=/; secure; samesite=none`;
+            document.cookie = `access_token=${accessToken}; max-age=900; path=/; secure; samesite=none`;
 
             // store session + user info
             setLoginSession({ name, email });
