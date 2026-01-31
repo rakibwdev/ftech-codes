@@ -31,6 +31,32 @@
         transform: translate(-50%, -50%);
     }
 
+    /* offcanvas-close-icon hover effect */
+
+    .offcanvas-close-icon:hover svg {
+        opacity: 0;
+    }
+
+    .offcanvas-close-icon::after {
+        content: "CLOSE";
+        position: absolute;
+        left: 50%;
+        top: 65%;
+        transform: translate(-50%, -50%);
+        transition: all 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        opacity: 0;
+        font-weight: bold;
+        color: #00205B;
+        pointer-events: none;
+    }
+
+    .offcanvas-close-icon:hover::after {
+        opacity: 1;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+
     /*nav icon animation*/
     .e-n-menu-icon svg {
         transition: all 0.3s ease-in-out;
