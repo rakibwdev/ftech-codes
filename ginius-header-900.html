@@ -192,18 +192,22 @@
         // Reset menu items
         const resetMenu = () => {
             allItems.forEach(item => {
+                item.style.transition = 'none';
+                item.style.transitionDelay = '0ms';
                 item.style.opacity = '0';
-                item.style.transform = 'translateY(20px)';
+                item.style.transform = 'scale(0.4) translateY(40px) translateX(30px)';
+                item.style.transformOrigin = 'center center';
+                void item.offsetWidth;
             });
         };
 
         // Animate menu items
         const animateMenu = () => {
             allItems.forEach((item, index) => {
-                item.style.transition = 'opacity 0.9s ease, transform 0.9s ease';
-                item.style.transitionDelay = `${index * 200}ms`;
+                item.style.transition = 'opacity 0.7s ease-out, transform 0.7s cubic-bezier(0.23, 1, 0.32, 1)';
+                item.style.transitionDelay = `${index * 50}ms`;
                 item.style.opacity = '1';
-                item.style.transform = 'translateY(0)';
+                item.style.transform = 'scale(1) translateY(0) translateX(0)';
             });
         };
 
