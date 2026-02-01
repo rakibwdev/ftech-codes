@@ -359,4 +359,29 @@
             lastScrollY = currentScroll;
         });
     });
+
+
+// popup offCanvas
+    document.addEventListener('DOMContentLoaded', function() {
+    const triggerBtn = document.getElementById('sendEnquiry');
+    
+    if (triggerBtn) {
+        triggerBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const offCanvas = document.getElementById('off-canvas-b4ff34b');
+            
+            if (offCanvas) {
+                const toggle = document.querySelector('[aria-controls="off-canvas-b4ff34b"]');
+                if (toggle) {
+                    toggle.click();
+                } else {
+                    offCanvas.classList.add('elementor-active');
+                    document.documentElement.classList.add('elementor-off-canvas-open');
+                }
+            }
+        });
+    }
+});
+
 </script>
