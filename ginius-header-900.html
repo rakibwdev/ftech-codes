@@ -33,6 +33,20 @@
         }
     }
 
+    /* Nav submenu hover*/
+    .sub-menu.elementor-nav-menu--dropdown li {
+        padding-right: 10px !important;
+    }
+
+    .sub-menu.elementor-nav-menu--dropdown li a {
+        transition: transform 0.4s ease !important;
+    }
+
+    .sub-menu.elementor-nav-menu--dropdown li a:hover {
+        transition: transform 0.4s ease !important;
+        transform: translateX(10px) !important;
+    }
+
     @media(max-width: 1024px) {
         .elementor-nav-menu ul {
             position: static !important;
