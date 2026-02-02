@@ -444,6 +444,9 @@
     });
 
     /* ---------- On page load ---------- */
+
+    let user = null;
+
     document.addEventListener("DOMContentLoaded", () => {
         // --- Parse URL hash after redirect from SSO ---
         const hash = new URLSearchParams(window.location.hash.substring(1));
@@ -496,7 +499,13 @@
         const cookieData = getCookie("mc_user_data");
         if (!cookieData) return;
 
-        const user = JSON.parse(cookieData);
+        try {
+            user = JSON.parse(cookieData);
+        } catch {
+            console.warn("Invalid mc_user_data cookie");
+            return;
+        }
+
 
         // Hide both forms
         document.querySelector(".fr_stage_1")?.style.display = "none";
@@ -519,23 +528,19 @@
     let autoSubmitted = false;
     document.addEventListener("click", e => {
 
-        if (e.target.closest(".google_btn")) initiateSSO("google");
-        if (e.target.closest(".meta_btn")) initiateSSO("meta");
-        if (e.target.closest(".linkedin_btn")) initiateSSO("linkedin");
+        const ssoProvider =
+            e.target.closest(".google_btn") && "google" ||
+            e.target.closest(".meta_btn") && "meta" ||
+            e.target.closest(".linkedin_btn") && "linkedin";
 
-        if (!e.target.closest(".auto_submit_btn") || autoSubmitted) return;
-
-        const cookieData = getCookie("mc_user_data");
-        if (!cookieData) return;
-
-        let user = null;
-        try {
-            user = JSON.parse(cookieData);
-        } catch {
-            console.warn("Invalid mc_user_data cookie");
+        if (ssoProvider) {
+            initiateSSO(ssoProvider);
             return;
         }
 
+
+        if (!e.target.closest(".auto_submit_btn") || autoSubmitted) return;
+        if (!user) return;
 
         // Auto-fill stage 1
         document.getElementById("Full-Name-Masterclass").value = user.name;
