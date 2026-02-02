@@ -490,15 +490,35 @@
             }
 
             // hide SSO buttons
-            const ssoButtons = getFormContainer?.querySelector("#sso-buttons");
+            const ssoButtons = document.querySelector("#sso-buttons");
             if (ssoButtons) {
                 ssoButtons.style.display = "none";
             }
+            // Hide forms
+            const hideFormsInterval = setInterval(() => {
+                const form1 = getFormContainer?.querySelector(".fr_stage_1 .form_body");
 
+                if (form1) {
+                    form1.style.display = "none";
+                    clearInterval(hideFormsInterval);
+                }
+            }, 100);
+
+
+            // Create welcome UI
+            const welcome = document.createElement("div");
+            welcome.className = "welcome_back";
+            welcome.innerHTML = `<h3>Welcome back, ${storedName} </h3>`;
+            getFormContainer?.querySelector(".fr_stage_1")?.prepend(welcome);
 
         } else {
             clearSession(); // session expired
         }
+
+    });
+
+    let autoSubmitted = false;
+    document.addEventListener("click", e => {
 
         const cookieData = getCookie("mc_user_data");
         if (!cookieData) return;
@@ -509,31 +529,6 @@
             console.warn("Invalid mc_user_data cookie");
             return;
         }
-
-
-        // Hide both forms
-        const hideFormsInterval = setInterval(() => {
-            const form1 = getFormContainer?.querySelector(".fr_stage_1 .form_body");
-            const form2 = getFormContainer?.querySelector(".fr_stage_2");
-
-            if (form1 && form2) {
-                form1.style.display = "none";
-                form2.style.display = "none";
-                clearInterval(hideFormsInterval);
-            }
-        }, 100);
-
-
-        // Create welcome UI
-        const welcome = document.createElement("div");
-        welcome.className = "welcome_back";
-        welcome.innerHTML = `<h3>Welcome back, ${user.name} </h3>`;
-        getFormContainer?.querySelector(".form_steps")?.prepend(welcome);
-
-    });
-
-    let autoSubmitted = false;
-    document.addEventListener("click", e => {
 
         const ssoProvider =
             e.target.closest(".google_btn") && "google" ||
@@ -565,13 +560,6 @@
         fillInput("#gql_domain_role-Masterclass", user.domain);
         fillInput("#gql_goal_fit-Masterclass", user.goal);
         fillInput("#gql_int_select-Masterclass", user.interview);
-
-        const stage1 = getFormContainer?.querySelector(".fr_stage_1");
-        const stage2 = getFormContainer?.querySelector(".fr_stage_2");
-
-        if (stage1) stage1.style.display = "block";
-        if (stage2) stage2.style.display = "block";
-
 
         // Trigger submit (adjust if you use custom submit)
         autoSubmitted = true;
