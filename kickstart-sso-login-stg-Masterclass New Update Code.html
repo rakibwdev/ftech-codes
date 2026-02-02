@@ -358,6 +358,7 @@
 
     // socaial login intigration
     /* ---------- Config ---------- */
+    const getFormContainer = document.querySelector(".webinar_registration_for_masterclass");
     const BASE_URL = "https://qa-ik-auth-service.interviewkickstart.com";
     const LOGIN_EXPIRY_DAYS = 90;
     const crossSubDomain = ".wpcomstaging.com";
@@ -375,7 +376,7 @@
 
     function deleteCookie(name) {
         document.cookie = `${name}=; max-age=0; path=/; domain=${crossSubDomain}; secure; samesite=${sameSite}`;
-    } 
+    }
 
     /* ---------- Session helpers ---------- */
     const setLoginSession = (user) => {
@@ -429,8 +430,7 @@
 
 
 
-    document.querySelector(".step_2_btn")?.addEventListener("click", () => {
-        const getFormContainer = document.querySelector(".webinar_registration_for_masterclass");
+    getFormContainer?.querySelector(".step_2_btn")?.addEventListener("click", () => {
 
         const data = {
             name: getFormContainer?.getElementById("Full-Name-Masterclass")?.value || "",
@@ -461,8 +461,8 @@
 
         if (accessToken && refreshToken) {
             // store tokens in cookies
-            document.cookie = `refresh_token=${refreshToken}; max-age=${60 * 60 * 24 * LOGIN_EXPIRY_DAYS}; domain=${crossSubDomain}; path=/;  secure; samesite=${sameSite}`;
-            document.cookie = `access_token=${accessToken}; max-age=900; domain=${crossSubDomain}; path=/;  secure; samesite=${sameSite}`;
+            setCookie("refresh_token", refreshToken, LOGIN_EXPIRY_DAYS);
+            setCookie("access_token", accessToken, 15); // 15 minutes expiry
 
             // store session + user info
             setLoginSession({ name, email });
@@ -473,11 +473,11 @@
 
         // --- Auto-fill forms and hide SSO buttons ---
         if (isSessionValid()) {
-            const storedName = localStorage.getItem("sso_name");
-            const storedEmail = localStorage.getItem("sso_email");
+            const storedName = getCookie("sso_name");
+            const storedEmail = getCookie("sso_email");
 
-            const nameInput = document.querySelector('input[name="name"]');
-            const emailInput = document.querySelector('input[name="email"]');
+            const nameInput = getFormContainer?.getElementById("Full-Name-Masterclass");
+            const emailInput = getFormContainer?.getElementById("Email-Address-Masterclass");
 
             if (storedName && nameInput) {
                 nameInput.value = storedName;
@@ -494,6 +494,8 @@
             if (ssoButtons) {
                 ssoButtons.style.display = "none";
             }
+
+
         } else {
             clearSession(); // session expired
         }
@@ -511,8 +513,8 @@
 
         // Hide both forms
         const hideFormsInterval = setInterval(() => {
-            const form1 = document.querySelector(".fr_stage_1");
-            const form2 = document.querySelector(".fr_stage_2");
+            const form1 = getFormContainer?.querySelector(".fr_stage_1 .form_body");
+            const form2 = getFormContainer?.querySelector(".fr_stage_2");
 
             if (form1 && form2) {
                 form1.style.display = "none";
@@ -525,14 +527,8 @@
         // Create welcome UI
         const welcome = document.createElement("div");
         welcome.className = "welcome_back";
-        welcome.innerHTML = `
-    <h3>Welcome back, ${user.name} </h3>
-    <button class="fr_btn auto_submit_btn">
-      Reserve Your Free Spot Now
-    </button>
-  `;
-
-        document.querySelector(".form_steps")?.prepend(welcome);
+        welcome.innerHTML = `<h3>Welcome back, ${user.name} </h3>`;
+        getFormContainer?.querySelector(".form_steps")?.prepend(welcome);
 
     });
 
@@ -550,28 +546,26 @@
         }
 
 
-        if (!e.target.closest(".auto_submit_btn") || autoSubmitted) return;
+        if (!e.target.closest(".step_2_btn") || autoSubmitted) return;
         if (!user) return;
 
         // Auto-fill stage 1
-        document.getElementById("Full-Name-Masterclass").value = user.name;
-        document.getElementById("Email-Address-Masterclass").value = user.email;
+        getFormContainer?.getElementById("Full-Name-Masterclass").value = user.name;
+        getFormContainer?.getElementById("Email-Address-Masterclass").value = user.email;
 
         // Auto-fill stage 2
-        document.getElementById("webinar_pnumber-Masterclass").value = user.phone;
-        document.getElementById("gql_experience-Masterclass").value = user.experience;
-        document.getElementById("gql_domain_role-Masterclass").value = user.domain;
-        document.getElementById("gql_goal_fit-Masterclass").value = user.goal;
-        document.getElementById("gql_int_select-Masterclass").value = user.interview;
-
+        getFormContainer?.getElementById("webinar_pnumber-Masterclass").value = user.phone;
+        getFormContainer?.getElementById("gql_experience-Masterclass").value = user.experience;
+        getFormContainer?.getElementById("gql_domain_role-Masterclass").value = user.domain;
+        getFormContainer?.getElementById("gql_goal_fit-Masterclass").value = user.goal;
+        getFormContainer?.getElementById("gql_int_select-Masterclass").value = user.interview;
         // Show forms (if required by submit logic)
-        document.querySelector(".fr_stage_1").style.display = "block";
-        document.querySelector(".fr_stage_2").style.display = "block";
+        getFormContainer?.querySelector(".fr_stage_1").style.display = "block";
+        getFormContainer?.querySelector(".fr_stage_2").style.display = "block";
 
         // Trigger submit (adjust if you use custom submit)
         autoSubmitted = true;
-        document.querySelector(".step_2_btn")?.click();
+        getFormContainer?.querySelector(".step_2_btn")?.click();
     });
-
 
 </script>
