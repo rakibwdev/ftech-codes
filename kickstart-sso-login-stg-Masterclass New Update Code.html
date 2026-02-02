@@ -363,29 +363,40 @@
     const crossSubDomain = ".wpcomstaging.com";
     const sameSite = "none";
 
+    function setCookie(name, value, days) {
+        const maxAge = days * 24 * 60 * 60;
+        document.cookie = `${name}=${encodeURIComponent(value)}; max-age=${maxAge}; path=/; domain=${crossSubDomain}; secure; samesite=${sameSite}`;
+    }
+
+    function getCookie(name) {
+        const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+        return match ? decodeURIComponent(match[2]) : null;
+    }
+
+    function deleteCookie(name) {
+        document.cookie = `${name}=; max-age=0; path=/; domain=${crossSubDomain}; secure; samesite=${sameSite}`;
+    } 
+
     /* ---------- Session helpers ---------- */
     const setLoginSession = (user) => {
         const expiry = Date.now() + LOGIN_EXPIRY_DAYS * 24 * 60 * 60 * 1000;
-
-        localStorage.setItem("sso_logged_in", "true");
-        localStorage.setItem("sso_expiry", expiry);
-
-        // store user info safely
-        localStorage.setItem("sso_name", user.name || "");
-        localStorage.setItem("sso_email", user.email || "");
+        setCookie("sso_logged_in", "true", LOGIN_EXPIRY_DAYS);
+        setCookie("sso_expiry", expiry, LOGIN_EXPIRY_DAYS);
+        setCookie("sso_name", encodeURIComponent(user.name || ""), LOGIN_EXPIRY_DAYS);
+        setCookie("sso_email", encodeURIComponent(user.email || ""), LOGIN_EXPIRY_DAYS);
     };
 
     const isSessionValid = () => {
-        const loggedIn = localStorage.getItem("sso_logged_in") === "true";
-        const expiry = Number(localStorage.getItem("sso_expiry"));
+        const loggedIn = getCookie("sso_logged_in") === "true";
+        const expiry = Number(getCookie("sso_expiry"));
         return loggedIn && expiry && Date.now() < expiry;
     };
 
     const clearSession = () => {
-        localStorage.removeItem("sso_logged_in");
-        localStorage.removeItem("sso_expiry");
-        localStorage.removeItem("sso_name");
-        localStorage.removeItem("sso_email");
+        deleteCookie("sso_logged_in");
+        deleteCookie("sso_expiry");
+        deleteCookie("sso_name");
+        deleteCookie("sso_email");
     };
 
     /* ---------- Initiate SSO ---------- */
@@ -416,28 +427,19 @@
 
     //social login integration end
 
-    //second step data ///////////////////////////////////////////////////////////////////////////////////
 
-    function setCookie(name, value, days) {
-        const maxAge = days * 24 * 60 * 60;
-        document.cookie = `${name}=${encodeURIComponent(value)}; max-age=${maxAge}; path=/; domain=${crossSubDomain}; secure; samesite=${sameSite}`;
-    }
-
-    function getCookie(name) {
-        const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-        return match ? decodeURIComponent(match[2]) : null;
-    }
 
     document.querySelector(".step_2_btn")?.addEventListener("click", () => {
+        const getFormContainer = document.querySelector(".webinar_registration_for_masterclass");
 
         const data = {
-            name: document.getElementById("Full-Name-Masterclass")?.value || "",
-            email: document.getElementById("Email-Address-Masterclass")?.value || "",
-            phone: document.getElementById("webinar_pnumber-Masterclass")?.value || "",
-            experience: document.getElementById("gql_experience-Masterclass")?.value || "",
-            domain: document.getElementById("gql_domain_role-Masterclass")?.value || "",
-            goal: document.getElementById("gql_goal_fit-Masterclass")?.value || "",
-            interview: document.getElementById("gql_int_select-Masterclass")?.value || ""
+            name: getFormContainer?.getElementById("Full-Name-Masterclass")?.value || "",
+            email: getFormContainer?.getElementById("Email-Address-Masterclass")?.value || "",
+            phone: getFormContainer?.getElementById("webinar_pnumber-Masterclass")?.value || "",
+            experience: getFormContainer?.getElementById("gql_experience-Masterclass")?.value || "",
+            domain: getFormContainer?.getElementById("gql_domain_role-Masterclass")?.value || "",
+            goal: getFormContainer?.getElementById("gql_goal_fit-Masterclass")?.value || "",
+            interview: getFormContainer?.getElementById("gql_int_select-Masterclass")?.value || ""
         };
 
         setCookie("mc_user_data", JSON.stringify(data), LOGIN_EXPIRY_DAYS);
