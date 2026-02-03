@@ -192,6 +192,57 @@
     .offcanvas_menu li:hover .elementor-icon-list-text {
         text-decoration: underline !important;
     }
+
+
+    /* ////////////////////////////// */
+    /* 1. THE DEFAULT STATE (Closed) */
+    #off-canvas-0c02358 .e-off-canvas__content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        /* Start full width/height but hidden */
+        max-height: 0;
+        padding: 0 var(--spacer_l, 20px);
+        background: transparent;
+        box-sizing: border-box;
+        overflow: hidden;
+        z-index: 10;
+
+        /* Copy your exact transition string */
+        transition:
+            max-height 0.55s ease-out,
+            min-height 0.55s ease-out,
+            width 0.55s ease-out,
+            margin 0.55s ease-out,
+            padding 0.55s ease-out,
+            border-radius 0.55s ease-out,
+            background 0.55s ease-out,
+            transform 0.55s ease-in-out;
+    }
+
+    /* 2. THE OPEN STATE (Triggered by aria-hidden="false") */
+    #off-canvas-0c02358[aria-hidden="false"] .e-off-canvas__content {
+        /* The "Shrink and Float" calculation from your code */
+        width: calc(100vw - 2 * var(--spacer_xxs, 10px)) !important;
+        height: 100% !important;
+        max-height: calc(100vh - 2 * var(--spacer_xxs, 10px)) !important;
+
+        /* The Margin and Border Radius from your code */
+        margin: var(--spacer_xxs, 10px) var(--spacer_xxs, 10px) 0 !important;
+        padding: 0 calc(var(--spacer_l, 20px) - 2 * var(--spacer_xxs, 10px)) !important;
+        border-radius: calc(var(--border_radius, 8px) * 3) !important;
+
+        /* Colors */
+        background-color: #FFF !important;
+        /* Base white */
+        /* background-color: var(--color_brand_3) !important; */
+        /* Your brand color toggle */
+
+        /* Ensure opacity is visible */
+        opacity: 1;
+    }
 </style>
 <script>
     // 	nav menu hover
