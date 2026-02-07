@@ -314,6 +314,25 @@
     body:has(#off-canvas-0c02358[aria-hidden="true"]) .close-icon {
         display: none !important;
     }
+
+    .elementor-widget-off-canvas .e-off-canvas__overlay {
+        opacity: 0;
+        /* hidden initially */
+        transform: translateY(-10%) scale(.9);
+        /* up + slight zoom out */
+        pointer-events: none;
+        transition:
+            opacity 0.5s ease-in-out,
+            transform 0.6s ease-in-out;
+    }
+
+    /* Overlay visible when off-canvas is open */
+    .elementor-widget-off-canvas .e-off-canvas[aria-hidden="false"] .e-off-canvas__overlay {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        /* slide down + zoom in */
+        pointer-events: auto;
+    }
 </style>
 
 <script>
@@ -407,7 +426,7 @@
         const animateElements = (elements) => {
             elements.forEach((item, index) => {
                 item.style.transition = 'opacity 0.9s ease, transform 0.9s ease';
-                item.style.transitionDelay = `${index * 200}ms`;
+                item.style.transitionDelay = `${index * 300}ms`;
                 item.style.opacity = '1';
                 item.style.transform = 'translateY(0)';
             });
