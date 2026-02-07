@@ -390,13 +390,11 @@
 
     // 	Offcanvas content animation
     document.addEventListener('DOMContentLoaded', () => {
-        const offCanvas = document.querySelector('.e-off-canvas'); // Elementor offcanvas wrapper
+        const offCanvas = document.querySelector('.e-off-canvas');
+        const mobileOffCanvas = document.querySelector('#off-canvas-0c02358');
         const menuItems = document.querySelectorAll('.offcanvas_menu li');
         const subMenuContent = document.querySelectorAll('.content_item li');
         const acordianItems = document.querySelectorAll('.e-n-accordion-item');
-
-
-        if (!offCanvas || menuItems.length === 0 || subMenuContent.length === 0 || acordianItems.length === 0) return;
 
         const resetElementStyles = (elements) => {
             elements.forEach(item => {
@@ -409,42 +407,43 @@
         const animateElements = (elements) => {
             elements.forEach((item, index) => {
                 item.style.transition = 'opacity 0.9s ease, transform 0.9s ease';
-                item.style.transitionDelay = `${index * 200}ms`; // 100ms between lines
+                item.style.transitionDelay = `${index * 200}ms`;
                 item.style.opacity = '1';
                 item.style.transform = 'translateY(0)';
             });
         };
 
+        // Reset all items initially
         resetElementStyles(menuItems);
         resetElementStyles(subMenuContent);
         resetElementStyles(acordianItems);
 
-        animateElements(menuItems);
-        animateElements(subMenuContent);
-        animateElements(acordianItems);
+        // Observe off-canvas open/close changes
+        const observeOffCanvas = (offCanvasElement) => {
+            const observer = new MutationObserver(() => {
+                const isOpen = offCanvasElement.getAttribute('aria-hidden') === 'false';
+                if (isOpen) {
+                    animateElements(menuItems);
+                    animateElements(subMenuContent);
 
-        // Observe offcanvas open/close changes
-        const observer = new MutationObserver(() => {
-            const isOpen = offCanvas.getAttribute('aria-hidden') === 'false';
-            if (isOpen) {
-                animateElements(menuItems);
-                animateElements(subMenuContent);
-                animateElements(acordianItems);
-            } else {
-                resetElementStyles(menuItems);
-                resetElementStyles(subMenuContent);
-                resetElementStyles(acordianItems);
+                    if (offCanvasElement.id === 'off-canvas-0c02358') {
+                        animateElements(acordianItems); // Only for mobile
+                    }
+                } else {
+                    resetElementStyles(menuItems);
+                    resetElementStyles(subMenuContent);
+                    if (offCanvasElement.id === 'off-canvas-0c02358') {
+                        resetElementStyles(acordianItems);
+                    }
+                }
+            });
+            observer.observe(offCanvasElement, { attributes: true });
+        };
 
-            }
-        });
-
-        observer.observe(offCanvas, { attributes: true });
-        resetElementStyles(menuItems); // ensure hidden initially
-        resetElementStyles(subMenuContent);
-        resetElementStyles(acordianItems);
-
+        // Observe both desktop and mobile
+        observeOffCanvas(offCanvas);
+        observeOffCanvas(mobileOffCanvas);
     });
-
     // 	Offcanvas content animation end
 
     // 	bottom button mobile
