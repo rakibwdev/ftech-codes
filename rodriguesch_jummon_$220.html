@@ -1,17 +1,19 @@
 <style>
-    .tabs-wrapper :is([class^="box-"], [class^="img-"]) {
+    /* Hide all boxes & images */
+    .tabs-wrapper :is(.box-1, .box-2, .box-3, .box-4, .box-5, .img-1, .img-2, .img-3, .img-4, .img-5) {
         opacity: 0;
         pointer-events: none;
         position: absolute;
+        transition: opacity 0.5s ease, transform 0.6s ease;
         transform: translateY(15px) scale(0.95);
-        transition: opacity .5s ease, transform .6s ease;
     }
 
-    .tabs-wrapper:has(.btn-1[show_status="true"]) :is(.box-1, .img-1),
-    .tabs-wrapper:has(.btn-2[show_status="true"]) :is(.box-2, .img-2),
-    .tabs-wrapper:has(.btn-3[show_status="true"]) :is(.box-3, .img-3),
-    .tabs-wrapper:has(.btn-4[show_status="true"]) :is(.box-4, .img-4),
-    .tabs-wrapper:has(.btn-5[show_status="true"]) :is(.box-5, .img-5) {
+    /* Show matching box + image */
+    .tabs-wrapper:has(.tab-btn[show_status="true"].btn-1) :is(.box-1, .img-1),
+    .tabs-wrapper:has(.tab-btn[show_status="true"].btn-2) :is(.box-2, .img-2),
+    .tabs-wrapper:has(.tab-btn[show_status="true"].btn-3) :is(.box-3, .img-3),
+    .tabs-wrapper:has(.tab-btn[show_status="true"].btn-4) :is(.box-4, .img-4),
+    .tabs-wrapper:has(.tab-btn[show_status="true"].btn-5) :is(.box-5, .img-5) {
         opacity: 1;
         pointer-events: auto;
         position: relative;
