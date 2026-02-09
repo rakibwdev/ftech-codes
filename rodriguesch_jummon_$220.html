@@ -1,14 +1,35 @@
+<style>
+    .tabs-wrapper :is([class^="box-"], [class^="img-"]) {
+        opacity: 0;
+        pointer-events: none;
+        position: absolute;
+        transform: translateY(15px) scale(0.95);
+        transition: opacity .5s ease, transform .6s ease;
+    }
+
+    .tabs-wrapper:has(.btn-1[show_status="true"]) :is(.box-1, .img-1),
+    .tabs-wrapper:has(.btn-2[show_status="true"]) :is(.box-2, .img-2),
+    .tabs-wrapper:has(.btn-3[show_status="true"]) :is(.box-3, .img-3),
+    .tabs-wrapper:has(.btn-4[show_status="true"]) :is(.box-4, .img-4),
+    .tabs-wrapper:has(.btn-5[show_status="true"]) :is(.box-5, .img-5) {
+        opacity: 1;
+        pointer-events: auto;
+        position: relative;
+        transform: translateY(0) scale(1);
+    }
+</style>
+
 <script>
-document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
 
-        // set all buttons to false
-        document.querySelectorAll('.tab-btn').forEach(b => {
-            b.setAttribute('show_status', 'false');
+            // set all buttons to false
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.setAttribute('show_status', 'false');
+            });
+
+            // set clicked button to true
+            btn.setAttribute('show_status', 'true');
         });
-
-        // set clicked button to true
-        btn.setAttribute('show_status', 'true');
     });
-});
 </script>
