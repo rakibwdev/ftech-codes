@@ -19,6 +19,14 @@
         position: relative;
         transform: translateY(0) scale(1);
     }
+
+    .tabs-wrapper:has(.btn-1[show_status="true"]) .circle-1,
+    .tabs-wrapper:has(.btn-2[show_status="true"]) .circle-2,
+    .tabs-wrapper:has(.btn-3[show_status="true"]) .circle-3,
+    .tabs-wrapper:has(.btn-4[show_status="true"]) .circle-4,
+    .tabs-wrapper:has(.btn-5[show_status="true"]) .circle-5 {
+        opacity: 0;
+    }
 </style>
 
 <script>
