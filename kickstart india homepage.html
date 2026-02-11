@@ -9,7 +9,7 @@
     const activeSubTabBtns = mainTab.querySelectorAll('.tab_btn.active');
     activeSubTabBtns.forEach((btn) => btn.classList.remove('active'));
   }
-  
+
   tabBtn.forEach((btn, i) => {
     btn.addEventListener('click', tabEventFun.bind(btn, btn, i));
   });
@@ -20,51 +20,51 @@
 
     subTabBtn.forEach((btn, i) => {
       btn.addEventListener('click', () => {
-        if (btn.classList.contains('active')){
-            btn.classList.remove('active')
-            return;
+        if (btn.classList.contains('active')) {
+          btn.classList.remove('active')
+          return;
         }; // Prevent re-activation
 
         subTabBtn.forEach((item) => item.classList.remove('active'));
         subTabContent.forEach((content) => {
-            content.classList.remove('active');
-            content.classList.remove('fade-in');
+          content.classList.remove('active');
+          content.classList.remove('fade-in');
         });
 
         btn.classList.add('active');
         subTabContent[i].classList.add('active');
-        
+
         // Add fade-in effect
         setTimeout(() => {
-            subTabContent[i].classList.add('fade-in');
+          subTabContent[i].classList.add('fade-in');
         }, 10);
       });
     });
   });
 
-function tabEventFun(btn, i){
-  if (btn.classList.contains('active')) return; // Prevent re-activation
+  function tabEventFun(btn, i) {
+    if (btn.classList.contains('active')) return; // Prevent re-activation
 
-  tabBtn.forEach((item) => item.classList.remove('active'));
-  tabContent.forEach((content) => {
+    tabBtn.forEach((item) => item.classList.remove('active'));
+    tabContent.forEach((content) => {
       content.classList.remove('active');
       content.classList.remove('fade-in');
-  });
+    });
 
-  btn.classList.add('active');
-  tabContent[i].classList.add('active');
-  
-  // Add fade-in effect
-  setTimeout(() => {
+    btn.classList.add('active');
+    tabContent[i].classList.add('active');
+
+    // Add fade-in effect
+    setTimeout(() => {
       tabContent[i].classList.add('fade-in');
-  }, 10);
-}
+    }, 10);
+  }
 
 
 
 
 
-function subTabFunction (subTab, tabContentIndex) {
+  function subTabFunction(subTab, tabContentIndex) {
     const subTabBtn = subTab.querySelectorAll('.tab_btn');
     const subTabContent = subTab.querySelectorAll('.tab_content');
 
@@ -73,8 +73,8 @@ function subTabFunction (subTab, tabContentIndex) {
 
       subTabBtn.forEach((item) => item.classList.remove('active'));
       subTabContent.forEach((content) => {
-          content.classList.remove('active');
-          content.classList.remove('fade-in');
+        content.classList.remove('active');
+        content.classList.remove('fade-in');
       });
 
       btn.classList.add('active');
@@ -82,22 +82,22 @@ function subTabFunction (subTab, tabContentIndex) {
 
       // Add fade-in effect
       setTimeout(() => {
-          subTabContent[i].classList.add('fade-in');
+        subTabContent[i].classList.add('fade-in');
       }, 10);
     })(subTabBtn[tabContentIndex], tabContentIndex);
   }
 
 
-const getAllMenuTabBtn = document.querySelectorAll('[tab_btn_index][tab_content_index]');
-getAllMenuTabBtn.forEach((tabButton) => {
-  const tabBtnIndex = parseInt(tabButton.getAttribute('tab_btn_index'));
-  const tabContentIndex = parseInt(tabButton.getAttribute('tab_content_index'));
+  const getAllMenuTabBtn = document.querySelectorAll('[tab_btn_index][tab_content_index]');
+  getAllMenuTabBtn.forEach((tabButton) => {
+    const tabBtnIndex = parseInt(tabButton.getAttribute('tab_btn_index'));
+    const tabContentIndex = parseInt(tabButton.getAttribute('tab_content_index'));
 
-  tabButton.addEventListener("click", () => {
-    tabEventFun(tabBtn[tabBtnIndex], tabBtnIndex);
-    subTabFunction(SubTabs[tabBtnIndex], tabContentIndex);
-    document.querySelector("#header_mega").click();
+    tabButton.addEventListener("click", () => {
+      tabEventFun(tabBtn[tabBtnIndex], tabBtnIndex);
+      subTabFunction(SubTabs[tabBtnIndex], tabContentIndex);
+      document.querySelector("#header_mega").click();
+    })
   })
-})
 
 </script>
