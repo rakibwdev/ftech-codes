@@ -467,6 +467,19 @@
 
 <script>
 
+  // COPPIED FUNCTIN
+  document.querySelector('.copy_link_btn a').addEventListener('click', function (e) {
+    e.preventDefault();
+    const url = location.href.split('?')[0], cpyBtn = this;
+    navigator.clipboard.writeText(url).then(() => {
+      cpyBtn.querySelector(".elementor-button-text").innerHTML = 'Copied';
+      cpyBtn.querySelector('.elementor-button-icon').innerHTML = `<svg width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.5 3L5 8.5L2.5 6" stroke="currentcolor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    }).catch(err => {
+      console.error("Error in copy link button", err);
+      cpyBtn.innerText = 'Link Copied Faild!';
+    });
+  });
+
 
   // header
   const menuBtn = document.querySelectorAll('.menu_tab_btn');
