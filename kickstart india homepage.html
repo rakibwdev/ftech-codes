@@ -281,6 +281,40 @@
   .elementor-element-10fd0459:has(.webinar_registration_for_masterclass[ac_step="3"]) .before-watching {
     display: none;
   }
+
+  /* Toast base */
+  .copy-toast {
+    position: fixed;
+    top: 50px;
+    left: 50%;
+    transform: translate(-50%, -10px);
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0;
+    transition: opacity .3s ease, transform .3s ease;
+    z-index: 9999;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, .08);
+  }
+
+  /* Visible */
+  .copy-toast.show {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  /* Success */
+  .copy-toast.success {
+    background: #7dd090;
+    color: #ffffff;
+  }
+
+  /* Error / Warning */
+  .copy-toast.error {
+    background: #fe716c;
+    color: #ffffff;
+  }
 </style>
 
 <html>
@@ -467,16 +501,36 @@
 
 <script>
 
-  // COPPIED FUNCTIN
+  // COPPy link FUNCTIoN
+
+  function showToast(message, type = 'success') {
+    let toast = document.querySelector('.copy-toast');
+
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.className = 'copy-toast';
+      document.body.appendChild(toast);
+    }
+
+    toast.textContent = message;
+    toast.className = `copy-toast show ${type}`;
+
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, 2000);
+  }
+
   document.querySelector('.copy_link_btn a').addEventListener('click', function (e) {
     e.preventDefault();
     const url = location.href.split('?')[0], cpyBtn = this;
     navigator.clipboard.writeText(url).then(() => {
       cpyBtn.querySelector(".elementor-button-text").innerHTML = 'Copied';
       cpyBtn.querySelector('.elementor-button-icon').innerHTML = `<svg width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.5 3L5 8.5L2.5 6" stroke="currentcolor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+      showToast('Link copied to clipboard', 'success');
     }).catch(err => {
       console.error("Error in copy link button", err);
       cpyBtn.innerText = 'Link Copied Faild!';
+      showToast('Failed to copy link', 'error');
     });
   });
 
