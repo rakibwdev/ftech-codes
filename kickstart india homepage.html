@@ -36,7 +36,7 @@
   }
 
   /*menu css*/
-  .custom_menu .elementor-nav-menu li:nth-child(n+4) {}
+  /* .custom_menu .elementor-nav-menu li:nth-child(n+4) {} */
 
   .mega_menu_popup a {
     padding-right: 32px !important;
@@ -51,11 +51,17 @@
     transform: unset !important;
   }
 
+  @media(min-width:1024px) {
+    .menu-item-53280 ul {
+      display: none !important;
+    }
+  }
+
   .mega_menu_popup a::after {
     content: '';
     width: 16px;
     height: 16px;
-    background-image: url(https://staging-07b2-interviewkickstart.wpcomstaging.com/wp-content/uploads/2025/07/arrow.svg);
+    /* background-image: url(https://staging-07b2-interviewkickstart.wpcomstaging.com/wp-content/uploads/2025/07/arrow.svg); */
     position: absolute;
     right: 10px !important;
     top: calc(50% - 8px) !important;
