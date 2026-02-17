@@ -32,30 +32,6 @@
                 <p class="message" style="display: none"><b>ⓘ</b> Used to send reminder for webinar</p>
             </label>
 
-            <label class="fr_fild v2_topic_of_int_fild" err_status="false">
-                <span class="title" id="career-goal">Pick your next career move</span>
-
-                <div class="topic_select">
-                    <label>
-                        <input type="radio" name="topic_select" class="topic_select" value="Uplevel in my role"
-                            webinartype="REGULAR" id="topic_select_option_interview_prep" checked>
-                        <span>Land a Top-Tech Role</span>
-                    </label>
-
-                    <label>
-                        <input type="radio" name="topic_select" class="topic_select" value="Switch to an AI career"
-                            webinartype="SWITCH_UP" id="topic_select_option_switch_up">
-                        <span>Transition to AI/ML</span>
-                    </label>
-
-                    <label>
-                        <input type="radio" name="topic_select" class="topic_select" value="Use AI in current job"
-                            webinartype="Agentic_AI" id="topic_select_option_agentic_ai">
-                        <span>Learn Agentic AI</span>
-                    </label>
-                </div>
-                <span class="err_fild"><b>ⓘ</b> Pick your next career move</span>
-            </label>
 
             <div class="fr_acceptance">
                 <input checked class="fr_in_fild" id="Whatsapp-User-Consent" type="checkbox" class="whatsapp-consent"
@@ -74,8 +50,13 @@
         </div>
 
         <div class="from_step from_tep_2">
-            <div class="title">Choose a slot</div>
-            <p class="time_zone">Time Zone: Asia/Dhaka</p>
+            <div class="step_title" style="text-align: center;">
+                <h5 style="color: #667085; font-size: 16px; font-weight: 400;">Turbocharge your <b>Tech Career</b></h5>
+                <h2>Get Started with our <span style="color:#429AE2">FREE Webinar</span></h2>
+            </div>
+            <h5 >Build AI/ML Skills & Interview Readiness to Become a Top 1%
+                Tech Pro</h5>
+            <p>Hands-on AI/ML learning + interview prep to help you win</p>
             <div class="slots_container">
                 <div class="slot_sl_con">
                     <div class="slot_fild">
@@ -184,6 +165,10 @@
         </div>
 
         <div class="from_step from_tep_3">
+            <div class="step_title" style="text-align: center;">
+                <h5 style="color: #667085; font-size: 16px; font-weight: 400;">Turbocharge your <b>Tech Career</b></h5>
+                <h2>Get Started with our <span style="color:#429AE2">FREE Webinar</span></h2>
+            </div>
             <div class="step_title">
                 <h2>Share your profile details</h2>
                 <p class="for_step_3">Give us more details about yourself so that our <b>FAANG Experts</b> can suggest
@@ -193,7 +178,7 @@
 
 
                 <label class="fr_fild v2_exp_fild" err_status="false">
-                    <span class="title">Years of experience</span>
+                    <span class="title" style="font-weight: bold;">Years of experience (in years)</span>
                     <select class="gql_exp_select">
                         <option value="" data-cr="0.35">Select option</option>
                         <option value="0-2" data-cr="0.58">0-2</option>
@@ -207,7 +192,7 @@
                 </label>
 
                 <label class="fr_fild v2_dom_fild" err_status="false">
-                    <span class="title">Domain/Role</span>
+                    <span class="title" style="font-weight: bold;">Domain/Role</span>
                     <select class="gql_domain_select">
                         <option value="" data-cr="0.37">Select option</option>
                         <option value="Back-end" data-cr="1.87">Back-end</option>
@@ -239,7 +224,7 @@
                     <span class="err_fild"><b>ⓘ</b> Select domain</span>
                 </label>
 
-                <label class="fr_check_box">
+                <!-- <label class="fr_check_box">
                     <input type="checkbox" class="v2-checkbox-is-laidoff">
                     <span>I have been laid off recently</span>
                 </label>
@@ -247,7 +232,37 @@
                 <label class="fr_check_box">
                     <input type="checkbox" class="v2-checkbox-is-student">
                     <span>I’m currently a student</span>
+                </label> -->
+                <label class="fr_fild v2_topic_of_int_fild" err_status="false">
+                    <span class="title" id="career-goal">Pick your next career move</span>
+
+                    <div class="topic_select">
+                        <label>
+                            <input type="radio" name="topic_select" class="topic_select" value="Uplevel in my role"
+                                webinartype="REGULAR" id="topic_select_option_interview_prep" checked>
+                            <span>Add AI skills to your current tech stack</span>
+                        </label>
+
+                        <label>
+                            <input type="radio" name="topic_select" class="topic_select" value="Switch to an AI career"
+                                webinartype="SWITCH_UP" id="topic_select_option_switch_up">
+                            <span>Learn Machine Learning & crack top tech roles</span>
+                        </label>
+
+                        <label>
+                            <input type="radio" name="topic_select" class="topic_select" value="Use AI in current job"
+                                webinartype="Agentic_AI" id="topic_select_option_agentic_ai">
+                            <span>Build enterprise-grade Agentic AI portfolio with PwC India</span>
+                        </label>
+                        <label>
+                            <input type="radio" name="topic_select" class="topic_select" value="Use AI in current job"
+                                webinartype="Agentic_AI" id="topic_select_option_agentic_ai">
+                            <span>Prepare for MAANG+ interviews</span>
+                        </label>
+                    </div>
+                    <span class="err_fild"><b>ⓘ</b> Pick your next career move</span>
                 </label>
+
 
             </div>
             <div class="btn_container">
@@ -333,13 +348,10 @@ Last edited: 2026-01-19 17:45:43
 <script>
     window.addEventListener("DOMContentLoaded", function () {
         const getThePopupFrom2 = document.querySelector(".v2_from_wrapper");
-        getThePopupFrom2.querySelector(
-            ".time_zone"
-        ).innerHTML = `Time Zone: ${v_timezone}`;
+        getThePopupFrom2.querySelector(".time_zone").innerHTML = `Time Zone: ${v_timezone}`;
 
-        const webNearTopicOfInterest = getThePopupFrom2.querySelectorAll(
-            '.topic_select[type="radio"]'
-        );
+        const webNearTopicOfInterest = getThePopupFrom2.querySelectorAll('.topic_select[type="radio"]');
+
         // Weighted distribution for auto-selecting the default topic (40/40/20 split).
         const TOPIC_WEIGHT_CONFIG = [
             { type: "REGULAR", weight: 0.4 },
@@ -876,7 +888,7 @@ Last edited: 2026-01-19 17:45:43
             const options = {
                 method: "POST",
                 headers: {
-                    "x-api-key": "fm0X61U99b80d5SlGjrxFaWjgxIBylhX3LkfYGPN",
+                    "x-api-key": "API KEY HERE",
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
@@ -1410,7 +1422,7 @@ Last edited: 2026-01-19 17:45:43
             const option = {
                 method: "GET",
                 headers: {
-                    Authorization: "1Cgx6oYXkOlWkNDn7_tXO",
+                    Authorization: "KEY",
                 },
             };
             const response = await fetch(api_url, option);
