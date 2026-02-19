@@ -1,4 +1,566 @@
+<style>
+    .v2_from_wrapper,
+.v2_from_wrapper * {
+  margin: 0px ;
+  padding: 0px;
+}
+.v2_from_wrapper p {
+  margin: 0px;
+  padding: 0px;
+}
+
+.v2_from_wrapper .steps_container {
+  display: flex;
+  margin-bottom: 20px;
+  gap: 8px;
+}
+
+.v2_from_wrapper .steps_container .step_indicator {
+  z-index: 2;
+  background-color: #dcedff;
+  border-radius: 52px;
+  width: 60px;
+  height: 4px;
+}
+
+@media (max-width: 767px) {
+  .v2_from_wrapper .steps_container .step_indicator {
+    width: 100%;
+  }
+}
+.v2_from_wrapper .from_step .title {
+  color: #344054;
+  font-family: Inter, sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 28px;
+}
+
+.v2_from_wrapper .from_step .err_fild {
+  color: #d14040;
+  font-family: Inter, sans-serif;
+  font-size: 12px;
+  padding-top: 7px;
+}
+
+.v2_from_wrapper .from_step .fr_fild[err_status=false] .err_fild {
+  display: none;
+}
+
+.v2_from_wrapper .from_step .step_btn {
+  text-align: center;
+  background: linear-gradient(182.07deg, #49A9F8 32.52%, #3478B0 194.97%);
+  border-radius: 4px;
+  width: 50%;
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  line-height: inherit;
+  cursor: pointer;
+  padding: 9px 15px;
+  border: 1px solid #49a9f8;
+  line-height: 21px;
+}
+
+.v2_from_wrapper .from_step .step_btn.step_back {
+  /*background-color: white;*/
+  color: white;
+}
+
+.v2_from_wrapper .from_step.from_tep_1 {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+@media (max-width: 767px) {
+  .v2_from_wrapper .from_step.from_tep_1 {
+    padding-top: 0px;
+  }
+}
+.v2_from_wrapper .from_step.from_tep_1 .fr_fild {
+  display: flex;
+  flex-direction: column;
+}
+
+.v2_from_wrapper .from_step.from_tep_1 .fr_fild .title {
+  margin-bottom: 5px;
+}
+
+.v2_from_wrapper .from_step:not(.from_tep_2) .fr_fild input {
+  color: #667085;
+  border: 1px solid #E3E7EC;
+  border-radius: 4px;
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  width: 100%;
+  padding: 8px 12px;
+  box-sizing: border-box;
+}
+
+.v2_from_wrapper .from_step:not(.from_tep_2) .fr_fild input:focus, .v2_from_wrapper .from_step:not(.from_tep_2) .fr_fild input:focus-visible {
+  outline: none;
+}
+
+.v2_from_wrapper .from_step:not(.from_tep_2) .fr_fild.v2_phone_number input {
+  padding-left: 52px;
+}
+
+.v2_from_wrapper .from_step.from_tep_1 p {
+  font-family: Inter, sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #9496a1;
+}
+
+.v2_from_wrapper .from_step.from_tep_1 p a {
+  color: #3996d2;
+  font-weight: 600;
+  text-decoration: none;
+  font-style: italic;
+}
+
+.v2_from_wrapper .from_step.from_tep_1 > p {
+  /*margin-top: 20px;*/
+}
+
+.v2_from_wrapper .from_step.from_tep_1 .btn_container {
+  text-align: end;
+  /*margin-top: 10px;*/
+}
+
+.v2_from_wrapper .from_step.from_tep_2 .time_zone {
+  color: #354156;
+  margin-bottom: 32px;
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.v2_from_wrapper .from_step.from_tep_2 .slots_container {
+  position: relative;
+}
+
+.v2_from_wrapper .from_step.from_tep_2 .slots_container .slot_sl_con .slot_fild {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px;
+  transition: 0.3s;
+  padding-bottom: 10px;
+}
+
+.v2_from_wrapper .from_step.from_tep_2 .slots_container .slot_sl_con .slot_fild input[type=radio] {
+  display: none;
+}
+
+.v2_from_wrapper .from_step.from_tep_2 .slots_container .slot_sl_con .slot_fild label.slot {
+    box-sizing: border-box;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+}
+
+.v2_from_wrapper .from_step.from_tep_2 .slots_container .slot_sl_con .slot_fild label.slot .time_slot_wrapper {
+  border-radius: 8px;
+  padding: 8px 8px 15px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.v2_from_wrapper .from_step.from_tep_2 .slots_container .slot_sl_con .slot_fild label.slot .time_slot_wrapper .v2_day {
+  color: black;
+  font-family: Inter, sans-serif;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.v2_from_wrapper .from_step.from_tep_2 .slots_container .slot_sl_con .slot_fild label.slot .time_slot_wrapper .v2_date {
+  color: var(--black);
+  font-family: Inter, sans-serif;
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 48px;
+}
+
+.v2_from_wrapper .from_step.from_tep_2 .slots_container .slot_sl_con .slot_fild label.slot .time_slot_wrapper hr {
+  border: 0.5px solid #E4E7EC;
+}
+
+.v2_from_wrapper .from_step.from_tep_2 .slots_container .slot_sl_con .slot_fild label.slot .time_slot_wrapper .v2_time {
+  float: none;
+  clear: none;
+  color: #49a9f8;
+  padding-top: 5px;
+  font-family: Inter, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  display: block;
+}
+
+.v2_from_wrapper .from_step.from_tep_2 .slots_container .slot_sl_con .slot_fild label.slot .v2_timer_alart {
+    color: #ffb023;
+    text-align: center;
+    background-color: #fff7e9;
+    border-radius: 25px;
+    margin-top: -6px;
+    font-family: Inter, sans-serif;
+    font-size: 12px;
+    line-height: 18px;
+    font-weight: 600;
+    align-self: center;
+    padding: 1px 8px;
+}
+
+.v2_from_wrapper .from_step.from_tep_2 .slots_container .slot_sl_con .slot_fild label.slot .v2_timer_alart[alart_type=danger] {
+  color: #b1060f;
+}
+
+.v2_from_wrapper .from_step.from_tep_2 .slots_container .slot_sl_con .slot_fild label.slot:has(input[type=radio]:checked) .time_slot_wrapper {
+  border: 2px solid #49a9f8;
+}
+
+.v2_from_wrapper .from_step.from_tep_2 .slots_container .slot_sl_con .slot_fild label.slot:nth-child(n+7) {
+  display: none;
+}
+
+.v2_from_wrapper .from_step.from_tep_2 .btn_container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 35px;
+  gap: 26px;
+}
+
+.v2_from_wrapper .from_step.from_tep_3 .tr_filds {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.v2_from_wrapper .from_step.from_tep_3 .fr_fild {
+  display: flex;
+  flex-direction: column;
+}
+
+.v2_from_wrapper .from_step.from_tep_3 .fr_fild .title {
+  margin-bottom: 5px;
+}
+
+.v2_from_wrapper .from_step .fr_fild select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: #fff;
+  background-image: url(https://staging-e036-learninterviewkickstartcom.wpcomstaging.com/wp-content/uploads/2024/11/65b0a8bbe7894a07737a1a4c_arrow-down.svg);
+  background-position: 97%;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  border: 1px solid #E3E7EC;
+  border-radius: 4px;
+  height: 48px;
+  color: #333;
+  width: 100%;
+  vertical-align: middle;
+  padding: 8px 12px;
+  display: block;
+}
+
+.v2_from_wrapper .from_step .fr_fild select:focus, .v2_from_wrapper .from_step .fr_fild select:focus-visible {
+  outline: none;
+  border-color: #3898ec;
+}
+
+.fr_check_box{
+    display: none;
+}
+
+.v2_from_wrapper .from_step.from_tep_3 .fr_check_box span {
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 400;
+  color: #9496a1;
+  font-family: Inter, sans-serif;
+  padding-left: 3px;
+}
+
+.v2_from_wrapper .from_step.from_tep_3 .fr_check_box input {
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  width: 12px;
+  height: 12px;
+}
+
+.v2_from_wrapper .from_step.from_tep_3 p {
+  font-family: Inter, sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #9496a1;
+}
+
+.v2_from_wrapper .from_step.from_tep_3 .btn_container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 35px;
+  gap: 26px;
+}
+
+.v2_from_wrapper[active_step="1"] .steps_container .step_indicator.step_indicator_1 {
+  background-color: #49a9f8;
+}
+
+.v2_from_wrapper[active_step="1"] .from_step.from_tep_2,
+.v2_from_wrapper[active_step="1"] .from_step.from_tep_3 {
+  display: none;
+}
+
+.v2_from_wrapper[active_step="2"] .steps_container .step_indicator.step_indicator_2 {
+  background-color: #49a9f8;
+}
+
+.v2_from_wrapper[active_step="2"] .from_step.from_tep_1,
+.v2_from_wrapper[active_step="2"] .from_step.from_tep_3 {
+  display: none;
+}
+
+.v2_from_wrapper[active_step="3"] .steps_container .step_indicator.step_indicator_3 {
+  background-color: #49a9f8;
+}
+
+.v2_from_wrapper[active_step="3"] .from_step.from_tep_1,
+.v2_from_wrapper[active_step="3"] .from_step.from_tep_2 {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .v2_from_wrapper .step_btn.step_btn_1 {
+    width: 100%;
+  }
+  .v2_from_wrapper .btn_container {
+    gap: 11px !important;
+  }
+} 
+/*3-11-25*/
+selector .fr_acceptance {
+  cursor: pointer;
+  font-family: Inter !important;
+  font-weight: 400 !important;
+  font-size: 12px;
+  line-height: 22.4px !important;
+  margin-top: 10px;
+  display: flex;
+  align-items: start;
+  gap: 5px;
+  opacity: 0.9;
+}
+
+selector .fr_acceptance label {
+  line-height: 18px !important;
+  margin-top: -3px;
+}
+
+
+
+
+.v2_from_wrapper {
+  .step_title{
+    h2{
+      font-family: Inter, sans-serif !important;
+      font-weight: 600;
+      font-size: 20px;
+      line-height: 28px !important;
+      letter-spacing: 0% !important;
+      margin-bottom: 8px !important;
+    }
+    p{
+      font-family: Inter, sans-serif !important;
+      font-weight: 400 !important;
+      font-size: 14px !important;
+      line-height: 150% !important;
+      letter-spacing: 0% !important;
+      color: black !important;
+      
+      &:not(.for_step_3){
+        color: #DC6803 !important;
+        font-weight: 700 !important;
+      }
+    }
+  }
+
+  .from_tep_1{
+    label:not(:nth-child(5)) .title{
+      display: none;
+    }
+    .btn_container button{
+      width: 100%;
+    }
+  }
+
+  .from_tep_3{
+    .step_title{
+      margin-bottom: 32px !important;
+    }
+    .v2_pref_fild{
+      div{
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        padding-top: 16px;
+        label{
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          input{
+            width: unset !important;
+            height: unset !important;
+            margin: 0px !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+.from_step.from_tep_2,
+.from_step.from_tep_3{
+    padding: 8px;
+}
+
+.tr_filds .title{
+    font-size: 16px !important;
+}
+.v2_linkdin_name{
+    position: relative;
+}
+.v2_linkdin_name::after {
+    content: '';
+    position: absolute;
+    top: calc(50% + 16px);
+    right: 12px;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    z-index: 13;
+    pointer-events: none;
+    background-image: url(/wp-content/uploads/2025/05/info.png);
+    background-size: cover;
+}
+.iti__selected-flag{
+    padding: 0 8px 0 12px !important;
+}
+
+/*------ 6/5/2025 -------*/
+
+.v2_from_wrapper .from_step.from_tep_1 .fr_fild input {
+    color: #000000 !important;
+    
+}
+
+
+/*143 Css start*/
+.v2_from_wrapper{
+    position: relative !important;
+    
+    .v2_topic_of_int_fild .title{
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 150%;
+    }
+    
+    .step_counter{
+        position: absolute;
+        z-index: 5;
+        top: calc(100% + 44px);
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 10px;
+        span{
+            width: 20px;
+            height: 4px;
+            background-color: #C7E4FD;
+            display: inline-block;
+            border-radius: 10px;
+        }
+    }
+    
+    &[active_step="1"] .step_counter span:nth-child(-n + 1),
+    &[active_step="2"] .step_counter span:nth-child(-n + 2),
+    &[active_step="3"] .step_counter span:nth-child(-n + 3){
+        background-color: #429AE2;
+    }
+    
+.topic_select {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* Each label wraps radio + text horizontally */
+.topic_select label {
+    display: flex !important;
+    align-items: center;          
+    gap: 5px;
+    color: #667085;
+    font-family: Inter, sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/* Fix iPhone 12 shrinking radio inputs */
+.topic_select label input[type="radio"] {
+    width: auto !important;
+    height: auto !important;
+    flex-shrink: 0;              
+}
+
+/* Style when radio is checked */
+.topic_select label:has(input[type="radio"]:checked) {
+    color: #0A3483;
+    border-color: #49A9F8;
+}
+
+}
+
+@media (max-width:767px){
+    .v2_from_wrapper{
+        &[active_step="1"] .step_counter span:nth-child(-n + 1),
+        &[active_step="2"] .step_counter span:nth-child(-n + 2),
+        &[active_step="3"] .step_counter span:nth-child(-n + 3){
+            background-color: #667085;
+        }
+        .step_counter{
+             top: unset;
+             bottom: -18px;
+             span{
+                 width: 7px;
+                 height: 7px;
+                 background-color: #E4E7EC;
+             }
+        }
+    }
+    
+    .v2_from_wrapper h2{
+        font-size:16px !important;
+    }
+     .v2_from_wrapper h5{
+        font-size:13px !important;
+    }
+    
+        .v2_topic_of_int_fild .title {
+            font-size: 13px !important;
+        }
+}
+
+/*143 Css end*/
+
+</style>
 <html>
+    
 <div class="v2_from_wrapper" active_step="1">
     <div class="from_container">
         <div class="from_step from_tep_1">
@@ -54,7 +616,8 @@
                 <h5 style="color: #667085; font-size: 16px; font-weight: 400;">Turbocharge your <b>Tech Career</b></h5>
                 <h2>Get Started with our <span style="color:#429AE2">FREE Webinar</span></h2>
             </div>
-            <h5>Build AI/ML Skills & Interview Readiness to Become a Top 1%
+            <p class="time_zone">Time Zone: Asia/Dhaka</p>
+            <h5 >Build AI/ML Skills & Interview Readiness to Become a Top 1%
                 Tech Pro</h5>
             <p>Hands-on AI/ML learning + interview prep to help you win</p>
             <div class="slots_container">
@@ -224,7 +787,7 @@
                     <span class="err_fild"><b>ⓘ</b> Select domain</span>
                 </label>
 
-                <!-- <label class="fr_check_box">
+                 <label class="fr_check_box">
                     <input type="checkbox" class="v2-checkbox-is-laidoff">
                     <span>I have been laid off recently</span>
                 </label>
@@ -232,7 +795,8 @@
                 <label class="fr_check_box">
                     <input type="checkbox" class="v2-checkbox-is-student">
                     <span>I’m currently a student</span>
-                </label> -->
+                </label>
+                
                 <label class="fr_fild v2_topic_of_int_fild" err_status="false">
                     <span class="title" id="career-goal">Pick your next career move</span>
 
@@ -240,24 +804,24 @@
                         <label>
                             <input type="radio" name="topic_select" class="topic_select" value="Uplevel in my role"
                                 webinartype="REGULAR" id="topic_select_option_interview_prep" checked>
-                            <span>Add AI skills to your current tech stack</span>
+                            <span>Add AI to my current skillse</span>
                         </label>
 
                         <label>
                             <input type="radio" name="topic_select" class="topic_select" value="Switch to an AI career"
                                 webinartype="SWITCH_UP" id="topic_select_option_switch_up">
-                            <span>Learn Machine Learning & crack top tech roles</span>
+                            <span>Learn ML fundamentals</span>
                         </label>
 
                         <label>
                             <input type="radio" name="topic_select" class="topic_select" value="Use AI in current job"
                                 webinartype="Agentic_AI" id="topic_select_option_agentic_ai">
-                            <span>Build enterprise-grade Agentic AI portfolio with PwC India</span>
+                            <span>Build an Agentic AI portfoli</span>
                         </label>
                         <label>
                             <input type="radio" name="topic_select" class="topic_select" value="Use AI in current job"
                                 webinartype="Agentic_AI" id="topic_select_option_agentic_ai">
-                            <span>Prepare for MAANG+ interviews</span>
+                            <span>Prepare for MAANG+ interview</span>
                         </label>
                     </div>
                     <span class="err_fild"><b>ⓘ</b> Pick your next career move</span>
@@ -936,9 +1500,7 @@ Last edited: 2026-01-19 17:45:43
             );
 
             let formData = {
-                "Topic of Interest": getThePopupFrom2.querySelector(
-                    '.topic_select[type="radio"]:checked'
-                ).value,
+                "Topic of Interest": getThePopupFrom2.querySelector('.topic_select[type="radio"]:checked').value,
                 "First Name": webNearInfo2.firstName,
                 "Last Name": webNearInfo2.lastName,
                 whatsAppUserConsent: webNearInfo2.whatsAppUserConsent,
@@ -1023,9 +1585,7 @@ Last edited: 2026-01-19 17:45:43
             }
             setHiddenFields2();
 
-            let wTopicOfInterest =
-                getThePopupFrom2.querySelector('.topic_select[type="radio"]:checked')
-                    ?.value || "";
+            let wTopicOfInterest =  getThePopupFrom2.querySelector('.topic_select[type="radio"]:checked') ?.value || "";
             let fullname = webNearFullName2.value.trim();
             let wEmail = webNearEmailAddress2.value;
             let fullPhoneNumber = webNearPhoneNumber2.value;
