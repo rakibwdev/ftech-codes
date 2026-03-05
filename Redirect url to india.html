@@ -1,9 +1,21 @@
 <script>
 if (typeof v_country !== "undefined") {
+    var path = window.location.pathname;
 
-    if (v_country === "India" && !window.location.pathname.startsWith("/in")) {
-        window.location.href = "/in";
+    if (
+        v_country === "India" && 
+        !path.startsWith("/in")
+        )  
+        {
+            window.location.href = "/in";
+        }
+
     }
+</script>
 
-}
+
+<!-- working way -->
+
+<script>
+    if(getAllUrlParams()?.stayhere == undefined && v_country === "India"){ window.location.href = "/in";}
 </script>
