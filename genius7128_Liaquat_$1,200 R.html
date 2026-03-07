@@ -1,0 +1,72 @@
+<style>
+    .mob-men, .dex_header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    transition: transform 0.3s ease;
+}
+</style>
+
+<script>
+    // let lastScrollTop = 0;
+    // const header = document.querySelector('.mob-men, .dex_header');
+
+    // window.addEventListener('scroll', function () {
+
+    //     let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+    //     if (scrollTop > lastScrollTop) {
+    //         header.style.transform = "translateY(-100%)";
+    //         header.style.backgroundColor = "##00000070";
+    //     } else {
+    //         header.style.transform = "translateY(0)";
+    //         header.style.backgroundColor = "#rgb(0 0 0 / 33%)";
+    //     }
+
+    //     lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+
+    // });
+// //////////////////////////////////////////////////////
+    let lastScrollTop = 0;
+
+const header = document.querySelector('.dex_header');
+const mobHeader = document.querySelector('.mob-men');
+
+window.addEventListener('scroll', function () {
+
+    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (scrollTop > lastScrollTop) {
+
+        if(header){
+            header.style.transform = "translateY(-100%)";
+            headerstyle.backgroundColor = "#00000070";
+
+        }
+
+        if(mobHeader){
+            mobHeader.style.transform = "translateY(-100%)";
+            mobHeader.style.backgroundColor = "#00000070";
+
+
+        }
+
+    } else {
+
+        if(header){
+            header.style.transform = "translateY(0)";
+            header.style.backgroundColor = "#00000070";
+        }
+
+        if(mobHeader){
+            mobHeader.style.transform = "translateY(0)";
+            mobHeader.style.backgroundColor = "#00000070";
+        }
+
+    }
+
+    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+
+});
+</script>
