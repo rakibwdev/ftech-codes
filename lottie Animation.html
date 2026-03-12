@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Lottie Animation</h1>
+    <div id="lottie-animation">
+    </div>
+    <div >
+        <button onclick="animation.play()">Play</button>
+<button onclick="animation.pause()">Pause</button>
+<button onclick="animation.stop()">Stop</button>
+    </div>
+</body>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
+<script>
+    const animation = lottie.loadAnimation({
+  container: document.getElementById("lottie-animation"),
+  renderer: "svg",
+  loop: true,
+  autoplay: true,
+  path: "/animation.json"
+});
+</script>
+</html>
