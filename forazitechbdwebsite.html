@@ -9,14 +9,22 @@
     left: 0;
     width: 12px;
     height: 12px;
-    background: #D8FF85;
+    background: #2C2CF3;
     border-radius: 50%;
     pointer-events: none;
     z-index: 999999;
     transform: translate(-50%, -50%);
     will-change: transform;
 }
-
+.cursor-trail{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+    z-index:9998;
+}
     .img_galary_1{ 
         height:500px; 
         overflow:hidden; 
@@ -63,32 +71,82 @@ gallery.addEventListener('wheel', function(e){
 
 
 // mouse pointer
-const cursor = document.querySelector('.cursor-dot');
+// const cursor = document.querySelector('.cursor-dot');
 
-let mouseX = 0;
-let mouseY = 0;
+// let mouseX = 0;
+// let mouseY = 0;
 
-let posX = 0;
-let posY = 0;
+// let posX = 0;
+// let posY = 0;
 
-document.addEventListener("mousemove", (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
+// document.addEventListener("mousemove", (e) => {
+//     mouseX = e.clientX;
+//     mouseY = e.clientY;
+// });
+
+// function animate(){
+
+//     posX += (mouseX - posX) * 0.15;
+//     posY += (mouseY - posY) * 0.15;
+
+//     cursor.style.transform =
+//         `translate(${posX}px, ${posY}px) translate(-50%, -50%)`;
+
+//     requestAnimationFrame(animate);
+// }
+
+// animate();
+
+const dot = document.querySelector(".cursor-dot");
+const canvas = document.querySelector(".cursor-trail");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let mouse = {x:0,y:0};
+let trail = [];
+
+document.addEventListener("mousemove", (e)=>{
+
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+
+    dot.style.transform =
+        `translate(${mouse.x}px,${mouse.y}px) translate(-50%,-50%)`;
+
+    trail.push({x:mouse.x,y:mouse.y});
+
+    if(trail.length > 20){
+        trail.shift();
+    }
+
 });
 
 function animate(){
 
-    posX += (mouseX - posX) * 0.15;
-    posY += (mouseY - posY) * 0.15;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
 
-    cursor.style.transform =
-        `translate(${posX}px, ${posY}px) translate(-50%, -50%)`;
-// cursor.style.transform =
-//         `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
+    ctx.beginPath();
+
+    for(let i=0;i<trail.length;i++){
+
+        let p = trail[i];
+
+        if(i===0){
+            ctx.moveTo(p.x,p.y);
+        }else{
+            ctx.lineTo(p.x,p.y);
+        }
+
+    }
+
+    ctx.strokeStyle = "#cad1d5";
+    ctx.lineWidth = 2;
+    ctx.stroke();
 
     requestAnimationFrame(animate);
 }
 
 animate();
-
 </script>
