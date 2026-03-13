@@ -1,0 +1,47 @@
+<script>
+
+const gallery = document.querySelector('.img_galary_1');
+
+let speed = 0.5;
+let scrollPos = 0;
+
+gallery.innerHTML += gallery.innerHTML; // duplicate images for infinite loop
+
+function smoothScroll(){
+
+    scrollPos += speed;
+    gallery.scrollTop = scrollPos;
+
+    if(scrollPos >= gallery.scrollHeight / 2){
+        scrollPos = 0;
+    }
+
+    requestAnimationFrame(smoothScroll);
+}
+
+smoothScroll();
+
+gallery.addEventListener('wheel', function(e){
+
+    e.preventDefault();
+
+    scrollPos += e.deltaY * 0.5;
+    gallery.scrollTop = scrollPos;
+
+});
+
+
+</script>
+
+<style>
+    .img_galary_1{ 
+        height:500px; 
+        overflow:hidden; 
+        position:relative; 
+    } 
+
+    .img_galary_1 img{ 
+        width:100%; 
+        display:block; 
+        }
+</style>
