@@ -45,9 +45,24 @@
     margin-top: 20px;
     width:220px;
     height: 320px;
-object-fit: cover;
+    object-fit: cover;
     display:block;
 }
+
+@media (max-width: 600px){
+    .img_galary_1,
+.img_galary_2,
+.img_galary_3{
+    height:400px;
+}
+    .img_galary_1 img,
+    .img_galary_2 img,
+    .img_galary_3 img{
+        width:150px;
+        height: 220px;
+    }
+}
+
 </style>
 
 <script>
@@ -82,8 +97,8 @@ function createSmoothGallery(selector, direction = 1){
         wheelForce *= 0.9;
 
         // perfect continuous loop
-   if(position >= height) position -= height;
-if(position <= 0) position += height;
+        if(position >= height) position -= height;
+        if(position <= 0) position += height;
 
         inner.style.transform = `translateY(${-position}px)`;
 
