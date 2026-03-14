@@ -42,7 +42,10 @@
 .img_galary_1 img,
 .img_galary_2 img,
 .img_galary_3 img{
-    width:100%;
+    margin-top: 20px;
+    width:220px;
+    height: 320px;
+object-fit: cover;
     display:block;
 }
 </style>
@@ -71,6 +74,7 @@ function createSmoothGallery(selector, direction = 1){
     const height = inner.scrollHeight / 2;
 
     function animate(){
+    const height = inner.scrollHeight / 2;
 
         position += speed;
         position += wheelForce;
@@ -78,8 +82,8 @@ function createSmoothGallery(selector, direction = 1){
         wheelForce *= 0.9;
 
         // perfect continuous loop
-        if(position > height) position = 0;
-        if(position < 0) position = height;
+   if(position >= height) position -= height;
+if(position <= 0) position += height;
 
         inner.style.transform = `translateY(${-position}px)`;
 
