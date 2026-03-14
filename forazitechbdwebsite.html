@@ -12,7 +12,7 @@
     background: #2C2CF3;
     border-radius: 50%;
     pointer-events: none;
-    z-index: 999999;
+    z-index: 9999;
     transform: translate(-50%, -50%);
     will-change: transform;
 }
@@ -20,130 +20,149 @@
     position:fixed;
     top:0;
     left:0;
-    width:100%;
-    height:100%;
+    width:100vw;
+    height:100vh;
     pointer-events:none;
     z-index:9998;
+    background:transparent
 }
-    .img_galary_1{ 
-        height:500px; 
-        overflow:hidden; 
-        position:relative; 
-    } 
 
-    .img_galary_1 img{ 
-        width:100%; 
-        display:block; 
-        }
+.img_galary_1,
+.img_galary_2,
+.img_galary_3{
+    height:800px;
+    overflow:hidden;
+    position:relative;
+}
+
+.gallery-inner{
+    will-change: transform;
+}
+
+.img_galary_1 img,
+.img_galary_2 img,
+.img_galary_3 img{
+    width:100%;
+    display:block;
+}
 </style>
 
 <script>
 
-const gallery = document.querySelector('.img_galary_1');
+function createSmoothGallery(selector, direction = 1){
 
-let speed = 0.5;
-let scrollPos = 0;
+    const gallery = document.querySelector(selector);
+    if(!gallery) return;
 
-gallery.innerHTML += gallery.innerHTML; // duplicate images for infinite loop
+    // duplicate content
+    gallery.innerHTML += gallery.innerHTML;
 
-function smoothScroll(){
+    let autoSpeed = 0.5 * direction;
+    let wheelForce = 0;
 
-    scrollPos += speed;
+    // start from middle for perfect looping
+    let scrollPos = gallery.scrollHeight / 2;
     gallery.scrollTop = scrollPos;
 
-    if(scrollPos >= gallery.scrollHeight / 2){
-        scrollPos = 0;
+    function animate(){
+
+        scrollPos += autoSpeed;
+        scrollPos += wheelForce;
+
+        wheelForce *= 0.9;
+
+        gallery.scrollTop = scrollPos;
+
+        const limit = gallery.scrollHeight / 2;
+
+        if(scrollPos >= limit){
+            scrollPos -= limit;
+            gallery.scrollTop = scrollPos;
+        }
+
+        if(scrollPos <= 0){
+            scrollPos += limit;
+            gallery.scrollTop = scrollPos;
+        }
+
+        requestAnimationFrame(animate);
     }
 
-    requestAnimationFrame(smoothScroll);
+    animate();
+
+    gallery.addEventListener("wheel",(e)=>{
+
+        e.preventDefault();
+        wheelForce += e.deltaY * 0.05;
+
+    },{passive:false});
 }
 
-smoothScroll();
 
-gallery.addEventListener('wheel', function(e){
-
-    e.preventDefault();
-
-    scrollPos += e.deltaY * 0.5;
-    gallery.scrollTop = scrollPos;
-
-});
+// directions
+createSmoothGallery('.img_galary_1', 1);   // down
+createSmoothGallery('.img_galary_2', -1);  // up
+createSmoothGallery('.img_galary_3', 1);   // down
 
 
-// mouse pointer
-// const cursor = document.querySelector('.cursor-dot');
 
-// let mouseX = 0;
-// let mouseY = 0;
-
-// let posX = 0;
-// let posY = 0;
-
-// document.addEventListener("mousemove", (e) => {
-//     mouseX = e.clientX;
-//     mouseY = e.clientY;
-// });
-
-// function animate(){
-
-//     posX += (mouseX - posX) * 0.15;
-//     posY += (mouseY - posY) * 0.15;
-
-//     cursor.style.transform =
-//         `translate(${posX}px, ${posY}px) translate(-50%, -50%)`;
-
-//     requestAnimationFrame(animate);
-// }
-
-// animate();
+// =============================
+// Cursor Trail
+// =============================
 
 const dot = document.querySelector(".cursor-dot");
 const canvas = document.querySelector(".cursor-trail");
 const ctx = canvas.getContext("2d");
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+function resizeCanvas(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
 
-let mouse = {x:0,y:0};
-let trail = [];
+let mouseX = 0;
+let mouseY = 0;
 
-document.addEventListener("mousemove", (e)=>{
+let lastX = 0;
+let lastY = 0;
 
-    mouse.x = e.clientX;
-    mouse.y = e.clientY;
+document.addEventListener("mousemove",(e)=>{
+
+    mouseX = e.clientX;
+    mouseY = e.clientY;
 
     dot.style.transform =
-        `translate(${mouse.x}px,${mouse.y}px) translate(-50%,-50%)`;
-
-    trail.push({x:mouse.x,y:mouse.y});
-
-    if(trail.length > 20){
-        trail.shift();
-    }
+        `translate(${mouseX}px, ${mouseY}px) translate(-50%,-50%)`;
 
 });
 
 function animate(){
 
-    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.globalCompositeOperation = "destination-out";
+    ctx.fillStyle = "rgba(0,0,0,0.30)";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.globalCompositeOperation = "source-over";
 
-    ctx.beginPath();
+    const dx = mouseX - lastX;
+    const dy = mouseY - lastY;
+    const dist = Math.sqrt(dx*dx + dy*dy);
 
-    for(let i=0;i<trail.length;i++){
+    if(dist > 0.5){
 
-        let p = trail[i];
+        ctx.beginPath();
+        ctx.moveTo(lastX,lastY);
+        ctx.lineTo(mouseX,mouseY);
 
-        if(i===0){
-            ctx.moveTo(p.x,p.y);
-        }else{
-            ctx.lineTo(p.x,p.y);
-        }
+        ctx.strokeStyle = "#cad1d5";
+        ctx.lineWidth = 2;
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+        ctx.stroke();
 
+        lastX = mouseX;
+        lastY = mouseY;
     }
-
-    ctx.strokeStyle = "#cad1d5";
-    ctx.lineWidth = 2;
-    ctx.stroke();
 
     requestAnimationFrame(animate);
 }
