@@ -54,36 +54,34 @@ function createSmoothGallery(selector, direction = 1){
     const gallery = document.querySelector(selector);
     if(!gallery) return;
 
-    // duplicate content
-    gallery.innerHTML += gallery.innerHTML;
+    const content = gallery.innerHTML;
+    gallery.innerHTML += content;
 
-    let autoSpeed = 0.5 * direction;
+    const inner = document.createElement("div");
+    inner.className = "gallery-inner";
+    inner.innerHTML = gallery.innerHTML;
+
+    gallery.innerHTML = "";
+    gallery.appendChild(inner);
+
+    let position = 0;
+    let speed = 0.3 * direction;
     let wheelForce = 0;
 
-    // start from middle for perfect looping
-    let scrollPos = gallery.scrollHeight / 2;
-    gallery.scrollTop = scrollPos;
+    const height = inner.scrollHeight / 2;
 
     function animate(){
 
-        scrollPos += autoSpeed;
-        scrollPos += wheelForce;
+        position += speed;
+        position += wheelForce;
 
         wheelForce *= 0.9;
 
-        gallery.scrollTop = scrollPos;
+        // perfect continuous loop
+        if(position > height) position = 0;
+        if(position < 0) position = height;
 
-        const limit = gallery.scrollHeight / 2;
-
-        if(scrollPos >= limit){
-            scrollPos -= limit;
-            gallery.scrollTop = scrollPos;
-        }
-
-        if(scrollPos <= 0){
-            scrollPos += limit;
-            gallery.scrollTop = scrollPos;
-        }
+        inner.style.transform = `translateY(${-position}px)`;
 
         requestAnimationFrame(animate);
     }
@@ -93,16 +91,18 @@ function createSmoothGallery(selector, direction = 1){
     gallery.addEventListener("wheel",(e)=>{
 
         e.preventDefault();
-        wheelForce += e.deltaY * 0.05;
+        wheelForce += e.deltaY * 0.04;
 
     },{passive:false});
+
 }
 
 
 // directions
-createSmoothGallery('.img_galary_1', 1);   // down
-createSmoothGallery('.img_galary_2', -1);  // up
-createSmoothGallery('.img_galary_3', 1);   // down
+createSmoothGallery(".img_galary_1", 1);   // down
+createSmoothGallery(".img_galary_2", -1);  // up
+createSmoothGallery(".img_galary_3", 1);   // down
+
 
 
 
