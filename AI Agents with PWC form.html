@@ -387,7 +387,7 @@
             }
         }
         
-        
+
         function fromSend2ndStep() {
             getPwcWebinarForm.setAttribute("loader_status", true);
 
@@ -410,6 +410,7 @@
                 phoneNumCountry: webNearPhoneNumberWri?.j || "",
                 phonerNumber: webNearPhoneNumber.value
             };
+            
             pushToEndPoint("https://hooks.zapier.com/hooks/catch/11068981/34xpujj/")
                 .then(() => {
                     track("slot");
