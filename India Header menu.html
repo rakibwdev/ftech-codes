@@ -1,5 +1,93 @@
+<script>
+document.addEventListener('DOMContentLoaded', function () {
 
+    const menuItems = document.querySelectorAll('.mega_menu_popup > a');
+    const megaPopup = document.querySelectorAll('.mega_popup');
+    const menuPopup = document.querySelector('.menu_popup');
 
+    // =========================
+    // OPEN POPUP FUNCTION
+    // =========================
+    function openPopup(index, el) {
+        megaPopup.forEach(p => p.style.display = 'none');
+
+        if (megaPopup[index]) {
+            const rect = el.getBoundingClientRect();
+            megaPopup[index].style.display = 'block';
+            megaPopup[index].style.left = rect.left + 'px';
+        }
+
+        menuPopup.style.display = 'flex';
+    }
+
+    // =========================
+    // CLOSE POPUP
+    // =========================
+    function closePopup() {
+        megaPopup.forEach(p => p.style.display = 'none');
+        menuPopup.style.display = 'none';
+    }
+
+    // =========================
+    // MEGA MENU CLICK
+    // =========================
+    menuItems.forEach((item, i) => {
+        item.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const parent = item.parentElement;
+            const isActive = parent.classList.contains('active');
+
+            document.querySelectorAll('.mega_menu_popup').forEach(m => m.classList.remove('active'));
+
+            if (isActive) {
+                closePopup();
+            } else {
+                parent.classList.add('active');
+                openPopup(i, item);
+            }
+        });
+    });
+
+    // =========================
+    // SUBMENU CLICK
+    // =========================
+    document.querySelectorAll('.custom_menu .menu-item-has-children > a').forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const submenu = this.nextElementSibling;
+
+            // CLOSE MEGA POPUP
+            closePopup();
+            document.querySelectorAll('.mega_menu_popup').forEach(m => m.classList.remove('active'));
+
+            // CLOSE OTHER SUBMENUS
+            document.querySelectorAll('.custom_menu .sub-menu').forEach(menu => {
+                if (menu !== submenu) {
+                    menu.classList.remove('open');
+                }
+            });
+
+            // TOGGLE CURRENT
+            submenu.classList.toggle('open');
+        });
+    });
+
+    // =========================
+    // CLICK OUTSIDE CLOSE
+    // =========================
+    document.addEventListener('click', function () {
+        closePopup();
+        document.querySelectorAll('.mega_menu_popup').forEach(m => m.classList.remove('active'));
+    });
+
+});
+</script>
+
+<!-- backup -->
 <script>
 
 
@@ -189,10 +277,7 @@ menuList.forEach((item) => {
     }
 });
 
-</script>
 
-<script>
-    
 document.querySelectorAll('.custom_menu .menu-item-has-children > a').forEach(function(link){
 
     link.addEventListener('click', function(e){
@@ -210,6 +295,7 @@ document.querySelectorAll('.custom_menu .menu-item-has-children > a').forEach(fu
     });
 
 });
+
 </script>
 
 
@@ -219,3 +305,271 @@ if (is_page([57098, 55458,55596, 55679,55707, 55750, 55810, 55853, 55964])) {
         echo do_shortcode('[elementor-template id="57508"]');
 // 		echo render_elementor_template_with_shortcodes(57508);
     }
+
+<style>
+    body.admin-bar [data-elementor-type="header"] .mega_popup,
+body.admin-bar [data-elementor-type="header"] .menu_wraper{
+    padding-top:92px;
+}
+
+body.admin-bar [data-elementor-type="header"] .mega_popup > .e-con-inner{
+    padding-top: 0;
+}
+
+.menu_tab_btn.active{
+    background-color: #49A9F8;
+}
+.menu_tab_btn.active *{
+    color: #fff !important;
+    fill: #fff;
+}
+
+.menu_tab_btn.active .secend_path{
+    fill: #49A9F8;
+}
+.menu_tab_btn.active .tab_arrow *{
+    stroke: #fff !important;
+}
+
+.menu_popup{
+    position: fixed;
+    top: 0px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: none
+}
+
+/*menu css*/
+/*.custom_menu .elementor-nav-menu li:nth-child(n+4){*/
+    
+/*}*/
+
+  @media(min-width:1024px) {
+    .menu-item-53280 ul {
+      display: none !important;
+    }
+  }
+  
+.mega_menu_popup a{
+    padding-right: 32px !important;
+}
+.new_menu_added > a {
+    position: relative;
+    padding-right: 80px !important;
+}
+.mega_menu_popup a:hover::after {
+    transform: unset !important;
+}
+
+.mega_menu_popup a::after {
+    content: '';
+    width: 16px;
+    height: 16px;
+    /*background-image: url(https://staging-07b2-interviewkickstart.wpcomstaging.com/wp-content/uploads/2025/07/arrow.svg);*/
+    position: absolute;
+    right: 10px !important;
+    top: calc(50% - 8px) !important;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: inherit;
+    background-color: #0000 !important;
+    z-index: 1;
+    opacity: 1 !important;
+}
+.mega_menu_popup.new_menu_added > a::after{
+    right: 62px !important;
+    opacity: 1!important
+}
+.new_menu_added.mega_menu_popup a::before {
+    opacity: 1 !important;
+}
+.mega_menu_popup.new_menu_added ::after {
+    right: 62px !important;
+    opacity: 1 !important;
+}
+.mega_menu_popup.active a::after {
+    /*background-image: url(https://staging-07b2-interviewkickstart.wpcomstaging.com/wp-content/uploads/2025/07/chevron-down-2.svg);*/
+}
+
+.mega_menu_popup.active{
+    background-color: #EDF6FE;
+    color: #429AE2 !important;
+    border-radius: 8px;
+}
+
+.menu_wraper{
+    display: none;
+}
+
+.mega_popup{
+    display: none;
+}
+/**/
+
+.content_btn:hover *{
+    color: #429AE2 !important;
+}
+.content_btn:hover{
+    border-color: #429AE2 !important
+}
+.content_btn:hover svg rect{
+    fill: #005EFF !important
+}
+.content_btn:hover svg path:nth-child(1){
+    fill: #49A9F8 !important
+}
+.content_btn:hover .arrow_svg svg path{
+    stroke: #429AE2 !important;
+    fill: transparent !important
+}
+
+
+.register_btn{
+    visibility: hidden;
+    transition: visibility 0.5s linear;
+    
+}
+.register_btn.active{
+    visibility: visible;
+    
+}
+.menu_tab_btn {
+    cursor: pointer;
+}
+.menu_contant{
+    /*position: absolute;*/
+    /*top: 0;*/
+    /*left: 0;*/
+    /*bottom: 0;*/
+    /*right: 0;*/
+    background-color: #fff;
+    display: none;
+    transition: opacity 0.5s linear;
+}
+.menu_contant.active{
+    display: block
+}
+
+.laptop_menu{
+        display: none;
+    }
+    
+.menu_close_icon{
+    display: none;
+}
+
+
+.courses_item:hover{
+    background-color: #F3FAFF !important;
+}
+
+
+.programs_popup{
+    display: none;
+}
+.programs_popup.active{
+    display: flex;
+}
+
+.menu_programs_phone.active .menu_pp{
+    background-color: #EDF6FE;
+}
+.menu_programs_phone.active .menu_pp *{
+    color: #429AE2 !important;
+    stroke: #429AE2;
+}
+
+.mega_menu ul li .e-n-menu-title.active{
+    background-color: #EDF6FE!important;
+}
+.mega_menu ul li .e-n-menu-title.active *{
+    fill: #429AE2!important;
+    color: #429AE2 !important;
+}
+
+/*menu dropdown*/
+.menu_tab_contant{
+    display: none
+}
+.menu_tab_contant.active{
+    display: flex;
+}
+
+    /*menu css*/
+
+.tabe_menu .elementor-nav-menu li,
+.mobile_menu .elementor-nav-menu li{
+    border-bottom: 1px solid #E2E2E2
+}
+.tabe_menu .elementor-nav-menu li:nth-child(-n+3){
+    display: none;
+}
+.after_new{
+        padding-right: 50px !important;
+}
+
+
+.after_new::before {
+    content: "NEW";
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    background: #49A9F8;
+    font-size: 12px;
+    padding: 3px 7px;
+    border-radius: 50px;
+    color: white;
+    font-weight: 600;
+    transform: translate(0%, -50%);
+}
+.mobile_menu .elementor-nav-menu .after_new::before{
+    right: 35px !important;
+}
+
+/**/
+
+@media (max-width: 1490px) {
+    .laptop_menu{
+        display: block;
+    }
+    
+    /*menu css*/
+/*.custom_menu .elementor-nav-menu li:nth-child(n+4){*/
+/*    display: none;*/
+/*}*/
+.tabe_menu .elementor-nav-menu li:nth-child(-n+3){
+    display: none;
+}
+
+
+
+/**/
+}
+
+
+
+/*Active default*/
+
+.active_def{
+    background-color: #EDF6FE;
+    color: #429AE2 !important;
+    border-radius: 8px;
+}
+.active_def a{
+    color: #429AE2;
+}
+
+/*nav menu click*/
+.custom_menu .sub-menu{
+    opacity:0 !important;
+    overflow: hidden;
+        visibility: hidden;
+    transition: all 0.35s ease;
+}
+
+.custom_menu .sub-menu.open{
+   opacity:1 !important;
+       visibility: visible;
+
+}
