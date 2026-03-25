@@ -1,23 +1,4 @@
-<script>
-    
-document.querySelectorAll('.custom_menu .menu-item-has-children > a').forEach(function(link){
 
-    link.addEventListener('click', function(e){
-
-        e.preventDefault();
-
-        let submenu = this.nextElementSibling;
-        submenu.classList.toggle('open');
-        if(submenu.style.display === "block"){
-            submenu.style.setProperty("display", "none", "important");
-        }else{
-            submenu.style.setProperty("display", "block", "important");
-        }
-
-    });
-
-});
-</script>
 
 <script>
 
@@ -209,3 +190,32 @@ menuList.forEach((item) => {
 });
 
 </script>
+
+<script>
+    
+document.querySelectorAll('.custom_menu .menu-item-has-children > a').forEach(function(link){
+
+    link.addEventListener('click', function(e){
+
+        e.preventDefault();
+
+        let submenu = this.nextElementSibling;
+        submenu.classList.toggle('open');
+        if(submenu.style.display === "block"){
+            submenu.style.setProperty("display", "none", "important");
+        }else{
+            submenu.style.setProperty("display", "block", "important");
+        }
+
+    });
+
+});
+</script>
+
+
+// Download Brochure Page Id
+
+if (is_page([57098, 55458,55596, 55679,55707, 55750, 55810, 55853, 55964])) {
+        echo do_shortcode('[elementor-template id="57508"]');
+// 		echo render_elementor_template_with_shortcodes(57508);
+    }
