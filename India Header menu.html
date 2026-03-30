@@ -5,6 +5,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const menuItems = document.querySelectorAll('.mega_menu_popup');
     const megaPopups = document.querySelectorAll('.mega_popup');
     const menuPopup = document.querySelector('.menu_popup');
+    const menuOpenIcon = document.querySelector('.menu_open_icon');
+const menuCloseIcon = document.querySelector('.menu_close_icon');
+const menuWraper = menuPopup.querySelector('.menu_wraper');
+const customMenus = document.querySelector('.custom_menu');
+const megaPopup = document.querySelectorAll('.mega_popup');
 
     if (!menuItems.length) {
         console.log('mega_menu_popup not found');
@@ -81,12 +86,95 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 
+
+// menu toggole funtion
+
+
+menuOpenIcon.addEventListener('click', () => {
+    menuOpenIcon.style.display = 'none';
+    menuCloseIcon.style.display = 'block';
+    menuWraper.style.display = 'block';
+    megaPopup.forEach((popup) => {
+        popup.style.display = 'none';
+    });
+    openMenu();
+});
+
+menuCloseIcon.addEventListener('click', () => {
+    menuOpenIcon.style.display = 'block';
+    menuCloseIcon.style.display = 'none';
+    menuWraper.style.display = 'none';
+    closeMenu();
+});
+
+// open menu popup  
+function openMenu() {
+    menuPopup.style.display = 'flex';
+    document.body.style.overflow = 'hidden'; // Disable scroll
+}
+
+// Close menu function
+function closeMenu() {
+    menuPopup.style.display = 'none';
+    document.body.style.overflow = ''; // Re-enable scroll
+}
+
+
+// mega menu popup
+menuItems.forEach((item, i) => {
+    item.addEventListener('click', () => {
+
+        if (window.innerWidth <= 1023) return; // ✅ skip mobile 
+        e.stopPropagation();
+        
+        menuItems.forEach((menu) => {
+            menu.classList.remove('active');
+        });
+        item.classList.add('active');
+        const itemRect = item.getBoundingClientRect();
+
+        megaPopup.forEach((popup) => {
+            popup.style.display = 'none';
+        });
+        openMenu();
+        megaPopup[i].style.display = 'block';
+        megaPopup[i].style.left = `${itemRect.left}px`;
+        
+        menuWraper.style.display = 'none';
+        menuOpenIcon.style.display = 'block';
+        menuCloseIcon.style.display = 'none';
+    });
+});
+
+
+// Close menu when clicking outside
+document.addEventListener('click', (e) => {
+    const isClickInsideMenu = menuWraper.contains(e.target);
+    const isClickOnIcons = menuOpenIcon.contains(e.target) || menuCloseIcon.contains(e.target);
+    const isClickCustomMenus = customMenus.contains(e.target);
+    const isClickMegaPopup = Array.from(megaPopup).some(popup => popup.contains(e.target));
+
+    if (!isClickInsideMenu && !isClickOnIcons && !isClickCustomMenus && !isClickMegaPopup) {
+        menuOpenIcon.style.display = 'block';
+        menuCloseIcon.style.display = 'none';
+        megaPopup.forEach((popup) => {
+            popup.style.display = 'none';
+        });
+        menuItems.forEach((menu) => {
+            menu.classList.remove('active');
+        });
+        closeMenu();
+
+    }
+});
+
+
 });
 </script>
 
 
 
-////////////////////////////////////////////////////////////////////////////////////
+<!-- //////////////////////////////////////////////////////////////////////////////////// -->
 <!-- backup -->
 <script>
 
@@ -299,12 +387,12 @@ document.querySelectorAll('.custom_menu .menu-item-has-children > a').forEach(fu
 </script>
 
 
-// Download Brochure Page Id
+<!-- Download Brochure Page Id
 
 if (is_page([57098, 55458,55596, 55679,55707, 55750, 55810, 55853, 55964])) {
         echo do_shortcode('[elementor-template id="57508"]');
-// 		echo render_elementor_template_with_shortcodes(57508);
-    }
+	echo render_elementor_template_with_shortcodes(57508);
+    } -->
 
 <style>
     body.admin-bar [data-elementor-type="header"] .mega_popup,
