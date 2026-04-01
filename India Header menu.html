@@ -168,6 +168,15 @@ document.addEventListener('click', (e) => {
     }
 });
 
+    const menuList = document.querySelectorAll('.attribute_menu a');
+
+menuList.forEach((item) => {
+    const title = item.getAttribute('title')?.split('|');
+    if (title && title[1]) { // make sure there is a second part
+        item.setAttribute('data-click-id', title[1].trim());
+        item.removeAttribute('title'); // remove the title
+    }
+});
 
 });
 </script>
