@@ -400,8 +400,13 @@ document.querySelectorAll('.custom_menu .menu-item-has-children > a').forEach(fu
 
 if (is_page([57098, 55458,55596, 55679,55707, 55750, 55810, 55853, 55964])) {
         echo do_shortcode('[elementor-template id="57508"]');
-	echo render_elementor_template_with_shortcodes(57508);
     } -->
+
+    <!-- production -->
+// 	Download Brochure
+	  	if (is_page([57978,58123,58192,58268,58311,58341,58391,58410 ])) {
+        echo do_shortcode('[elementor-template id="59665"]');
+    }
 
 <style>
     body.admin-bar [data-elementor-type="header"] .mega_popup,
