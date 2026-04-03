@@ -47,6 +47,11 @@ document.addEventListener('DOMContentLoaded', function () {
             // CLOSE ALL
             menuItems.forEach(m => m.classList.remove('active'));
             megaPopups.forEach(p => p.style.display = 'none');
+            
+            // CLOSE ALL CUSTOM MENU SUBMENUS
+            document.querySelectorAll('.custom_menu .sub-menu.open').forEach(submenu => {
+                submenu.classList.remove('open');
+            });
 
             if (!isActive) {
                 item.classList.add('active');
@@ -68,6 +73,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
 
+        });
+
+        // Prevent hover from opening submenus - only click opens them
+        item.addEventListener('mouseenter', function (e) {
+            e.stopPropagation();
+        });
+        
+        item.addEventListener('mouseover', function (e) {
+            const submenu = item.querySelector('.sub-menu, .elementor-sub-menu');
+            if (submenu && submenu.classList.contains('open')) {
+                // Only keep open if already opened by click
+                e.stopPropagation();
+            }
         });
 
     });
@@ -141,6 +159,7 @@ document.addEventListener('click', (e) => {
     const isClickOnIcons = menuOpenIcon.contains(e.target) || menuCloseIcon.contains(e.target);
     const isClickCustomMenus = customMenus.contains(e.target);
     const isClickMegaPopup = Array.from(megaPopup).some(popup => popup.contains(e.target));
+    const isClickMegaMenuItem = Array.from(menuItems).some(item => item.contains(e.target));
 
     if (!isClickInsideMenu && !isClickOnIcons && !isClickCustomMenus && !isClickMegaPopup) {
         menuOpenIcon.style.display = 'block';
@@ -152,7 +171,13 @@ document.addEventListener('click', (e) => {
             menu.classList.remove('active');
         });
         closeMenu();
-
+    }
+    
+    // Close submenus in custom_menu when clicking outside or on mega_menu_popup
+    if (!customMenus.contains(e.target) || isClickMegaMenuItem) {
+        document.querySelectorAll('.custom_menu .sub-menu.open').forEach(submenu => {
+            submenu.classList.remove('open');
+        });
     }
 });
 
@@ -253,9 +278,6 @@ body.admin-bar [data-elementor-type="header"] .mega_popup > .e-con-inner{
     right: 62px !important;
     opacity: 1 !important;
 }
-.mega_menu_popup.active a::after {
-    /*background-image: url(https://staging-07b2-interviewkickstart.wpcomstaging.com/wp-content/uploads/2025/07/chevron-down-2.svg);*/
-}
 
 .mega_menu_popup.active{
     background-color: #EDF6FE;
@@ -269,6 +291,28 @@ body.admin-bar [data-elementor-type="header"] .mega_popup > .e-con-inner{
 
 .mega_popup{
     display: none;
+}
+
+/* Prevent hover from opening submenus in custom_menu - only click should open */
+.custom_menu .menu-item-has-children:hover > .sub-menu,
+.custom_menu .menu-item-has-children:hover > .elementor-sub-menu {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    display: none !important;
+}
+
+.custom_menu .sub-menu,
+.custom_menu .elementor-sub-menu {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    display: none !important;
+}
+
+.custom_menu .sub-menu.open,
+.custom_menu .elementor-sub-menu.open {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
 }
 /**/
 
