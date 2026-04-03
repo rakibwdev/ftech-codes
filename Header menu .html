@@ -6,10 +6,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const megaPopups = document.querySelectorAll('.mega_popup');
     const menuPopup = document.querySelector('.menu_popup');
     const menuOpenIcon = document.querySelector('.menu_open_icon');
-const menuCloseIcon = document.querySelector('.menu_close_icon');
-const menuWraper = menuPopup.querySelector('.menu_wraper');
-const customMenus = document.querySelector('.custom_menu');
-const megaPopup = document.querySelectorAll('.mega_popup');
+    const menuCloseIcon = document.querySelector('.menu_close_icon');
+    const menuWraper = menuPopup.querySelector('.menu_wraper');
+    const customMenus = document.querySelector('.custom_menu');
+    const megaPopup = document.querySelectorAll('.mega_popup');
 
     if (!menuItems.length) {
         console.log('mega_menu_popup not found');
@@ -26,6 +26,17 @@ const megaPopup = document.querySelectorAll('.mega_popup');
         }
 
         link.addEventListener('click', function (e) {
+            if (window.innerWidth <= 1023) {
+                const submenu = item.querySelector('.sub-menu, .elementor-sub-menu');
+                if (submenu) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const isOpen = submenu.classList.toggle('open');
+                    submenu.style.display = isOpen ? 'block' : 'none';
+                    return;
+                }
+            }
+
             e.preventDefault();
             e.stopImmediatePropagation();
 
@@ -42,15 +53,18 @@ const megaPopup = document.querySelectorAll('.mega_popup');
 
                 if (megaPopups[i]) {
                     megaPopups[i].style.display = 'block';
+                    // megaPopups[i].style.left = `${item.getBoundingClientRect().left}px`;
                 }
 
                 if (menuPopup) {
                     menuPopup.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
                 }
 
             } else {
                 if (menuPopup) {
                     menuPopup.style.display = 'none';
+                    document.body.style.overflow = '';
                 }
             }
 
@@ -120,42 +134,6 @@ function closeMenu() {
 }
 
 
-// mega menu popup
-menuItems.forEach((item, i) => {
-    item.addEventListener('click', (e) => {
-
-    
-  if (window.innerWidth <= 1023) {
-        const submenu = item.querySelector('.sub-menu, .elementor-sub-menu');
-        if (submenu) {
-            e.preventDefault();
-            e.stopPropagation();
-            const isOpen = submenu.classList.toggle('open');
-            submenu.style.display = isOpen ? 'block' : 'none';
-        }
-        return;
-    }
-        e.stopPropagation();
-        
-        menuItems.forEach((menu) => {
-            menu.classList.remove('active');
-        });
-        item.classList.add('active');
-        const itemRect = item.getBoundingClientRect();
-
-        megaPopup.forEach((popup) => {
-            popup.style.display = 'none';
-        });
-        openMenu();
-        megaPopup[i].style.display = 'block';
-        megaPopup[i].style.left = `${itemRect.left}px`;
-        
-        menuWraper.style.display = 'none';
-        menuOpenIcon.style.display = 'block';
-        menuCloseIcon.style.display = 'none';
-    });
-});
-
 
 // Close menu when clicking outside
 document.addEventListener('click', (e) => {
@@ -192,231 +170,6 @@ menuList.forEach((item) => {
 </script>
 
 
-
-<!-- //////////////////////////////////////////////////////////////////////////////////// -->
-<!-- backup -->
-<script>
-
-
-// header
-const menuBtn = document.querySelectorAll('.menu_tab_btn');
-const menuTabContent = document.querySelectorAll('.menu_contant');
-
-menuBtn.forEach((btn, i) => {
-    btn.addEventListener('click', () => {
-        menuBtn.forEach((item) => item.classList.remove('active'));
-        btn.classList.add('active');
-        menuTabContent.forEach((content) => content.classList.remove('active'));
-        menuTabContent[i].classList.add('active');
-    });
-});
-
-// after 3 item disply none funtion
-const allMenuItems = document.querySelectorAll('.mega_menu .e-n-menu-heading .e-n-menu-item');
-const mediaQuery = window.matchMedia('(min-width: 767px) and (max-width: 1490px)');
-
-// Show first 3, hide the rest
-function applyMenuLimit() {
-    allMenuItems.forEach((item, i) => {
-        item.style.display = i > 2 ? 'none' : '';
-    });
-}
-
-// Reset all items (show everything)
-function resetMenu() {
-    allMenuItems.forEach(item => {
-        item.style.display = '';
-    });
-}
-
-// Handle screen size
-function handleMenuDisplay(e) {
-    if (e.matches) {
-        applyMenuLimit();
-    } else {
-        resetMenu();
-    }
-}
-
-// Initial run
-handleMenuDisplay(mediaQuery);
-
-// Watch for screen changes
-mediaQuery.addEventListener('change', handleMenuDisplay);
-
-// menu toggole funtion
-const menuOpenIcon = document.querySelector('.menu_open_icon');
-const menuCloseIcon = document.querySelector('.menu_close_icon');
-const menuPopup = document.querySelector('.menu_popup');
-const menuWraper = menuPopup.querySelector('.menu_wraper');
-const customMenus = document.querySelector('.custom_menu');
-const megaPopup = document.querySelectorAll('.mega_popup');
-const menuItems = document.querySelectorAll('.elementor-nav-menu--main .mega_menu_popup');
-
-menuOpenIcon.addEventListener('click', () => {
-    menuOpenIcon.style.display = 'none';
-    menuCloseIcon.style.display = 'block';
-    menuWraper.style.display = 'block';
-    megaPopup.forEach((popup) => {
-        popup.style.display = 'none';
-    });
-    openMenu();
-});
-
-menuCloseIcon.addEventListener('click', () => {
-    menuOpenIcon.style.display = 'block';
-    menuCloseIcon.style.display = 'none';
-    menuWraper.style.display = 'none';
-    closeMenu();
-});
-
-// open menu popup  
-function openMenu() {
-    menuPopup.style.display = 'flex';
-    document.body.style.overflow = 'hidden'; // Disable scroll
-}
-
-// Close menu function
-function closeMenu() {
-    menuPopup.style.display = 'none';
-    document.body.style.overflow = ''; // Re-enable scroll
-}
-
-
-// mega menu popup
-menuItems.forEach((item, i) => {
-    item.addEventListener('click', () => {
-        menuItems.forEach((menu) => {
-            menu.classList.remove('active');
-        });
-        item.classList.add('active');
-        const itemRect = item.getBoundingClientRect();
-
-        megaPopup.forEach((popup) => {
-            popup.style.display = 'none';
-        });
-        openMenu();
-        megaPopup[i].style.display = 'block';
-        megaPopup[i].style.left = `${itemRect.left}px`;
-        
-        menuWraper.style.display = 'none';
-        menuOpenIcon.style.display = 'block';
-        menuCloseIcon.style.display = 'none';
-    });
-});
-
-
-// Close menu when clicking outside
-document.addEventListener('click', (e) => {
-    const isClickInsideMenu = menuWraper.contains(e.target);
-    const isClickOnIcons = menuOpenIcon.contains(e.target) || menuCloseIcon.contains(e.target);
-    const isClickCustomMenus = customMenus.contains(e.target);
-    const isClickMegaPopup = Array.from(megaPopup).some(popup => popup.contains(e.target));
-
-    if (!isClickInsideMenu && !isClickOnIcons && !isClickCustomMenus && !isClickMegaPopup) {
-        menuOpenIcon.style.display = 'block';
-        menuCloseIcon.style.display = 'none';
-        megaPopup.forEach((popup) => {
-            popup.style.display = 'none';
-        });
-        menuItems.forEach((menu) => {
-            menu.classList.remove('active');
-        });
-        closeMenu();
-
-    }
-});
-
-
-// update_attribute
-
-const customMenu = document.querySelectorAll('.update_attribute');
-const theAttribute = 'data-click-id'
-customMenu.forEach((menu) => {
-    const menuItem = menu.querySelectorAll('ul li a');
-    menuItem.forEach((item) => {
-        const menuAttribute = item.getAttribute('title');
-        item.setAttribute(theAttribute, menuAttribute);
-        item.removeAttribute('title')
-    })
-})
-
-
-
-
-
-const underItem = document.querySelector('.mega_sub ul li:nth-child(4)');
-const subItems = document.querySelector('.mega_sub_menu');
-
-underItem.addEventListener('mouseenter', () => {
-  subItems.style.display = 'block';
-});
-
-underItem.addEventListener('mouseleave', () => {
-  // Wait a little before hiding, so user can move to submenu
-  setTimeout(() => {
-    if (!subItems.matches(':hover')) {
-      subItems.style.display = 'none';
-    }
-  }, 100);
-});
-
-// Keep menu visible while hovering on submenu
-subItems.addEventListener('mouseleave', () => {
-  subItems.style.display = 'none';
-});
-subItems.addEventListener('mouseenter', () => {
-  subItems.style.display = 'block';
-});
-
-
-    
-    
-    
-    
-    const menuList = document.querySelectorAll('.attribute_menu a');
-
-menuList.forEach((item) => {
-    const title = item.getAttribute('title')?.split('|');
-    if (title && title[1]) { // make sure there is a second part
-        item.setAttribute('data-click-id', title[1].trim());
-        item.removeAttribute('title'); // remove the title
-    }
-});
-
-
-document.querySelectorAll('.custom_menu .menu-item-has-children > a').forEach(function(link){
-
-    link.addEventListener('click', function(e){
-
-        e.preventDefault();
-
-        let submenu = this.nextElementSibling;
-        submenu.classList.toggle('open');
-        if(submenu.style.display === "block"){
-            submenu.style.setProperty("display", "none", "important");
-        }else{
-            submenu.style.setProperty("display", "block", "important");
-        }
-
-    });
-
-});
-
-</script>
-
-
-<!-- Download Brochure Page Id
-
-if (is_page([57098, 55458,55596, 55679,55707, 55750, 55810, 55853, 55964])) {
-        echo do_shortcode('[elementor-template id="57508"]');
-    } -->
-
-    <!-- production -->
-// 	Download Brochure
-	  	if (is_page([57978,58123,58192,58268,58311,58341,58391,58410 ])) {
-        echo do_shortcode('[elementor-template id="59665"]');
-    }
 
 <style>
     body.admin-bar [data-elementor-type="header"] .mega_popup,
@@ -685,3 +438,52 @@ body.admin-bar [data-elementor-type="header"] .mega_popup > .e-con-inner{
        visibility: visible;
 
 }
+
+selector .sub-menu.elementor-nav-menu--dropdown {
+    position: relative !important;
+    
+    margin: 0px !important;
+    margin-bottom: -1px !important;
+
+}
+
+selector li{
+    border-bottom: 0.5px solid #E2E2E2;
+    
+}
+selector a{
+    display: flex;
+    width: fit-content;
+    margin-left: 24px;
+    border-radius: 8px !important;
+    margin: 8px 8px 8px 24px;
+}
+
+selector ul li ul{
+    border-top: 0.5px solid #E2E2E2;
+    margin-bottom: -9px !important;
+}
+selector ul li ul li a{
+    padding: 8px 12px;
+    border: none;
+    margin-left: 36px !important
+}
+selector ul li ul li ul li a{
+    padding: 8px 12px;
+    border: none;
+    margin-left: 42px !important;
+    font-weight: 400 !important
+}
+selector  a.highlighted + ul > li a,
+selector a.highlighted{
+    font-weight: 500 !important
+}
+selector a:hover svg,
+selector a.highlighted svg{
+    fill: #429AE2 !important 
+}
+
+selector ul li a::before{
+    opacity: 1 !important
+}
+</style>
