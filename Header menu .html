@@ -2,7 +2,7 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
 
-    const menuItems = document.querySelectorAll('.mega_menu_popup');
+    const menuItems = document.querySelectorAll('.mega_menu_popup_in');
     const megaPopups = document.querySelectorAll('.mega_popup');
     const menuPopup = document.querySelector('.menu_popup');
     const menuOpenIcon = document.querySelector('.menu_open_icon');
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const megaPopup = document.querySelectorAll('.mega_popup');
 
     if (!menuItems.length) {
-        console.log('mega_menu_popup not found');
+        console.log('mega_menu_popup_in not found');
         return;
     }
 
@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // CLOSE MEGA POPUP
         document.querySelectorAll('.mega_popup').forEach(p => p.style.display = 'none');
         document.querySelector('.menu_popup').style.display = 'none';
-        document.querySelectorAll('.mega_menu_popup').forEach(m => m.classList.remove('active'));
+        document.querySelectorAll('.mega_menu_popup_in').forEach(m => m.classList.remove('active'));
 
         // CLOSE OTHER SUBMENUS
         document.querySelectorAll('.custom_menu .sub-menu').forEach(menu => {
@@ -173,7 +173,7 @@ document.addEventListener('click', (e) => {
         closeMenu();
     }
     
-    // Close submenus in custom_menu when clicking outside or on mega_menu_popup
+    // Close submenus in custom_menu when clicking outside or on mega_menu_popup_in
     if (!customMenus.contains(e.target) || isClickMegaMenuItem) {
         document.querySelectorAll('.custom_menu .sub-menu.open').forEach(submenu => {
             submenu.classList.remove('open');
@@ -241,18 +241,18 @@ body.admin-bar [data-elementor-type="header"] .mega_popup > .e-con-inner{
     }
   }
   
-.mega_menu_popup a{
+.mega_menu_popup_in a{
     padding-right: 32px !important;
 }
 .new_menu_added > a {
     position: relative;
     padding-right: 80px !important;
 }
-.mega_menu_popup a:hover::after {
+.mega_menu_popup_in a:hover::after {
     transform: unset !important;
 }
 
-.mega_menu_popup a::after {
+.mega_menu_popup_in a::after {
     content: '';
     width: 16px;
     height: 16px;
@@ -267,19 +267,19 @@ body.admin-bar [data-elementor-type="header"] .mega_popup > .e-con-inner{
     z-index: 1;
     opacity: 1 !important;
 }
-.mega_menu_popup.new_menu_added > a::after{
+.mega_menu_popup_in.new_menu_added > a::after{
     right: 62px !important;
     opacity: 1!important
 }
-.new_menu_added.mega_menu_popup a::before {
+.new_menu_added.mega_menu_popup_in a::before {
     opacity: 1 !important;
 }
-.mega_menu_popup.new_menu_added ::after {
+.mega_menu_popup_in.new_menu_added ::after {
     right: 62px !important;
     opacity: 1 !important;
 }
 
-.mega_menu_popup.active{
+.mega_menu_popup_in.active{
     background-color: #EDF6FE;
     color: #429AE2 !important;
     border-radius: 8px;
