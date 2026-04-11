@@ -1,0 +1,17 @@
+<script>
+document.querySelectorAll(".btn_click").addEventListener("click", function () {
+    const box = document.querySelectorAll(".desc");
+
+    if (box.style.display === "block") {
+        box.style.display = "none";
+    } else {
+        box.style.display = "block";
+    }
+});
+</script>
+
+<style>
+.desc {
+    display: none;
+}   
+</style>
