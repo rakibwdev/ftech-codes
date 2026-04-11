@@ -1,17 +1,13 @@
 <script>
-document.querySelectorAll(".btn_click").addEventListener("click", function () {
-    const box = document.querySelectorAll(".desc");
+document.querySelectorAll(".btn_click").forEach(btn => {
+    btn.addEventListener("click", function () {
+        this.nextElementSibling.classList.toggle("active");
 
-    if (box.style.display === "block") {
-        box.style.display = "none";
-    } else {
-        box.style.display = "block";
-    }
+           const icon = this.querySelector(".chev_icon");
+        if (icon) {
+            icon.classList.toggle("active");
+        }
+
+    });
 });
 </script>
-
-<style>
-.desc {
-    display: none;
-}   
-</style>
