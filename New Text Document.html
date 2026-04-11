@@ -11,3 +11,36 @@ document.querySelectorAll(".btn_click").forEach(btn => {
     });
 });
 </script>
+
+
+<script>
+document.querySelectorAll(".btn_bg").forEach(btn => {
+    btn.addEventListener("click", function () {
+
+        // remove active from all
+        document.querySelectorAll(".btn_bg").forEach(b => b.classList.remove("active"));
+
+        // add to current
+        this.classList.add("active");
+
+    });
+});
+</script>
+
+
+<style>
+
+
+.btn_bg {
+    background-color: #eee;
+    transition: background-color 0.3s ease;
+}
+
+.btn_bg.active {
+    background-color: #005EFF; /* your active color */
+    color: #fff; /* optional */
+}
+
+</style>
+
+<span style="font-size:18px; font-weight:700;"> $75 </span>per person
