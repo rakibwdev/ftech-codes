@@ -44,3 +44,77 @@ document.querySelectorAll(".btn_bg").forEach(btn => {
 </style>
 
 <span style="font-size:18px; font-weight:700;"> $75 </span>per person
+
+
+
+<style>
+selector span {
+    display: inline-block;
+    background: #f6f3f4;
+    padding: 4px 12px;
+   gap: 8px;
+    border-radius: 12px;
+    font-size: 14px;
+    position: relative;
+}
+
+selector span::before {
+    content: "#";
+    margin-right: 4px;
+    color: #333; 
+}
+
+
+
+
+selector li {
+    display: flex;
+    flex-direction: column; 
+    align-items: flex-start
+}
+
+selector li:after {
+    font-size: 12px;
+    border-style: none;
+    font-weight: 300;
+}
+
+
+/* 1st item */
+selector li:nth-child(1)::after {
+    content: "Author";
+
+}
+
+/* 2nd item */
+selector li:nth-child(2)::after {
+    content: "Publicado";
+    font-size: 12px;
+}
+
+/* 3rd item */
+selector li:nth-child(3)::after {
+    content: "Tiempo de Lectura";
+    font-size: 12px;
+}
+
+
+/* author info */
+
+selector .elementor-post-info__item {
+    display: flex;
+    flex-direction: column;
+}
+
+selector .elementor-post-info__item-prefix {
+    order: 2; 
+    font-size: 12px; 
+    font-weight: 400;
+}
+selector span.elementor-icon-list-text.elementor-post-info__item.elementor-post-info__item--type-custom:after{
+    content:'Tiempo de Lectura';
+     font-size: 12px; 
+    font-weight: 400;
+}
+
+</style>
