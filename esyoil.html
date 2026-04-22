@@ -1,0 +1,49 @@
+<script>
+  jQuery(function($){
+
+    function updatePrice(){
+
+        let zip = $("#form-field-zip").val() || "";
+        let liters = parseFloat($("#form-field-liters").val()) || 0;
+        let delPoints = parseFloat($("#form-field-del_points").val()) || 0;
+
+        let livePriceBox = $(".live_price");
+
+        // ✅ ZIP validation (5 digits)
+        let zipValid = /^[0-9]{5}$/.test(zip);
+
+        if(!zipValid){
+            livePriceBox.hide();
+            return;
+        } else {
+            livePriceBox.show();
+        }
+
+        // ✅ liters limit
+        if(liters < 1500)  alert("Minimum 1500 liters");
+        if(liters > 6000) alert("Maximum 6000 liters");
+        
+
+        // ✅ get price from .wc_price (dynamic Woo price)
+        let priceText = $(".wc_price").first().text();
+
+        let perLiterPrice = parseFloat(
+            priceText.replace(/[^0-9.]/g, "")
+        ) || 0;
+
+        // fallback
+        let price = perLiterPrice || delPoints;
+
+        // ⚠️ your formula (confirm this is correct)
+        let total = liters * price * delPoints;
+        console.log({ liters, delPoints, price, total});
+
+        livePriceBox.text(total.toFixed(2));
+    }
+
+    $(document).on("input", "#form-field-liters, #form-field-del_points, #form-field-zip", updatePrice);
+
+    updatePrice();
+
+});
+</script>
