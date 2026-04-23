@@ -1,49 +1,131 @@
+<!-- 1st version -->
 <script>
-  jQuery(function($){
+jQuery(function($){
 
-    function updatePrice(){
+  function debounce(func, delay){
+    let timer;
+    return function(){
+      let context = this, args = arguments;
+      clearTimeout(timer);
+      timer = setTimeout(() => func.apply(context, args), delay);
+    };
+  }
 
-        let zip = $("#form-field-zip").val() || "";
-        let liters = parseFloat($("#form-field-liters").val()) || 0;
-        let delPoints = parseFloat($("#form-field-del_points").val()) || 0;
+  function updatePrice($card){
 
-        let livePriceBox = $(".live_price");
+      let zip = $card.find(".zip").val() || "";
+      let liters = parseFloat($card.find(".liters").val()) || 0;
+      let delPoints = parseFloat($card.find(".del_points").val()) || 0;
 
-        // ✅ ZIP validation (5 digits)
-        let zipValid = /^[0-9]{5}$/.test(zip);
+      let livePriceBox = $card.find(".live_price");
 
-        if(!zipValid){
-            livePriceBox.hide();
-            return;
-        } else {
-            livePriceBox.show();
-        }
+      let zipValid = /^[0-9]{5}$/.test(zip);
 
-        // ✅ liters limit
-        if(liters < 1500)  alert("Minimum 1500 liters");
-        if(liters > 6000) alert("Maximum 6000 liters");
-        
+      if(!zipValid){
+          livePriceBox.hide();
+          return;
+      } else {
+          livePriceBox.show();
+      }
 
-        // ✅ get price from .wc_price (dynamic Woo price)
-        let priceText = $(".wc_price").first().text();
+      let priceText = $card.find(".wc_price").text();
 
-        let perLiterPrice = parseFloat(
-            priceText.replace(/[^0-9.]/g, "")
-        ) || 0;
+      let perLiterPrice = parseFloat(
+          priceText.replace(/[^0-9.]/g, "")
+      ) || 0;
 
-        // fallback
-        let price = perLiterPrice || delPoints;
+      let price = perLiterPrice || delPoints;
 
-        // ⚠️ your formula (confirm this is correct)
-        let total = liters * price * delPoints;
-        console.log({ liters, delPoints, price, total});
+      let total = liters * price * delPoints;
 
-        livePriceBox.text(total.toFixed(2));
+      livePriceBox.text(total.toFixed(2));
+  }
+
+  // 🔥 debounced version (super smooth)
+  const debouncedUpdate = debounce(function(){
+      let $card = $(this).closest(".product-card");
+      updatePrice($card);
+  }, 200); // adjust 150–300ms
+
+  $(document).on("input", ".product-card input", debouncedUpdate);
+
+});
+</script>
+
+<!-- 2nd version -->
+<script>
+jQuery(function($) {
+
+    // Debounce function to keep things smooth
+    function debounce(func, delay) {
+        let timer;
+        return function() {
+            let context = this, args = arguments;
+            clearTimeout(timer);
+            timer = setTimeout(() => func.apply(context, args), delay);
+        };
     }
 
-    $(document).on("input", "#form-field-liters, #form-field-del_points, #form-field-zip", updatePrice);
+    // Main update function
+    function updatePrices() {
 
-    updatePrice();
+        const zip = $('#form-field-zip').val() || "";
+        const liters = parseFloat($('#form-field-liters').val()) || 0;
+        const delPoints = parseInt($('#form-field-del_points').val()) || 1;
 
+        const zipValid = /^[0-9]{5}$/.test(zip);
+
+        $('[data-elementor-type="loop-item"]').each(function() {
+
+            const $card = $(this);
+            const $livePriceBox = $card.find(".live_price .elementor-heading-title");
+            const $totalPriceRow = $card.find(".priceStandard .elementor-heading-title");
+
+            if (!zipValid || liters < 1500) {
+                $livePriceBox.text("0");
+                $totalPriceRow.text("Gesamtpreis: -");
+                return;
+            }
+
+            const priceText = $card.find(".wc_price .woocommerce-Price-amount").text();
+            const pricePer100L = parseFloat(priceText.replace(/[^0-9.]/g, "")) || 0;
+
+            let total = (liters * pricePer100L) / 100;
+
+            if (delPoints > 1) {
+                const baseDelivery = 45.99;
+                const extraPointCost = 35.00;
+                total += baseDelivery + (extraPointCost * (delPoints - 1));
+            }
+
+            const formattedTotal = total.toLocaleString('de-DE', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+
+            $livePriceBox.text(formattedTotal);
+            $totalPriceRow.text("Gesamtpreis: €" + formattedTotal);
+
+            const productId = $card.attr('class').match(/post-(\d+)/)?.[1];
+
+            if (productId) {
+                const query = $.param({
+                    'add-to-cart': productId,
+                    'hoc_liters': liters,
+                    'hoc_delivery_points': delPoints,
+                    'hoc_postal_code': zip,
+                    'hoc_total_price': total.toFixed(2)
+                });
+
+                $card.find('.elementor-button-link')
+                     .attr('href', window.location.pathname + '?' + query);
+            }
+        });
+    }
+
+    const inputs = "#form-field-zip, #form-field-liters, #form-field-del_points";
+    $(document).on("input change", inputs, debounce(updatePrices, 200));
+
+    updatePrices();
 });
 </script>
