@@ -9,25 +9,7 @@
 </style>
 
 <script>
-    // let lastScrollTop = 0;
-    // const header = document.querySelector('.mob-men, .dex_header');
 
-    // window.addEventListener('scroll', function () {
-
-    //     let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-    //     if (scrollTop > lastScrollTop) {
-    //         header.style.transform = "translateY(-100%)";
-    //         header.style.backgroundColor = "##00000070";
-    //     } else {
-    //         header.style.transform = "translateY(0)";
-    //         header.style.backgroundColor = "#rgb(0 0 0 / 33%)";
-    //     }
-
-    //     lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-
-    // });
-// //////////////////////////////////////////////////////
     let lastScrollTop = 0;
 
 const header = document.querySelector('.dex_header');
@@ -67,6 +49,74 @@ window.addEventListener('scroll', function () {
     }
 
     lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+
+});
+</script>
+
+
+
+
+<style>
+/* hide all by default */
+.tec_spec .main_img,
+.tec_spec .spec_Des {
+    display: none;
+}
+
+/* show active only */
+.tec_spec .main_img.active,
+.tec_spec .spec_Des.active {
+    display: block;
+}
+
+/* thumbnails */
+.tec_spec .side_img {
+    cursor: pointer;
+    opacity: 0.6;
+    transition: 0.3s;
+}
+
+/* active thumbnail */
+.tec_spec .side_img.active {
+    opacity: 1;
+    border: 2px solid #000;
+}
+</style>
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+
+    document.querySelectorAll('.tec_spec').forEach(container => {
+
+        const sideImgs = container.querySelectorAll('.side_img');
+        const mainImgs = container.querySelectorAll('.main_img');
+        const specDes  = container.querySelectorAll('.spec_Des');
+
+        function setActive(index){
+
+            // remove all active classes
+            sideImgs.forEach(el => el.classList.remove('active'));
+            mainImgs.forEach(el => el.classList.remove('active'));
+            specDes.forEach(el => el.classList.remove('active'));
+
+            // add active to clicked index
+            sideImgs[index]?.classList.add('active');
+            mainImgs[index]?.classList.add('active');
+            specDes[index]?.classList.add('active');
+        }
+
+        // default first active
+        setActive(0);
+
+        sideImgs.forEach(function(img, index){
+            img.addEventListener('click', function(){
+                setActive(index);
+            });
+        });
+
+    });
 
 });
 </script>
