@@ -93,28 +93,54 @@ document.addEventListener("DOMContentLoaded", function(){
         const sideImgs = container.querySelectorAll('.side_img');
         const mainImgs = container.querySelectorAll('.main_img');
         const specDes  = container.querySelectorAll('.spec_Des');
+        const nextBtn = container.querySelector('#next');
+        const prevBtn = container.querySelector('#prev');
+
+
+
+        let currentIndex = 0;
 
         function setActive(index){
 
-            // remove all active classes
+            // fix index bounds
+            if(index < 0) index = sideImgs.length - 1;
+            if(index >= sideImgs.length) index = 0;
+
+            currentIndex = index;
+
+            // remove all active
             sideImgs.forEach(el => el.classList.remove('active'));
             mainImgs.forEach(el => el.classList.remove('active'));
             specDes.forEach(el => el.classList.remove('active'));
 
-            // add active to clicked index
+            // add active
             sideImgs[index]?.classList.add('active');
             mainImgs[index]?.classList.add('active');
             specDes[index]?.classList.add('active');
         }
 
-        // default first active
+        // default
         setActive(0);
 
+        // thumbnails click
         sideImgs.forEach(function(img, index){
             img.addEventListener('click', function(){
                 setActive(index);
             });
         });
+
+        // buttons click
+        if(nextBtn){
+            nextBtn.addEventListener('click', function(){
+                setActive(currentIndex + 1);
+            });
+        }
+
+        if(prevBtn){
+            prevBtn.addEventListener('click', function(){
+                setActive(currentIndex - 1);
+            });
+        }
 
     });
 
