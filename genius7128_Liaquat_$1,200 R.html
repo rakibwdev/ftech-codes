@@ -55,6 +55,7 @@ window.addEventListener('scroll', function () {
 
 
 <!-- Reorder Project -->
+ <!-- Feature1: Image slider with description and thumbnails -->
 
 <style>
 
@@ -251,5 +252,114 @@ document.addEventListener("DOMContentLoaded", function(){
 
     });
 
+});
+</script>
+
+
+
+<!-- Feature 2: custom mouse pointer with slider -->
+ 
+<style>
+  .bg_img {
+    position: relative;
+    overflow: hidden;
+}
+.bg_img::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background-image: 
+        linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),
+        url("https://salmon-oyster-650155.hostingersite.com/wp-content/uploads/2026/04/spa-1024x728.webp");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+
+    z-index: 0;
+}
+.bg_img > * {
+    position: relative;
+    z-index: 1;
+}
+.bg_img::before {
+    transform: translate3d(0, var(--parallaxY, 0), 0);
+    transition: transform 0.1s linear;
+}
+</style>
+
+
+<script>
+window.addEventListener("scroll", function() {
+    const section = document.querySelector(".bg_img");
+    if (!section) return;
+
+    const rect = section.getBoundingClientRect();
+    const speed = 0.2; // control speed
+    const offset = rect.top * speed;
+
+    section.style.setProperty('--parallaxY', offset + 'px');
+});
+
+// drag slider
+
+const track = document.querySelector('.card_track');
+const wrapper = document.querySelector('.card_wrapper');
+
+let isDragging = false;
+let startX = 0;
+let currentX = 0;
+let translateX = 0;
+
+wrapper.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    startX = e.pageX - translateX;
+    wrapper.style.cursor = 'grabbing';
+    track.style.transition = 'none';
+});
+
+wrapper.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+
+    currentX = e.pageX;
+    translateX = currentX - startX;
+
+    track.style.transform = `translateX(${translateX}px)`;
+});
+
+wrapper.addEventListener('mouseup', () => {
+    isDragging = false;
+    wrapper.style.cursor = 'grab';
+    track.style.transition = 'transform 0.3s ease';
+});
+
+wrapper.addEventListener('mouseleave', () => {
+    isDragging = false;
+    wrapper.style.cursor = 'grab';
+});
+
+// mobile
+wrapper.addEventListener('touchstart', (e) => {
+    isDragging = true;
+    startX = e.touches[0].clientX - translateX;
+    track.style.transition = 'none';
+});
+
+wrapper.addEventListener('touchmove', (e) => {
+    if (!isDragging) return;
+
+    currentX = e.touches[0].clientX;
+    translateX = currentX - startX;
+
+    track.style.transform = `translateX(${translateX}px)`;
+});
+
+wrapper.addEventListener('touchend', () => {
+    isDragging = false;
+    track.style.transition = 'transform 0.3s ease';
 });
 </script>
