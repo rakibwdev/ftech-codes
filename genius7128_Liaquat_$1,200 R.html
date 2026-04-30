@@ -261,43 +261,17 @@ document.addEventListener("DOMContentLoaded", function(){
  
 <style>
   .bg_img{
-     scale: 1.2;
-     object-fit: cover;
+    object-fit: cover;
     position: absolute;
-    /*width:100%;*/
-    /*overflow: hidden;*/
+    transform: translateX(0) scale(1.2);
+    transition: transform 0.1s ease ;
+    will-change: transform;
 }
-/*.bg_img::before {*/
-/*    content: "";*/
-/*    position: absolute;*/
-/*    inset: 0;*/
 
-/*    background-image: */
-/*        linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),*/
-/*        url("https://salmon-oyster-650155.hostingersite.com/wp-content/uploads/2026/04/spa-1024x728.webp");*/
-
-/*    background-size: cover;*/
-/*    background-position: center;*/
-/*    background-repeat: no-repeat;*/
-
-/*    transform: translate3d(0, 0, 0);*/
-/*    will-change: transform;*/
-
-/*    z-index: 0;*/
-/*}*/
-/*.bg_img > * {*/
-/*    position: relative;*/
-/*    z-index: 1;*/
-/*}*/
-/*.bg_img::before {*/
-/*    transform: translate3d(0, var(--parallaxY, 0), 0);*/
-/*    transition: transform 0.1s linear;*/
-/*}*/
-
-/*card*/
 .card_wrapper {
     overflow: hidden;
     cursor: grab;
+    user-select: none;
 }
 
 .card_wrapper:active {
@@ -305,10 +279,6 @@ document.addEventListener("DOMContentLoaded", function(){
 }
 
 .card_track {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    transition: transform 0.2s ease;
     will-change: transform;
 }
 
@@ -323,72 +293,78 @@ document.addEventListener("DOMContentLoaded", function(){
 
 
 <script>
-window.addEventListener("scroll", function() {
-    const section = document.querySelector(".bg_img");
-    if (!section) return;
-
-    const rect = section.getBoundingClientRect();
-    const speed = 0.2; // control speed
-    const offset = rect.top * speed;
-
-    section.style.setProperty('--parallaxY', offset + 'px');
-});
-
-// drag slider
-
-const track = document.querySelector('.card_track');
 const wrapper = document.querySelector('.card_wrapper');
+const track = document.querySelector('.card_track');
+const bgImages = document.querySelectorAll('.bg_img');
 
 let isDragging = false;
 let startX = 0;
-let currentX = 0;
-let translateX = 0;
+
+let targetX = 0;    
+let translateX = 0; 
+
+// Desktop mouse events
 
 wrapper.addEventListener('mousedown', (e) => {
     isDragging = true;
-    startX = e.pageX - translateX;
+    startX = e.pageX - targetX;
     wrapper.style.cursor = 'grabbing';
-    track.style.transition = 'none';
 });
 
 wrapper.addEventListener('mousemove', (e) => {
     if (!isDragging) return;
 
-    currentX = e.pageX;
-    translateX = currentX - startX;
-
-    track.style.transform = `translateX(${translateX}px)`;
+    targetX = e.pageX - startX;
 });
 
-wrapper.addEventListener('mouseup', () => {
+wrapper.addEventListener('mouseup', stopDrag);
+wrapper.addEventListener('mouseleave', stopDrag);
+
+function stopDrag() {
     isDragging = false;
     wrapper.style.cursor = 'grab';
-    track.style.transition = 'transform 0.3s ease';
-});
+}
 
-wrapper.addEventListener('mouseleave', () => {
-    isDragging = false;
-    wrapper.style.cursor = 'grab';
-});
+// mobile touch events
 
-// mobile
 wrapper.addEventListener('touchstart', (e) => {
     isDragging = true;
-    startX = e.touches[0].clientX - translateX;
-    track.style.transition = 'none';
+    startX = e.touches[0].clientX - targetX;
 });
 
 wrapper.addEventListener('touchmove', (e) => {
     if (!isDragging) return;
 
-    currentX = e.touches[0].clientX;
-    translateX = currentX - startX;
-
-    track.style.transform = `translateX(${translateX}px)`;
+    targetX = e.touches[0].clientX - startX;
 });
 
 wrapper.addEventListener('touchend', () => {
     isDragging = false;
-    track.style.transition = 'transform 0.3s ease';
 });
+
+function animate() {
+
+    translateX += (targetX - translateX) * 0.1;
+
+    const max = 0;
+    const min = wrapper.offsetWidth - track.scrollWidth;
+
+    if (translateX > max) translateX = max;
+    if (translateX < min) translateX = min;
+
+    track.style.transform = `translateX(${translateX}px)`;
+
+    bgImages.forEach((bg, i) => {
+        const speed = 0.1 + (i * 0.03);
+        const move = translateX * speed;
+
+        bg.style.transform = `translateX(${move}px) scale(1.2)`;
+    });
+
+    requestAnimationFrame(animate);
+}
+
+animate();
 </script>
+
+
