@@ -289,94 +289,9 @@ document.addEventListener("DOMContentLoaded", function(){
     overflow: hidden;
     flex-shrink: 0;
 }
-</style>
 
 
-<script>
-const wrapper = document.querySelector('.card_wrapper');
-const track = document.querySelector('.card_track');
-const bgImages = document.querySelectorAll('.bg_img');
-
-let isDragging = false;
-let startX = 0;
-
-let targetX = 0;    
-let translateX = 0; 
-
-// Desktop mouse events
-
-wrapper.addEventListener('mousedown', (e) => {
-    isDragging = true;
-    startX = e.pageX - targetX;
-    wrapper.style.cursor = 'grabbing';
-});
-
-wrapper.addEventListener('mousemove', (e) => {
-    if (!isDragging) return;
-
-    targetX = e.pageX - startX;
-});
-
-wrapper.addEventListener('mouseup', stopDrag);
-wrapper.addEventListener('mouseleave', stopDrag);
-
-function stopDrag() {
-    isDragging = false;
-    wrapper.style.cursor = 'grab';
-}
-
-// mobile touch events
-
-wrapper.addEventListener('touchstart', (e) => {
-    isDragging = true;
-    startX = e.touches[0].clientX - targetX;
-});
-
-wrapper.addEventListener('touchmove', (e) => {
-    if (!isDragging) return;
-
-    targetX = e.touches[0].clientX - startX;
-});
-
-wrapper.addEventListener('touchend', () => {
-    isDragging = false;
-});
-
-function animate() {
-
-    translateX += (targetX - translateX) * 0.1;
-
-    const max = 0;
-    const min = wrapper.offsetWidth - track.scrollWidth;
-
-    if (translateX > max) translateX = max;
-    if (translateX < min) translateX = min;
-
-    track.style.transform = `translateX(${translateX}px)`;
-
-    bgImages.forEach((bg, i) => {
-        const speed = 0.1 + (i * 0.03);
-        const move = translateX * speed;
-
-        bg.style.transform = `translateX(${move}px) scale(1.2)`;
-    });
-
-    requestAnimationFrame(animate);
-}
-
-animate();
-</script>
-
-<!-- Cursor pointer effect -->
-
-<div class="custom_cursor">
-    <span class="arrow left">&#10094;</span>
-    <span class="arrow right">&#10095;</span>
-</div>
-
-<style>
 /* cursor circle */
-
 .custom_cursor {
     position: fixed;
     top: -37px;
@@ -403,60 +318,128 @@ animate();
 
 </style>
 
+
 <script>
-
+document.addEventListener("DOMContentLoaded", () => {
+const wrapper = document.querySelector('.card_wrapper');
+const track = document.querySelector('.card_track');
+const bgImages = document.querySelectorAll('.bg_img');
 const cursor = document.querySelector('.custom_cursor');
-const slider_wrapper = document.querySelector('.card_wrapper');
+const cardWidth = document.querySelector('.card').offsetWidth;
 
 
+let isDragging = false;
+let startX = 0;
+let targetX = 0;    
+let translateX = 0; 
 let mouseX = 0;
 let mouseY = 0;
 let lastX = 0;
 let scale = 1;
+let posX = 0, posY = 0;
+let targetScale = 1;
 
 
-//  FOLLOW MOUSE
-document.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
+// Desktop mouse events
 
-    cursor.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
+wrapper.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    startX = e.pageX - targetX;
+    wrapper.style.cursor = 'grabbing';
+    targetScale = 0.5;
+});
 
-    // detect direction
-    if (mouseX > lastX) {
-        cursor.classList.add('right');
-        cursor.classList.remove('left');
-    } else {
-        cursor.classList.add('left');
-        cursor.classList.remove('right');
-    }
+wrapper.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+
+    targetX = e.pageX - startX;
+
+     mouseX = e.clientX;
+     mouseY = e.clientY;
 
     lastX = mouseX;
+
 });
-document.addEventListener('mousedown', () => scale = 0.75);
-document.addEventListener('mouseup', () => scale = 1);
-let posX = 0, posY = 0;
+wrapper.addEventListener('mouseup', (e) => {
+    stopDrag();
+    targetScale = 1;
+});
 
-function animateCursor() {
-    posX += (mouseX - posX) * 0.15;
-    posY += (mouseY - posY) * 0.15;
-
-    cursor.style.transform = `translate(${posX}px, ${posY}px)
-            scale(${scale})
-            `;
-
-    requestAnimationFrame(animateCursor);
-}
-
-animateCursor();
-
-
-slider_wrapper.addEventListener('mouseenter', () => {
+wrapper.addEventListener('mouseenter', () => {
     cursor.style.opacity = '1';
 });
 
-slider_wrapper.addEventListener('mouseleave', () => {
+wrapper.addEventListener('mouseleave',() => {
     cursor.style.opacity = '0';
+    stopDrag();
+});
+
+function stopDrag() {
+    isDragging = false;
+    wrapper.style.cursor = 'grab';
+}
+
+
+// mobile touch events
+
+wrapper.addEventListener('touchstart', (e) => {
+    isDragging = true;
+    startX = e.touches[0].clientX - targetX;
+});
+
+wrapper.addEventListener('touchmove', (e) => {
+    if (!isDragging) return;
+
+    targetX = e.touches[0].clientX - startX;
+});
+
+wrapper.addEventListener('touchend', () => {
+    isDragging = false;
+});
+
+
+// animation
+
+function animate() {
+
+    translateX += (targetX - translateX) * 0.1;
+    posX += (mouseX - posX) * 0.15;
+    posY += (mouseY - posY) * 0.15;
+    scale += (targetScale - scale) * 0.1;
+
+    const max = 0;
+    const min = wrapper.offsetWidth - track.scrollWidth;
+
+    if (translateX > max) translateX = max;
+    if (translateX < min) translateX = min;
+
+    track.style.transform = `translateX(${translateX}px)`;
+
+    bgImages.forEach((bg) => {
+        const ratio = translateX / cardWidth;
+
+        // limit movement
+        const move = ratio * 50; // 50px max movement
+
+        bg.style.transform = `translateX(${move}px) scale(1.2)`;
+    });
+
+    cursor.style.transform = `
+    translate(${posX}px, ${posY}px)
+    scale(${scale})
+    `;
+
+    requestAnimationFrame(animate);
+}
+
+animate();
 });
 
 </script>
+
+<!-- Cursor pointer  -->
+
+<div class="custom_cursor">
+    <span class="arrow left">&#10094;</span>
+    <span class="arrow right">&#10095;</span>
+</div>
