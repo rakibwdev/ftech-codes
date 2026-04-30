@@ -367,4 +367,96 @@ function animate() {
 animate();
 </script>
 
+<!-- Cursor pointer effect -->
 
+<div class="custom_cursor">
+    <span class="arrow left">&#10094;</span>
+    <span class="arrow right">&#10095;</span>
+</div>
+
+<style>
+/* cursor circle */
+
+.custom_cursor {
+    position: fixed;
+    top: -37px;
+    left: -37px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: #fff;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    transition: transform 0s ease, background 0.3s ease;
+    opacity: 0;
+}
+
+.custom_cursor .arrow {
+    font-size: 14px;
+    color: #000000;
+}
+
+</style>
+
+<script>
+
+const cursor = document.querySelector('.custom_cursor');
+const slider_wrapper = document.querySelector('.card_wrapper');
+
+
+let mouseX = 0;
+let mouseY = 0;
+let lastX = 0;
+let scale = 1;
+
+
+//  FOLLOW MOUSE
+document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+
+    cursor.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
+
+    // detect direction
+    if (mouseX > lastX) {
+        cursor.classList.add('right');
+        cursor.classList.remove('left');
+    } else {
+        cursor.classList.add('left');
+        cursor.classList.remove('right');
+    }
+
+    lastX = mouseX;
+});
+document.addEventListener('mousedown', () => scale = 0.75);
+document.addEventListener('mouseup', () => scale = 1);
+let posX = 0, posY = 0;
+
+function animateCursor() {
+    posX += (mouseX - posX) * 0.15;
+    posY += (mouseY - posY) * 0.15;
+
+    cursor.style.transform = `translate(${posX}px, ${posY}px)
+            scale(${scale})
+            `;
+
+    requestAnimationFrame(animateCursor);
+}
+
+animateCursor();
+
+
+slider_wrapper.addEventListener('mouseenter', () => {
+    cursor.style.opacity = '1';
+});
+
+slider_wrapper.addEventListener('mouseleave', () => {
+    cursor.style.opacity = '0';
+});
+
+</script>
