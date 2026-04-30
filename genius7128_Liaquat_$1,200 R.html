@@ -260,35 +260,64 @@ document.addEventListener("DOMContentLoaded", function(){
 <!-- Feature 2: custom mouse pointer with slider -->
  
 <style>
-  .bg_img {
-    position: relative;
-    overflow: hidden;
-}
-.bg_img::before {
-    content: "";
+  .bg_img{
+     scale: 1.2;
+     object-fit: cover;
     position: absolute;
-    inset: 0;
+    /*width:100%;*/
+    /*overflow: hidden;*/
+}
+/*.bg_img::before {*/
+/*    content: "";*/
+/*    position: absolute;*/
+/*    inset: 0;*/
 
-    background-image: 
-        linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),
-        url("https://salmon-oyster-650155.hostingersite.com/wp-content/uploads/2026/04/spa-1024x728.webp");
+/*    background-image: */
+/*        linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),*/
+/*        url("https://salmon-oyster-650155.hostingersite.com/wp-content/uploads/2026/04/spa-1024x728.webp");*/
 
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+/*    background-size: cover;*/
+/*    background-position: center;*/
+/*    background-repeat: no-repeat;*/
 
-    transform: translate3d(0, 0, 0);
+/*    transform: translate3d(0, 0, 0);*/
+/*    will-change: transform;*/
+
+/*    z-index: 0;*/
+/*}*/
+/*.bg_img > * {*/
+/*    position: relative;*/
+/*    z-index: 1;*/
+/*}*/
+/*.bg_img::before {*/
+/*    transform: translate3d(0, var(--parallaxY, 0), 0);*/
+/*    transition: transform 0.1s linear;*/
+/*}*/
+
+/*card*/
+.card_wrapper {
+    overflow: hidden;
+    cursor: grab;
+}
+
+.card_wrapper:active {
+    cursor: grabbing;
+}
+
+.card_track {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    transition: transform 0.2s ease;
     will-change: transform;
+}
 
-    z-index: 0;
-}
-.bg_img > * {
-    position: relative;
-    z-index: 1;
-}
-.bg_img::before {
-    transform: translate3d(0, var(--parallaxY, 0), 0);
-    transition: transform 0.1s linear;
+.card {
+    aspect-ratio: 517/7444 ;
+    max-width: 517px;
+    max-height: 744px;
+    overflow: hidden;
+    flex-shrink: 0;
 }
 </style>
 
