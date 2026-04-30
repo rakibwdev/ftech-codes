@@ -416,9 +416,7 @@ function animate() {
 
     bgImages.forEach((bg) => {
         const ratio = translateX / cardWidth;
-
-        // limit movement
-        const move = ratio * 50; // 50px max movement
+        const move = -ratio * 30; 
 
         bg.style.transform = `translateX(${move}px) scale(1.2)`;
     });
