@@ -350,15 +350,14 @@ wrapper.addEventListener('mousedown', (e) => {
 });
 
 wrapper.addEventListener('mousemove', (e) => {
-    if (!isDragging) return;
-
-    targetX = e.pageX - startX;
-
-     mouseX = e.clientX;
-     mouseY = e.clientY;
+    mouseX = e.clientX;
+    mouseY = e.clientY;
 
     lastX = mouseX;
 
+    if (!isDragging) return;
+
+    targetX = e.pageX - startX;
 });
 wrapper.addEventListener('mouseup', (e) => {
     stopDrag();
