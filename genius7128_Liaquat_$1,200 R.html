@@ -323,9 +323,7 @@ document.addEventListener("DOMContentLoaded", function(){
 document.addEventListener("DOMContentLoaded", () => {
 const wrapper = document.querySelector('.card_wrapper');
 const track = document.querySelector('.card_track');
-// const bgImages = document.querySelectorAll('.bg_img');
 const cursor = document.querySelector('.custom_cursor');
-// const cardWidth = document.querySelector('.img_card').offsetWidth;
 const wrapperRect = wrapper.getBoundingClientRect();
 const wrapperCenter = wrapperRect.left + wrapperRect.width / 2;
 
@@ -416,12 +414,6 @@ function animate() {
 
     track.style.transform = `translateX(${translateX}px)`;
 
-    // bgImages.forEach((bg) => {
-    //     const ratio = translateX / cardWidth;
-    //     const move = -ratio * 30; 
-
-    //     bg.style.transform = `translateX(${move}px) scale(1.2)`;
-    // });
     document.querySelectorAll('.img_card').forEach((card) => {
     const bg = card.querySelector('.bg_img');
     if (!bg) return;
