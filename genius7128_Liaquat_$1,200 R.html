@@ -282,7 +282,7 @@ document.addEventListener("DOMContentLoaded", function(){
     will-change: transform;
 }
 
-.card {
+.img_card {
     aspect-ratio: 517/7444 ;
     max-width: 517px;
     max-height: 744px;
@@ -323,9 +323,11 @@ document.addEventListener("DOMContentLoaded", function(){
 document.addEventListener("DOMContentLoaded", () => {
 const wrapper = document.querySelector('.card_wrapper');
 const track = document.querySelector('.card_track');
-const bgImages = document.querySelectorAll('.bg_img');
+// const bgImages = document.querySelectorAll('.bg_img');
 const cursor = document.querySelector('.custom_cursor');
-const cardWidth = document.querySelector('.card').offsetWidth;
+// const cardWidth = document.querySelector('.img_card').offsetWidth;
+const wrapperRect = wrapper.getBoundingClientRect();
+const wrapperCenter = wrapperRect.left + wrapperRect.width / 2;
 
 
 let isDragging = false;
@@ -346,7 +348,7 @@ wrapper.addEventListener('mousedown', (e) => {
     isDragging = true;
     startX = e.pageX - targetX;
     wrapper.style.cursor = 'grabbing';
-    targetScale = 0.5;
+    targetScale = 0.3;
 });
 
 wrapper.addEventListener('mousemove', (e) => {
@@ -414,11 +416,23 @@ function animate() {
 
     track.style.transform = `translateX(${translateX}px)`;
 
-    bgImages.forEach((bg) => {
-        const ratio = translateX / cardWidth;
-        const move = -ratio * 30; 
+    // bgImages.forEach((bg) => {
+    //     const ratio = translateX / cardWidth;
+    //     const move = -ratio * 30; 
 
-        bg.style.transform = `translateX(${move}px) scale(1.2)`;
+    //     bg.style.transform = `translateX(${move}px) scale(1.2)`;
+    // });
+    document.querySelectorAll('.img_card').forEach((card) => {
+    const bg = card.querySelector('.bg_img');
+    if (!bg) return;
+
+    const rect = card.getBoundingClientRect();
+    const cardCenter = rect.left + rect.width / 2;
+    const distance = cardCenter - wrapperCenter;
+    const ratio = distance / wrapperRect.width;
+    const move = -ratio * 100;
+
+    bg.style.transform = `translateX(${move}px) scale(1.2)`;
     });
 
     cursor.style.transform = `
