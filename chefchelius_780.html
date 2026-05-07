@@ -1,6 +1,10 @@
 <!-- form css -->
  
 <style>
+    :root{
+    --icon_bg: var(--muted-foreground);
+    --icon_checked_bg: var(--primary);
+}
    .contact_fomt .elementor-field-group-Iertips{
     .elementor-field-subgroup{
         gap: 10px;
@@ -13,7 +17,7 @@
                 display: none;
                 + label{
                     font-family: Inter;
-                    color: #6a7181;
+                    color: var(--icon_bg);
                     cursor: pointer;
                     transition: 0.3s;
                     padding: 16px;
@@ -23,9 +27,7 @@
                     align-items: center;
                     gap: 8px;
                     border-radius: 16px;
-                    background: rgba(255, 255, 255, 0.6);
-                    border: 2px solid rgba(255, 255, 255, 0.4);
-                    box-shadow: rgba(0, 0, 0, 0.03) 0px 4px 12px, rgba(0, 0, 0, 0.02) 0px -1px 3px inset;
+                    border: 2px var(--icon_checked_bg);
                     &::before{
                         content: '';
                         height: 24px;
@@ -40,44 +42,52 @@
                 }
                 &:checked + label{
                     transform: scale(1.02);
-                    background: rgba(179, 0, 179, 0.06);
-                    border-color: rgba(179, 0, 179, 0.3);
-                    color: rgb(179, 0, 179);
+                    border-color: var(--icon_checked_bg);
+                    color: var(--icon_checked_bg);
                 }
             }
             &:nth-child(1) [type="radio"]{
                 + label::before{
-                    background-color: #E3E3E3;
+                    background-color: var(--icon_bg);
                     --icon-url: url('/wp-content/uploads/2026/05/mobile_24dp_E3E3E3_FILL1_wght400_GRAD0_opsz24.svg');
                     -webkit-mask-image: var(--icon-url);
                     mask-image: var(--icon-url);
                 }
                 &:checked + label::before{
-                    background-color: #ff4da6;
+                    background-color: var(--icon_checked_bg);
                 }
             }
             &:nth-child(2) [type="radio"]{
                 + label::before{
-                    background-image: url(/wp-content/uploads/2026/04/svgviewer-output-54.svg);
+                    background-color: var(--icon_bg);
+                    --icon-url: url('/wp-content/uploads/2026/05/tab_24dp_E3E3E3_FILL1_wght400_GRAD0_opsz24.svg');
+                    -webkit-mask-image: var(--icon-url);
+                    mask-image: var(--icon-url);
                 }
                 &:checked + label::before{
-                    background-image: url(/wp-content/uploads/2026/04/tab-pink.svg);
+                    background-color: var(--icon_checked_bg);
                 }
             }
             &:nth-child(3) [type="radio"]{
                 + label::before{
-                    background-image: url(/wp-content/uploads/2026/04/svgviewer-output-40.svg);
+                    background-color: var(--icon_bg);
+                    --icon-url: url('/wp-content/uploads/2026/05/laptop_24dp_E3E3E3_FILL1_wght400_GRAD0_opsz24.svg');
+                    -webkit-mask-image: var(--icon-url);
+                    mask-image: var(--icon-url);
                 }
                 &:checked + label::before{
-                    background-image: url(/wp-content/uploads/2026/04/laptop-pink.svg);
+                    background-color: var(--icon_checked_bg);
                 }
             }
             &:nth-child(4) [type="radio"]{
                 + label::before{
-                    background-image: url(/wp-content/uploads/2026/04/svgviewer-output-39.svg);
+                    background-color: var(--icon_bg);
+                    --icon-url: url('/wp-content/uploads/2026/05/question_24dp_E3E3E3_FILL1_wght400_GRAD0_opsz24.svg');
+                    -webkit-mask-image: var(--icon-url);
+                    mask-image: var(--icon-url);
                 }
                 &:checked + label::before{
-                    background-image: url(/wp-content/uploads/2026/04/question-pink.svg);
+                    background-color: var(--icon_checked_bg);
                 }
             }
         }   
@@ -140,13 +150,12 @@ selector .elementor-field-type-radio.elementor-field-group.elementor-column.elem
                     display: grid;
                     flex-direction: column;
                     justify-content: center;
+                    gap: 0px 6px;
                     align-items: center;
                     font-size: 14px;
-                    gap: 0px 6px;
                     border-radius: 16px;
                     background: rgba(255, 255, 255, 0.6);
                     border: 2px solid rgba(255, 255, 255, 0.4);
-                    box-shadow: rgba(0, 0, 0, 0.03) 0px 4px 12px, rgba(0, 0, 0, 0.02) 0px -1px 3px inset;
                      &::before{
                         content: '';
                         height: 24px;
@@ -162,26 +171,31 @@ selector .elementor-field-type-radio.elementor-field-group.elementor-column.elem
                 }
                 &:checked + label{
                     transform: scale(1.02);
-                    background: rgba(179, 0, 179, 0.06);
-                    border-color: rgba(179, 0, 179, 0.3);
-                    color: rgb(179, 0, 179);
+                    border-color: var(--icon_checked_bg);
+                    color: var(--icon_checked_bg);
                }
             }
            &:nth-child(1) [type="radio"]{
                 + label::before{
-                    background-image: url(/wp-content/uploads/2026/04/store-svgrepo-com.svg);
+                    background-color: var(--icon_bg);
+                    --icon-url: url('/wp-content/uploads/2026/05/mobile_24dp_E3E3E3_FILL1_wght400_GRAD0_opsz24.svg');
+                    -webkit-mask-image: var(--icon-url);
+                    mask-image: var(--icon-url);
                 }
                    &:checked + label::before{
-                    background-image: url(/wp-content/uploads/2026/04/store-svgrepo-com-1.svg);
+                    background-color: var(--icon_checked_bg);
                 }
                 
             }
             &:nth-child(2) [type="radio"]{
                 + label::before{
-                    background-image: url(/wp-content/uploads/2026/04/store-svgrepo-com.svg);
+                    background-color: var(--icon_bg);
+                    --icon-url: url('/wp-content/uploads/2026/05/store-svgrepo-com.svg');
+                    -webkit-mask-image: var(--icon-url);
+                    mask-image: var(--icon-url);
                 }
                 &:checked + label::before{
-                    background-image: url(/wp-content/uploads/2026/04/store-svgrepo-com-1.svg);
+                    background-color: var(--icon_checked_bg);
                 }
             }
     }
