@@ -1,0 +1,305 @@
+<!-- form css -->
+ 
+<style>
+   .contact_fomt .elementor-field-group-Iertips{
+    .elementor-field-subgroup{
+        gap: 10px;
+        flex-wrap: nowrap;
+        .elementor-field-option{
+            padding: 0;
+            flex-basis: 100%;
+            overflow: visible;
+            [type="radio"]{
+                display: none;
+                + label{
+                    font-family: Inter;
+                    color: #6a7181;
+                    cursor: pointer;
+                    transition: 0.3s;
+                    padding: 16px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 8px;
+                    border-radius: 16px;
+                    background: rgba(255, 255, 255, 0.6);
+                    border: 2px solid rgba(255, 255, 255, 0.4);
+                    box-shadow: rgba(0, 0, 0, 0.03) 0px 4px 12px, rgba(0, 0, 0, 0.02) 0px -1px 3px inset;
+                    &::before{
+                        content: '';
+                        height: 24px;
+                        width: 24px;
+                        display: block;
+                        background-size: cover;
+                        background-repeat: no-repeat;
+                    }
+                    &:hover{
+                        transform: scale(1.02);
+                    }
+                }
+                &:checked + label{
+                    transform: scale(1.02);
+                    background: rgba(179, 0, 179, 0.06);
+                    border-color: rgba(179, 0, 179, 0.3);
+                    color: rgb(179, 0, 179);
+                }
+            }
+            &:nth-child(1) [type="radio"]{
+                + label::before{
+                    background-color: #E3E3E3;
+                    --icon-url: url('/wp-content/uploads/2026/05/mobile_24dp_E3E3E3_FILL1_wght400_GRAD0_opsz24.svg');
+                    -webkit-mask-image: var(--icon-url);
+                    mask-image: var(--icon-url);
+                }
+                &:checked + label::before{
+                    background-color: #ff4da6;
+                }
+            }
+            &:nth-child(2) [type="radio"]{
+                + label::before{
+                    background-image: url(/wp-content/uploads/2026/04/svgviewer-output-54.svg);
+                }
+                &:checked + label::before{
+                    background-image: url(/wp-content/uploads/2026/04/tab-pink.svg);
+                }
+            }
+            &:nth-child(3) [type="radio"]{
+                + label::before{
+                    background-image: url(/wp-content/uploads/2026/04/svgviewer-output-40.svg);
+                }
+                &:checked + label::before{
+                    background-image: url(/wp-content/uploads/2026/04/laptop-pink.svg);
+                }
+            }
+            &:nth-child(4) [type="radio"]{
+                + label::before{
+                    background-image: url(/wp-content/uploads/2026/04/svgviewer-output-39.svg);
+                }
+                &:checked + label::before{
+                    background-image: url(/wp-content/uploads/2026/04/question-pink.svg);
+                }
+            }
+        }   
+    }
+}
+
+
+
+@media (max-width: 767px) {
+    input[type="radio"] + label {
+        padding: 4px !important;
+    }
+}
+
+
+
+.contact_fomt button{
+/*    background: linear-gradient(135deg, #b300b2*/
+/*, #7f00ff*/
+/*)!important;*/
+    box-shadow: 0 10px 25px #b300b233
+;
+}
+
+
+.contact_fomt .elementor-field:focus {
+    border: 1px solid #b300b2
+!important;
+}
+
+
+
+
+
+selector .elementor-field-type-radio.elementor-field-group.elementor-column.elementor-field-group-field_ef8bd2c.elementor-col-100 {
+
+    .elementor-field-subgroup{
+        gap: 20px;
+    }
+    .elementor-field-option span{
+        grid-column: fr;
+        font-size: 10px;
+        grid-column: 2;
+        color: #6a7181;
+
+    }
+    .elementor-field-option{
+                    padding: 0;
+                    
+            
+            overflow: visible;
+          [type="radio"]{
+                display: none;
+                + label{
+                    font-family: Inter;
+                    color: #070707;
+                    cursor: pointer;
+                    transition: 0.3s;
+                    padding: 12px;
+                    display: grid;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    font-size: 14px;
+                    gap: 0px 6px;
+                    border-radius: 16px;
+                    background: rgba(255, 255, 255, 0.6);
+                    border: 2px solid rgba(255, 255, 255, 0.4);
+                    box-shadow: rgba(0, 0, 0, 0.03) 0px 4px 12px, rgba(0, 0, 0, 0.02) 0px -1px 3px inset;
+                     &::before{
+                        content: '';
+                        height: 24px;
+                        width: 24px;
+                        display: block;
+                        background-size: cover;
+                        background-repeat: no-repeat;
+                        grid-row: 1 / span 2;
+                    }
+                    &:hover{
+                        transform: scale(1.02);
+                    }
+                }
+                &:checked + label{
+                    transform: scale(1.02);
+                    background: rgba(179, 0, 179, 0.06);
+                    border-color: rgba(179, 0, 179, 0.3);
+                    color: rgb(179, 0, 179);
+               }
+            }
+           &:nth-child(1) [type="radio"]{
+                + label::before{
+                    background-image: url(/wp-content/uploads/2026/04/store-svgrepo-com.svg);
+                }
+                   &:checked + label::before{
+                    background-image: url(/wp-content/uploads/2026/04/store-svgrepo-com-1.svg);
+                }
+                
+            }
+            &:nth-child(2) [type="radio"]{
+                + label::before{
+                    background-image: url(/wp-content/uploads/2026/04/store-svgrepo-com.svg);
+                }
+                &:checked + label::before{
+                    background-image: url(/wp-content/uploads/2026/04/store-svgrepo-com-1.svg);
+                }
+            }
+    }
+}
+
+
+</style>
+
+<!-- end form css -->
+
+
+
+
+<style>
+	#form_send_message{
+			transition: 0.3s;
+			&[show_status="false"]{
+					opacity: 0;
+					pointer-events: none;
+			}
+	}
+</style>
+
+<script>
+document.querySelectorAll(".btn_click").forEach(btn => {
+    btn.addEventListener("click", function () {
+        this.nextElementSibling.classList.toggle("active");
+
+           const icon = this.querySelector(".chev_icon");
+        if (icon) {
+            icon.classList.toggle("active");
+        }
+
+    });
+});
+
+</script>
+
+    <script>
+        const getFormSendMsgFild = document.querySelector('#form_send_message');
+				if(getFormSendMsgFild) getFormSendMsgFild.setAttribute('show_status', false);
+        document.querySelectorAll('[name="form_fields[Iertips]"]').forEach(function(radio) {
+            radio.addEventListener('change', function() {
+                const tipsField = document.querySelector('#form_send_message .tips_fild');
+                const selectedTps = document.querySelector('[name="form_fields[Iertips]"]:checked');
+                if(tipsField && selectedTps){
+                    tipsField.innerHTML = selectedTps.value;
+                }
+            });
+        });
+
+        document.querySelector('[name="form_fields[field_71daf24]"]').addEventListener('input', function(event) {
+            const modelName = document.querySelector('#form_send_message .model_name');
+            console.log(this.value);
+            if(this.value && modelName){
+                modelName.innerHTML = this.value;
+            }
+        });
+
+        document.querySelector('#form_send_message .back_to_form').addEventListener('click', function(event) {
+            if(getFormSendMsgFild){
+                getFormSendMsgFild.setAttribute('show_status', false);
+            }            
+        });
+
+        jQuery(document).ajaxSuccess(function(event, xhr, settings, data) {
+            if (settings.url.includes('wp-admin/admin-ajax.php') && data.success && data.data.message.includes('submission was successful')) {
+                if(getFormSendMsgFild){
+                    getFormSendMsgFild.setAttribute('show_status', true);
+                }
+            }
+        });
+    </script>
+    
+<script>
+    function updateShopStatus() {
+        const statusEl = document.querySelector('.shop_ac_status');
+        if (!statusEl) return;
+    
+        const now = new Date();
+        const currentHours = now.getHours();
+        const currentMinutes = now.getMinutes();
+    
+        // Convert current time to minutes
+        const currentTime = currentHours * 60 + currentMinutes;
+    
+        // Opening and closing time (in minutes)
+        const openTime = 10 * 60;   // 10:00
+        const closeTime = 21 * 60;  // 21:00
+    
+        if (currentTime >= openTime && currentTime < closeTime) {
+            statusEl.textContent = 'ATVĒRTS'; // Open
+        } else {
+            statusEl.textContent = 'SLĒGTS'; // Closed
+        }
+    }
+    
+    // Run on load
+    updateShopStatus();
+</script>
+<script>
+    if(googleReviews && Array.isArray(googleReviews)  && googleReviews.length > 0){
+        document.querySelectorAll(".google_review").forEach(function(reviewElement, index) {
+            const review = googleReviews[index];
+            if(!review) return;
+            reviewElement.querySelector(".name span").textContent = review.user;
+            reviewElement.querySelector(".google_rating").setAttribute("review_rating", review.rating);
+            if(review.text){
+                reviewElement.querySelector(".main_review p").innerHTML = review.text;
+            }else{
+                reviewElement.querySelector(".main_review p").innerHTML = "This user only left a rating.";
+            }
+            reviewElement.querySelector(".user_image").setAttribute("style", "background-image: url('" + review.user_photo + "')");
+        });
+    }
+</script>
+<script>
+    document.querySelector("#flooting_icon_btn").addEventListener("click", function() {
+        this.setAttribute("floting_btn_status", this.getAttribute("floting_btn_status") === "open" ? "close" : "open");
+    });
+</script>
