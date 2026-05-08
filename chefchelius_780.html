@@ -1,116 +1,37 @@
-<!-- form css -->
- 
+
+
+
+<!-- start online active status css -->
 <style>
-    :root{
-  --icon_bg: var(--muted-foreground);
-  --icon_checked_bg: var(--primary);
+    selector .elementor-icon{
+    position: relative;
 }
 
-/* 🔹 COMMON RADIO STYLE (used everywhere) */
-.contact_fomt .elementor-field-option input[type="radio"]{
-  display: none;
+selector .elementor-icon::before{
+    content: "";
+    width: 40%;
+    height: 40%;
+    top:20%;
+    background: var(--secondary);
+    position: absolute;
+    transform: translate(-50%, -50%);
+    border-radius: 16px;
+    animation: pulseAnim 1.5s infinite ease-out;
 }
 
-.contact_fomt .elementor-field-option input[type="radio"] + label{
-  font-family: Inter;
-  color: var(--icon_bg);
-  cursor: pointer;
-  transition: 0.3s;
-  padding: 16px;
-  border-radius: 16px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  border: 2px solid var(--icon_bg);
+@keyframes pulseAnim{
+    0%{
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    100%{
+        transform: scale(1.5);
+        opacity: 0;
+    }
 }
-
-
-/* ICONS (ONLY DEFINE HERE) */
-
-.contact_fomt .elementor-field-group-Iertips .elementor-field-option:nth-child(1){
-  --icon-url: url('/wp-content/uploads/2026/05/svgexport-31.svg');
-}
-.contact_fomt .elementor-field-group-Iertips .elementor-field-option:nth-child(2){
-  --icon-url: url('/wp-content/uploads/2026/05/tab.svg');
-}
-.contact_fomt .elementor-field-group-Iertips .elementor-field-option:nth-child(3){
-  --icon-url: url('/wp-content/uploads/2026/05/laptop.svg');
-}
-.contact_fomt .elementor-field-group-Iertips .elementor-field-option:nth-child(4){
-  --icon-url: url('/wp-content/uploads/2026/05/question.svg');
-}
-
-/* second group */
-selector .elementor-field-group-field_ef8bd2c .elementor-field-option:nth-child(1){
-  --icon-url: url('/wp-content/uploads/2026/05/svgexport-31.svg');
-}
-selector .elementor-field-group-field_ef8bd2c .elementor-field-option:nth-child(2){
-  --icon-url: url('/wp-content/uploads/2026/05/store-svgrepo-com.svg');
-}
-
-/* ICON */
-.contact_fomt .elementor-field-option input[type="radio"] + label::before{
-  content: "";
-  width: 24px;
-  height: 24px;
-
-  background-color: var(--icon_bg);
-
-  -webkit-mask: var(--icon-url) center/contain no-repeat;
-  mask: var(--icon-url) center/contain no-repeat;
-}
-
-/* HOVER */
-.contact_fomt .elementor-field-option label:hover{
-  transform: scale(1.02);
-}
-
-/* CHECKED */
-.contact_fomt .elementor-field-option input[type="radio"]:checked + label{
-  border-color: var(--icon_checked_bg);
-  color: var(--icon_checked_bg);
-  transform: scale(1.02);
-}
-
-.contact_fomt .elementor-field-option input[type="radio"]:checked + label::before{
-  background-color: var(--icon_checked_bg);
-}
-
----
-
-/* 🔹 LAYOUT VARIANTS */
-
-/* Style 1 (top icons) */
-.contact_fomt .elementor-field-group-Iertips .elementor-field-option input[type="radio"] + label{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* Style 2 (grid layout) */
-selector .elementor-field-group-field_ef8bd2c .elementor-field-option input[type="radio"] + label{
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 6px;
-  align-items: center;
-}
-
-selector .elementor-field-group-field_ef8bd2c .elementor-field-option label::before{
-  grid-row: 1 / span 2;
-}
-
-/* TEXT */
-selector .elementor-field-group-field_ef8bd2c .elementor-field-option span{
-  font-size: 10px;
-  color: var(--icon_bg);
-}
-
-
 </style>
-
-<!-- end form css -->
-
+<!-- end online active status css -->
 
 
 
