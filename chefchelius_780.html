@@ -2,203 +2,108 @@
  
 <style>
     :root{
-    --icon_bg: var(--muted-foreground);
-    --icon_checked_bg: var(--primary);
+  --icon_bg: var(--muted-foreground);
+  --icon_checked_bg: var(--primary);
 }
-   .contact_fomt .elementor-field-group-Iertips{
-    .elementor-field-subgroup{
-        gap: 10px;
-        flex-wrap: nowrap;
-        .elementor-field-option{
-            padding: 0;
-            flex-basis: 100%;
-            overflow: visible;
-            [type="radio"]{
-                display: none;
-                + label{
-                    font-family: Inter;
-                    color: var(--icon_bg);
-                    cursor: pointer;
-                    transition: 0.3s;
-                    padding: 16px;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
-                    gap: 8px;
-                    border-radius: 16px;
-                    border: 2px var(--icon_checked_bg);
-                    &::before{
-                        content: '';
-                        height: 24px;
-                        width: 24px;
-                        display: block;
-                        background-size: cover;
-                        background-repeat: no-repeat;
-                    }
-                    &:hover{
-                        transform: scale(1.02);
-                    }
-                }
-                &:checked + label{
-                    transform: scale(1.02);
-                    border-color: var(--icon_checked_bg);
-                    color: var(--icon_checked_bg);
-                }
-            }
-            &:nth-child(1) [type="radio"]{
-                + label::before{
-                    background-color: var(--icon_bg);
-                    --icon-url: url('/wp-content/uploads/2026/05/mobile_24dp_E3E3E3_FILL1_wght400_GRAD0_opsz24.svg');
-                    -webkit-mask-image: var(--icon-url);
-                    mask-image: var(--icon-url);
-                }
-                &:checked + label::before{
-                    background-color: var(--icon_checked_bg);
-                }
-            }
-            &:nth-child(2) [type="radio"]{
-                + label::before{
-                    background-color: var(--icon_bg);
-                    --icon-url: url('/wp-content/uploads/2026/05/tab_24dp_E3E3E3_FILL1_wght400_GRAD0_opsz24.svg');
-                    -webkit-mask-image: var(--icon-url);
-                    mask-image: var(--icon-url);
-                }
-                &:checked + label::before{
-                    background-color: var(--icon_checked_bg);
-                }
-            }
-            &:nth-child(3) [type="radio"]{
-                + label::before{
-                    background-color: var(--icon_bg);
-                    --icon-url: url('/wp-content/uploads/2026/05/laptop_24dp_E3E3E3_FILL1_wght400_GRAD0_opsz24.svg');
-                    -webkit-mask-image: var(--icon-url);
-                    mask-image: var(--icon-url);
-                }
-                &:checked + label::before{
-                    background-color: var(--icon_checked_bg);
-                }
-            }
-            &:nth-child(4) [type="radio"]{
-                + label::before{
-                    background-color: var(--icon_bg);
-                    --icon-url: url('/wp-content/uploads/2026/05/question_24dp_E3E3E3_FILL1_wght400_GRAD0_opsz24.svg');
-                    -webkit-mask-image: var(--icon-url);
-                    mask-image: var(--icon-url);
-                }
-                &:checked + label::before{
-                    background-color: var(--icon_checked_bg);
-                }
-            }
-        }   
-    }
+
+/* 🔹 COMMON RADIO STYLE (used everywhere) */
+.contact_fomt .elementor-field-option input[type="radio"]{
+  display: none;
+}
+
+.contact_fomt .elementor-field-option input[type="radio"] + label{
+  font-family: Inter;
+  color: var(--icon_bg);
+  cursor: pointer;
+  transition: 0.3s;
+  padding: 16px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  border: 2px solid var(--icon_bg);
 }
 
 
+/* ICONS (ONLY DEFINE HERE) */
 
-@media (max-width: 767px) {
-    input[type="radio"] + label {
-        padding: 4px !important;
-    }
+.contact_fomt .elementor-field-group-Iertips .elementor-field-option:nth-child(1){
+  --icon-url: url('/wp-content/uploads/2026/05/svgexport-31.svg');
+}
+.contact_fomt .elementor-field-group-Iertips .elementor-field-option:nth-child(2){
+  --icon-url: url('/wp-content/uploads/2026/05/tab.svg');
+}
+.contact_fomt .elementor-field-group-Iertips .elementor-field-option:nth-child(3){
+  --icon-url: url('/wp-content/uploads/2026/05/laptop.svg');
+}
+.contact_fomt .elementor-field-group-Iertips .elementor-field-option:nth-child(4){
+  --icon-url: url('/wp-content/uploads/2026/05/question.svg');
 }
 
-
-
-.contact_fomt button{
-/*    background: linear-gradient(135deg, #b300b2*/
-/*, #7f00ff*/
-/*)!important;*/
-    box-shadow: 0 10px 25px #b300b233
-;
+/* second group */
+selector .elementor-field-group-field_ef8bd2c .elementor-field-option:nth-child(1){
+  --icon-url: url('/wp-content/uploads/2026/05/svgexport-31.svg');
+}
+selector .elementor-field-group-field_ef8bd2c .elementor-field-option:nth-child(2){
+  --icon-url: url('/wp-content/uploads/2026/05/store-svgrepo-com.svg');
 }
 
+/* ICON */
+.contact_fomt .elementor-field-option input[type="radio"] + label::before{
+  content: "";
+  width: 24px;
+  height: 24px;
 
-.contact_fomt .elementor-field:focus {
-    border: 1px solid #b300b2
-!important;
+  background-color: var(--icon_bg);
+
+  -webkit-mask: var(--icon-url) center/contain no-repeat;
+  mask: var(--icon-url) center/contain no-repeat;
 }
 
+/* HOVER */
+.contact_fomt .elementor-field-option label:hover{
+  transform: scale(1.02);
+}
 
+/* CHECKED */
+.contact_fomt .elementor-field-option input[type="radio"]:checked + label{
+  border-color: var(--icon_checked_bg);
+  color: var(--icon_checked_bg);
+  transform: scale(1.02);
+}
 
+.contact_fomt .elementor-field-option input[type="radio"]:checked + label::before{
+  background-color: var(--icon_checked_bg);
+}
 
+---
 
-selector .elementor-field-type-radio.elementor-field-group.elementor-column.elementor-field-group-field_ef8bd2c.elementor-col-100 {
+/* 🔹 LAYOUT VARIANTS */
 
-    .elementor-field-subgroup{
-        gap: 20px;
-    }
-    .elementor-field-option span{
-        grid-column: fr;
-        font-size: 10px;
-        grid-column: 2;
-        color: #6a7181;
+/* Style 1 (top icons) */
+.contact_fomt .elementor-field-group-Iertips .elementor-field-option input[type="radio"] + label{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-    }
-    .elementor-field-option{
-                    padding: 0;
-                    
-            
-            overflow: visible;
-          [type="radio"]{
-                display: none;
-                + label{
-                    font-family: Inter;
-                    color: #070707;
-                    cursor: pointer;
-                    transition: 0.3s;
-                    padding: 12px;
-                    display: grid;
-                    flex-direction: column;
-                    justify-content: center;
-                    gap: 0px 6px;
-                    align-items: center;
-                    font-size: 14px;
-                    border-radius: 16px;
-                    background: rgba(255, 255, 255, 0.6);
-                    border: 2px solid rgba(255, 255, 255, 0.4);
-                     &::before{
-                        content: '';
-                        height: 24px;
-                        width: 24px;
-                        display: block;
-                        background-size: cover;
-                        background-repeat: no-repeat;
-                        grid-row: 1 / span 2;
-                    }
-                    &:hover{
-                        transform: scale(1.02);
-                    }
-                }
-                &:checked + label{
-                    transform: scale(1.02);
-                    border-color: var(--icon_checked_bg);
-                    color: var(--icon_checked_bg);
-               }
-            }
-           &:nth-child(1) [type="radio"]{
-                + label::before{
-                    background-color: var(--icon_bg);
-                    --icon-url: url('/wp-content/uploads/2026/05/mobile_24dp_E3E3E3_FILL1_wght400_GRAD0_opsz24.svg');
-                    -webkit-mask-image: var(--icon-url);
-                    mask-image: var(--icon-url);
-                }
-                   &:checked + label::before{
-                    background-color: var(--icon_checked_bg);
-                }
-                
-            }
-            &:nth-child(2) [type="radio"]{
-                + label::before{
-                    background-color: var(--icon_bg);
-                    --icon-url: url('/wp-content/uploads/2026/05/store-svgrepo-com.svg');
-                    -webkit-mask-image: var(--icon-url);
-                    mask-image: var(--icon-url);
-                }
-                &:checked + label::before{
-                    background-color: var(--icon_checked_bg);
-                }
-            }
-    }
+/* Style 2 (grid layout) */
+selector .elementor-field-group-field_ef8bd2c .elementor-field-option input[type="radio"] + label{
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px;
+  align-items: center;
+}
+
+selector .elementor-field-group-field_ef8bd2c .elementor-field-option label::before{
+  grid-row: 1 / span 2;
+}
+
+/* TEXT */
+selector .elementor-field-group-field_ef8bd2c .elementor-field-option span{
+  font-size: 10px;
+  color: var(--icon_bg);
 }
 
 
