@@ -1,3 +1,23 @@
+<script>
+document.querySelectorAll(".click_div").forEach(div => {
+    div.addEventListener("click", function () {
+        this.nextElementSibling.classList.toggle("active");
+
+           const icon = this.querySelector(".chev_icon");
+        if (icon) {
+            icon.classList.toggle("active");
+        }
+
+    });
+});
+</script>
+
+.click_div  {
+display: none;
+}
+.click_div.active {
+display: block;
+}
 <!-- form css -->
  
 <style>
