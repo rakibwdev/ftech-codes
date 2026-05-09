@@ -21,6 +21,7 @@ display: block;
 <!-- form css -->
  
 <style>
+
 :root{
   --icon_bg: var(--card);
   --icon_checked_bg: var(--primary);
@@ -138,6 +139,20 @@ selector .elementor-field-group-field_ef8bd2c .elementor-field-option span{
   color: var(--icon_bg);
 }
 
+/* model option field hide */
+/* hide by default */
+.contact_fomt .elementor-field-group-models {
+  display: none;
+}
+
+/* show if first radio checked */
+.contact_fomt 
+.elementor-field-group-Iertips 
+.elementor-field-option:nth-child(1) input[type="radio"]:checked 
+~ .elementor-field-group-models {
+  display: block;
+}
+
 
 .contact_fomt .elementor-field-group-field_ef8bd2c span.elementor-field-option {
     width:calc(50% - 4px) !important;
@@ -219,14 +234,14 @@ document.querySelectorAll(".btn_click").forEach(btn => {
         document.querySelectorAll('[name="form_fields[Iertips]"]').forEach(function(radio) {
             radio.addEventListener('change', function() {
                 const tipsField = document.querySelector('#form_send_message .tips_fild');
-                const selectedTps = document.querySelector('[name="form_fields[Iertips]"]:checked');
+                const selectedTps = document.querySelector('[name="form_fields[models]"]:checked');
                 if(tipsField && selectedTps){
                     tipsField.innerHTML = selectedTps.value;
                 }
             });
         });
 
-        document.querySelector('[name="form_fields[field_71daf24]"]').addEventListener('input', function(event) {
+        document.querySelector('[name="form_fields[models]"]').addEventListener('input', function(event) {
             const modelName = document.querySelector('#form_send_message .model_name');
             console.log(this.value);
             if(this.value && modelName){
@@ -295,4 +310,28 @@ document.querySelectorAll(".btn_click").forEach(btn => {
     document.querySelector("#flooting_icon_btn").addEventListener("click", function() {
         this.setAttribute("floting_btn_status", this.getAttribute("floting_btn_status") === "open" ? "close" : "open");
     });
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const radios = document.querySelectorAll(
+        '.contact_fomt .elementor-field-group-Iertips input[type="radio"]'
+    );
+
+    const modelField = document.querySelector(
+        '.contact_fomt .elementor-field-group-models'
+    );
+
+    function toggleField() {
+        if (radios[0] && radios[0].checked) {
+            modelField.style.display = "block";
+        } else {
+            modelField.style.display = "none";
+        }
+    }
+
+    radios.forEach(r => r.addEventListener("change", toggleField));
+
+    toggleField();
+});
 </script>
