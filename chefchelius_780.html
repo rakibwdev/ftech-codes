@@ -339,6 +339,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
 <!-- tab form -->
 
+<style>
+    .tab_form_icon .e-svg-base{
+        color: var(--primary);
+        width: 24px;
+        height: 24px;
+    }
+</style>
+
 <script>
 function createTargetBox() {
   const label = document.querySelector('label[for="form-field-message"]');
@@ -369,7 +377,9 @@ function updateTabInfo() {
 
   box.innerHTML = `
     <div style="display:flex;align-items:center;gap:10px;">
-      ${icon}
+      <div class="tab_form_icon"">
+        ${icon}
+      </div>
       <div>
         <strong>${title}</strong><br>
         <span>${price}</span>
