@@ -213,7 +213,7 @@ selector .elementor-icon::before{
 	}
 </style>
 
-<script>
+<!-- <script>
 document.querySelectorAll(".btn_click").forEach(btn => {
     btn.addEventListener("click", function () {
         this.nextElementSibling.classList.toggle("active");
@@ -226,7 +226,7 @@ document.querySelectorAll(".btn_click").forEach(btn => {
     });
 });
 
-</script>
+</script> -->
 
     <script>
         const getFormSendMsgFild = document.querySelector('#form_send_message');
@@ -263,7 +263,7 @@ document.querySelectorAll(".btn_click").forEach(btn => {
             }
         });
     </script>
-    
+<!--     
 <script>
     function updateShopStatus() {
         const statusEl = document.querySelector('.shop_ac_status');
@@ -289,7 +289,7 @@ document.querySelectorAll(".btn_click").forEach(btn => {
     
     // Run on load
     updateShopStatus();
-</script>
+</script> -->
 <script>
     if(googleReviews && Array.isArray(googleReviews)  && googleReviews.length > 0){
         document.querySelectorAll(".google_review").forEach(function(reviewElement, index) {
@@ -333,5 +333,62 @@ document.addEventListener("DOMContentLoaded", function () {
     radios.forEach(r => r.addEventListener("change", toggleField));
 
     toggleField();
+});
+</script>
+
+
+<!-- tab form -->
+
+<script>
+function createTargetBox() {
+  const label = document.querySelector('label[for="form-field-message"]');
+  
+  if (!label) return;
+
+  // check if already exists (avoid duplicate)
+  let box = document.getElementById('selected-tab-info');
+  if (!box) {
+    box = document.createElement('div');
+    box.id = 'selected-tab-info';
+    box.style.marginTop = '10px';
+
+    // insert AFTER label
+    label.insertAdjacentElement('afterend', box);
+  }
+}
+
+function updateTabInfo() {
+  const activeTab = document.querySelector('.e-tab-base[aria-selected="true"]');
+  const box = document.getElementById('selected-tab-info');
+
+  if (!activeTab || !box) return;
+
+  const icon = activeTab.querySelector('.tab_icon')?.outerHTML || '';
+  const title = activeTab.querySelector('.tab_btn-name')?.innerText || '';
+  const price = activeTab.querySelector('.tab-sub-text')?.innerText || '';
+
+  box.innerHTML = `
+    <div style="display:flex;align-items:center;gap:10px;">
+      ${icon}
+      <div>
+        <strong>${title}</strong><br>
+        <span>${price}</span>
+      </div>
+    </div>
+  `;
+}
+
+// init
+createTargetBox();
+updateTabInfo();
+
+// on tab click
+document.querySelectorAll('.e-tab-base').forEach(tab => {
+  tab.addEventListener('click', () => {
+    setTimeout(() => {
+      createTargetBox();
+      updateTabInfo();
+    }, 100);
+  });
 });
 </script>
