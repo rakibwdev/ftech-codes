@@ -611,7 +611,7 @@
 <!-- end four step form -->
 
 <!-- Data science Interview New From -->
-<script>
+  <script>
     document.addEventListener("webNearLoaded", function () {
   
       const dateSuffix = (date) => {
@@ -1184,7 +1184,129 @@
         errInEx.setAttribute('err_status', false);
       })
   
-      function fromSend3rdStep2(sbFrEx = false) {
+    function fromSend3rd4Step(sbFrEx = false) {
+        function track(step, message) {
+          typeof saveFormEventsActivity === 'function' ? saveFormEventsActivity(step, null, null, message) : console.error("saveFormEventsActivity is not a function");
+        }
+
+        let v2WorkExp = getWorkExperience.value;
+        let v2DomExp = getDomainRole.value;
+        let v2StarExp = getStartIn.value;
+        let v2IsStudent = getIsStudent.checked;
+        let v2IsLaidOff = getIsLaidOff.checked;
+
+  
+        let gqlErrStatus = false;
+  
+        if (!v2WorkExp) {
+          gqlErrStatus = true;
+          errWorkEx.setAttribute('err_status', gqlErrStatus);
+        }
+        if (!v2DomExp) {
+          gqlErrStatus = true;
+          errDomEx.setAttribute('err_status', gqlErrStatus);
+        }
+        if (!v2StarExp) {
+          gqlErrStatus = true;
+          errInEx.setAttribute('err_status', gqlErrStatus);
+        }
+  
+        if (!gqlErrStatus) {
+          if (gqlRequestInFlight) return;
+          gqlRequestInFlight = true;
+          const activeGqlBtn = sbFrEx ? prExSubmit : getV2Btn3;
+          setSubmitBtnState(activeGqlBtn, true);
+
+          let GQLformData = {
+            'First Name': webNearInfo2.firstName,
+            'Last Name': webNearInfo2.lastName,
+            'Email Address': webNearEmailAddress2.value,
+            "whatsAppUserConsent": webNearInfo2.whatsAppUserConsent,
+            utm_source: webNearInfo2.utm_source,
+            utm_medium: webNearInfo2.utm_medium,
+            utm_campaign: webNearInfo2.utm_campaign,
+            utm_term: webNearInfo2.utm_term,
+            gclid: webNearInfo2.gclid,
+            msclkid: webNearInfo2.msclkid,
+            "fbclid": webNearInfo2.fbclid,
+            "fbpId": webNearInfo2.fbpId,
+            "fbcId": webNearInfo2.fbcId,
+            "user_agent": webNearInfo2.userAgent,
+            "webinar-type": webNearInfo2.webinar_type,
+            user_id: visitor_id,
+            user_timezone: v_timezone,
+            v_country: v_country,
+            "page_url": webNearInfo2?.page_url,
+            phone_number_full: webNearInfo2.fPhoneNumber,
+                      phone_code: webNearInfo2.phone_code,
+            'Event Start Time': webNearInfo2.eventStartTime,
+            'Event End Time': webNearInfo2.eventEndTime,
+            'Work Experience': v2WorkExp,
+            'Role Domain': v2DomExp,
+            // 'PA Consult Time': "",
+            // 'PA Consult Time Other': "",
+            'Interview Start Time': v2StarExp,
+            'Laid Off': v2IsLaidOff,
+            'Is Student': v2IsStudent,
+            salesforce_uuid: webNearInfo2.salesforce_uuid,
+            GA_event_id: Date.now(),
+                      ...(window.updateZapPayload || {}),
+          };
+  
+          try {
+            dataLayer.push({
+              event: "wordpress_form_submitted",
+              formName: "Lead Qualifier Form",
+              page_category: "masterclass",
+              event_id: GQLformData.GA_event_id,
+            })
+          } catch (err) {
+            console.log("Data Layer add failed");
+            console.log(err);
+          }
+          let zapUrl = isPartner ? getWebhook("3409hxu") : getWebhook("3409hxu");
+  
+          if (sbFrEx) {
+            zapUrl = getWebhook("2q1a52r");
+            GQLformData.masterclass_lead_intent = Array.from(document.querySelectorAll(".per_checkBox:checked")).map(x => x.value).join(",");
+          }
+          try {
+            sendRequestZapiar(zapUrl, GQLformData, function (step, msg) {
+              track(step, msg);
+              gqlRequestInFlight = false;
+              if (step === "gql-e") {
+                setSubmitBtnState(activeGqlBtn, false);
+              }
+            }, sbFrEx);
+          } catch (e) {
+            gqlRequestInFlight = false;
+            setSubmitBtnState(activeGqlBtn, false);
+            throw e;
+          }
+        } else {
+          track("experience-e", "flow-general");
+        }
+
+                 let pushUrl = is_webinar_1o1_eligible ? getWebhook("2dvpcc1") : getWebhook("340hl1a");
+        pushUrl = isPartner ? getWebhook("340hl1a") : pushUrl;
+  //       pushUrl = location.pathname.includes('agentic-design-patterns-masterclass-and-ama') ? getWebhook("uklj8u0") : pushUrl;
+          pushUrl = (location.pathname.includes('agentic-design-patterns-masterclass-and-ama') || location.pathname.includes('alumni-exclusive-ai-career-fest-feb-2026') || location.pathname.includes('alumni-exclusive-ai-career-fest-march-2026')) ? getWebhook("uklj8u0"): pushUrl;
+        pushToEndPoint2(pushUrl, 2)
+          .then(() => {
+            step2RequestInFlight = false;
+            getThePopupFrom2.setAttribute("active_step", 4);
+            secondStepSecondRequest2();
+            track("slot");
+          }).catch(err => {
+            console.error("Error in pushToEndPoint2 (slot)", err);
+            track("slot-e", "flow-zapier");
+            step2RequestInFlight = false;
+            setSubmitBtnState(getV2Btn2, false);
+          });
+      }
+  
+  // form submited 4th step
+      function fromSend4thStep5(sbFrEx = false) {
         function track(step, message) {
           typeof saveFormEventsActivity === 'function' ? saveFormEventsActivity(step, null, null, message) : console.error("saveFormEventsActivity is not a function");
         }
@@ -1294,6 +1416,7 @@
         }
       }
   
+
       async function sendRequestZapiar(url, data, callback, sbFrEx = false) {
         try {
           if (!data || (typeof data === 'object' && Object.keys(data).length === 0) || JSON.stringify(data) === "{}") {
@@ -1461,12 +1584,13 @@
         getV2Btn3.addEventListener("click", function () {
           if (this.disabled || gqlRequestInFlight) return;
           try {
-            fromSend3rdStep2();
+            fromSend3rd4Step();
+            getThePopupFrom2.setAttribute("active_step", 4);
           } catch (error) {
             gqlRequestInFlight = false;
-            // setSubmitBtnState(this, false);
+            setSubmitBtnState(this, false);
             console.error("Error in 3rd step", error);
-            saveFormEventsActivity("gql-e", null, null, "Error in 3rd step");
+            saveFormEventsActivity("experience-e", null, null, "Error in 3rd step");
           }
         });
       }
@@ -1474,12 +1598,12 @@
         getV2Btn4.addEventListener("click", function () {
           if (this.disabled || gqlRequestInFlight) return;
           try {
-            fromSend3rdStep2();
+            fromSend4thStep5();
           } catch (error) {
             gqlRequestInFlight = false;
             setSubmitBtnState(this, false);
-            console.error("Error in 3rd step", error);
-            saveFormEventsActivity("gql-e", null, null, "Error in 3rd step");
+            console.error("Error in 4th step", error);
+            saveFormEventsActivity("gql-e", null, null, "Error in 4th step");
           }
         });
       }
@@ -1512,7 +1636,7 @@
           if (this.disabled || gqlRequestInFlight) return;
           try {
             if(document.querySelectorAll(".per_checkBox:checked").length>0){
-                fromSend3rdStep2(true);
+                fromSend4thStep5(true);
             }else{
                 if(!prExErr){
                     document.querySelector(".check_error_msg").style.display="block";
