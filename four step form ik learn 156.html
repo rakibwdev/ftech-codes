@@ -218,7 +218,7 @@
   height: 48px;
   color: #333;
   width: 100%;
-  vertical-align: middle;
+  /* vertical-align: middle; */
   margin-bottom: 10px;
   padding: 8px 12px;
   display: block;
@@ -931,7 +931,7 @@
           "v_country": v_country,
           "salesforce_uuid": webNearInfo2.salesforce_uuid,
           "phone_number_full": webNearInfo2.fPhoneNumber,
-                  "phone_code": webNearInfo2.phone_code,
+          "phone_code": webNearInfo2.phone_code,
           "is_exit_intent_popup": webNearInfo2.is_exit_intent_popup,
           "irclickid": webNearInfo2.irclickid,
           ...userIpAndBrowserInfo,
@@ -1163,13 +1163,13 @@
       const getIsStudent = getThePopupFrom2.querySelector('.v2-checkbox-is-student');
       const getIsLaidOff = getThePopupFrom2.querySelector('.v2-checkbox-is-laidoff');
 
-    //   const errWorkEx = getThePopupFrom2.querySelector('.v2_exp_fild');
-    //   const errDomEx = getThePopupFrom2.querySelector('.v2_dom_fild');
-    //   const errInEx = getThePopupFrom2.querySelector('.v2_int_fild');
+      const errWorkEx = getThePopupFrom2.querySelector('.v2_exp_fild');
+      const errDomEx = getThePopupFrom2.querySelector('.v2_dom_fild');
+      const errInEx = getThePopupFrom2.querySelector('.v2_int_fild');
 
-      const getGoal = getThePopupFrom2.querySelector('.v2_goal_fild');
-      const getWork = getThePopupFrom2.querySelector('.v2_work_fild');
-      const getAuthStatus = getThePopupFrom2.querySelector('.v2_auth_status_fild');
+      const getGoal = getThePopupFrom2.querySelector('.gql_goal_select');
+      const getWork = getThePopupFrom2.querySelector('.gql_work_select');
+      const getAuthStatus = getThePopupFrom2.querySelector('.gql_auth_status_select');
   
   
       getWorkExperience.addEventListener('change', function () {
@@ -1183,7 +1183,7 @@
       getStartIn.addEventListener('change', function () {
         errInEx.setAttribute('err_status', false);
       })
-  
+
     function fromSend3rd4Step(sbFrEx = false) {
         function track(step, message) {
           typeof saveFormEventsActivity === 'function' ? saveFormEventsActivity(step, null, null, message) : console.error("saveFormEventsActivity is not a function");
@@ -1294,8 +1294,15 @@
         pushToEndPoint2(pushUrl, 2)
           .then(() => {
             step2RequestInFlight = false;
-            getThePopupFrom2.setAttribute("active_step", 4);
-            secondStepSecondRequest2();
+            const countryRaw = String(webNearInfo2.v_country || v_country || '').toLowerCase();
+            const isiUSA = countryRaw === 'us' || countryRaw === 'bangladesh' || countryRaw.includes('united states');
+            if (isiUSA) {
+              getThePopupFrom2.setAttribute("active_step", 4);
+              secondStepSecondRequest2();
+            } else {
+              document.querySelector(".pr_yr_exp").setAttribute('show_status', false);
+              document.querySelector(".complete_message").setAttribute('show_status', true);
+            }
             track("slot");
           }).catch(err => {
             console.error("Error in pushToEndPoint2 (slot)", err);
@@ -1305,15 +1312,40 @@
           });
       }
   
+
+
+const webinarMapping = {
+  "Land a top tech company role (FAANG/tier-1)": webNearInfo2.webinar_type,
+  "Switch roles to increase compensation (same domain, better pay)": "Switch_UP",
+  "Transition into AI/ML/Agentic AI": "Switch_UP",
+  // "Transition into TPM/EM/Product Management": "Keep Initial Webinar",
+  // "Land my first tech job (fresh grad/career starter)": "Regular / Interview Prep",
+  // "Re-enter after a career break": "Keep Initial Webinar",
+  "Upskill in current role (no immediate job change)": "Agentic_AI",
+  // "Just exploring / not decided yet": "Keep Initial Webinar"
+};
+
+
+getGoal.addEventListener("change", function () {
+  const selectedGoal = this.value;
+
+  const webinarType = webinarMapping[selectedGoal] || "";
+
+  console.log("Selected Goal:", selectedGoal);
+  console.log("Webinar Type:", webinarType);
+
+  // Save globally (for next steps)
+  
+  webNearInfo2.webinar_type = webinarType;
+});
+  
+
   // form submited 4th step
       function fromSend4thStep5(sbFrEx = false) {
         function track(step, message) {
           typeof saveFormEventsActivity === 'function' ? saveFormEventsActivity(step, null, null, message) : console.error("saveFormEventsActivity is not a function");
         }
 
-        let v2WorkExp = getWorkExperience.value;
-        let v2DomExp = getDomainRole.value;
-        let v2StarExp = getStartIn.value;
         let v2IsStudent = getIsStudent.checked;
         let v2IsLaidOff = getIsLaidOff.checked;
 
@@ -1323,18 +1355,16 @@
   
         let gqlErrStatus = false;
   
-        if (!v2WorkExp) {
-          gqlErrStatus = true;
-          errWorkEx.setAttribute('err_status', gqlErrStatus);
-        }
-        if (!v2DomExp) {
-          gqlErrStatus = true;
-          errDomEx.setAttribute('err_status', gqlErrStatus);
-        }
-        if (!v2StarExp) {
-          gqlErrStatus = true;
-          errInEx.setAttribute('err_status', gqlErrStatus);
-        }
+    
+    const webinarType = window.selectedWebinarType;
+
+  if (!webinarType) {
+    console.log("No goal selected");
+    return;
+  }
+
+  console.log("Final Webinar Type:", webinarType);
+
   
         if (!gqlErrStatus) {
           if (gqlRequestInFlight) return;
@@ -1342,45 +1372,17 @@
           const activeGqlBtn = sbFrEx ? prExSubmit : getV2Btn3;
           setSubmitBtnState(activeGqlBtn, true);
 
-          let GQLformData = {
-            'First Name': webNearInfo2.firstName,
-            'Last Name': webNearInfo2.lastName,
-            'Email Address': webNearEmailAddress2.value,
-            "whatsAppUserConsent": webNearInfo2.whatsAppUserConsent,
-            utm_source: webNearInfo2.utm_source,
-            utm_medium: webNearInfo2.utm_medium,
-            utm_campaign: webNearInfo2.utm_campaign,
-            utm_term: webNearInfo2.utm_term,
-            gclid: webNearInfo2.gclid,
-            msclkid: webNearInfo2.msclkid,
-            "fbclid": webNearInfo2.fbclid,
-            "fbpId": webNearInfo2.fbpId,
-            "fbcId": webNearInfo2.fbcId,
-            "user_agent": webNearInfo2.userAgent,
-            "webinar-type": webNearInfo2.webinar_type,
-            user_id: visitor_id,
-            user_timezone: v_timezone,
-            v_country: v_country,
-            "page_url": webNearInfo2?.page_url,
-            phone_number_full: webNearInfo2.fPhoneNumber,
-                      phone_code: webNearInfo2.phone_code,
-            'Event Start Time': webNearInfo2.eventStartTime,
-            'Event End Time': webNearInfo2.eventEndTime,
-            'Work Experience': v2WorkExp,
-            'Role Domain': v2DomExp,
-            'Goal': v2Goal,
-            'Current Work Status': v2Work,
-            'Auth Status': v2AuthStatus,
-            // 'PA Consult Time': "",
-            // 'PA Consult Time Other': "",
-            'Interview Start Time': v2StarExp,
-            'Laid Off': v2IsLaidOff,
-            'Is Student': v2IsStudent,
-            salesforce_uuid: webNearInfo2.salesforce_uuid,
+            let GQLformData = {
+            user_id: visitor_id, // VERY IMPORTANT (to link with previous step)
             GA_event_id: Date.now(),
-                      ...(window.updateZapPayload || {}),
+
+            'primary_goal': v2Goal,
+            'technical_involvement': v2Work,
+            'work_authorization_status': v2AuthStatus,
+            "webinar-type": webNearInfo2.webinar_type,
+
           };
-  
+
           try {
             dataLayer.push({
               event: "wordpress_form_submitted",
@@ -1414,6 +1416,23 @@
         } else {
           track("gql-e", "flow-general");
         }
+        let pushUrl = is_webinar_1o1_eligible ? getWebhook("2dvpcc1") : getWebhook("340hl1a");
+        pushUrl = isPartner ? getWebhook("340hl1a") : pushUrl;
+        pushUrl = (location.pathname.includes('agentic-design-patterns-masterclass-and-ama') || location.pathname.includes('alumni-exclusive-ai-career-fest-feb-2026') || location.pathname.includes('alumni-exclusive-ai-career-fest-march-2026')) ? getWebhook("uklj8u0"): pushUrl;
+        pushToEndPoint2(pushUrl, 2)
+          .then(() => {
+            // After final push, show success message
+            document.querySelector(".pr_yr_exp").setAttribute('show_status', false);
+            document.querySelector(".complete_message").setAttribute('show_status', true);
+            gqlRequestInFlight = false;
+            setSubmitBtnState(getV2Btn4, false);
+            track("slot");
+          }).catch(err => {
+            console.error("Error in pushToEndPoint2 (final)", err);
+            track("slot-e", "flow-zapier");
+            gqlRequestInFlight = false;
+            setSubmitBtnState(getV2Btn4, false);
+          });
       }
   
 
@@ -1585,7 +1604,6 @@
           if (this.disabled || gqlRequestInFlight) return;
           try {
             fromSend3rd4Step();
-            getThePopupFrom2.setAttribute("active_step", 4);
           } catch (error) {
             gqlRequestInFlight = false;
             setSubmitBtnState(this, false);
