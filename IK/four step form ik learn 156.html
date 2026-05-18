@@ -192,19 +192,23 @@
   margin-top: 20px;
   gap: 26px;
 }
-.v2_from_wrapper .from_step.from_tep_3 .tr_filds {
+.v2_from_wrapper .from_step.from_tep_3 .tr_filds,
+.v2_from_wrapper .from_step.from_tep_4 .tr_filds {
   display: grid;
   grid-template-columns: 1fr;
   gap: 16px;
 }
-.v2_from_wrapper .from_step.from_tep_3 .fr_fild {
+.v2_from_wrapper .from_step.from_tep_3 .fr_fild,
+.v2_from_wrapper .from_step.from_tep_4 .fr_fild {
   display: flex;
   flex-direction: column;
 }
-.v2_from_wrapper .from_step.from_tep_3 .fr_fild .title {
+.v2_from_wrapper .from_step.from_tep_3 .fr_fild .title,
+.v2_from_wrapper .from_step.from_tep_4 .fr_fild .title {
   margin-bottom: 5px;
 }
-.v2_from_wrapper .from_step.from_tep_3 .fr_fild select {
+.v2_from_wrapper .from_step.from_tep_3 .fr_fild select,
+.v2_from_wrapper .from_step.from_tep_4 .fr_fild select {
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
@@ -223,11 +227,15 @@
   padding: 8px 12px;
   display: block;
 }
-.v2_from_wrapper .from_step.from_tep_3 .fr_fild select:focus, .v2_from_wrapper .from_step.from_tep_3 .fr_fild select:focus-visible {
+.v2_from_wrapper .from_step.from_tep_3 .fr_fild select:focus, 
+.v2_from_wrapper .from_step.from_tep_3 .fr_fild select:focus-visible,
+.v2_from_wrapper .from_step.from_tep_4 .fr_fild select:focus,
+.v2_from_wrapper .from_step.from_tep_4 .fr_fild select:focus-visible {
   outline: none;
   border-color: #3898ec;
 }
-.v2_from_wrapper .from_step.from_tep_3 .fr_check_box span {
+.v2_from_wrapper .from_step.from_tep_3 .fr_check_box span,
+.v2_from_wrapper .from_step.from_tep_4 .fr_check_box span {
   font-size: 13px;
   line-height: 16px;
   font-weight: 400;
@@ -235,20 +243,23 @@
   font-family: Inter, sans-serif;
   padding-left: 3px;
 }
-.v2_from_wrapper .from_step.from_tep_3 .fr_check_box input {
+.v2_from_wrapper .from_step.from_tep_3 .fr_check_box input,
+.v2_from_wrapper .from_step.from_tep_4 .fr_check_box input {
   border: 1px solid #ccc;
   border-radius: 2px;
   width: 12px;
   height: 12px;
 }
-.v2_from_wrapper .from_step.from_tep_3 p {
+.v2_from_wrapper .from_step.from_tep_3 p,
+.v2_from_wrapper .from_step.from_tep_4 p {
   font-family: Inter, sans-serif;
   font-size: 10px;
   font-weight: 400;
   line-height: 1.5;
   color: #9496a1;
 }
-.v2_from_wrapper .from_step.from_tep_3 .btn_container {
+.v2_from_wrapper .from_step.from_tep_3 .btn_container,
+.v2_from_wrapper .from_step.from_tep_4 .btn_container {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -327,6 +338,7 @@
 } 
 
 </style>
+
 <!-- four step form -->
 <div class="v2_from_wrapper" active_step="1">
     <div class="steps_container">
