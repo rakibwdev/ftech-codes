@@ -59,7 +59,8 @@
     let isPartner = location.pathname.startsWith("/partner/");
     window.addEventListener("DOMContentLoaded", function () {
       const getThePopupFrom2 = document.querySelector('.v2_from_wrapper');
-      const isUSA = v_country === 'Bangladesh';
+      const isUSA = v_country === 'United States';
+    //   United States
   
       const webNearFullName2 = getThePopupFrom2.querySelector('input.fr_name_fl');
       const webNearEmailAddress2 = getThePopupFrom2.querySelector('.fr_email_fl');
@@ -736,14 +737,12 @@ const webinarMapping = {
 getGoal.addEventListener("change", function () {
   const selectedGoal = this.value;
 
-  const webinarType = webinarMapping[selectedGoal] || "";
+  const goal_webinarType = webinarMapping[selectedGoal] || webinarType;
 
   console.log("Selected Goal:", selectedGoal);
-  console.log("Webinar Type:", webinarType);
-
-  // Save globally (for next steps)
+  console.log("Webinar Type:", goal_webinarType);
   
-  webNearInfo2.webinar_type = webinarType;
+  webNearInfo2.webinar_type = goal_webinarType;
 });
   
 
