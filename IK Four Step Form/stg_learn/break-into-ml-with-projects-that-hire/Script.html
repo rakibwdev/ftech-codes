@@ -578,7 +578,7 @@
         errInEx.setAttribute('err_status', false);
       })
 
-    function fromSend3rd4Step(sbFrEx = false) {
+    function fromSend3rdStep2(sbFrEx = false) {
         function track(step, message) {
           typeof saveFormEventsActivity === 'function' ? saveFormEventsActivity(step, null, null, message) : console.error("saveFormEventsActivity is not a function");
         }
@@ -1051,7 +1051,7 @@ getGoal.addEventListener("change", function () {
         getV2Btn3.addEventListener("click", function () {
           if (this.disabled || gqlRequestInFlight) return;
           try {
-            fromSend3rd4Step();
+            fromSend3rdStep2();
           } catch (error) {
             gqlRequestInFlight = false;
             setSubmitBtnState(this, false);
@@ -1102,7 +1102,7 @@ getGoal.addEventListener("change", function () {
           if (this.disabled || gqlRequestInFlight) return;
           try {
             if(document.querySelectorAll(".per_checkBox:checked").length>0){
-                fromSend3rd4Step(true);
+                fromSend3rdStep2(true);
             }else{
                 if(!prExErr){
                     document.querySelector(".check_error_msg").style.display="block";
