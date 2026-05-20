@@ -1,0 +1,82 @@
+<script>
+    const getGoal = document.querySelector('.gql_goal_select');
+    const getWork = document.querySelector('.gql_work_select');
+    const getAuthStatus = document.querySelector('.gql_auth_status_select');
+  
+const webinarMapping = {
+  "Land a top tech company role (FAANG/tier-1)": "Regular",
+  "Switch roles to increase compensation (same domain, better pay)": "Switch_UP",
+  "Transition into AI/ML/Agentic AI": "Switch_UP",
+  "Land my first tech job (fresh grad/career starter)": "Regular",
+  "Upskill in current role (no immediate job change)": "Agentic_AI",
+};
+
+  function handleFinalUI() {
+  document.querySelector(".pr_yr_exp").setAttribute('show_status', false);
+  document.querySelector(".complete_message").setAttribute('show_status', true);
+}
+
+function handleErrorUI() {
+  document.querySelector(".complete_message").setAttribute('show_status', false);
+}
+
+window.submitFourStepForm = async function ({
+  formData = {},
+  isPartner = false,
+  sbFrEx = false,
+  onSuccess = null,
+  onError = null,
+  
+} = {}) {
+
+  try {
+    if (!formData || Object.keys(formData).length === 0) {
+      throw new Error("Payload empty");
+    }
+
+    const finalData = {
+    ...formData,
+    primary_goal: getGoal?.value || "",
+    technical_involvement: getWork?.value || "",
+    work_authorization_status: getAuthStatus?.value || "",
+    webinar_type: webinarMapping[getGoal?.value] || webinarType
+    };
+
+    let zapUrl = isPartner ? getWebhook("3409hxu") : getWebhook("3409hxu");
+
+    if (sbFrEx) {
+      zapUrl = getWebhook("2q1a52r");
+    }
+
+    const response = await fetch(zapUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(finalData)
+    });
+
+    if (!response.ok) throw new Error("Zap failed");
+
+    // await handleFinalPush(finalData);
+
+    handleFinalUI();
+
+    if (typeof onSuccess === "function") onSuccess(response);
+
+  } catch (err) {
+    console.error(err);
+    handleErrorUI();
+
+    if (typeof onError === "function") onError(err);
+  }
+};
+// async function handleFinalPush(data) {
+//   let pushUrl = data.is_webinar_1o1_eligible 
+//     ? getWebhook("2dvpcc1") 
+//     : getWebhook("340hl1a");
+
+//   await pushToEndPoint2(pushUrl, data);
+// }
+
+</script>

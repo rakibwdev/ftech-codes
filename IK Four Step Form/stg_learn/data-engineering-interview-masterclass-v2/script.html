@@ -1,5 +1,4 @@
 
-<!-- Script -->
 <!-- Data Engineering Interview New From -->
 <script>
     document.addEventListener("webNearLoaded", function () {
@@ -58,7 +57,9 @@
     window.addEventListener("DOMContentLoaded", function () {
         const getThePopupFrom2 = document.querySelector('.v2_from_wrapper');
         getThePopupFrom2.querySelector(".time_zone").innerHTML = `Time Zone: ${v_timezone}`;
-
+      //   United States
+        const isUSA = v_country === 'Bangladesh';
+    
         const webNearFullName2 = getThePopupFrom2.querySelector('input.fr_name_fl');
         const webNearEmailAddress2 = getThePopupFrom2.querySelector('.fr_email_fl');
         const webNearPhoneNumber2 = getThePopupFrom2.querySelector('.fr_phone_fl');
@@ -596,17 +597,30 @@
                 }
                 let zapUrl = isPartner ? getWebhook("3409hxu") : getWebhook("3409hxu");
 
+
+
+                
                 sendRequestZapiar(
                     zapUrl,
                     GQLformData,
-                    function () { track("gql", "Success in gql step"); },
+                    function () { track("gql", "Success in gql step");
+                    
+                    if (isUSA) {
+                    document.querySelector(".complete_message").setAttribute('show_status', false);
+                    getThePopupFrom2.setAttribute("active_step", 4);
+                    secondStepSecondRequest2();
+                    } else {
+                    document.querySelector(".complete_message").setAttribute('show_status', true);
+                    }
+                    
+                     },
                     function () {
                         track("gql-e", "flow-zapier");
                         if (step3Btn) {
                             step3Btn.disabled = false;
                             step3Btn.innerHTML = step3BtnDefaultHtml;
-                        }
-                    }
+                        };},
+                     
                 );
         }
 
@@ -625,7 +639,7 @@
                 };
 
                 let response = await fetch(url, options);
-                document.querySelector(".complete_message").setAttribute('show_status', true);
+                // document.querySelector(".complete_message").setAttribute('show_status', true);
                 loadPageFild();
                 if (typeof successTrackCallback === 'function') successTrackCallback();
             } catch (error) {
@@ -739,10 +753,12 @@
         const getV2Btn1 = getThePopupFrom2.querySelector('.step_btn_1');
         const getV2Btn2 = getThePopupFrom2.querySelector('.step_btn_2');
         const getV2Btn3 = getThePopupFrom2.querySelector('.step_btn_3');
+        const getV2Btn4 = getThePopupFrom2.querySelector('.step_btn_4');
         const step3BtnDefaultHtml = getV2Btn3 ? getV2Btn3.innerHTML : "";
 
         const getV2Back2 = getThePopupFrom2.querySelector('.step_back_2');
         const getV2Back3 = getThePopupFrom2.querySelector('.step_back_3');
+        const getV2Back4 = getThePopupFrom2.querySelector('.step_back_4');
 
         if (getV2Btn1) {
             getV2Btn1.addEventListener("click", function () {
@@ -784,6 +800,37 @@
             });
         }
 
+        // step4 Submite
+        if (getV2Btn4) {
+        getV2Btn4.addEventListener("click", async function () {
+           
+            if (this.disabled) return;
+            this.disabled = true;
+
+            try {
+            await submitFourStepForm({
+                formData: webNearInfo2,
+                isPartner: isPartner,
+                sbFrEx: false,
+                onSuccess: () => {
+                console.log("Step 4 success");
+                },
+                onError: () => {
+                console.log("Step 4 error");
+                }
+            });
+
+            } catch (error) {
+            console.error("Error in 4th step", error);
+
+            this.disabled = false;
+
+            saveFormEventsActivity("gql-e", null, null, "Error in 4th step");
+            }
+        });
+        }
+
+
         if (getV2Back2) {
             getV2Back2.addEventListener("click", function () {
                 getThePopupFrom2.setAttribute("active_step", 1);
@@ -799,6 +846,12 @@
                     getV2Btn3.disabled = false;
                     getV2Btn3.innerHTML = step3BtnDefaultHtml;
                 }
+            });
+        }
+        if (getV2Back4) {
+            getV2Back4.addEventListener("click", function () {
+                getThePopupFrom2.setAttribute("active_step", 3);
+                if (getV2Btn3) getV2Btn3.disabled = false;
             });
         }
     })
