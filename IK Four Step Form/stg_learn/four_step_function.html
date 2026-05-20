@@ -11,13 +11,20 @@ const webinarMapping = {
   "Upskill in current role (no immediate job change)": "Agentic_AI",
 };
 
-  function handleFinalUI() {
-  document.querySelector(".pr_yr_exp").setAttribute('show_status', false);
-  document.querySelector(".complete_message").setAttribute('show_status', true);
+ function handleFinalUI() {
+  document.querySelectorAll(".pr_yr_exp").forEach(el => {
+    el.setAttribute('show_status', false);
+  });
+
+  document.querySelectorAll(".complete_message").forEach(el => {
+    el.setAttribute('show_status', true);
+  });
 }
 
 function handleErrorUI() {
-  document.querySelector(".complete_message").setAttribute('show_status', false);
+  document.querySelectorAll(".complete_message").forEach(el => {
+    el.setAttribute('show_status', false);
+  });
 }
 
 window.submitFourStepForm = async function ({
