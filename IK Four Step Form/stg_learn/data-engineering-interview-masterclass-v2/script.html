@@ -57,8 +57,6 @@
     window.addEventListener("DOMContentLoaded", function () {
         const getThePopupFrom2 = document.querySelector('.v2_from_wrapper');
         getThePopupFrom2.querySelector(".time_zone").innerHTML = `Time Zone: ${v_timezone}`;
-      //   United States Step 4
-        const isUSA = v_country === 'Bangladesh';
     
         const webNearFullName2 = getThePopupFrom2.querySelector('input.fr_name_fl');
         const webNearEmailAddress2 = getThePopupFrom2.querySelector('.fr_email_fl');
@@ -134,11 +132,11 @@
             inviteStartTime: "",
             inviteEndTime: "",
         //    Step 4
-            Work Experience: "",
-            Role Domain: "",
-            Interview Start Time: "",
-            Is Student: false,
-            Laid Off: false,
+            WorkExperience: "",
+            RoleDomain: "",
+            InterviewStartTime: "",
+            IsStudent: false,
+            LaidOff: false,
 
         };
 
@@ -530,30 +528,30 @@
             step3Btn.disabled = true;
             step3Btn.innerHTML = "Please wait...";
             
-            // Step 4
             let v2WorkExp = getWorkExperience.value;
             let v2DomExp = getDomainRole.value;
             let v2StarExp = getStartIn.value;
             let v2IsStudent = getIsStudent.checked;
             let v2IsLaidOff = getIsLaidOff.checked;
-
-            webNearInfo2.Work Experience = v2WorkExp;
-            webNearInfo2.Role Domain = v2DomExp;
-            webNearInfo2.Interview Start Time = v2StarExp;
-            webNearInfo2.Is Student = v2IsStudent;
-            webNearInfo2.Laid Off = v2IsLaidOff;
+   
+            // Step 4
+            webNearInfo2.WorkExperience = v2WorkExp;
+            webNearInfo2.RoleDomain = v2DomExp;
+            webNearInfo2.InterviewStartTime = v2StarExp;
+            webNearInfo2.IsStudent = v2IsStudent;
+            webNearInfo2.LaidOff = v2IsLaidOff;
 
             let gqlErrStatus = false;
 
-            if (!webNearInfo2.v2WorkExp) {
+            if (!v2WorkExp) {
                 gqlErrStatus = true;
                 errWorkEx.setAttribute('err_status', gqlErrStatus);
             }
-            if (!webNearInfo2.v2DomExp) {
+            if (!v2DomExp) {
                 gqlErrStatus = true;
                 errDomEx.setAttribute('err_status', gqlErrStatus);
             }
-            if (!webNearInfo2.v2StarExp) {
+            if (!v2StarExp) {
                 gqlErrStatus = true;
                 errInEx.setAttribute('err_status', gqlErrStatus);
             }
@@ -589,14 +587,13 @@
 					phone_code: webNearInfo2.phone_code,
                     'Event Start Time': webNearInfo2.eventStartTime,
                     'Event End Time': webNearInfo2.eventEndTime,
-                     // step 4
-                    'Work Experience': webNearInfo2.v2WorkExp,
-                    'Role Domain': webNearInfo2.v2DomExp,
+                    'Work Experience': v2WorkExp,
+                    'Role Domain': v2DomExp,
                     // 'PA Consult Time': "",
                     // 'PA Consult Time Other': "",
-                    'Interview Start Time': webNearInfo2.v2StarExp,
-                    'Laid Off': webNearInfo2.v2IsLaidOff,
-                    'Is Student': webNearInfo2.v2IsStudent,
+                    'Interview Start Time': v2StarExp,
+                    'Laid Off': v2IsLaidOff,
+                    'Is Student': v2IsStudent,
                     salesforce_uuid: webNearInfo2.salesforce_uuid,
                     GA_event_id: Date.now(),
          				   ...(window.updateZapPayload || {}),
@@ -618,18 +615,7 @@
                 sendRequestZapiar(
                     zapUrl,
                     GQLformData,
-                    function () { track("gql", "Success in gql step");
-                    
-                    // Step 4
-                    if (isUSA) {
-                    document.querySelector(".complete_message").setAttribute('show_status', false);
-                    getThePopupFrom2.setAttribute("active_step", 4);
-                    secondStepSecondRequest2();
-                    } else {
-                    document.querySelector(".complete_message").setAttribute('show_status', true);
-                    }
-
-                     },
+                    function () { track("gql", "Success in gql step");},
                     function () {
                         track("gql-e", "flow-zapier");
                         if (step3Btn) {
@@ -656,6 +642,7 @@
 
                 let response = await fetch(url, options);
                 // Step 4
+                 checkUsa(isUSA);
                 // document.querySelector(".complete_message").setAttribute('show_status', true);
                 loadPageFild();
                 if (typeof successTrackCallback === 'function') successTrackCallback();
@@ -830,10 +817,10 @@
                 isPartner: isPartner,
                 sbFrEx: false,
                 onSuccess: () => {
-                console.log("Step 4 success");
+                console.log("Step four success");
                 },
                 onError: () => {
-                console.log("Step 4 error");
+                console.log("Step four error");
                 }
             });
 

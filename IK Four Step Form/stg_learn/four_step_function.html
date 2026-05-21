@@ -11,21 +11,28 @@
         "Land my first tech job (fresh grad/career starter)": "Regular",
         "Upskill in current role (no immediate job change)": "Agentic_AI",
       };
+      
+    //   United States
+      window.isUSA = v_country === 'Bangladesh';
+      const completeMessages = document.querySelectorAll(".complete_message");
+
+      window.checkUsa = function(isUSA) {
+      if (isUSA) {
+        completeMessages.forEach(el => { el.setAttribute('show_status', false);});
+        document.querySelectorAll('.v2_from_wrapper').forEach(el => { el.setAttribute("active_step", 4);});
+      } else {
+        completeMessages.forEach(el => { el.setAttribute('show_status', true);});
+      }
+      }
 
       function handleFinalUI() {
-        document.querySelectorAll(".pr_yr_exp").forEach(el => {
-          el.setAttribute('show_status', false);
-        });
+        document.querySelectorAll(".pr_yr_exp").forEach(el => { el.setAttribute('show_status', false);});
 
-        document.querySelectorAll(".complete_message").forEach(el => {
-          el.setAttribute('show_status', true);
-        });
+        completeMessages.forEach(el => { el.setAttribute('show_status', true)});
       }
 
       function handleErrorUI() {
-        document.querySelectorAll(".complete_message").forEach(el => {
-          el.setAttribute('show_status', false);
-        });
+        completeMessages.forEach(el => { el.setAttribute('show_status', false); });
       }
 
       window.submitFourStepForm = async function ({
@@ -41,14 +48,41 @@
           if (!formData || Object.keys(formData).length === 0) {
             throw new Error("Payload empty");
           }
-      console.log(getGoal, getWork,getAuthStatus);
 
           const finalData = {
-          ...formData,
-          primary_goal: getGoal?.value || "",
-          technical_involvement: getWork?.value || "",
-          work_authorization_status: getAuthStatus?.value || "",
-          webinar_type: webinarMapping[getGoal?.value] || webinarType
+                'First Name': formData.firstName,
+                'Last Name': formData.lastName,
+                'Email Address': formData.email,
+                utm_source: formData.utm_source,
+                utm_medium: formData.utm_medium,
+                utm_campaign: formData.utm_campaign,
+                utm_term: formData.utm_term,
+                gclid: formData.gclid,
+                msclkid: formData.msclkid,
+                "fbclid": formData.fbclid,
+                "fbpId": formData.fbpId,
+                "fbcId": formData.fbcId,
+                "webinar-type": formData.webinar_type,
+                user_id: visitor_id,
+                user_timezone: v_timezone,
+                v_country: v_country,
+                "page_url": formData?.page_url,
+                phone_number_full: formData.fPhoneNumber,
+                phone_code: formData.phone_code,
+                'Event Start Time': formData.eventStartTime,
+                'Event End Time': formData.eventEndTime,
+                'Work Experience': formData.WorkExperience,
+                'Role Domain': formData.RoleDomain,
+                'Interview Start Time': formData.InterviewStartTime,
+                'Laid Off': formData.LaidOff,
+                'Is Student': formData.IsStudent,
+                salesforce_uuid: formData.salesforce_uuid,
+                GA_event_id: Date.now(),
+                "primary_goal": getGoal?.value || "",
+                "technical_involvement": getWork?.value || "",
+                "work_authorization_status": getAuthStatus?.value || "",
+                "webinar-type": webinarMapping[getGoal?.value] || webinarType,
+                ...(window.updateZapPayload || {}),
           };
 
           let zapUrl = isPartner ? getWebhook("3409hxu") : getWebhook("3409hxu");
@@ -67,8 +101,6 @@
 
           if (!response.ok) throw new Error("Zap failed");
 
-          // await handleFinalPush(finalData);
-
           handleFinalUI();
 
           if (typeof onSuccess === "function") onSuccess(response);
@@ -80,12 +112,5 @@
           if (typeof onError === "function") onError(err);
         }
       };
-      // async function handleFinalPush(data) {
-      //   let pushUrl = data.is_webinar_1o1_eligible 
-      //     ? getWebhook("2dvpcc1") 
-      //     : getWebhook("340hl1a");
-
-      //   await pushToEndPoint2(pushUrl, data);
-      // }
   });
 </script>
