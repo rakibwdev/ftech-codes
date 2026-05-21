@@ -133,12 +133,12 @@
             eventEndTime: "",
             inviteStartTime: "",
             inviteEndTime: "",
-        //    step 4
-            v2WorkExp: "",
-            v2DomExp: "",
-            v2StarExp: "",
-            v2IsStudent: false,
-            v2IsLaidOff: false,
+        //    Step 4
+            Work Experience: "",
+            Role Domain: "",
+            Interview Start Time: "",
+            Is Student: false,
+            Laid Off: false,
 
         };
 
@@ -530,12 +530,18 @@
             step3Btn.disabled = true;
             step3Btn.innerHTML = "Please wait...";
             
-            // step 4
-            webNearInfo2.v2WorkExp = getWorkExperience.value;
-            webNearInfo2.v2DomExp = getDomainRole.value;
-            webNearInfo2.v2StarExp = getStartIn.value;
-            webNearInfo2.v2IsStudent = getIsStudent.checked;
-            webNearInfo2.v2IsLaidOff = getIsLaidOff.checked;
+            // Step 4
+            let v2WorkExp = getWorkExperience.value;
+            let v2DomExp = getDomainRole.value;
+            let v2StarExp = getStartIn.value;
+            let v2IsStudent = getIsStudent.checked;
+            let v2IsLaidOff = getIsLaidOff.checked;
+
+            webNearInfo2.Work Experience = v2WorkExp;
+            webNearInfo2.Role Domain = v2DomExp;
+            webNearInfo2.Interview Start Time = v2StarExp;
+            webNearInfo2.Is Student = v2IsStudent;
+            webNearInfo2.Laid Off = v2IsLaidOff;
 
             let gqlErrStatus = false;
 
