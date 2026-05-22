@@ -1,5 +1,5 @@
 <style>
-.v2_from_wrapper p {
+    .v2_from_wrapper p {
   margin: 0px;
   padding: 0px;
 }
@@ -192,23 +192,19 @@
   margin-top: 20px;
   gap: 26px;
 }
-.v2_from_wrapper .from_step.from_tep_3 .tr_filds,
-.v2_from_wrapper .from_step.from_tep_4 .tr_filds {
+.v2_from_wrapper .from_step.from_tep_3 .tr_filds {
   display: grid;
   grid-template-columns: 1fr;
   gap: 16px;
 }
-.v2_from_wrapper .from_step.from_tep_3 .fr_fild,
-.v2_from_wrapper .from_step.from_tep_4 .fr_fild {
+.v2_from_wrapper .from_step.from_tep_3 .fr_fild {
   display: flex;
   flex-direction: column;
 }
-.v2_from_wrapper .from_step.from_tep_3 .fr_fild .title,
-.v2_from_wrapper .from_step.from_tep_4 .fr_fild .title {
+.v2_from_wrapper .from_step.from_tep_3 .fr_fild .title {
   margin-bottom: 5px;
 }
-.v2_from_wrapper .from_step.from_tep_3 .fr_fild select,
-.v2_from_wrapper .from_step.from_tep_4 .fr_fild select {
+.v2_from_wrapper .from_step.from_tep_3 .fr_fild select {
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
@@ -222,20 +218,16 @@
   height: 48px;
   color: #333;
   width: 100%;
-  /* vertical-align: middle; */
+  vertical-align: middle;
   margin-bottom: 10px;
   padding: 8px 12px;
   display: block;
 }
-.v2_from_wrapper .from_step.from_tep_3 .fr_fild select:focus, 
-.v2_from_wrapper .from_step.from_tep_3 .fr_fild select:focus-visible,
-.v2_from_wrapper .from_step.from_tep_4 .fr_fild select:focus,
-.v2_from_wrapper .from_step.from_tep_4 .fr_fild select:focus-visible {
+.v2_from_wrapper .from_step.from_tep_3 .fr_fild select:focus, .v2_from_wrapper .from_step.from_tep_3 .fr_fild select:focus-visible {
   outline: none;
   border-color: #3898ec;
 }
-.v2_from_wrapper .from_step.from_tep_3 .fr_check_box span,
-.v2_from_wrapper .from_step.from_tep_4 .fr_check_box span {
+.v2_from_wrapper .from_step.from_tep_3 .fr_check_box span {
   font-size: 13px;
   line-height: 16px;
   font-weight: 400;
@@ -243,23 +235,20 @@
   font-family: Inter, sans-serif;
   padding-left: 3px;
 }
-.v2_from_wrapper .from_step.from_tep_3 .fr_check_box input,
-.v2_from_wrapper .from_step.from_tep_4 .fr_check_box input {
+.v2_from_wrapper .from_step.from_tep_3 .fr_check_box input {
   border: 1px solid #ccc;
   border-radius: 2px;
   width: 12px;
   height: 12px;
 }
-.v2_from_wrapper .from_step.from_tep_3 p,
-.v2_from_wrapper .from_step.from_tep_4 p {
+.v2_from_wrapper .from_step.from_tep_3 p {
   font-family: Inter, sans-serif;
   font-size: 10px;
   font-weight: 400;
   line-height: 1.5;
   color: #9496a1;
 }
-.v2_from_wrapper .from_step.from_tep_3 .btn_container,
-.v2_from_wrapper .from_step.from_tep_4 .btn_container {
+.v2_from_wrapper .from_step.from_tep_3 .btn_container {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -270,34 +259,21 @@
   background-color: #194bac;
 }
 .v2_from_wrapper[active_step="1"] .from_step.from_tep_2,
-.v2_from_wrapper[active_step="1"] .from_step.from_tep_3,
-.v2_from_wrapper[active_step="1"] .from_step.from_tep_4 {
+.v2_from_wrapper[active_step="1"] .from_step.from_tep_3 {
   display: none;
 }
 .v2_from_wrapper[active_step="2"] .steps_container .step_indicator.step_indicator_2 {
   background-color: #194bac;
 }
 .v2_from_wrapper[active_step="2"] .from_step.from_tep_1,
-.v2_from_wrapper[active_step="2"] .from_step.from_tep_3,
-.v2_from_wrapper[active_step="2"] .from_step.from_tep_4 {
+.v2_from_wrapper[active_step="2"] .from_step.from_tep_3 {
   display: none;
 }
-
 .v2_from_wrapper[active_step="3"] .steps_container .step_indicator.step_indicator_3 {
   background-color: #194bac;
 }
-
 .v2_from_wrapper[active_step="3"] .from_step.from_tep_1,
-.v2_from_wrapper[active_step="3"] .from_step.from_tep_2,
-.v2_from_wrapper[active_step="3"] .from_step.from_tep_4 {
-  display: none;
-}
-.v2_from_wrapper[active_step="4"] .steps_container .step_indicator.step_indicator_4 {
-  background-color: #194bac;
-}
-.v2_from_wrapper[active_step="4"] .from_step.from_tep_1,
-.v2_from_wrapper[active_step="4"] .from_step.from_tep_2,
-.v2_from_wrapper[active_step="4"] .from_step.from_tep_3 {
+.v2_from_wrapper[active_step="3"] .from_step.from_tep_2 {
   display: none;
 }
 
@@ -339,13 +315,12 @@
 
 </style>
 
-<!-- html -->
- <div class="v2_from_wrapper" active_step="1">
+<div class="v2_from_wrapper" active_step="1">
     <div class="steps_container">
         <div class="step_indicator step_indicator_1"></div>
         <div class="step_indicator step_indicator_2"></div>
         <div class="step_indicator step_indicator_3"></div>
-        <div class="step_indicator step_indicator_4"></div> // Step 4
+       <div class="step_indicator step_indicator_4"></div> // Step 4
 
     </div>
     <div class="from_container">
@@ -364,16 +339,18 @@
   
             <label class="fr_fild v2_phone_number " err_status="false">
                 <span class="title">Contact Number</span>
-                <input type="tel" placeholder="Enter phone number" class="fr_phone_fl">
+                <input type="tel" placeholder="Enter number" class="fr_phone_fl">
                 <span class="err_fild"><b>ⓘ</b> Please enter valid number</span>
-                <p class="message" style="display: none"><b>ⓘ</b> Used to send reminder for webinar</p>
+                <p class="message" style="display:none"><b>ⓘ</b> Used to send reminder for webinar</p>
             </label>
+            
             
             <div class="fr_acceptance">
             <input checked class="fr_in_fild" id="Whatsapp-User-Consent" type="checkbox" class="whatsapp-consent">
-            <label for="Whatsapp-User-Consent">I wish to receive further updates and confirmation via Whatsapp</label>
+            <label for="Whatsapp-User-Consent">I agree to receive updates and promotional messages via WhatsApp</label>
            </div>
 
+            
   
             <p>By sharing your contact details, you agree to our <a href="/privacy-policy" target="_blank">privacy policy</a>.</p>
   
@@ -487,7 +464,7 @@
                 </div>
             </div>
             <div class="btn_container">
-                <button class="step_btn step_back step_back_2" data-click-id="v-two-form-second-back">Back</button>
+                <button class="step_btn step_back step_back_2" id="v-two-form-second-back">Back</button>
                 <button class="step_btn step_btn_2">Proceed</button>
             </div>
         </div>
@@ -563,11 +540,12 @@
                 </label>
             </div>
             <div class="btn_container">
-                <button class="step_btn step_back step_back_3" data-click-id="v-two-form-third-back">Back</button>
+                <button class="step_btn step_back step_back_3" id="v-two-form-third-back">Back</button>
                 <button class="step_btn step_btn_3">Submit</button>
             </div>
         </div>
-                <!-- Step 4 -->
+
+                        <!-- Step 4 -->
         <div class="from_step from_tep_4">
             <div class="tr_filds">
                     <label class="fr_fild v2_goal_fild" err_status="false">
@@ -618,5 +596,6 @@
                 <button class="step_btn step_btn_4">Submit</button>
             </div>
             </div>
+
     </div>
   </div>
