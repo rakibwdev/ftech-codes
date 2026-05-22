@@ -91,6 +91,11 @@
             zapUrl = getWebhook("2q1a52r");
           }
 
+          // Api send stop
+            console.log("API Temporary disabled", finalData);
+            handleFinalUI();
+            return;
+
           const response = await fetch(zapUrl, {
             method: "POST",
             headers: {
