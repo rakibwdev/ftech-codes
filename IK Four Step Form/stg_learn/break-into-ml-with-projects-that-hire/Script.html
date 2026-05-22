@@ -100,7 +100,7 @@
       const getV2Btn1 = getThePopupFrom2.querySelector('.step_btn_1');
       const getV2Btn2 = getThePopupFrom2.querySelector('.step_btn_2');
       const getV2Btn3 = getThePopupFrom2.querySelector('.step_btn_3');
-      const getV2Btn4 = getThePopupFrom2.querySelector('.step_btn_4');
+      const getV2Btn4 = getThePopupFrom2.querySelector('.step_btn_4'); // Step 4
       const prExSubmit = document.querySelector('.pr_yr_exp_submit_button');
   
       document.querySelector(".data_web_near_close").addEventListener("click", function () {
@@ -155,15 +155,17 @@
         wr__region: "",
         wr__city: "",
         irclickid: "",
-        v2WorkExp: "",
-        v2DomExp: "",
-        v2StarExp: "",
-        v2IsStudent: "",
-        v2IsLaidOff: "",
+       
         eventStartTime: "",
         eventEndTime: "",
         inviteStartTime: "",
         inviteEndTime: "",
+            //    Step 4
+        WorkExperience: "",
+        RoleDomain: "",
+        InterviewStartTime: "",
+        IsStudent: false,
+        LaidOff: false,
       };
   
       //check regex
@@ -583,24 +585,30 @@
           typeof saveFormEventsActivity === 'function' ? saveFormEventsActivity(step, null, null, message) : console.error("saveFormEventsActivity is not a function");
         }
 
-         webNearInfo2.v2WorkExp = getWorkExperience.value;
-         webNearInfo2.v2DomExp = getDomainRole.value;
-        webNearInfo2.v2StarExp = getStartIn.value;
-        webNearInfo2.v2IsStudent = getIsStudent.checked;
-        webNearInfo2.v2IsLaidOff = getIsLaidOff.checked;
-
+            let v2WorkExp = getWorkExperience.value;
+            let v2DomExp = getDomainRole.value;
+            let v2StarExp = getStartIn.value;
+            let v2IsStudent = getIsStudent.checked;
+            let v2IsLaidOff = getIsLaidOff.checked;
+   
+            // Step 4
+            webNearInfo2.WorkExperience = v2WorkExp;
+            webNearInfo2.RoleDomain = v2DomExp;
+            webNearInfo2.InterviewStartTime = v2StarExp;
+            webNearInfo2.IsStudent = v2IsStudent;
+            webNearInfo2.LaidOff = v2IsLaidOff;
   
         let gqlErrStatus = false;
   
-        if (!webNearInfo2.v2WorkExp) {
+        if (!v2WorkExp) {
           gqlErrStatus = true;
           errWorkEx.setAttribute('err_status', gqlErrStatus);
         }
-        if (!webNearInfo2.v2DomExp) {
+        if (!v2DomExp) {
           gqlErrStatus = true;
           errDomEx.setAttribute('err_status', gqlErrStatus);
         }
-        if (!webNearInfo2.v2StarExp) {
+        if (!v2StarExp) {
           gqlErrStatus = true;
           errInEx.setAttribute('err_status', gqlErrStatus);
         }
@@ -636,13 +644,13 @@
                       phone_code: webNearInfo2.phone_code,
             'Event Start Time': webNearInfo2.eventStartTime,
             'Event End Time': webNearInfo2.eventEndTime,
-            'Work Experience': webNearInfo2.v2WorkExp,
-            'Role Domain': webNearInfo2.v2DomExp,
+            'Work Experience': v2WorkExp,
+            'Role Domain': v2DomExp,
             // 'PA Consult Time': "",
             // 'PA Consult Time Other': "",
-            'Interview Start Time': webNearInfo2.v2StarExp,
-            'Laid Off': webNearInfo2.v2IsLaidOff,
-            'Is Student': webNearInfo2.v2IsStudent,
+            'Interview Start Time': v2StarExp,
+            'Laid Off': v2IsLaidOff,
+            'Is Student': v2IsStudent,
             salesforce_uuid: webNearInfo2.salesforce_uuid,
             GA_event_id: Date.now(),
                       ...(window.updateZapPayload || {}),
@@ -673,15 +681,6 @@
                 setSubmitBtnState(activeGqlBtn, false);
                 return;
               }
-
-                if (isUSA) {
-                document.querySelector(".complete_message").setAttribute('show_status', false);
-                getThePopupFrom2.setAttribute("active_step", 4);
-                secondStepSecondRequest2();
-              } else {
-                document.querySelector(".complete_message").setAttribute('show_status', true);
-              }
-
             }, sbFrEx);
           } catch (e) {
             gqlRequestInFlight = false;
@@ -745,145 +744,6 @@ getGoal.addEventListener("change", function () {
   webNearInfo2.webinar_type = goal_webinarType;
 });
   
-
-  // form submited 4th step
-      function fromSend4thStep5(sbFrEx = false) {
-        function track(step, message) {
-          typeof saveFormEventsActivity === 'function' ? saveFormEventsActivity(step, null, null, message) : console.error("saveFormEventsActivity is not a function");
-        }
-
-        let v2IsStudent = getIsStudent.checked;
-        let v2IsLaidOff = getIsLaidOff.checked;
-
-        let v2Goal = getGoal.value;
-        let v2Work = getWork.value;
-        let v2AuthStatus = getAuthStatus.value;
-  
-        let gqlErrStatus = false;
-  
-    
-    // const webinarType = window.selectedWebinarType;
-
-//   if (!webinarType) {
-//     console.log("No goal selected");
-//     return;
-//   }
-
-  console.log("Final Webinar Type:", webinarType);
-
-  
-        if (!gqlErrStatus) {
-          if (gqlRequestInFlight) return;
-          gqlRequestInFlight = true;
-          const activeGqlBtn = sbFrEx ? prExSubmit : getV2Btn3;
-          setSubmitBtnState(activeGqlBtn, true);
-
-        //     let GQLformData = {
-        //     user_id: visitor_id,
-        //     GA_event_id: Date.now(),
-
-        //     'primary_goal': v2Goal,
-        //     'technical_involvement': v2Work,
-        //     'work_authorization_status': v2AuthStatus,
-        //     "webinar-type": webNearInfo2.webinar_type,
-        //   };
-
-
-        let GQLformData = {
-            'First Name': webNearInfo2.firstName,
-            'Last Name': webNearInfo2.lastName,
-            'Email Address': webNearEmailAddress2.value,
-            "whatsAppUserConsent": webNearInfo2.whatsAppUserConsent,
-            utm_source: webNearInfo2.utm_source,
-            utm_medium: webNearInfo2.utm_medium,
-            utm_campaign: webNearInfo2.utm_campaign,
-            utm_term: webNearInfo2.utm_term,
-            gclid: webNearInfo2.gclid,
-            msclkid: webNearInfo2.msclkid,
-            "fbclid": webNearInfo2.fbclid,
-            "fbpId": webNearInfo2.fbpId,
-            "fbcId": webNearInfo2.fbcId,
-            "user_agent": webNearInfo2.userAgent,
-            "webinar-type": webNearInfo2.webinar_type,
-            user_id: visitor_id,
-            user_timezone: v_timezone,
-            v_country: v_country,
-            "page_url": webNearInfo2?.page_url,
-            phone_number_full: webNearInfo2.fPhoneNumber,
-                      phone_code: webNearInfo2.phone_code,
-            'Event Start Time': webNearInfo2.eventStartTime,
-            'Event End Time': webNearInfo2.eventEndTime,
-            'Work Experience': webNearInfo2.v2WorkExp,
-            'Role Domain': webNearInfo2.v2DomExp,
-            'primary_goal': v2Goal,
-            'technical_involvement': v2Work,
-            'work_authorization_status': v2AuthStatus,
-            // 'PA Consult Time': "",
-            // 'PA Consult Time Other': "",
-            'Interview Start Time': webNearInfo2.v2StarExp,
-            'Laid Off': webNearInfo2.v2IsLaidOff,
-            'Is Student': webNearInfo2.v2IsStudent,
-            salesforce_uuid: webNearInfo2.salesforce_uuid,
-            GA_event_id: Date.now(),
-                      ...(window.updateZapPayload || {}),
-          };
-
-          try {
-            dataLayer.push({
-              event: "wordpress_form_submitted",
-              formName: "Lead Qualifier Form",
-              page_category: "masterclass",
-              event_id: GQLformData.GA_event_id,
-            })
-          } catch (err) {
-            console.log("Data Layer add failed");
-            console.log(err);
-          }
-          let zapUrl = isPartner ? getWebhook("3409hxu") : getWebhook("3409hxu");
-  
-          if (sbFrEx) {
-            zapUrl = getWebhook("2q1a52r");
-            GQLformData.masterclass_lead_intent = Array.from(document.querySelectorAll(".per_checkBox:checked")).map(x => x.value).join(",");
-          }
-          try {
-            sendRequestZapiar(zapUrl, GQLformData, function (step, msg) {
-              track(step, msg);
-              gqlRequestInFlight = false;
-              if (step === "gql-e") {
-                setSubmitBtnState(activeGqlBtn, false);
-                // return;
-              }
-            //   document.querySelector(".complete_message").setAttribute('show_status', true);
-
-            }, sbFrEx);
-          } catch (e) {
-            gqlRequestInFlight = false;
-            setSubmitBtnState(activeGqlBtn, false);
-            throw e;
-          }
-        } else {
-          track("gql-e", "flow-general");
-        }
-        let pushUrl = is_webinar_1o1_eligible ? getWebhook("2dvpcc1") : getWebhook("340hl1a");
-        pushUrl = isPartner ? getWebhook("340hl1a") : pushUrl;
-        pushUrl = (location.pathname.includes('agentic-design-patterns-masterclass-and-ama') || location.pathname.includes('alumni-exclusive-ai-career-fest-feb-2026') || location.pathname.includes('alumni-exclusive-ai-career-fest-march-2026')) ? getWebhook("uklj8u0"): pushUrl;
-        pushToEndPoint2(pushUrl, 2)
-          .then(() => {
-            // After final push, show success message
-            document.querySelector(".pr_yr_exp").setAttribute('show_status', false);
-            document.querySelector(".complete_message").setAttribute('show_status', true);
-            gqlRequestInFlight = false;
-            setSubmitBtnState(getV2Btn4, false);
-            track("slot");
-          }).catch(err => {
-            console.error("Error in pushToEndPoint2 (final)", err);
-            track("slot-e", "flow-zapier");
-            gqlRequestInFlight = false;
-            setSubmitBtnState(getV2Btn4, false);
-          });
-      }
-  
-
       async function sendRequestZapiar(url, data, callback, sbFrEx = false) {
         try {
           if (!data || (typeof data === 'object' && Object.keys(data).length === 0) || JSON.stringify(data) === "{}") {
@@ -923,6 +783,8 @@ getGoal.addEventListener("change", function () {
             document.querySelector(".pr_yr_exp").setAttribute('show_status', true);
           } else {
             document.querySelector(".pr_yr_exp").setAttribute('show_status', false);
+            // Step 4
+                 checkUsa(isUSA);
             // document.querySelector(".complete_message").setAttribute('show_status', true);
           }
           if (typeof callback === 'function') {
@@ -1021,7 +883,7 @@ getGoal.addEventListener("change", function () {
   
       const getV2Back2 = getThePopupFrom2.querySelector('.step_back_2');
       const getV2Back3 = getThePopupFrom2.querySelector('.step_back_3');
-      const getV2Back4 = getThePopupFrom2.querySelector('.step_back_4');
+      const getV2Back4 = getThePopupFrom2.querySelector('.step_back_4');//Step 4
 
       function resetAllSubmitButtonsAndFlight() {
         step1RequestInFlight = false;
@@ -1060,19 +922,36 @@ getGoal.addEventListener("change", function () {
           }
         });
       }
-      if (getV2Btn4) {
-        getV2Btn4.addEventListener("click", function () {
-          if (this.disabled || gqlRequestInFlight) return;
-          try {
-            fromSend4thStep5();
-          } catch (error) {
-            gqlRequestInFlight = false;
-            setSubmitBtnState(this, false);
+
+        // Step 4 Submite
+        if (getV2Btn4) {
+        getV2Btn4.addEventListener("click", async function () {
+           
+            if (this.disabled) return;
+            this.disabled = true;
+
+            try {
+            await submitFourStepForm({
+                formData: webNearInfo2,
+                isPartner: isPartner,
+                sbFrEx: false,
+                onSuccess: () => {
+                console.log("Step four success");
+                },
+                onError: () => {
+                console.log("Step four error");
+                }
+            });
+
+            } catch (error) {
             console.error("Error in 4th step", error);
+
+            this.disabled = false;
+
             saveFormEventsActivity("gql-e", null, null, "Error in 4th step");
-          }
+            }
         });
-      }
+        }
 
       if (getV2Back2) {
         getV2Back2.addEventListener("click", function () {
@@ -1086,6 +965,7 @@ getGoal.addEventListener("change", function () {
           resetAllSubmitButtonsAndFlight();
         });
       }
+              // Step 4
       if (getV2Back4) {
         getV2Back4.addEventListener("click", function () {
           getThePopupFrom2.setAttribute("active_step", 3);
