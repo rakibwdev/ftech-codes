@@ -1,0 +1,688 @@
+<style>
+.v2_from_wrapper p {
+    margin: 0px;
+    padding: 0px;
+  }
+
+  .v2_from_wrapper .from_step .title {
+    color: #2e333b;
+    font-family: Inter, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 24px;
+  }
+  .v2_from_wrapper .from_step .err_fild {
+    color: #d14040;
+    font-family: Inter, sans-serif;
+    font-size: 12px;
+  }
+  .v2_from_wrapper .from_step .fr_fild[err_status=false] .err_fild {
+    display: none;
+  }
+  .v2_from_wrapper .from_step .step_btn {
+    text-align: center;
+    background-color: #194bac;
+    border-radius: 8px;
+    width: 50%;
+    font-family: Inter, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    line-height: inherit;
+    cursor: pointer;
+    padding: 9px 15px;
+    border: 1px solid #194bac;
+    line-height: 21px;
+  }
+  .v2_from_wrapper .from_step .step_btn.step_back {
+    background-color: white;
+    color: #194bac;
+  }
+  .v2_from_wrapper .from_step.from_step_2 {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    /* padding-top: 15px; */
+  }
+  @media (max-width: 767px) {
+    .v2_from_wrapper .from_step.from_step_2 {
+      padding-top: 0px;
+    }
+  }
+  .v2_from_wrapper .from_step.from_step_2 .fr_fild {
+    display: flex;
+    flex-direction: column;
+  }
+  .v2_from_wrapper .from_step.from_step_2 .fr_fild .title {
+    margin-bottom: 5px;
+  }
+  .v2_from_wrapper .from_step.from_step_2 .fr_fild input {
+    color: black;
+    border: 1px solid #e3e7ec;
+    border-radius: 8px;
+    font-family: Inter, sans-serif;
+    font-size: 16px;
+    width: 100%;
+    height: 38px;
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    box-sizing: border-box;
+  }
+  .v2_from_wrapper .from_step.from_step_2 .fr_fild input:focus, .v2_from_wrapper .from_step.from_step_2 .fr_fild input:focus-visible {
+    outline: none;
+  }
+  .v2_from_wrapper .from_step.from_step_2 .fr_fild.v2_phone_number input {
+    padding-left: 52px;
+  }
+  .v2_from_wrapper .from_step.from_step_2 p {
+    font-family: Inter, sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #9496a1;
+  }
+  .v2_from_wrapper .from_step.from_step_2 p a {
+    color: #3996d2;
+    font-weight: 600;
+    text-decoration: none;
+    font-style: italic;
+  }
+  .v2_from_wrapper .from_step.from_step_2 > p {
+    margin-top: 20px;
+  }
+  .v2_from_wrapper .from_step.from_step_1 .btn_container {
+    text-align: end;
+    margin-top: 20px;
+  }
+  .v2_from_wrapper .from_step.from_step_1 .time_zone {
+    color: #354156;
+    margin-bottom: 18px;
+    font-family: Inter, sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+  }
+  .v2_from_wrapper .from_step.from_step_1 .slots_container {
+    position: relative;
+  }
+  .v2_from_wrapper .from_step.from_step_1 .slots_container .slot_sl_con .slot_fild {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+    transition: 0.3s;
+  }
+  .v2_from_wrapper .from_step.from_step_1 .slots_container .slot_sl_con .slot_fild input[type=radio] {
+    display: none;
+  }
+  .v2_from_wrapper .from_step.from_step_1 .slots_container .slot_sl_con .slot_fild label.slot {
+    box-sizing: border-box;
+    cursor: pointer;
+  }
+  .v2_from_wrapper .from_step.from_step_1 .slots_container .slot_sl_con .slot_fild label.slot .time_slot_wrapper {
+    border-radius: 8px;
+    padding: 4px 8px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+    text-align: center;
+  }
+  .v2_from_wrapper .from_step.from_step_1 .slots_container .slot_sl_con .slot_fild label.slot .time_slot_wrapper .v2_day {
+    color: black;
+    font-family: Inter, sans-serif;
+    font-weight: 600;
+    line-height: 20px;
+  }
+  .v2_from_wrapper .from_step.from_step_1 .slots_container .slot_sl_con .slot_fild label.slot .time_slot_wrapper .v2_date {
+    color: var(--black);
+    font-family: Inter, sans-serif;
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 48px;
+  }
+  .v2_from_wrapper .from_step.from_step_1 .slots_container .slot_sl_con .slot_fild label.slot .time_slot_wrapper hr {
+    border: 0.5px solid rgba(145, 145, 145, 0.5019607843);
+  }
+  .v2_from_wrapper .from_step.from_step_1 .slots_container .slot_sl_con .slot_fild label.slot .time_slot_wrapper .v2_time {
+    float: none;
+    clear: none;
+    color: #194bac;
+    padding-top: 5px;
+    font-family: Inter, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    display: block;
+  }
+  .v2_from_wrapper .from_step.from_step_1 .slots_container .slot_sl_con .slot_fild label.slot .v2_timer_alart {
+    color: #ffb023;
+    text-align: center;
+    background-color: #fff7e9;
+    border-radius: 25px;
+    margin-top: 10px;
+    font-family: Inter, sans-serif;
+    font-size: 12px;
+    line-height: 18px;
+    font-weight: 600;
+  }
+  .v2_from_wrapper .from_step.from_step_1 .slots_container .slot_sl_con .slot_fild label.slot .v2_timer_alart[alart_type=danger] {
+    color: #b1060f;
+  }
+  .v2_from_wrapper .from_step.from_step_1 .slots_container .slot_sl_con .slot_fild label.slot:has(input[type=radio]:checked) .time_slot_wrapper {
+    border: 1px solid #194bac;
+  }
+  .v2_from_wrapper .from_step.from_step_1 .slots_container .slot_sl_con .slot_fild label.slot:nth-child(n+7) {
+    display: none;
+  }
+  .v2_from_wrapper .from_step.from_step_2 .btn_container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    gap: 26px;
+  }
+  .v2_from_wrapper .from_step.from_step_3 .tr_filds {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .v2_from_wrapper .from_step.from_step_3 .fr_fild {
+    display: flex;
+    flex-direction: column;
+  }
+  .v2_from_wrapper .from_step.from_step_3 .fr_fild .title {
+    margin-bottom: 5px;
+  }
+  .v2_from_wrapper .from_step .fr_fild select {
+    -webkit-appearance: none;
+       -moz-appearance: none;
+            appearance: none;
+    background-color: #fff;
+    background-image: url(https://staging-e036-learninterviewkickstartcom.wpcomstaging.com/wp-content/uploads/2024/11/65b0a8bbe7894a07737a1a4c_arrow-down.svg);
+    background-position: 97%;
+    background-repeat: no-repeat;
+    background-size: 16px;
+    border: 1px solid #e3e7ec;
+    border-radius: 8px;
+    height: 40px;
+    color: #333;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    display: block;
+  }
+  .v2_from_wrapper .from_step .fr_fild select:focus, .v2_from_wrapper .from_step .fr_fild select:focus-visible {
+    outline: none;
+    border-color: #3898ec;
+  }
+  .v2_from_wrapper .from_step.from_step_3 .fr_check_box span {
+    font-size: 13px;
+    line-height: 16px;
+    font-weight: 400;
+    color: #9496a1;
+    font-family: Inter, sans-serif;
+    padding-left: 3px;
+  }
+  .v2_from_wrapper .from_step.from_step_3 .fr_check_box input {
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    width: 12px;
+    height: 12px;
+  }
+  .v2_from_wrapper .from_step.from_step_3 p {
+    font-family: Inter, sans-serif;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #9496a1;
+  }
+  .v2_from_wrapper .from_step.from_step_3 .btn_container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    gap: 26px;
+  }
+
+  .v2_from_wrapper .v2_exp_fild .gql_exp_select{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+  }
+
+  .v2_from_wrapper .v2_exp_fild .gql_exp_select label{
+    border: 1px solid #D0D5DD;
+    border-radius: 8px;
+    padding: 8px;
+    font-size: 15px;
+    font-family: Inter, sans-serif;
+    background-color: #fcfcfd;
+    text-align: center;
+    cursor: pointer;
+  }
+  .v2_from_wrapper .v2_exp_fild .gql_exp_select label input{
+    display: none;
+  }
+
+  .v2_from_wrapper .v2_exp_fild .gql_exp_select label:has(input:checked){
+    border-color:#194bac;
+    color: #194bac;
+    font-weight: 700;
+  }
+
+/* --------------------------------------------------- */
+
+  .v2_from_wrapper .from_step_1 .fr_title{
+    font-family: "Inter", Sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 28px;
+    color: #194BAC;
+    margin-bottom: 25px;
+  }
+  
+  .v2_from_wrapper .from_step_2 .step_title{
+    font-family: "Inter", Sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0%;
+    margin-top: 10px;
+  }
+  
+  .v2_from_wrapper .confirm_message{
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+    gap: 15px;
+    background-color: #e2f5ef;
+    padding: 10px 15px;
+    border-radius: 16px 16px 0px 0px;
+  }
+  
+  .v2_from_wrapper .confirm_message .riple_img{
+    width: 60px;
+    flex-shrink: 0;
+  }
+  
+  .v2_from_wrapper .confirm_message .mess{
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .v2_from_wrapper .confirm_message .mess .conf{
+    font-family: "Inter", Sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: #088761;
+  }
+
+  .v2_from_wrapper .confirm_message .mess .selected_web_event{
+    background-color: #088761;
+    color: white;
+    font-family: "Inter", Sans-serif;
+    padding: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 3px;
+    text-align: center;
+
+  }
+  
+  .v2_from_wrapper .from_step {
+    padding: 15px;
+  }
+
+  .v2_from_wrapper .v2_exp_fild .gql_exp_select[disabled="true"]{
+    grid-template-columns: 1fr;
+  }
+
+  .v2_from_wrapper .v2_exp_fild .gql_exp_select[disabled="true"] label:has(input:not(:checked)){
+    display: none;
+  }
+
+  .v2_from_wrapper .v2_exp_fild .gql_exp_select[disabled="true"] label{
+    color: #6f7580 !important;
+    border: 1px solid #e3e7ec !important;
+    font-weight: 400 !important;
+    border-radius: 8px !important;
+    width: 100% !important;
+    height: 38px;
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    box-sizing: border-box;
+    cursor: default;
+    display: flex;
+    align-items: center;
+  }
+  
+
+/* --------------------------------------------------- */
+
+
+  .v2_from_wrapper[active_step="1"]  .confirm_message,
+  .v2_from_wrapper[active_step="1"] .from_step.from_step_2,
+  .v2_from_wrapper[active_step="1"] .from_step.from_step_3 {
+    display: none;
+  }
+
+  .v2_from_wrapper[active_step="2"] .from_step.from_step_1,
+  .v2_from_wrapper[active_step="2"] .from_step.from_step_3 {
+    display: none;
+  }
+
+  .v2_from_wrapper[active_step="3"] .from_step.from_step_2,
+  .v2_from_wrapper[active_step="3"] .from_step.from_step_1 {
+    display: none;
+  }
+
+  .v2_from_wrapper .step_btn.step_btn_1 {
+    width: 100%;
+  }
+  
+  @media (max-width: 767px) {
+    .v2_from_wrapper .btn_container {
+      gap: 11px !important;
+    }
+     .v2_from_wrapper .v2_exp_fild .gql_exp_select label {font-size:12px !important;}
+  }/*# sourceMappingURL=style.css.map */
+
+
+.v2_from_wrapper .loading_bar {
+    width: 100%;
+    position: absolute;
+    height: 100%;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+    left: 0px;
+    top: 0px;
+    opacity: 1;
+  }
+  
+.v2_from_wrapper .loading_bar img {
+    max-width: 100%;
+    width: 220px;
+  }
+
+.v2_from_wrapper .loading_bar div {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.v2_from_wrapper[loader_status=false] .loading_bar{
+    display: none;
+  }
+  
+/* Mahmud */
+  
+  html input[disabled] {
+    color: #667085;
+    opacity: 1 !important;
+    box-shadow: 0 0 2px #1018280D;
+    background: #f3f3f3;
+}
+
+html select[disabled] {
+    color: #667085;
+    opacity: 1 !important;
+    box-shadow: 0 0 2px #1018280D;
+    background: #f3f3f3;
+}
+
+.v2_from_wrapper .from_step.from_step_2 .fr_fild input:disabled {
+color: #667085 !important;
+background: #f3f3f3;
+}
+
+.v2_from_wrapper .from_step .fr_fild select:disabled {
+color: #667085 !important;
+background: #f3f3f3;
+}
+
+.v2_from_wrapper .v2_exp_fild .gql_exp_select[disabled="true"] label{
+    background: #f3f3f3;
+}
+
+
+.v2_from_wrapper .from_step_1 .err_fild{
+    margin-top: 10px !important;
+    display: block;
+    transition: 0.3s;
+}
+
+.v2_from_wrapper .from_step_1[err_status="false"] .err_fild{
+    opacity: 0;
+    pointer-events: none;
+}
+
+@media screen and (max-width: 1024px) {
+    .elementor-element.elementor-element-fc82b2d.e-con-full.wb_fr_land.e-flex.e-con.e-child {
+        margin-top: -40px;
+    }
+}
+
+
+</style>
+
+
+<div class="v2_from_wrapper" active_step="1" loader_status=true>
+    <div class="loading_bar">
+        <img src="https://cdn.prod.website-files.com/65af5b66d9cf4364ab3d980d/65af5b66d9cf4364ab3d9a75_Loading_icon.gif" loading="lazy" width="220.5" alt="Loading_icon">
+        <div>Loading...</div>
+    </div>
+    <div class="from_container">
+        <div class="from_step from_step_1" err_status="false">
+            <div class="fr_title">Register for our free webinar</div>
+
+            <div class="title">Choose a slot</div>
+            <p class="time_zone">Time Zone: Asia/Dhaka</p>
+            <div class="slots_container">
+                <div class="slot_sl_con">
+                    <div class="slot_fild">
+                        <label class="slot">
+                            <input type="radio" name="v2_slot" class="v2_slot_radio" checked>
+                            <div class="time_slot_wrapper">
+                                <div class="v2_day">SAT</div>
+                                <div class="v2_date">23</div>
+                                <hr>
+                                <div class="v2_time">06:00 AM</div>
+                            </div>
+                            <div class="v2_timer_alart" alart_type="danger">
+                                Almost full
+                            </div>
+                        </label>
+    
+                        <label class="slot">
+                            <input type="radio" name="v2_slot" class="v2_slot_radio">
+                            <div class="time_slot_wrapper">
+                                <div class="v2_day">SAT</div>
+                                <div class="v2_date">23</div>
+                                <hr>
+                                <div class="v2_time">06:00 AM</div>
+                            </div>
+                        </label>
+                        
+                        <label class="slot">
+                            <input type="radio" name="v2_slot" class="v2_slot_radio">
+                            <div class="time_slot_wrapper">
+                                <div class="v2_day">SAT</div>
+                                <div class="v2_date">23</div>
+                                <hr>
+                                <div class="v2_time">06:00 AM</div>
+                            </div>
+                            <div class="v2_timer_alart" alart_type="warning">
+                                Filling fast
+                            </div>
+                        </label>
+    
+                        <label class="slot">
+                            <input type="radio" name="v2_slot" class="v2_slot_radio">
+                            <div class="time_slot_wrapper">
+                                <div class="v2_day">SAT</div>
+                                <div class="v2_date">23</div>
+                                <hr>
+                                <div class="v2_time">06:00 AM</div>
+                            </div>
+                        </label>
+    
+                        <label class="slot">
+                            <input type="radio" name="v2_slot" class="v2_slot_radio">
+                            <div class="time_slot_wrapper">
+                                <div class="v2_day">SAT</div>
+                                <div class="v2_date">23</div>
+                                <hr>
+                                <div class="v2_time">06:00 AM</div>
+                            </div>
+                        </label>
+    
+                        <label class="slot">
+                            <input type="radio" name="v2_slot" class="v2_slot_radio">
+                            <div class="time_slot_wrapper">
+                                <div class="v2_day">SAT</div>
+                                <div class="v2_date">23</div>
+                                <hr>
+                                <div class="v2_time">06:00 AM</div>
+                            </div>
+                        </label>
+    
+                        <label class="slot">
+                            <input type="radio" name="v2_slot" class="v2_slot_radio">
+                            <div class="time_slot_wrapper">
+                                <div class="v2_day">SAT</div>
+                                <div class="v2_date">23</div>
+                                <hr>
+                                <div class="v2_time">06:00 AM</div>
+                            </div>
+                        </label>
+    
+                        <label class="slot">
+                            <input type="radio" name="v2_slot" class="v2_slot_radio">
+                            <div class="time_slot_wrapper">
+                                <div class="v2_day">SAT</div>
+                                <div class="v2_date">23</div>
+                                <hr>
+                                <div class="v2_time">06:00 AM</div>
+                            </div>
+                        </label>
+    
+                        <label class="slot">
+                            <input type="radio" name="v2_slot" class="v2_slot_radio">
+                            <div class="time_slot_wrapper">
+                                <div class="v2_day">SAT</div>
+                                <div class="v2_date">23</div>
+                                <hr>
+                                <div class="v2_time">06:00 AM</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <span class="err_fild"><b>ⓘ</b> Please select slot</span>
+            <div class="btn_container">
+                <button class="step_btn step_btn_1">Register -></button>
+            </div>
+        </div>
+
+        <div class="confirm_message">
+            <img class="riple_img" src="https://staging-e036-learninterviewkickstartcom.wpcomstaging.com/wp-content/uploads/2024/12/check_ripple.png">
+            <div class="mess">
+                <div class="conf">Registration Confirmed!</div>
+                <div class="selected_web_event">Friday, 18th April - 6-7 PM</div>
+            </div>
+        </div>
+
+        <div class="from_step from_step_2">
+
+
+            <div class="step_title">Please confirm your details</div>
+
+            <label class="fr_fild v2_full_name" err_status="false">
+                <span class="title">Full Name</span>
+                <input type="text" placeholder="Enter name" class="fr_name_fl" disabled>
+                <span class="err_fild"><b>ⓘ</b> Enter first name</span>
+            </label>
+
+            <label class="fr_fild v2_phone_number " err_status="false">
+                <span class="title">Contact Number</span>
+                <input type="tel" placeholder="Enter phone number" class="fr_phone_fl" disabled>
+                <span class="err_fild"><b>ⓘ</b> Please enter valid number</span>
+                <p class="message" style="display: none"><b>ⓘ</b> Used to send reminder for webinar</p>
+            </label>
+
+            <label class="fr_fild v2_dom_fild" err_status="false">
+                <span class="title">Current Job Role</span>
+                <select class="gql_domain_select" disabled>
+                    <option value="" data-cr="0.37">Select option</option>
+                    <option value="Back-end" data-cr="1.87">Back-end</option>
+                    <option value="Cloud Engineer" data-cr="0.95">Cloud Engineer</option>
+                    <option value="Cyber Security" data-cr="0.47">Cyber Security</option>
+                    <option value="Data Engineer" data-cr="1.18">Data Engineer</option>
+                    <option value="Data Science" data-cr="0.68">Data Science</option>
+                    <option value="Front-end" data-cr="0.82">Front-end</option>
+                    <option value="Full Stack" data-cr="1.40">Full Stack</option>
+                    <option value="Software Engineer" data-cr="1.40">Software Engineer</option>
+                    <option value="Machine Learning / AI" data-cr="1.08">Machine Learning / AI</option>
+                    <option value="Engineering Manager - any domain" data-cr="1.65">Engineering Manager - any domain</option>
+                    
+                    <option value="Tech Product Manager" data-cr="0.57">Tech Product Manager</option>
+                    <option value="Growth Product Manager" data-cr="0">Growth Product Manager</option>
+                    <option value="Product Marketing Manager" data-cr="0">Product Marketing Manager</option>
+                
+                    <option value="Technical Program Manager" data-cr="1.11">Technical Program Manager</option>
+                    <option value="Test Engineer / SDET / QE" data-cr="1.22">Test Engineer / SDET / QE</option>
+                    <option value="Android Developer" data-cr="0.89">Android Developer</option>
+                    <option value="iOS Developer" data-cr="1.16">iOS Developer</option>
+                    <option value="Site Reliability Engineer" data-cr="1.20">Site Reliability Engineer</option>
+                    <option value="Embedded Software Engineer" data-cr="0.73">Embedded Software Engineer</option>
+                    <option value="Other Software Engineers" data-cr="0.74">Other Software Engineers</option>
+                    <option value="Data Analyst / Business Analyst" data-cr="0">Data Analyst / Business Analyst</option>
+                    <option value="Core Engineering" data-cr="">Core Engineering/STEM degree</option>
+                    <option value="Salesforce developer" data-cr="">Salesforce developer</option>
+                    <option value="DevOps Engineer" data-cr="">DevOps Engineer</option>
+                    <option value="None of the above" data-cr="0">None of the above</option>
+                </select>
+                <span class="err_fild"><b>ⓘ</b> Select domain</span>
+            </label>
+            
+            <div class="fr_fild v2_exp_fild" err_status="false">
+                <div class="title">Years of experience</div>
+                <div class="gql_exp_select" disabled="true">
+                    <label>
+                        <input type="radio" value="0-2" name="exp_options" class="exp_options" checked>
+                        <span>0-2</span>
+                    </label>
+
+                    <label>
+                        <input type="radio" value="3-4" name="exp_options" class="exp_options">
+                        <span>3-4</span>
+                    </label>
+
+                    <label>
+                        <input type="radio" value="5-8" name="exp_options" class="exp_options">
+                        <span>5-8</span>
+                    </label>
+
+                    <label>
+                        <input type="radio" value="9-15" name="exp_options" class="exp_options">
+                        <span>9-15</span>
+                    </label>
+
+                    <label>
+                        <input type="radio" value="15+" name="exp_options" class="exp_options">
+                        <span>15+</span>
+                    </label>
+                </div>
+                <div class="err_fild"><b>ⓘ</b> Select experience</div>
+            </div>
+
+
+    
+            <div class="btn_container">
+                <button class="step_btn step_back step_back_2" data-click-id="v-two-form-second-back">Edit details</button>
+                <button class="step_btn step_btn_2">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
