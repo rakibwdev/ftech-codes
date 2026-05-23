@@ -19,7 +19,7 @@
       window.checkUsa = function(isUSA) {
       if (isUSA) {
         completeMessages.forEach(el => { el.setAttribute('show_status', false);});
-        document.querySelectorAll('.v2_from_wrapper').forEach(el => { el.setAttribute("active_step", 4);});
+        document.querySelectorAll('.v2_from_wrapper, .v2_from_wrapper_2').forEach(el => { el.setAttribute("active_step", 4);});
       } else {
         completeMessages.forEach(el => { el.setAttribute('show_status', true);});
       }
