@@ -126,6 +126,13 @@
             eventEndTime: "",
             inviteStartTime: "",
             inviteEndTime: "",
+
+             //    Step 4
+            WorkExperience: "",
+            RoleDomain: "",
+            InterviewStartTime: "",
+            IsStudent: false,
+            LaidOff: false,
         };
 
         //check regex
@@ -508,6 +515,14 @@
             let v2WorkExp = getThePopupFrom2?.querySelector(".exp_options:checked").value;
             let v2DomExp = getDomainRole.value;
 
+
+            // Step 4
+            webNearInfo2.WorkExperience = v2WorkExp;
+            webNearInfo2.RoleDomain = v2DomExp;
+            // webNearInfo2.InterviewStartTime = v2StarExp;
+            // webNearInfo2.IsStudent = v2IsStudent;
+            // webNearInfo2.LaidOff = v2IsLaidOff;
+
             let gqlErrStatus = false;
 
             if (!v2DomExp) {
@@ -597,7 +612,9 @@
                 };
 
                 let response = await fetch(url, options);
-                document.querySelector(".complete_message").setAttribute('show_status', true);
+                 // Step 4
+                 checkUsa(isUSA);
+                // document.querySelector(".complete_message").setAttribute('show_status', true);
                 document.querySelector(".wb_fr_land").setAttribute('show_status', false);
                 loadPageFild();
                 if (typeof successTrackCallback === 'function') successTrackCallback();
@@ -712,10 +729,12 @@
         const getV2Btn1 = getThePopupFrom2.querySelector('.step_btn_1');
         const getV2Btn2 = getThePopupFrom2.querySelector('.step_btn_2');
         const getV2Btn3 = getThePopupFrom2.querySelector('.step_btn_3');
+        const getV2Btn4 = getThePopupFrom2.querySelector('.step_btn_4'); //Step 4
         const step3BtnDefaultHtml = getV2Btn3 ? getV2Btn3.innerHTML : "";
 
         const getV2Back2 = getThePopupFrom2.querySelector('.step_back_2');
         const getV2Back3 = getThePopupFrom2.querySelector('.step_back_3');
+        const getV2Back4 = getThePopupFrom2.querySelector('.step_back_4'); //Step 4
 
         if (getV2Btn1) {
             getV2Btn1.addEventListener("click", function () {
@@ -756,6 +775,36 @@
                 }
             });
         }
+          // Step 4 Submite
+        if (getV2Btn4) {
+        getV2Btn4.addEventListener("click", async function () {
+           
+            if (this.disabled) return;
+            this.disabled = true;
+
+            try {
+            await submitFourStepForm({
+                form: this, 
+                formData: webNearInfo2,
+                isPartner: false,
+                sbFrEx: false,
+                onSuccess: () => {
+                console.log("Step four success");
+                },
+                onError: () => {
+                console.log("Step four error");
+                }
+            });
+
+            } catch (error) {
+            console.error("Error in 4th step", error);
+
+            this.disabled = false;
+
+            saveFormEventsActivity("gql-e", null, null, "Error in 4th step");
+            }
+        });
+        }
 
         if (getV2Back2) {
             getV2Back2.addEventListener("click", function () {
@@ -774,6 +823,13 @@
                     getV2Btn3.disabled = false;
                     getV2Btn3.innerHTML = step3BtnDefaultHtml;
                 }
+            });
+        }
+         // Step 4
+        if (getV2Back4) {
+            getV2Back4.addEventListener("click", function () {
+                getThePopupFrom2.setAttribute("active_step", 3);
+                if (getV2Btn3) getV2Btn3.disabled = false;
             });
         }
     })
