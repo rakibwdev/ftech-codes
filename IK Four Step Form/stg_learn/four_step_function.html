@@ -1,9 +1,6 @@
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    const getGoal = document.querySelector('.gql_goal_select');
-    const getWork = document.querySelector('.gql_work_select');
-    const getAuthStatus = document.querySelector('.gql_auth_status_select');
-        
+   
       const webinarMapping = {
         "Land a top tech company role (FAANG/tier-1)": "Regular",
         "Switch roles to increase compensation (same domain, better pay)": "Switch_UP",
@@ -36,6 +33,7 @@
       }
 
       window.submitFourStepForm = async function ({
+        form = null,
         formData = {},
         isPartner = false,
         sbFrEx = false,
@@ -45,6 +43,14 @@
       } = {}) {
 
         try {
+        if (!form) throw new Error("Form not provided");
+
+        const currentForm = form.closest('.v2_from_wrapper') || form.closest('.v2_from_wrapper_2')  || form;
+        const getGoal = currentForm.querySelector('.gql_goal_select');
+        const getWork = currentForm.querySelector('.gql_work_select');
+        const getAuthStatus = currentForm.querySelector('.gql_auth_status_select');
+
+
           if (!formData || Object.keys(formData).length === 0) {
             throw new Error("Payload empty");
           }

@@ -1682,6 +1682,7 @@ let zapUrl = getWebhook("340hd4j");
 
             try {
             await submitFourStepForm({
+                form: this, 
                 formData: webNearInfo2,
                 isPartner: false,
                 sbFrEx: false,
