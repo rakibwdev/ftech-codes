@@ -1,0 +1,425 @@
+<!-- Signup Final Step-->
+
+<!-- Sing Up final from (B) -->
+<!-- Final page body start -->
+<!-- signup-final-step -->
+<script>
+    const getFinalForm = document.querySelector('.final_step_fr');
+    let utmparams = { ...read_cookie("v_latest"), ...read_cookie("from_cookie") };
+
+    if (!utmparams['utm_source']) utmparams['utm_source'] = "Organic";
+
+    // getFrom Filds 1st step
+    const getWorkExperience = getFinalForm.querySelector("#experience");
+    const getDomainRole = getFinalForm.querySelector("#domain-role");
+    const getStartIn = getFinalForm.querySelector("#Start-Interviewing");
+    const getIsStudent = getFinalForm.querySelector("#is_student");
+    const getLaidOff = getFinalForm.querySelector("#laidoff-flag");
+
+    // getFrom filds 2nd step
+    const getSwDomainRole = getFinalForm.querySelector("#Sw-Domain-Role");
+    // const getStgCrCh = getFinalForm.querySelector("#Stage-of-Your-Career-Change");
+
+
+    // getFrom filds 3rd step
+    const multiSelect = new Choices('#Hear-About-IK', {
+        removeItemButton: true,
+        searchEnabled: true,
+        placeholderValue: 'Select all that apply',
+        noResultsText: 'No results found',
+        itemSelectText: '', // No text when selecting an option
+    });
+
+    // Step Buttons
+    const StepBtn1 = getFinalForm.querySelector("#step_1_btn");
+    const StepBtn2 = getFinalForm.querySelector("#step_2_btn");
+    const StepBtn3 = getFinalForm.querySelector("#step_3_btn");
+    const step3BtnDefaultHtml = StepBtn3 ? StepBtn3.innerHTML : "";
+
+    const stepBack2 = getFinalForm.querySelector(".step_back_2, #step_back_2");
+    const stepBack3 = getFinalForm.querySelector(".step_back_3, #step_back_3");
+
+    if (stepBack2) {
+        stepBack2.addEventListener("click", function () {
+            if (StepBtn1) StepBtn1.disabled = false;
+            if (StepBtn2) StepBtn2.disabled = false;
+        });
+    }
+    if (stepBack3) {
+        stepBack3.addEventListener("click", function () {
+            if (StepBtn2) StepBtn2.disabled = false;
+            if (StepBtn3) {
+                StepBtn3.disabled = false;
+                StepBtn3.innerHTML = step3BtnDefaultHtml;
+            }
+        });
+    }
+
+    // Buttons click listener
+    StepBtn1.addEventListener("click", function () {
+        if (!this || this.disabled) return;
+        try {
+            finalFrStep1(this);
+        } catch (error) {
+            if (this) this.disabled = false;
+            console.error("Error in gql step", error);
+            saveFormEventsActivity("gql-e", null, null, "Error in gql step");
+        }
+    });
+    StepBtn2.addEventListener("click", function () {
+        if (!this || this.disabled) return;
+        try {
+            finalFrStep2(this);
+        } catch (error) {
+            if (this) this.disabled = false;
+            console.error("Error in domain step", error);
+            saveFormEventsActivity("domain-e", null, null, "Error in domain step");
+        }
+    });
+    StepBtn3.addEventListener("click", function () {
+        if (!this || this.disabled) return;
+        try {
+            finalFrStep3(this);
+        } catch (error) {
+            if (this) {
+                this.disabled = false;
+                this.innerHTML = step3BtnDefaultHtml;
+            }
+            console.error("Error in source step", error);
+            saveFormEventsActivity("source-e", null, null, "Error in source step");
+        }
+    });
+
+    function getCookieValue(cookieName) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${cookieName}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    const err_temp = {};
+    // First step
+    function finalFrStep1(btn) {
+        function track(step, message) {
+            typeof saveFormEventsActivity === 'function' ? saveFormEventsActivity(step, null, null, message) : console.error("saveFormEventsActivity is not a function");
+        }
+        if (!btn || btn.disabled) return;
+        btn.disabled = true;
+        let errorStatus = false;
+        // check conditions
+        if (!getWorkExperience.value) {
+            errorStatus = true;
+            errorFun(".exp_fild", errorStatus);
+            if (!err_temp.exp_fild) {
+                err_temp.exp_fild = errorStatus;
+                getWorkExperience.addEventListener("input", function () {
+                    errorFun(".exp_fild", false);
+                })
+            }
+        }
+
+        if (!getDomainRole.value) {
+            errorStatus = true;
+            errorFun(".domain_role_fild", errorStatus);
+            if (!err_temp.domain_role_fild) {
+                err_temp.domain_role_fild = errorStatus;
+                getDomainRole.addEventListener("input", function () {
+                    errorFun(".domain_role_fild", false);
+                })
+            }
+        }
+
+        if (!getStartIn.value) {
+            errorStatus = true;
+            errorFun(".start_interviewing_fild", errorStatus);
+            if (!err_temp.start_interviewing_fild) {
+                err_temp.start_interviewing_fild = errorStatus;
+                getStartIn.addEventListener("input", function () {
+                    errorFun(".start_interviewing_fild", false);
+                })
+            }
+        }
+        if (errorStatus) {
+            btn.disabled = false;
+            track("gql-e", "validation-general");
+            return;
+        }
+        let params = [];
+            try {
+                params = read_cookie?.("v_latest") || getParams?.();
+            } catch (error) {
+                console.error("Error while reading cookie", error);
+            }
+            const fbcFromCookies = getCookieValue('_fbc');
+            const fbp = getCookieValue('_fbp');
+            const userAgent = navigator?.userAgent;
+            const fbclid = decodeURIComponent(params['fbclid'] || "");
+            let fbc = fbcFromCookies;
+            if (!fbcFromCookies && fbclid) {
+                // Generate fbc from fbclid
+                const domainParts = window.location.hostname.split('.');
+                const subdomainIndex = domainParts.length - 1;
+                const creationTime = Date.now();
+                fbc = `fb.${subdomainIndex}.${creationTime}.${fbclid}`;
+            }
+            let GQLformData = {
+                'First Name': decodeURIComponent(utmparams['invitee_first_name'] || ""),
+                'Last Name': decodeURIComponent(utmparams['invitee_last_name'] || ""),
+                'Email Address': decodeURIComponent(utmparams['invitee_email'] || ""),
+                utm_source: decodeURIComponent(utmparams['utm_source'] || ""),
+                utm_medium: decodeURIComponent(utmparams['utm_medium'] || ""),
+                utm_campaign: decodeURIComponent(utmparams['utm_campaign'] || ""),
+                utm_term: decodeURIComponent(utmparams['utm_term'] || ""),
+                gclid: decodeURIComponent(utmparams['gclid'] || ""),
+                msclkid: decodeURIComponent(utmparams['msclkid'] || ""),
+                "webinar-type": decodeURIComponent(utmparams['webinarTypeval'] || ""),
+                fbclid: fbclid,
+                fbcId: fbc || null,
+                fbpId: fbp || null,
+                user_agent: userAgent || '',
+                user_id: visitor_id,
+                user_timezone: v_timezone,
+                v_country: v_country,
+                "page_url": window?.location?.href,
+                phone_number_full: decodeURIComponent(utmparams['answer_1'] || ""),
+								phone_code: decodeURIComponent(utmparams['answer_2'] || ""),
+                'Event Start Time': decodeURIComponent(utmparams['event_start_time'] || ""),
+                'Event End Time': decodeURIComponent(utmparams['event_end_time'] || ""),
+                'Work Experience': getWorkExperience.value,
+                'Role Domain': getDomainRole.value,
+                // 'PA Consult Time': "",
+                // 'PA Consult Time Other': "",
+                'Interview Start Time': getStartIn.value,
+                'Laid Off': getLaidOff.checked,
+                'Is Student': getIsStudent.checked,
+                // 'Domain Switch': '',
+                salesforce_uuid: decodeURIComponent(utmparams['salesforce_uuid'] || ""),
+                GA_event_id: Date.now(),
+								...(window.updateZapPayload || {}),
+            };
+
+           
+                    try {
+                        dataLayer.push({
+                            event: "wordpress_form_submitted",
+                            formName: "Lead Qualifier Form",
+                            event_id: GQLformData.GA_event_id,
+                        })
+                    } catch (err) {
+                        console.error(err);
+                    }
+                    sendRequestZapiar(
+                        getWebhook("3409hxu"),
+                        GQLformData,
+                        function () { track("gql", "Success in gql step"); },
+                        function () {
+                            track("gql-e", "flow-general");
+                            if (StepBtn1) StepBtn1.disabled = false;
+                        }
+                    );
+    }
+
+    // Second step
+    function finalFrStep2(btn) {
+        function track(step, message) {
+            typeof saveFormEventsActivity === 'function' ? saveFormEventsActivity(step, null, null, message) : console.error("saveFormEventsActivity is not a function");
+        }
+        if (!btn || btn.disabled) return;
+        btn.disabled = true;
+        let errorStatus = false;
+        // check conditions
+        if (!getSwDomainRole.value) {
+            errorStatus = true;
+            errorFun(".sw_domain_role_fild", errorStatus);
+            if (!err_temp.sw_domain_role_fild) {
+                err_temp.sw_domain_role_fild = errorStatus;
+                getSwDomainRole.addEventListener("input", function () {
+                    errorFun(".sw_domain_role_fild", false);
+                })
+            }
+        }
+        if (errorStatus) {
+            btn.disabled = false;
+            track("domain-e", "validation-general");
+            return;
+        }
+        let params = [];
+            try {
+                params = read_cookie?.("v_latest") || getParams?.();
+            } catch (error) {
+                console.error("Error while reading cookie", error);
+            }
+            const fbcFromCookies = getCookieValue('_fbc');
+            const fbp = getCookieValue('_fbp');
+            const userAgent = navigator?.userAgent;
+            const fbclid = decodeURIComponent(params['fbclid'] || "");
+            let fbc = fbcFromCookies;
+            if (!fbcFromCookies && fbclid) {
+                // Generate fbc from fbclid
+                const domainParts = window.location.hostname.split('.');
+                const subdomainIndex = domainParts.length - 1;
+                const creationTime = Date.now();
+                fbc = `fb.${subdomainIndex}.${creationTime}.${fbclid}`;
+            }
+            let GQLformData = {
+                'First Name': decodeURIComponent(utmparams['invitee_first_name'] || ""),
+                'Last Name': decodeURIComponent(utmparams['invitee_last_name'] || ""),
+                'Email Address': decodeURIComponent(utmparams['invitee_email'] || ""),
+                utm_source: decodeURIComponent(utmparams['utm_source'] || ""),
+                utm_medium: decodeURIComponent(utmparams['utm_medium'] || ""),
+                utm_campaign: decodeURIComponent(utmparams['utm_campaign'] || ""),
+                utm_term: decodeURIComponent(utmparams['utm_term'] || ""),
+                gclid: decodeURIComponent(utmparams['gclid'] || ""),
+                msclkid: decodeURIComponent(utmparams['msclkid'] || ""),
+                "webinar-type": decodeURIComponent(utmparams['webinarTypeval'] || ""),
+                fbclid: fbclid,
+                fbpId: fbp || null,
+                fbcId: fbc || null,
+                user_agent: userAgent || '',
+                user_id: visitor_id,
+                user_timezone: v_timezone,
+                v_country: v_country,
+                "page_url": window?.location?.href,
+                phone_number_full: decodeURIComponent(utmparams['answer_1'] || ""),
+								phone_code: decodeURIComponent(utmparams['answer_2'] || ""),
+                'Event Start Time': decodeURIComponent(utmparams['event_start_time'] || ""),
+                'Event End Time': decodeURIComponent(utmparams['event_end_time'] || ""),
+                'Work Experience': getWorkExperience.value,
+                'Role Domain': getDomainRole.value,
+                'Interview Start Time': getStartIn.value,
+                'Laid Off': getLaidOff.checked,
+                'Is Student': getIsStudent.checked,
+                'Domain Switch': getSwDomainRole.value,
+                // 'Stage of Career Change': getStgCrCh.value,
+                salesforce_uuid: decodeURIComponent(utmparams['salesforce_uuid'] || ""),
+                // 'Switch to Engineering Management': false ? 'Yes': 'No',
+								...(window.updateZapPayload || {}),
+            };
+
+            try {
+                dataLayer.push({
+                    event: "wordpress_form_submitted",
+                    formName: "Switch Domain Form",
+                })
+            } catch (err) {
+                console.error(err);
+            }
+            sendRequestZapiar(
+                getWebhook("340rvpf"),
+                GQLformData,
+                function () { track("domain", "Success in domain step"); },
+                function () {
+                    track("domain-e", "flow-zapier");
+                    if (StepBtn2) StepBtn2.disabled = false;
+                }
+            );
+    }
+
+    // Third step
+    function finalFrStep3(btn) {
+        function track(step, message) {
+            typeof saveFormEventsActivity === 'function' ? saveFormEventsActivity(step, null, null, message) : console.error("saveFormEventsActivity is not a function");
+        }
+        if (!btn || btn.disabled) return;
+        btn.disabled = true;
+        btn.innerHTML = "Please wait...";
+        const fbc = getCookieValue('_fbc');
+        const fbp = getCookieValue('_fbp');
+        const userAgent = navigator?.userAgent;
+        let GQLformData = {
+            'First Name': decodeURIComponent(utmparams['invitee_first_name'] || ""),
+            'Last Name': decodeURIComponent(utmparams['invitee_last_name'] || ""),
+            'Email Address': decodeURIComponent(utmparams['invitee_email'] || ""),
+            utm_source: decodeURIComponent(utmparams['utm_source'] || ""),
+            utm_medium: decodeURIComponent(utmparams['utm_medium'] || ""),
+            utm_campaign: decodeURIComponent(utmparams['utm_campaign'] || ""),
+            utm_term: decodeURIComponent(utmparams['utm_term'] || ""),
+            gclid: decodeURIComponent(utmparams['gclid'] || ""),
+            msclkid: decodeURIComponent(utmparams['msclkid'] || ""),
+            "webinar-type": decodeURIComponent(utmparams['webinarTypeval'] || ""),
+            fbclid: fbc || null,
+            fbpId: fbp || null,
+            user_agent: userAgent || '',
+            user_id: visitor_id,
+            user_timezone: v_timezone,
+            v_country: v_country,
+            "page_url": window?.location?.href,
+            phone_number_full: decodeURIComponent(utmparams['answer_1'] || ""),
+			phone_code: decodeURIComponent(utmparams['answer_2'] || ""),
+            'Event Start Time': decodeURIComponent(utmparams['event_start_time'] || ""),
+            'Event End Time': decodeURIComponent(utmparams['event_end_time'] || ""),
+            'Work Experience': getWorkExperience.value,
+            'Role Domain': getDomainRole.value,
+            // 'PA Consult Time': "",
+            // 'PA Consult Time Other': "",
+            'Interview Start Time': getStartIn.value,
+            'Laid Off': getLaidOff.checked,
+            'Is Student': getIsStudent.checked,
+            'Domain Switch': getSwDomainRole.value,
+            // 'Stage of Career Change': getStgCrCh.value,
+            'hear about IK[]': multiSelect.getValue(true),
+            salesforce_uuid: decodeURIComponent(utmparams['salesforce_uuid'] || ""),
+            // 'Switch to Engineering Management': false ? 'Yes': 'No',
+						...(window.updateZapPayload || {}),
+        };
+        try {
+            dataLayer.push({
+                event: "wordpress_form_submitted",
+                formName: "Source Form",
+            })
+        } catch (err) {
+            track("source-e", "reporting-data-layer");
+            console.error(err);
+        }
+        sendRequestZapiar(
+            getWebhook("3sxtz40"),
+            GQLformData,
+            function () { track("source", "Success in source step"); },
+            function () {
+                track("source-e", "flow-zapier");
+                if (StepBtn3) {
+                    StepBtn3.disabled = false;
+                    StepBtn3.innerHTML = step3BtnDefaultHtml;
+                }
+            }
+        );
+    }
+    // send request fun
+    async function sendRequestZapiar(url, data, successTrackCallback = null, failTrackCallback = null) {
+        try {
+            // Validate payload before sending
+            if (!data || (typeof data === 'object' && Object.keys(data).length === 0) || JSON.stringify(data) === "{}") {
+                throw new Error("Zapier webhook payload is empty");
+            }
+
+            let options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            };
+
+            let response = await fetch(url, options);
+            moveNextStep();
+            if (typeof successTrackCallback === 'function') successTrackCallback();
+        } catch (err) {
+            console.error("sendRequestZapiar", err);
+            if (failTrackCallback) failTrackCallback();
+        }
+    }
+
+
+    function moveNextStep() {
+        let getCurrentStep = parseInt(getFinalForm.getAttribute("active_step"));
+        getCurrentStep++;
+        getFinalForm.setAttribute("active_step", getCurrentStep);
+    }
+
+    function errorFun(targetTedClass, status = false) {
+        getFinalForm.querySelector(targetTedClass).setAttribute("err_status", status);
+    }
+
+
+
+</script>
+<!-- Final page body end -->

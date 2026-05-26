@@ -1,0 +1,812 @@
+<!-- Signup Final Step-->
+
+<style>
+    .final_step_fr {
+  width: 100%;
+  margin: auto;
+  background-color: white;
+  border-radius: 8px;
+  color: #000;
+}
+.final_step_fr * {
+  font-family: Open Sans;
+  box-sizing: border-box;
+  font-size: 14px;
+  line-height: 20px;
+}
+.final_step_fr .fn_fr_step .fn_fr_header.almost-there-head {
+  color: #fff;
+  text-align: center;
+  background-color: #3996d2;
+  background-image: url("/wp-content/uploads/2024/08/65af5b66d9cf4364ab3d9958_Slice-3.svg"), none;
+  background-position: 100% 100%, -10px -10px;
+  background-repeat: no-repeat, no-repeat;
+  background-size: auto, auto;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  margin-bottom: 10px;
+  padding: 14px 24px 24px;
+}
+@media screen and (max-width: 479px) {
+  .final_step_fr .fn_fr_step .fn_fr_header.almost-there-head {
+    padding-bottom: 14px;
+  }
+}
+.final_step_fr .fn_fr_step .fn_fr_header.almost-there-head h2 {
+  margin-top: 20px;
+  margin-bottom: 24px;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 36px;
+}
+.final_step_fr .fn_fr_step .fn_fr_header.almost-there-head p {
+  margin-bottom: 10px;
+}
+.final_step_fr .fn_fr_step .fn_fr_header.success-msg {
+  padding: 40px 24px 10px 24px;
+  text-align: center;
+}
+.final_step_fr .fn_fr_step .fn_fr_header.success-msg svg {
+  vertical-align: middle;
+  max-width: 100%;
+  display: inline-block;
+  max-width: 40px;
+}
+.final_step_fr .fn_fr_step .fn_fr_header.success-msg .thank-you-msg {
+  padding-top: 20px;
+  font-size: 20px;
+  font-weight: 500;
+}
+.final_step_fr .fn_fr_step .webinar_form_wrap {
+  padding: 24px;
+}
+.final_step_fr .fn_fr_step .webinar_form_wrap > * {
+  display: block;
+}
+.final_step_fr .fn_fr_step .webinar_form_wrap .form_field_set label {
+  grid-column-gap: 10px;
+  align-items: center;
+  margin-bottom: 8px;
+  display: flex;
+  font-weight: 600;
+  flex-wrap: wrap;
+}
+.final_step_fr .fn_fr_step .webinar_form_wrap .form_field_set label .err_msg {
+  color: #ac3333;
+  font-size: 12px;
+}
+.final_step_fr .fn_fr_step .webinar_form_wrap .form_field_set select {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  background-color: #fff;
+  background-image: url("/wp-content/uploads/2024/10/arrow-down.svg");
+  background-position: 97%;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  height: 48px;
+  color: #333;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  display: block;
+}
+.final_step_fr .fn_fr_step .webinar_form_wrap .form_field_set select::-ms-expand {
+  display: none;
+}
+.final_step_fr .fn_fr_step .webinar_form_wrap .form_field_set select:focus, .final_step_fr .fn_fr_step .webinar_form_wrap .form_field_set select:focus-visible {
+  outline: none;
+  border-color: #3898ec;
+}
+.final_step_fr .fn_fr_step .webinar_form_wrap .form_field_set[err_status=false] .err_msg {
+  display: none;
+}
+.final_step_fr .fn_fr_step .webinar_form_wrap .checkbox-laidoff,
+.final_step_fr .fn_fr_step .webinar_form_wrap .is-student-field {
+  cursor: pointer;
+}
+.final_step_fr .fn_fr_step .webinar_form_wrap .checkbox-laidoff .text,
+.final_step_fr .fn_fr_step .webinar_form_wrap .is-student-field .text {
+  font-weight: 400;
+}
+.final_step_fr .fn_fr_step .webinar_form_wrap .step_btn {
+  max-width: 100%;
+  width: 100%;
+  margin-top: 20px;
+  text-align: center;
+  background-color: #00d1b4;
+  border-radius: 30px;
+  padding-bottom: 15px;
+  font-weight: 600;
+  color: #fff;
+  line-height: inherit;
+  cursor: pointer;
+  border: 0;
+  padding: 15px;
+  text-decoration: none;
+  display: inline-block;
+}
+.final_step_fr .fn_fr_step.fr_fn_step_3 .choices__inner {
+  background-color: #fff;
+  background-image: url("/wp-content/uploads/2024/10/arrow-down.svg");
+  background-position: 97%;
+  background-repeat: no-repeat;
+  background-size: 16px;
+}
+.final_step_fr .fn_fr_step.fr_fn_step_3 .choices__input {
+  background: none !important;
+}
+.final_step_fr .fn_fr_step.fr_fn_step_3 .choices__inner .choices__item.choices__item--selectable {
+  background-color: #3996d2;
+  border-color: #3996d2;
+  line-height: 1 !important;
+  border-radius: 5px;
+}
+.final_step_fr .fn_fr_step.fr_fn_step_3 .choices__inner .choices__item.choices__item--selectable button {
+  padding: 0px !important;
+  padding-left: 16px !important;
+}
+.final_step_fr .fn_fr_step.fr_fn_step_3 .is-focused .choices__inner,
+.final_step_fr .fn_fr_step.fr_fn_step_3 .is-focused .choices__list.choices__list--dropdown,
+.final_step_fr .fn_fr_step.fr_fn_step_3 .is-open .choices__inner,
+.final_step_fr .fn_fr_step.fr_fn_step_3 .is-open .choices__list.choices__list--dropdown {
+  border-color: #3996d2;
+}
+.final_step_fr .fn_fr_step.fr_fn_step_3 .choices__input {
+  border: 0px !important;
+  padding: 4px 0 4px 2px !important;
+  border-radius: 0 !important;
+}
+.final_step_fr .fn_fr_step.fr_fn_step_4 {
+  text-align: center;
+  padding: 40px 0px;
+}
+.final_step_fr .fn_fr_step.fr_fn_step_4 .thank-you-msg {
+  padding-top: 20px;
+  padding-bottom: 12px;
+  font-size: 20px;
+  font-weight: 400;
+}
+.final_step_fr .fn_fr_step.fr_fn_step_4 .thankyou-msg {
+  font-size: 18px;
+  line-height: 120%;
+  padding: 20px;
+  max-width: 330px;
+  margin: auto;
+}
+.final_step_fr .fn_fr_step.fr_fn_step_4 .thankyou-msg a {
+  color: #3996d2;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: inherit;
+}
+.final_step_fr .fr_fn_step_1,
+.final_step_fr .fr_fn_step_2,
+.final_step_fr .fr_fn_step_3,
+.final_step_fr .fr_fn_step_4 {
+  display: none;
+}
+.final_step_fr[active_step="1"] .fr_fn_step_1, .final_step_fr[active_step="2"] .fr_fn_step_2, .final_step_fr[active_step="3"] .fr_fn_step_3, .final_step_fr[active_step="4"] .fr_fn_step_4 {
+  display: block;
+}/*# sourceMappingURL=sin_up_final.css.map */
+
+
+.second-step-center{
+    text-align: center;
+    font-size: 18px;
+    line-height: 27px;
+    font-weight: 400;
+    padding-bottom: 20px;
+}
+</style>
+
+<div class="final_step_fr" active_step="1">
+
+    <div class="fn_fr_step fr_fn_step_1">
+
+        <div class="fn_fr_header almost-there-head">
+            <h2>Almost there...</h2>
+            <p>Fill in your details to make the most of your webinar spot</p>
+        </div>
+
+        <div class="webinar_form_wrap">
+
+            <div class="form_field_set exp_fild" err_status="false">
+                <label for="experience">
+                    <span class="text">Your work experience (in years)</span>
+                    <span class="err_msg">* Required</span>
+                </label>
+                <select id="experience">
+                    <option value="">Select one...</option>
+                    <option value="0-2">0-2</option>
+                    <option value="3-4">3-4</option>
+                    <option value="5-8">5-8</option>
+                    <option value="9-15">9-15</option>
+                    <option value="16-20">16-20</option>
+                    <option value="20+">20+</option>
+                </select>
+
+                <label class="is-student-field">
+                    <input type="checkbox" id="is_student">
+                    <span class="text">I'm currently a student</span>
+                </label>
+            </div>
+
+            <div class="form_field_set domain_role_fild" err_status="false">
+                <label for="domain-role">
+                    <span class="text">Your domain/role</span>
+                    <span class="err_msg">* Required</span>
+                </label>
+                <select id="domain-role">
+                    <option value="" data-cr="0.37">Select one...</option>
+                    <option value="Back-end" data-cr="1.87">Back-end</option>
+                    <option value="Cloud Engineer" data-cr="0.95">Cloud Engineer</option>
+                    <option value="Cyber Security" data-cr="0.47">Cyber Security</option>
+                    <option value="Data Engineer" data-cr="1.18">Data Engineer</option>
+                    <option value="Data Science" data-cr="0.68">Data Science</option>
+                    <option value="Front-end" data-cr="0.82">Front-end</option>
+                    <option value="Full Stack" data-cr="1.40">Full Stack</option>
+                    <option value="Machine Learning / AI" data-cr="1.08">Machine Learning / AI</option>
+                    <option value="Engineering Manager - any domain" data-cr="1.65">Engineering Manager - any domain</option>
+                    <option value="Tech Product Manager" data-cr="0.57">Tech Product Manager</option>
+                    <option value="Product Manager (Non Tech)" data-cr="0">Product Manager (Non Tech)</option>
+                    <option value="Technical Program Manager" data-cr="1.11">Technical Program Manager</option>
+                    <option value="Test Engineer / SDET / QE" data-cr="1.22">Test Engineer / SDET / QE</option>
+                    <option value="Android Developer" data-cr="0.89">Android Developer</option>
+                    <option value="iOS Developer" data-cr="1.16">iOS Developer</option>
+                    <option value="Site Reliability Engineer" data-cr="1.20">Site Reliability Engineer</option>
+                    <option value="Embedded Software Engineer" data-cr="0.73">Embedded Software Engineer</option>
+                    <option value="Other Software Engineers" data-cr="0.74">Other Software Engineers</option>
+                    <option value="Data Analyst / Business Analyst" data-cr="0">Data Analyst / Business Analyst</option>
+                    <option value="Core Engineering" data-cr="">Core Engineering/STEM degree</option>
+                    <option value="Salesforce developer" data-cr="">Salesforce developer</option>
+                    <option value="DevOps Engineer" data-cr="">DevOps Engineer</option>
+                    <option value="None of the above" data-cr="0">None of the above</option>
+                </select>
+            </div>
+
+            <div class="form_field_set start_interviewing_fild" err_status="false">
+                <label for="Start-Interviewing">
+                    <span class="text">When do you plan to start interviewing?</span>
+                    <span class="err_msg">* Required</span>
+                </label>
+                <select id="Start-Interviewing">
+                    <option value="">Select one...</option>
+                    <option value="I’m already interviewing">I’m already interviewing</option>
+                    <option value="<30 days">&lt;30 days</option>
+                    <option value="30 - 60 days">30 - 60 days</option>
+                    <option value=">60 days">&gt;60 days</option>
+                    <option value="No plans as of yet">No plans as of yet</option>
+                </select>
+            </div>
+
+            <label class="checkbox-laidoff">
+                <input type="checkbox" id="laidoff-flag">
+                <span class="text">I have been laid off recently</span>
+            </label>
+
+            <button class="step_btn complete-registration" id="step_1_btn">Complete Registration</button>
+        </div>
+
+    </div>
+
+    <div class="fn_fr_step fr_fn_step_2">
+
+        <div class="fn_fr_header success-msg">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 92 92" fill="none">
+                <circle cx="46" cy="46" r="44" stroke="#088761" stroke-width="4"/>
+                <path d="M27 48.2L37.8571 59L65 32" stroke="#088761" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div class="thank-you-msg">Your webinar spot is confirmed!</div>
+        </div>
+
+        <div class="webinar_form_wrap">
+            <div class="form_field_set sw_domain_role_fild" err_status="false">
+                <label for="Sw-Domain-Role">
+                    <span class="text second-step-center">If you are planning to switch your career in 1-2 years to any of these domains, please select which domain:</span>
+                    <span class="err_msg">* Required</span>
+                </label>
+                <select id="Sw-Domain-Role">
+                    <option value="">Select one...</option>
+                    <option value="AI/ML Data Science">AI Data Science</option>
+                    <option value="Machine Learning">Machine Learning</option>
+                    <option value="Other Tech Domains">Other Tech Domains</option>
+                    <option value="Not looking to switch">Not looking to switch</option>
+                </select>
+            </div>
+
+            <div class="form_field_set st_of_yr_cr_fild"  style="display: none;" err_status="false">
+                <label for="Stage-of-Your-Career-Change">
+                    <span class="text" style="width: 100%;">At what stage of your career change are you currently in?</span>
+                    <span class="err_msg">* Required</span>
+                </label>
+                <select id="Stage-of-Your-Career-Change">
+                    <option value="">Select one...</option>
+                    <option value="I have started or I am planning to start applying">I have started or I am planning to start applying</option>
+                    <option value="I have started or I am planning to start my prep">I have started or I am planning to start my prep</option>
+                    <option value="I'm starting to browse jobs">I'm starting to browse jobs</option>
+                    <option value="I'm still figuring out my role/level/domain">I'm still figuring out my role/level/domain</option>
+                    <option value="I'm working on my resume">I'm working on my resume</option>
+                </select>
+            </div>
+
+            <button class="step_btn gql-step2-cta" id="step_2_btn">Done</button>
+        </div>
+
+    </div>
+    
+    <div class="fn_fr_step fr_fn_step_3">
+
+        <div class="fn_fr_header success-msg">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 92 92" fill="none">
+                <circle cx="46" cy="46" r="44" stroke="#088761" stroke-width="4"/>
+                <path d="M27 48.2L37.8571 59L65 32" stroke="#088761" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div class="thank-you-msg">
+                Your webinar spot is confirmed!
+                <br><br>
+                <span class="small-text">Just one last thing - promise! </span>
+            </div>
+        </div>
+
+        <div class="webinar_form_wrap">
+            
+            <div class="form_field_set st_of_yr_cr_fild">
+                <label for="Hear-About-IK">
+                    <span class="text">Where did you hear about IK? ( Select all that apply)?</span>
+                </label>
+                
+                <select id="Hear-About-IK" multiple>
+                    <option value="Youtube">Youtube</option>
+                    <option value="Linkedin">Linkedin</option>
+                    <option value="Google ads">Google ads</option>
+                    <option value="Google search">Google search</option>
+                    <option value="Review sites">Review sites</option>
+                    <option value="Instagram">Instagram</option>
+                    <option value="Facebook">Facebook</option>
+                    <option value="Friends / Colleagues">Friends / Colleagues</option>
+                    <option value="Tech newsletters / websites (TLDR, Bigtechnology, Cooperpress, etc)">Tech newsletters / websites (TLDR, Bigtechnology, Cooperpress, etc)</option>
+                    <option value="Tiktok" data-select2-id="select2-data-16-mk4t">Tiktok</option>
+                </select>
+            
+            </div>
+
+            <button class="step_btn gql-step3-cta" id="step_3_btn">Submit</button>
+        </div>
+
+    </div>
+    
+    <div class="fn_fr_step fr_fn_step_4">
+        <div class="thank-you-msg">Thank you!</div>
+        <!-- <div class="thankyou-msg">Read <a href="/reviews">here</a> what our successful students say about our program</div> -->
+        [elementor-template id="5615"]
+    </div>
+
+
+</div>
+
+<!-- Sing Up final from (B) -->
+<!-- Final page body start -->
+<!-- signup-final-step -->
+<script>
+    const getFinalForm = document.querySelector('.final_step_fr');
+    let utmparams = { ...read_cookie("v_latest"), ...read_cookie("from_cookie") };
+
+    if (!utmparams['utm_source']) utmparams['utm_source'] = "Organic";
+
+    // getFrom Filds 1st step
+    const getWorkExperience = getFinalForm.querySelector("#experience");
+    const getDomainRole = getFinalForm.querySelector("#domain-role");
+    const getStartIn = getFinalForm.querySelector("#Start-Interviewing");
+    const getIsStudent = getFinalForm.querySelector("#is_student");
+    const getLaidOff = getFinalForm.querySelector("#laidoff-flag");
+
+    // getFrom filds 2nd step
+    const getSwDomainRole = getFinalForm.querySelector("#Sw-Domain-Role");
+    // const getStgCrCh = getFinalForm.querySelector("#Stage-of-Your-Career-Change");
+
+
+    // getFrom filds 3rd step
+    const multiSelect = new Choices('#Hear-About-IK', {
+        removeItemButton: true,
+        searchEnabled: true,
+        placeholderValue: 'Select all that apply',
+        noResultsText: 'No results found',
+        itemSelectText: '', // No text when selecting an option
+    });
+
+    // Step Buttons
+    const StepBtn1 = getFinalForm.querySelector("#step_1_btn");
+    const StepBtn2 = getFinalForm.querySelector("#step_2_btn");
+    const StepBtn3 = getFinalForm.querySelector("#step_3_btn");
+    const step3BtnDefaultHtml = StepBtn3 ? StepBtn3.innerHTML : "";
+
+    const stepBack2 = getFinalForm.querySelector(".step_back_2, #step_back_2");
+    const stepBack3 = getFinalForm.querySelector(".step_back_3, #step_back_3");
+
+    if (stepBack2) {
+        stepBack2.addEventListener("click", function () {
+            if (StepBtn1) StepBtn1.disabled = false;
+            if (StepBtn2) StepBtn2.disabled = false;
+        });
+    }
+    if (stepBack3) {
+        stepBack3.addEventListener("click", function () {
+            if (StepBtn2) StepBtn2.disabled = false;
+            if (StepBtn3) {
+                StepBtn3.disabled = false;
+                StepBtn3.innerHTML = step3BtnDefaultHtml;
+            }
+        });
+    }
+
+    // Buttons click listener
+    StepBtn1.addEventListener("click", function () {
+        if (!this || this.disabled) return;
+        try {
+            finalFrStep1(this);
+        } catch (error) {
+            if (this) this.disabled = false;
+            console.error("Error in gql step", error);
+            saveFormEventsActivity("gql-e", null, null, "Error in gql step");
+        }
+    });
+    StepBtn2.addEventListener("click", function () {
+        if (!this || this.disabled) return;
+        try {
+            finalFrStep2(this);
+        } catch (error) {
+            if (this) this.disabled = false;
+            console.error("Error in domain step", error);
+            saveFormEventsActivity("domain-e", null, null, "Error in domain step");
+        }
+    });
+    StepBtn3.addEventListener("click", function () {
+        if (!this || this.disabled) return;
+        try {
+            finalFrStep3(this);
+        } catch (error) {
+            if (this) {
+                this.disabled = false;
+                this.innerHTML = step3BtnDefaultHtml;
+            }
+            console.error("Error in source step", error);
+            saveFormEventsActivity("source-e", null, null, "Error in source step");
+        }
+    });
+
+    function getCookieValue(cookieName) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${cookieName}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    const err_temp = {};
+    // First step
+    function finalFrStep1(btn) {
+        function track(step, message) {
+            typeof saveFormEventsActivity === 'function' ? saveFormEventsActivity(step, null, null, message) : console.error("saveFormEventsActivity is not a function");
+        }
+        if (!btn || btn.disabled) return;
+        btn.disabled = true;
+        let errorStatus = false;
+        // check conditions
+        if (!getWorkExperience.value) {
+            errorStatus = true;
+            errorFun(".exp_fild", errorStatus);
+            if (!err_temp.exp_fild) {
+                err_temp.exp_fild = errorStatus;
+                getWorkExperience.addEventListener("input", function () {
+                    errorFun(".exp_fild", false);
+                })
+            }
+        }
+
+        if (!getDomainRole.value) {
+            errorStatus = true;
+            errorFun(".domain_role_fild", errorStatus);
+            if (!err_temp.domain_role_fild) {
+                err_temp.domain_role_fild = errorStatus;
+                getDomainRole.addEventListener("input", function () {
+                    errorFun(".domain_role_fild", false);
+                })
+            }
+        }
+
+        if (!getStartIn.value) {
+            errorStatus = true;
+            errorFun(".start_interviewing_fild", errorStatus);
+            if (!err_temp.start_interviewing_fild) {
+                err_temp.start_interviewing_fild = errorStatus;
+                getStartIn.addEventListener("input", function () {
+                    errorFun(".start_interviewing_fild", false);
+                })
+            }
+        }
+        if (errorStatus) {
+            btn.disabled = false;
+            track("gql-e", "validation-general");
+            return;
+        }
+        let params = [];
+            try {
+                params = read_cookie?.("v_latest") || getParams?.();
+            } catch (error) {
+                console.error("Error while reading cookie", error);
+            }
+            const fbcFromCookies = getCookieValue('_fbc');
+            const fbp = getCookieValue('_fbp');
+            const userAgent = navigator?.userAgent;
+            const fbclid = decodeURIComponent(params['fbclid'] || "");
+            let fbc = fbcFromCookies;
+            if (!fbcFromCookies && fbclid) {
+                // Generate fbc from fbclid
+                const domainParts = window.location.hostname.split('.');
+                const subdomainIndex = domainParts.length - 1;
+                const creationTime = Date.now();
+                fbc = `fb.${subdomainIndex}.${creationTime}.${fbclid}`;
+            }
+            let GQLformData = {
+                'First Name': decodeURIComponent(utmparams['invitee_first_name'] || ""),
+                'Last Name': decodeURIComponent(utmparams['invitee_last_name'] || ""),
+                'Email Address': decodeURIComponent(utmparams['invitee_email'] || ""),
+                utm_source: decodeURIComponent(utmparams['utm_source'] || ""),
+                utm_medium: decodeURIComponent(utmparams['utm_medium'] || ""),
+                utm_campaign: decodeURIComponent(utmparams['utm_campaign'] || ""),
+                utm_term: decodeURIComponent(utmparams['utm_term'] || ""),
+                gclid: decodeURIComponent(utmparams['gclid'] || ""),
+                msclkid: decodeURIComponent(utmparams['msclkid'] || ""),
+                "webinar-type": decodeURIComponent(utmparams['webinarTypeval'] || ""),
+                fbclid: fbclid,
+                fbcId: fbc || null,
+                fbpId: fbp || null,
+                user_agent: userAgent || '',
+                user_id: visitor_id,
+                user_timezone: v_timezone,
+                v_country: v_country,
+                "page_url": window?.location?.href,
+                phone_number_full: decodeURIComponent(utmparams['answer_1'] || ""),
+								phone_code: decodeURIComponent(utmparams['answer_2'] || ""),
+                'Event Start Time': decodeURIComponent(utmparams['event_start_time'] || ""),
+                'Event End Time': decodeURIComponent(utmparams['event_end_time'] || ""),
+                'Work Experience': getWorkExperience.value,
+                'Role Domain': getDomainRole.value,
+                // 'PA Consult Time': "",
+                // 'PA Consult Time Other': "",
+                'Interview Start Time': getStartIn.value,
+                'Laid Off': getLaidOff.checked,
+                'Is Student': getIsStudent.checked,
+                // 'Domain Switch': '',
+                salesforce_uuid: decodeURIComponent(utmparams['salesforce_uuid'] || ""),
+                GA_event_id: Date.now(),
+								...(window.updateZapPayload || {}),
+            };
+
+           
+                    try {
+                        dataLayer.push({
+                            event: "wordpress_form_submitted",
+                            formName: "Lead Qualifier Form",
+                            event_id: GQLformData.GA_event_id,
+                        })
+                    } catch (err) {
+                        console.error(err);
+                    }
+                    sendRequestZapiar(
+                        getWebhook("3409hxu"),
+                        GQLformData,
+                        function () { track("gql", "Success in gql step"); },
+                        function () {
+                            track("gql-e", "flow-general");
+                            if (StepBtn1) StepBtn1.disabled = false;
+                        }
+                    );
+    }
+
+    // Second step
+    function finalFrStep2(btn) {
+        function track(step, message) {
+            typeof saveFormEventsActivity === 'function' ? saveFormEventsActivity(step, null, null, message) : console.error("saveFormEventsActivity is not a function");
+        }
+        if (!btn || btn.disabled) return;
+        btn.disabled = true;
+        let errorStatus = false;
+        // check conditions
+        if (!getSwDomainRole.value) {
+            errorStatus = true;
+            errorFun(".sw_domain_role_fild", errorStatus);
+            if (!err_temp.sw_domain_role_fild) {
+                err_temp.sw_domain_role_fild = errorStatus;
+                getSwDomainRole.addEventListener("input", function () {
+                    errorFun(".sw_domain_role_fild", false);
+                })
+            }
+        }
+        if (errorStatus) {
+            btn.disabled = false;
+            track("domain-e", "validation-general");
+            return;
+        }
+        let params = [];
+            try {
+                params = read_cookie?.("v_latest") || getParams?.();
+            } catch (error) {
+                console.error("Error while reading cookie", error);
+            }
+            const fbcFromCookies = getCookieValue('_fbc');
+            const fbp = getCookieValue('_fbp');
+            const userAgent = navigator?.userAgent;
+            const fbclid = decodeURIComponent(params['fbclid'] || "");
+            let fbc = fbcFromCookies;
+            if (!fbcFromCookies && fbclid) {
+                // Generate fbc from fbclid
+                const domainParts = window.location.hostname.split('.');
+                const subdomainIndex = domainParts.length - 1;
+                const creationTime = Date.now();
+                fbc = `fb.${subdomainIndex}.${creationTime}.${fbclid}`;
+            }
+            let GQLformData = {
+                'First Name': decodeURIComponent(utmparams['invitee_first_name'] || ""),
+                'Last Name': decodeURIComponent(utmparams['invitee_last_name'] || ""),
+                'Email Address': decodeURIComponent(utmparams['invitee_email'] || ""),
+                utm_source: decodeURIComponent(utmparams['utm_source'] || ""),
+                utm_medium: decodeURIComponent(utmparams['utm_medium'] || ""),
+                utm_campaign: decodeURIComponent(utmparams['utm_campaign'] || ""),
+                utm_term: decodeURIComponent(utmparams['utm_term'] || ""),
+                gclid: decodeURIComponent(utmparams['gclid'] || ""),
+                msclkid: decodeURIComponent(utmparams['msclkid'] || ""),
+                "webinar-type": decodeURIComponent(utmparams['webinarTypeval'] || ""),
+                fbclid: fbclid,
+                fbpId: fbp || null,
+                fbcId: fbc || null,
+                user_agent: userAgent || '',
+                user_id: visitor_id,
+                user_timezone: v_timezone,
+                v_country: v_country,
+                "page_url": window?.location?.href,
+                phone_number_full: decodeURIComponent(utmparams['answer_1'] || ""),
+								phone_code: decodeURIComponent(utmparams['answer_2'] || ""),
+                'Event Start Time': decodeURIComponent(utmparams['event_start_time'] || ""),
+                'Event End Time': decodeURIComponent(utmparams['event_end_time'] || ""),
+                'Work Experience': getWorkExperience.value,
+                'Role Domain': getDomainRole.value,
+                'Interview Start Time': getStartIn.value,
+                'Laid Off': getLaidOff.checked,
+                'Is Student': getIsStudent.checked,
+                'Domain Switch': getSwDomainRole.value,
+                // 'Stage of Career Change': getStgCrCh.value,
+                salesforce_uuid: decodeURIComponent(utmparams['salesforce_uuid'] || ""),
+                // 'Switch to Engineering Management': false ? 'Yes': 'No',
+								...(window.updateZapPayload || {}),
+            };
+
+            try {
+                dataLayer.push({
+                    event: "wordpress_form_submitted",
+                    formName: "Switch Domain Form",
+                })
+            } catch (err) {
+                console.error(err);
+            }
+            sendRequestZapiar(
+                getWebhook("340rvpf"),
+                GQLformData,
+                function () { track("domain", "Success in domain step"); },
+                function () {
+                    track("domain-e", "flow-zapier");
+                    if (StepBtn2) StepBtn2.disabled = false;
+                }
+            );
+    }
+
+    // Third step
+    function finalFrStep3(btn) {
+        function track(step, message) {
+            typeof saveFormEventsActivity === 'function' ? saveFormEventsActivity(step, null, null, message) : console.error("saveFormEventsActivity is not a function");
+        }
+        if (!btn || btn.disabled) return;
+        btn.disabled = true;
+        btn.innerHTML = "Please wait...";
+        const fbc = getCookieValue('_fbc');
+        const fbp = getCookieValue('_fbp');
+        const userAgent = navigator?.userAgent;
+        let GQLformData = {
+            'First Name': decodeURIComponent(utmparams['invitee_first_name'] || ""),
+            'Last Name': decodeURIComponent(utmparams['invitee_last_name'] || ""),
+            'Email Address': decodeURIComponent(utmparams['invitee_email'] || ""),
+            utm_source: decodeURIComponent(utmparams['utm_source'] || ""),
+            utm_medium: decodeURIComponent(utmparams['utm_medium'] || ""),
+            utm_campaign: decodeURIComponent(utmparams['utm_campaign'] || ""),
+            utm_term: decodeURIComponent(utmparams['utm_term'] || ""),
+            gclid: decodeURIComponent(utmparams['gclid'] || ""),
+            msclkid: decodeURIComponent(utmparams['msclkid'] || ""),
+            "webinar-type": decodeURIComponent(utmparams['webinarTypeval'] || ""),
+            fbclid: fbc || null,
+            fbpId: fbp || null,
+            user_agent: userAgent || '',
+            user_id: visitor_id,
+            user_timezone: v_timezone,
+            v_country: v_country,
+            "page_url": window?.location?.href,
+            phone_number_full: decodeURIComponent(utmparams['answer_1'] || ""),
+			phone_code: decodeURIComponent(utmparams['answer_2'] || ""),
+            'Event Start Time': decodeURIComponent(utmparams['event_start_time'] || ""),
+            'Event End Time': decodeURIComponent(utmparams['event_end_time'] || ""),
+            'Work Experience': getWorkExperience.value,
+            'Role Domain': getDomainRole.value,
+            // 'PA Consult Time': "",
+            // 'PA Consult Time Other': "",
+            'Interview Start Time': getStartIn.value,
+            'Laid Off': getLaidOff.checked,
+            'Is Student': getIsStudent.checked,
+            'Domain Switch': getSwDomainRole.value,
+            // 'Stage of Career Change': getStgCrCh.value,
+            'hear about IK[]': multiSelect.getValue(true),
+            salesforce_uuid: decodeURIComponent(utmparams['salesforce_uuid'] || ""),
+            // 'Switch to Engineering Management': false ? 'Yes': 'No',
+						...(window.updateZapPayload || {}),
+        };
+        try {
+            dataLayer.push({
+                event: "wordpress_form_submitted",
+                formName: "Source Form",
+            })
+        } catch (err) {
+            track("source-e", "reporting-data-layer");
+            console.error(err);
+        }
+        sendRequestZapiar(
+            getWebhook("3sxtz40"),
+            GQLformData,
+            function () { track("source", "Success in source step"); },
+            function () {
+                track("source-e", "flow-zapier");
+                if (StepBtn3) {
+                    StepBtn3.disabled = false;
+                    StepBtn3.innerHTML = step3BtnDefaultHtml;
+                }
+            }
+        );
+    }
+    // send request fun
+    async function sendRequestZapiar(url, data, successTrackCallback = null, failTrackCallback = null) {
+        try {
+            // Validate payload before sending
+            if (!data || (typeof data === 'object' && Object.keys(data).length === 0) || JSON.stringify(data) === "{}") {
+                throw new Error("Zapier webhook payload is empty");
+            }
+
+            let options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            };
+
+            let response = await fetch(url, options);
+            moveNextStep();
+            if (typeof successTrackCallback === 'function') successTrackCallback();
+        } catch (err) {
+            console.error("sendRequestZapiar", err);
+            if (failTrackCallback) failTrackCallback();
+        }
+    }
+
+
+    function moveNextStep() {
+        let getCurrentStep = parseInt(getFinalForm.getAttribute("active_step"));
+        getCurrentStep++;
+        getFinalForm.setAttribute("active_step", getCurrentStep);
+    }
+
+    function errorFun(targetTedClass, status = false) {
+        getFinalForm.querySelector(targetTedClass).setAttribute("err_status", status);
+    }
+
+
+
+</script>
+<!-- Final page body end -->
