@@ -39,15 +39,16 @@
 
 // floating Icon
 
-const FloatIcon = document.querySelector('.flot_open');
+const FloatOpen = document.querySelector('.flot_open');
+const FloatClose = document.querySelector('.flot_close');
+const FloatIcon = document.querySelector('.float_icon');
 
-btn.addEventListener('click', () => {
-    const status = FloatIcon.getAttribute('flot_status');
+FloatOpen.addEventListener('click', () => {
+    FloatIcon.setAttribute('flot_status', 'true');
+});
 
-    FloatIcon.setAttribute(
-        'flot_status',
-        status === 'true' ? 'false' : 'true'
-    );
+FloatClose.addEventListener('click', () => {
+    FloatIcon.setAttribute('flot_status', 'false');
 });
 
 </script>
