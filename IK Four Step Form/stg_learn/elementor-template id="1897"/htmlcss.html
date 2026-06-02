@@ -8,6 +8,9 @@
   border-radius: 8px;
   color: #000;
 }
+.final_step_fr{
+    background-color: #fff;
+}
 .final_step_fr * {
   font-family: Open Sans;
   box-sizing: border-box;
@@ -57,13 +60,16 @@
   font-size: 20px;
   font-weight: 500;
 }
-.final_step_fr .fn_fr_step .webinar_form_wrap {
+.final_step_fr .fn_fr_step .webinar_form_wrap,
+.final_step_fr .from_step.from_tep_4 {
   padding: 24px;
 }
-.final_step_fr .fn_fr_step .webinar_form_wrap > * {
+.final_step_fr .fn_fr_step .webinar_form_wrap > *,
+.final_step_fr .from_step.from_tep_4 > * {
   display: block;
 }
-.final_step_fr .fn_fr_step .webinar_form_wrap .form_field_set label {
+.final_step_fr .fn_fr_step .webinar_form_wrap .form_field_set label,
+.final_step_fr .from_step.from_tep_4 .fr_fild {
   grid-column-gap: 10px;
   align-items: center;
   margin-bottom: 8px;
@@ -71,11 +77,15 @@
   font-weight: 600;
   flex-wrap: wrap;
 }
+.final_step_fr .from_step.from_tep_4 .fr_fild{
+    margin-bottom: 20px;
+}
 .final_step_fr .fn_fr_step .webinar_form_wrap .form_field_set label .err_msg {
   color: #ac3333;
   font-size: 12px;
 }
-.final_step_fr .fn_fr_step .webinar_form_wrap .form_field_set select {
+.final_step_fr .fn_fr_step .webinar_form_wrap .form_field_set select,
+.final_step_fr .from_step.from_tep_4 .fr_fild select {
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
@@ -111,7 +121,8 @@
 .final_step_fr .fn_fr_step .webinar_form_wrap .is-student-field .text {
   font-weight: 400;
 }
-.final_step_fr .fn_fr_step .webinar_form_wrap .step_btn {
+.final_step_fr .fn_fr_step .webinar_form_wrap .step_btn,
+.final_step_fr .from_step.from_tep_4 .step_btn {
   max-width: 100%;
   width: 100%;
   margin-top: 20px;
@@ -185,10 +196,15 @@
 .final_step_fr .fr_fn_step_1,
 .final_step_fr .fr_fn_step_2,
 .final_step_fr .fr_fn_step_3,
-.final_step_fr .fr_fn_step_4 {
+.final_step_fr .fr_fn_step_4,
+.final_step_fr .from_tep_4 {
   display: none;
 }
-.final_step_fr[active_step="1"] .fr_fn_step_1, .final_step_fr[active_step="2"] .fr_fn_step_2, .final_step_fr[active_step="3"] .fr_fn_step_3, .final_step_fr[active_step="4"] .fr_fn_step_4 {
+.final_step_fr[active_step="1"] .fr_fn_step_1,
+.final_step_fr[active_step="2"] .from_tep_4, 
+.final_step_fr[active_step="3"] .fr_fn_step_2, 
+.final_step_fr[active_step="4"] .fr_fn_step_3, 
+.final_step_fr[active_step="5"] .fr_fn_step_4{
   display: block;
 }/*# sourceMappingURL=sin_up_final.css.map */
 
@@ -291,6 +307,55 @@
         </div>
 
     </div>
+
+                  <!-- Step 4 -->
+        <div class="from_step from_tep_4">
+            <div class="tr_filds">
+                    <label class="fr_fild v2_goal_fild" err_status="false">
+                        <span class="title">What is your Current Goal?</span>
+                        <select class="gql_goal_select">
+                            <option value="" data-cr="0.35">Select option</option>
+                            <option value="Land a top tech company role (FAANG/tier-1)" data-cr="0.58">Land a top tech company role (FAANG/tier-1)</option>
+                            <option value="Switch roles to increase compensation (same domain, better pay)" data-cr="1.02">Switch roles to increase compensation (same domain, better pay)</option>
+                            <option value="Transition into AI/ML/Agentic AI" data-cr="1.02">Transition into AI/ML/Agentic AI</option>
+                            <option value="Transition into TPM/EM/Product Management" data-cr="1.59">Transition into TPM/EM/Product Management</option>
+                            <option value="Land my first tech job (fresh grad/career starter)" data-cr="1.40">Land my first tech job (fresh grad/career starter)</option>
+                            <option value="Re-enter after a career break" data-cr="1.19">Re-enter after a career break</option>
+                            <option value="Upskill in current role (no immediate job change)" data-cr="1.19">Upskill in current role (no immediate job change)</option>
+                            <option value="Just exploring / not decided yet" data-cr="1.19">Just exploring / not decided yet</option>
+                        </select>
+                    </label>
+                </div>
+  
+                <label class="fr_fild v2_work_fild" err_status="false">
+                    <span class="title">How would you describe your current involvement in technical work?</span>
+                    <select class="gql_work_select">
+                        <option value="" data-cr="0.37">Select option</option>
+                        <option value="Hands-on — I code or build systems daily" data-cr="1.87">Hands-on — I code or build systems daily</option>
+                        <option value="Technical lead — I design/architect but code less" data-cr="1.87">Technical lead — I design/architect but code less</option>
+                        <option value="Tech manager — I manage engineers, limited coding" data-cr="1.87">Tech manager — I manage engineers, limited coding</option>
+                        <option value="Non-technical manager — I oversee tech projects" data-cr="1.87">Non-technical manager — I oversee tech projects</option>
+                        <option value="Formerly technical — Haven't been hands-on in 2+ years" data-cr="1.87">Formerly technical — Haven't been hands-on in 2+ years</option>
+                        <option value="Not technical — I work outside engineering" data-cr="1.87">Not technical — I work outside engineering</option>
+                    </select>
+                </label>
+                
+                <label class="fr_fild v2_auth_status_fild" err_status="false">
+                    <span class="title">What is your Work Authorization Status?</span>
+                    <select class="gql_auth_status_select">
+                        <option value="" data-cr="0.37">Select option</option>
+                        <option value="US Citizen/ Green Card" data-cr="0.73">US Citizen/ Green Card</option>
+                        <option value="H-1B/O-1" data-cr="1.27">H-1B/O-1</option>
+                        <option value="L-1/F-1/OPT" data-cr="1.75">L-1/F-1/OPT</option>
+                        <option value="Not currently authorized" data-cr="1.13">Not currently authorized</option>
+                    </select>
+                  
+                </label>
+            <div class="btn_container">
+                <!-- <button class="step_btn step_back step_back_4" id="v-two-form-fourth-back">Back</button> -->
+                <button class="step_btn step_btn_4">Submit</button>
+            </div>
+            </div>
 
     <div class="fn_fr_step fr_fn_step_2">
 

@@ -1,0 +1,53 @@
+<style>
+    ._lists {
+    position: absolute;
+    top: 100%;
+    left: 0;
+
+    transform: translateX(50px); /* start from right */
+    opacity: 0;
+    pointer-events: none;
+
+    transition: all 0.3s ease;
+}
+[flot_status="true"] ._lists {
+    transform: translateX(0); /* move right → left */
+    opacity: 1;
+    pointer-events: auto;
+}
+.flot_open {
+    opacity: 1;
+    transition: all 0.3s ease;
+}
+
+[flot_status="true"] .flot_open {
+    opacity: 0;
+}
+.flot_close {
+    opacity: 0;
+    transform: rotate(-90deg);
+    transition: all 0.3s ease;
+}
+
+[flot_status="true"] .flot_close {
+    opacity: 1;
+    transform: rotate(0deg);
+}
+</style>
+
+<script>
+
+// floating Icon
+
+const FloatIcon = document.querySelector('.flot_open');
+
+btn.addEventListener('click', () => {
+    const status = FloatIcon.getAttribute('flot_status');
+
+    FloatIcon.setAttribute(
+        'flot_status',
+        status === 'true' ? 'false' : 'true'
+    );
+});
+
+</script>
