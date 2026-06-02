@@ -1,37 +1,40 @@
 <style>
-    ._lists {
-    position: absolute;
-    top: 100%;
-    left: 0;
-
-    transform: translateX(50px); /* start from right */
+._lists {
+    /* position: absolute; */
+    transform: translateX(100px);
     opacity: 0;
     pointer-events: none;
 
     transition: all 0.3s ease;
 }
 [flot_status="true"] ._lists {
-    transform: translateX(0); /* move right → left */
+    transform: translateX(0);
     opacity: 1;
     pointer-events: auto;
 }
 .flot_open {
     opacity: 1;
+    cursor: pointer;
     transition: all 0.3s ease;
 }
 
 [flot_status="true"] .flot_open {
     opacity: 0;
+    pointer-events: none;
 }
 .flot_close {
     opacity: 0;
-    transform: rotate(-90deg);
+    transform: rotate(90deg);
     transition: all 0.3s ease;
+    pointer-events: none;
 }
 
 [flot_status="true"] .flot_close {
     opacity: 1;
-    transform: rotate(0deg);
+    cursor: pointer;
+    pointer-events: auto;
+    transform: rotate(45deg);
+    transition: all 0.3s ease;
 }
 </style>
 
