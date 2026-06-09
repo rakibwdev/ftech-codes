@@ -1,4 +1,68 @@
 <script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const getFormSendMsgFild = document.querySelector('#form_send_message');
+
+    //  Initial state
+    if (getFormSendMsgFild) {
+        getFormSendMsgFild.setAttribute('show_status', 'false');
+    }
+
+    //  Tips (radio change)
+    document.querySelectorAll('[name="form_fields[Iertips]"]').forEach(function (radio) {
+        radio.addEventListener('change', function () {
+
+            const tipsField = document.querySelector('#form_send_message .tips_fild');
+            const selectedTips = document.querySelector('[name="form_fields[Iertips]"]:checked');
+
+            if (tipsField && selectedTips) {
+                tipsField.innerHTML = selectedTips.value;
+            }
+        });
+    });
+
+    //  Model input (text / select)
+    const modelInput = document.querySelector('[name="form_fields[inputModels]"]');
+
+    if (modelInput) {
+        modelInput.addEventListener('input', function () {
+
+            const modelName = document.querySelector('#form_send_message .model_name');
+
+            if (modelName) {
+                modelName.innerHTML = this.value || '';
+            }
+        });
+    }
+
+    //  Back button
+    const backBtn = document.querySelector('#form_send_message .back_to_form');
+
+    if (backBtn) {
+        backBtn.addEventListener('click', function () {
+            if (getFormSendMsgFild) {
+                getFormSendMsgFild.setAttribute('show_status', 'false');
+            }
+        });
+    }
+
+    //  Elementor form success (BEST METHOD)
+    jQuery(document).on('submit_success', function (event, response) {
+
+        console.log('Form submitted successfully', response);
+
+        if (getFormSendMsgFild) {
+            getFormSendMsgFild.setAttribute('show_status', 'true');
+        }
+
+    });
+
+});
+</script>
+
+
+
+<script>
 document.querySelectorAll(".click_div").forEach(div => {
     div.addEventListener("click", function () {
         this.nextElementSibling.classList.toggle("active");
