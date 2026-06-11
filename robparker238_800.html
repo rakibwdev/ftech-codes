@@ -63,3 +63,124 @@
         <li>How to design, print, and fit a housing for the OLED — at any angle you like.</li>
     </ul>
 </div>
+
+<!-- Question Part -->
+ <style>
+
+    .question h3{
+    font-size:18px;
+    font-weight:bold;
+}
+.options {
+    display:flex;
+    flex-direction:column;
+}
+.option{
+    text-align:left;
+    color:#251d4d;
+    border: solid 1px #eeee;
+    margin-bottom:10px;
+    border-radius: 8px; 
+    transition: 0.3s;
+}
+
+.option:hover {
+    background-color:#0a17a708;
+    color:#251d4d;
+} 
+
+.option.selected {
+    border-color: #333;
+        color:#251d4d;
+}
+
+.option.correct {
+    background: #d4edda;
+    border-color: #28a745;
+}
+
+.option.wrong {
+    background: #f8d7da;
+    border-color: #dc3545;
+}
+
+ </style>
+
+?>
+<div class="questions-wrapper">
+    <?php if ($get_quiz): ?>
+        <?php foreach ($get_quiz as $index => $question): ?>
+            <div class="question" 
+                 data-correct-answer="<?php echo esc_attr($question['correct_answer']); ?>" 
+                 data-question-index="<?php echo $index; ?>">
+
+                <h3><?php echo esc_html($question['quiz_question']); ?></h3>
+
+                <div class="options">
+                    <?php foreach ($question['answer_options'] as $option): 
+                        $option_value = $option['answer_option'];
+                    ?>
+                        <button 
+                            type="button"
+                            class="option" 
+                            data-value="<?php echo esc_attr($option_value); ?>">
+                            <?php echo esc_html($option_value); ?>
+                        </button>
+                    <?php endforeach; ?>
+                </div>
+
+                <div class="result"></div>
+            </div>
+        <?php endforeach; ?>
+    <?php endif; ?>
+</div>
+<?php
+
+<script>
+document.querySelectorAll('.question').forEach(question => {
+    const correctAnswer = question.dataset.correctAnswer;
+    const options = question.querySelectorAll('.option');
+    const resultBox = question.querySelector('.result');
+
+    options.forEach(btn => {
+        btn.addEventListener('click', function () {
+            // remove previous selection
+            options.forEach(b => b.classList.remove('selected'));
+
+            // mark selected
+            this.classList.add('selected');
+
+            const selectedValue = this.dataset.value;
+
+            if (selectedValue === correctAnswer) {
+                this.classList.add('correct');
+                resultBox.innerHTML = "✅ Correct!";
+            } else {
+                this.classList.add('wrong');
+                resultBox.innerHTML = "❌ Wrong!";
+            }
+        });
+    });
+});
+</script>
+
+	<!-- ?>
+		<div class="questions-wrapper">
+			<?php if($get_quiz): ?>
+				<?php foreach($get_quiz as $question): ?>
+					<div class="question" data-correct-awnser="<?php echo $question['correct_answer']; ?>">
+						<h3><?php echo $question['quiz_question']; ?></h3>
+						<div class="options">
+							<?php foreach($question['answer_options'] as $option): 
+								$option_value = $option['answer_option'];
+								?>
+								<button class="option" data-value="<?php echo $option_value; ?>">
+									<?php echo $option_value; ?>
+								</button>
+							<?php endforeach; ?>
+						</div>
+					</div>
+				<?php endforeach; ?>
+			<?php endif; ?>
+		</div>
+		<?php -->
