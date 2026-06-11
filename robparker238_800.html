@@ -67,7 +67,10 @@
 <!-- Question Part -->
  <style>
 
-    .question h3{
+.questions-wrapper{
+    margin:20px 0;
+}
+.question h3{
     font-size:18px;
     font-weight:bold;
 }
@@ -103,6 +106,26 @@
     background: #f8d7da;
     border-color: #dc3545;
 }
+.next-btn {
+    margin-top: 15px;
+    background: #EEEE;
+    color: #000000;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+.next-btn:hover {
+    background: #0a17a70c;
+    color: #000000;
+}
+.question {
+    display: none;
+}
+
+.question.active {
+    display: block;
+}
 
  </style>
 
@@ -130,37 +153,72 @@
                 </div>
 
                 <div class="result"></div>
+                <button class="next-btn">Next question</button>
             </div>
         <?php endforeach; ?>
     <?php endif; ?>
 </div>
+<div class="quiz-result" style="display:none;">
+    <h3>Your Score: <span id="score"></span></h3>
+</div>
 <?php
 
 <script>
-document.querySelectorAll('.question').forEach(question => {
-    const correctAnswer = question.dataset.correctAnswer;
-    const options = question.querySelectorAll('.option');
-    const resultBox = question.querySelector('.result');
+document.addEventListener('DOMContentLoaded', function () {
 
-    options.forEach(btn => {
-        btn.addEventListener('click', function () {
-            // remove previous selection
-            options.forEach(b => b.classList.remove('selected'));
+    let score = 0;
 
-            // mark selected
-            this.classList.add('selected');
+    const questions = document.querySelectorAll('.question');
+    let currentIndex = 0;
 
-            const selectedValue = this.dataset.value;
+    if (questions.length > 0) {
+        questions[0].classList.add('active');
+    }
 
-            if (selectedValue === correctAnswer) {
-                this.classList.add('correct');
-                resultBox.innerHTML = "✅ Correct!";
+    questions.forEach((question, index) => {
+        const correctAnswer = question.dataset.correctAnswer;
+        const options = question.querySelectorAll('.option');
+        const resultBox = question.querySelector('.result');
+        const nextBtn = question.querySelector('.next-btn');
+
+        options.forEach(btn => {
+            btn.addEventListener('click', function () {
+
+                options.forEach(b => {
+                    b.classList.remove('selected', 'correct', 'wrong');
+                });
+
+                this.classList.add('selected');
+
+                const selectedValue = this.dataset.value;
+                console.log("Selected:", selectedValue, "Correct:", correctAnswer);
+
+                if (selectedValue === correctAnswer) {
+                    this.classList.add('correct');
+                    resultBox.innerHTML = "Correct!";
+                    score++;
+                } else {
+                    this.classList.add('wrong');
+                    resultBox.innerHTML = "Wrong!";
+                }
+            });
+        });
+
+        nextBtn.addEventListener('click', function () {
+
+            questions[currentIndex].classList.remove('active');
+
+            currentIndex++;
+
+            if (currentIndex < questions.length) {
+                questions[currentIndex].classList.add('active');
             } else {
-                this.classList.add('wrong');
-                resultBox.innerHTML = "❌ Wrong!";
+                document.querySelector('.quiz-result').style.display = 'block';
+                document.getElementById('score').textContent = score + "/" + questions.length;
             }
         });
     });
+
 });
 </script>
 
