@@ -126,6 +126,41 @@
 .question.active {
     display: block;
 }
+.quiz-result {
+    padding:20px;
+    display:flex;
+    border: solid 1px #eeeeee;
+    border-radius:12px;
+    margin-bottom:20px;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    
+    h4{
+         color: #0b588e;
+        font-size: 30px;
+        font-weight: 700;
+        font-family: "Montserrat";
+    }
+}
+.result {
+     border-radius: 8px;
+     padding:10px;
+     color: #251d4d;
+     display:none;
+}
+.result.right{
+    display: block;
+     background: #1db9543b;
+     border-left: 4px solid #1DB954;
+}
+
+.result.wrong {
+    display: block;
+    background: #e627361f;
+    border-left: 4px solid red;
+
+}
 
  </style>
 
@@ -135,7 +170,7 @@
         <?php foreach ($get_quiz as $index => $question): ?>
             <div class="question" 
                  data-correct-answer="<?php echo esc_attr($question['correct_answer']); ?>" 
-                 data-question-index="<?php echo $index; ?>">
+                 data-correct-message="<?php echo esc_attr($question['correct_message']); ?>">
 
                 <h3><?php echo esc_html($question['quiz_question']); ?></h3>
 
@@ -159,7 +194,9 @@
     <?php endif; ?>
 </div>
 <div class="quiz-result" style="display:none;">
-    <h3>Your Score: <span id="score"></span></h3>
+    <h3>You finished the quiz!</h3>
+ <h4 id="score"></h4>
+ <p >Great effort. Want to scroll back up and review anything?</p>
 </div>
 <?php
 
@@ -176,13 +213,15 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     questions.forEach((question, index) => {
-        const correctAnswer = question.dataset.correctAnswer;
+        const correctAnswer = parseInt(question.dataset.correctAnswer);
+        const correctMessage = question.dataset.correctMessage;
         const options = question.querySelectorAll('.option');
         const resultBox = question.querySelector('.result');
         const nextBtn = question.querySelector('.next-btn');
 
-        options.forEach(btn => {
+        options.forEach((btn, optionIndex) => {
             btn.addEventListener('click', function () {
+                console.log("Question Index:", index, "Option Index:", optionIndex);
 
                 options.forEach(b => {
                     b.classList.remove('selected', 'correct', 'wrong');
@@ -190,16 +229,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 this.classList.add('selected');
 
-                const selectedValue = this.dataset.value;
+                const selectedValue = optionIndex+1;
+
                 console.log("Selected:", selectedValue, "Correct:", correctAnswer);
 
                 if (selectedValue === correctAnswer) {
                     this.classList.add('correct');
-                    resultBox.innerHTML = "Correct!";
+                    resultBox.classList.remove('wrong');
+                    resultBox.classList.add('right');
+                    resultBox.innerHTML = "Correct!" + "<br>" + correctMessage;
                     score++;
                 } else {
                     this.classList.add('wrong');
-                    resultBox.innerHTML = "Wrong!";
+                    resultBox.classList.remove('right');
+                    resultBox.classList.add('wrong');
+                    resultBox.innerHTML = "Not quite — try again.!";
                 }
             });
         });
@@ -213,7 +257,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (currentIndex < questions.length) {
                 questions[currentIndex].classList.add('active');
             } else {
-                document.querySelector('.quiz-result').style.display = 'block';
+                document.querySelector('.quiz-result').style.display = 'flex';
                 document.getElementById('score').textContent = score + "/" + questions.length;
             }
         });
