@@ -100,11 +100,13 @@
 .option.correct {
     background: #d4edda;
     border-color: #28a745;
+    color: #000000;
 }
 
 .option.wrong {
     background: #f8d7da;
     border-color: #dc3545;
+    color: #000000;
 }
 .next-btn {
     margin-top: 15px;
@@ -161,6 +163,10 @@
     border-left: 4px solid red;
 
 }
+.option:focus{
+    background-color:#ffffff00;
+    color:#000000;
+}
 
  </style>
 
@@ -213,6 +219,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     questions.forEach((question, index) => {
+
+        let isCorrectAnswered = false;
+
         const correctAnswer = parseInt(question.dataset.correctAnswer);
         const correctMessage = question.dataset.correctMessage;
         const options = question.querySelectorAll('.option');
@@ -222,12 +231,8 @@ document.addEventListener('DOMContentLoaded', function () {
         options.forEach((btn, optionIndex) => {
             btn.addEventListener('click', function () {
                 console.log("Question Index:", index, "Option Index:", optionIndex);
-
-                options.forEach(b => {
-                    b.classList.remove('selected', 'correct', 'wrong');
-                });
-
-                this.classList.add('selected');
+                
+                if (isCorrectAnswered) return;
 
                 const selectedValue = optionIndex+1;
 
@@ -239,8 +244,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     resultBox.classList.add('right');
                     resultBox.innerHTML = "Correct!" + "<br>" + correctMessage;
                     score++;
+                    isCorrectAnswered = true;
+                    options.forEach(b => b.style.pointerEvents = "none");
                 } else {
-                    this.classList.add('wrong');
+                    // this.classList.add('selected');
+                    this.classList.add('selected','wrong');
                     resultBox.classList.remove('right');
                     resultBox.classList.add('wrong');
                     resultBox.innerHTML = "Not quite — try again.!";
