@@ -1,0 +1,37 @@
+.mb-card {
+    border:1px solid #ddd;
+    padding:12px;
+    margin-bottom:10px;
+    border-radius:8px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.mb-card:hover {
+    background:#f5f5f5;
+}
+
+.mb-top {
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:6px;
+}
+
+.mb-tag {
+    border:1px solid #333;
+    padding:2px 6px;
+    font-size:12px;
+}
+
+.mb-breaking {
+    background:#111;
+    color:#fff;
+    padding:8px;
+    margin-bottom:15px;
+}
+
+.mb-breaking a {
+    color:#fff;
+    margin-right:10px;
+    text-decoration:none;
+}
