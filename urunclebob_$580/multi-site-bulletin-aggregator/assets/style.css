@@ -24,14 +24,25 @@
 }
 
 .mb-breaking {
-    background:#111;
+    display:flex;
+    color:#ad0000;
+    border:1px  solid #053C47;
+    border-radius:6px;
+    align-items: center;
+}
+
+.mb-breaking strong{
+    display:flex;
+    background:#053C47;
     color:#fff;
-    padding:8px;
-    margin-bottom:15px;
+    padding:5px 12px;
+    border:1px  solid #053C47;
+    border-radius:5px 0 0 5px;
 }
 
 .mb-breaking a {
-    color:#fff;
-    margin-right:10px;
+    color:#053C47;
+    margin-right:20px;
     text-decoration:none;
+    padding-left:5px;
 }

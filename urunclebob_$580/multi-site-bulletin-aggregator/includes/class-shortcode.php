@@ -50,7 +50,7 @@ class MSB_Shortcode {
         ?>
 
         <div class="mb-breaking">
-            <strong>BREAKING:</strong>
+            <strong>BREAKING</strong>
             <marquee scrollamount="7" >
                 <?php foreach ($posts as $post): ?>
 
@@ -59,7 +59,7 @@ class MSB_Shortcode {
                         foreach ($post->_embedded->{'wp:term'} as $tax) {
                             foreach ($tax as $term) {
                                 if ($term->slug === $breaking_slug) {
-                                    echo '<a href="'.$post->link.'" target="_blank">'.$post->title->rendered.'</a> • ';
+                                    echo ' • <a href="'.$post->link.'" target="_blank">'.$post->title->rendered.'</a>';
                                 }
                             }
                         }
