@@ -5,7 +5,19 @@ if (!defined('ABSPATH')) exit;
 class MSB_Shortcode {
 
     public function __construct() {
-        add_shortcode('multi_bulletins', [$this, 'render']);
+        add_shortcode('msb_breaking', [$this, 'breaking']);
+        add_shortcode('msb_bulletins', [$this, 'bulletins']);
+
+        add_action('wp_enqueue_scripts', [$this, 'enqueue_assets']);
+    }
+
+    public function enqueue_assets() {
+        wp_enqueue_style(
+            'msb-style',
+            MSB_URL . 'assets/style.css',
+            [],
+            '1.0'
+        );
     }
 
     private function time_ago($datetime) {
@@ -28,7 +40,8 @@ class MSB_Shortcode {
         return "JUST NOW";
     }
 
-    public function render() {
+    // BREAKING NEWS SHORTCODE
+    public function breaking() {
 
         $posts = MSB_Fetcher::get_posts();
         $breaking_slug = get_option('mb_breaking_tag');
@@ -38,7 +51,7 @@ class MSB_Shortcode {
 
         <div class="mb-breaking">
             <strong>BREAKING:</strong>
-            <marquee>
+            <marquee scrollamount="7" >
                 <?php foreach ($posts as $post): ?>
 
                     <?php
@@ -56,6 +69,18 @@ class MSB_Shortcode {
                 <?php endforeach; ?>
             </marquee>
         </div>
+
+        <?php
+        return ob_get_clean();
+    }
+
+    // LATEST BULLETINS SHORTCODE
+    public function bulletins() {
+
+        $posts = MSB_Fetcher::get_posts();
+
+        ob_start();
+        ?>
 
         <div class="mb-bulletins">
             <h3>Latest Bulletins</h3>
