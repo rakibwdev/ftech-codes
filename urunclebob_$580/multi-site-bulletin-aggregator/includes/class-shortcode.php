@@ -83,7 +83,6 @@ class MSB_Shortcode {
         ?>
 
         <div class="mb-bulletins">
-            <h3>Latest Bulletins</h3>
 
             <?php foreach (array_slice($posts, 0, 5) as $post): ?>
 
@@ -99,7 +98,7 @@ class MSB_Shortcode {
                             ?>
                         </span>
 
-                        <span class="mb-time">
+                        <span class="mb-time"> ⏱ 
                             <?php echo esc_html($this->time_ago($post->date)); ?>
                         </span>
                     </div>
