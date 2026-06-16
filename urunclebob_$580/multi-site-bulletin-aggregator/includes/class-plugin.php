@@ -13,3 +13,18 @@ class MSB_Plugin {
         new MSB_Shortcode();
     }
 }
+
+add_action('wp_enqueue_scripts', function() {
+
+    wp_enqueue_script(
+        'msb-script',
+        MSB_URL . 'assets/script.js',
+        [],
+        '1.0',
+        true
+    );
+
+    wp_localize_script('msb-script', 'msb_ajax', [
+        'url' => admin_url('admin-ajax.php')
+    ]);
+});
