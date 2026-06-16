@@ -3,6 +3,7 @@
  * Plugin Name: Multi Site Bulletin
  * Description: Fetch and display latest bulletins + breaking news from multiple WP sites.
  * Version: 1.0.0
+ * Author: Forazi Tech
  */
 
 if (!defined('ABSPATH')) exit;
