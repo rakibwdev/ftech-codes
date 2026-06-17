@@ -66,6 +66,7 @@ function msb_get_posts_callback() {
     wp_send_json($data);
 }
 
+
 // mlb rumors
 add_action('wp_ajax_msb_get_mlb_rumors', 'msb_get_mlb_rumors');
 add_action('wp_ajax_nopriv_msb_get_mlb_rumors', 'msb_get_mlb_rumors');

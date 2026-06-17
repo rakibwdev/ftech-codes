@@ -52,4 +52,36 @@ document.addEventListener("DOMContentLoaded", function () {
         return "JUST NOW";
     }
 
+    // MLB RUMORS SECTION
+fetch(msb_ajax.url + "?action=msb_get_mlb_rumors")
+    .then(res => res.json())
+    .then(posts => {
+
+        const titles   = document.querySelectorAll(".mlb_title");
+        const links    = document.querySelectorAll(".mlb_link");
+        const images   = document.querySelectorAll(".mlb_img");
+        const excerpts = document.querySelectorAll(".mlb_excerpt");
+console.log( 'MLB RUMORS' ,posts);
+        posts.forEach((post, index) => {
+
+            if (titles[index]) {
+                titles[index].innerHTML = post.title;
+            }
+
+            if (links[index]) {
+                links[index].setAttribute("href", post.link);
+            }
+
+            if (images[index]) {
+                images[index].setAttribute("src", post.image);
+            }
+
+            if (excerpts[index]) {
+                excerpts[index].innerHTML = post.excerpt;
+            }
+
+        });
+
+    });
+
 });
