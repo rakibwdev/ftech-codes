@@ -27,7 +27,7 @@ function nl_be_verify_secret(WP_REST_Request $request) {
 
     $secret = $request->get_header('x-sync-secret');
 
-    return $secret === 'c7A$kL9vP2!rX5@Zq8TnYwM4e3s1u0';
+    return $secret === 'KEY';
 }
 
 /**
@@ -394,4 +394,308 @@ function nl_be_import_external_image($image_url, $post_id) {
     }
 
     return $attachment_id;
+}
+
+
+
+// image duplicate issue fix updated code
+
+if (!defined('ABSPATH')) exit;
+
+/*
+|--------------------------------------------------------------------------
+| Register REST Routes
+|--------------------------------------------------------------------------
+*/
+add_action('rest_api_init', function () {
+
+    register_rest_route('nl-be-sync/v1', '/post', [
+        'methods'             => 'POST',
+        'callback'            => 'nl_be_receive_post',
+        'permission_callback' => 'nl_be_verify_secret',
+    ]);
+
+    register_rest_route('nl-be-sync/v1', '/post/delete', [
+        'methods'             => 'POST',
+        'callback'            => 'nl_be_receive_delete',
+        'permission_callback' => 'nl_be_verify_secret',
+    ]);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Verify Secret
+|--------------------------------------------------------------------------
+*/
+function nl_be_verify_secret(WP_REST_Request $request) {
+    return $request->get_header('x-sync-secret') === 'KEY';
+}
+
+/*
+|--------------------------------------------------------------------------
+| MAIN: Create / Update Post
+|--------------------------------------------------------------------------
+*/
+function nl_be_receive_post(WP_REST_Request $request) {
+
+    $data = $request->get_json_params();
+
+    $source_post_id = $data['source_post_id'] ?? 0;
+    $post_type      = $data['post_type'] ?? 'post';
+    $title          = $data['be_title'] ?? '';
+    $content        = !empty($data['be_content']) ? wpautop($data['be_content']) : '';
+    $slug           = !empty($data['be_slug']) ? sanitize_title($data['be_slug']) : sanitize_title($title);
+    $post_date      = $data['post_date'] ?? current_time('mysql');
+    $image_url      = $data['image_url'] ?? '';
+
+    if (!$source_post_id || empty(trim($title))) {
+        return new WP_REST_Response(['error' => 'Missing fields'], 400);
+    }
+
+    // Find existing post
+    $existing = get_posts([
+        'post_type'   => $post_type,
+        'numberposts' => 1,
+        'meta_key'    => '_source_post_id',
+        'meta_value'  => $source_post_id,
+        'post_status' => 'any',
+    ]);
+
+    $post_data = [
+        'post_type'     => $post_type,
+        'post_status'   => 'publish',
+        'post_title'    => $title,
+        'post_content'  => $content,
+        'post_name'     => $slug,
+        'post_date'     => $post_date,
+        'post_date_gmt' => get_gmt_from_date($post_date),
+    ];
+
+    if ($post_type === 'post' && !empty($data['be_excerpt'])) {
+        $post_data['post_excerpt'] = $data['be_excerpt'];
+    }
+
+    if ($existing) {
+        $post_data['ID'] = $existing[0]->ID;
+        $post_id = wp_update_post($post_data);
+    } else {
+        $post_id = wp_insert_post($post_data);
+        update_post_meta($post_id, '_source_post_id', $source_post_id);
+    }
+
+    if (is_wp_error($post_id)) {
+        return new WP_REST_Response(['error' => 'Save failed'], 500);
+    }
+
+    update_post_meta($post_id, '_source_modified', current_time('mysql'));
+
+    /*
+    |--------------------------------------------------------------------------
+    | Vacatures ACF Fields
+    |--------------------------------------------------------------------------
+    */
+    if ($post_type === 'vacatures') {
+        nl_be_save_vacature_fields($post_id, $data);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Featured Image (NO DUPLICATE)
+    |--------------------------------------------------------------------------
+    */
+    if (!empty($image_url)) {
+        nl_be_receive_featured_image($image_url, $post_id);
+    }
+
+    return new WP_REST_Response([
+        'success' => true,
+        'post_id' => $post_id,
+    ]);
+}
+
+/*
+|--------------------------------------------------------------------------
+| Prevent Duplicate Image (Helper)
+|--------------------------------------------------------------------------
+*/
+function nl_be_get_existing_image_by_url($image_url) {
+
+    $existing = get_posts([
+        'post_type'   => 'attachment',
+        'meta_key'    => '_source_image_url',
+        'meta_value'  => $image_url,
+        'fields'      => 'ids',
+        'numberposts' => 1
+    ]);
+
+    return $existing ? $existing[0] : false;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Featured Image (No Duplicate)
+|--------------------------------------------------------------------------
+*/
+function nl_be_receive_featured_image($image_url, $post_id) {
+
+    $existing_id = nl_be_get_existing_image_by_url($image_url);
+
+    if ($existing_id) {
+        set_post_thumbnail($post_id, $existing_id);
+        return;
+    }
+
+    require_once ABSPATH . 'wp-admin/includes/file.php';
+    require_once ABSPATH . 'wp-admin/includes/media.php';
+    require_once ABSPATH . 'wp-admin/includes/image.php';
+
+    $tmp = download_url($image_url, 300);
+    if (is_wp_error($tmp)) return;
+
+    $file = [
+        'name'     => basename(parse_url($image_url, PHP_URL_PATH)),
+        'tmp_name' => $tmp,
+    ];
+
+    $attachment_id = media_handle_sideload($file, $post_id);
+
+    if (is_wp_error($attachment_id)) {
+        @unlink($tmp);
+        return;
+    }
+
+    update_post_meta($attachment_id, '_source_image_url', $image_url);
+
+    set_post_thumbnail($post_id, $attachment_id);
+}
+
+/*
+|--------------------------------------------------------------------------
+| Import Image (ACF) — No Duplicate
+|--------------------------------------------------------------------------
+*/
+function nl_be_import_external_image($image_url, $post_id) {
+
+    $existing_id = nl_be_get_existing_image_by_url($image_url);
+    if ($existing_id) return $existing_id;
+
+    require_once ABSPATH . 'wp-admin/includes/file.php';
+    require_once ABSPATH . 'wp-admin/includes/media.php';
+    require_once ABSPATH . 'wp-admin/includes/image.php';
+
+    $tmp = download_url($image_url, 300);
+    if (is_wp_error($tmp)) return false;
+
+    $file = [
+        'name'     => basename(parse_url($image_url, PHP_URL_PATH)),
+        'tmp_name' => $tmp,
+    ];
+
+    $attachment_id = media_handle_sideload($file, $post_id);
+
+    if (is_wp_error($attachment_id)) {
+        @unlink($tmp);
+        return false;
+    }
+
+    update_post_meta($attachment_id, '_source_image_url', $image_url);
+
+    return $attachment_id;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Save Vacature Fields
+|--------------------------------------------------------------------------
+*/
+function nl_be_save_vacature_fields($post_id, $data) {
+
+    $text_fields = [
+        'land','locatie','uren_per_week','opleidingsniveau','cta_content',
+        'content_image_block_content_1','content_image_block_bottom_content_1',
+        'content_image_block_content_2','content_image_block_bottom_content_2',
+        'content_image_block_content_3','content_image_block_bottom_content_3',
+        'content_image_block_content_4','content_image_block_bottom_content_4',
+        'content_image_block_content_5','content_image_block_bottom_content_5',
+    ];
+
+    foreach ($text_fields as $field) {
+        update_field($field, $data[$field] ?? '', $post_id);
+    }
+
+    // Images
+    for ($i = 1; $i <= 5; $i++) {
+
+        $key = "content_image_block_image_$i";
+        $url = $data[$key] ?? '';
+
+        if (!$url) {
+            update_field($key, '', $post_id);
+            continue;
+        }
+
+        $attachment_id = nl_be_import_external_image($url, $post_id);
+
+        if ($attachment_id) {
+            update_field($key, $attachment_id, $post_id);
+        }
+    }
+
+    // Taxonomies
+    if (!empty($data['taxonomies'])) {
+        nl_be_save_taxonomies($post_id, $data['taxonomies']);
+    }
+}
+
+/*
+|--------------------------------------------------------------------------
+| Taxonomies
+|--------------------------------------------------------------------------
+*/
+function nl_be_save_taxonomies($post_id, $taxonomies) {
+
+    foreach ($taxonomies as $taxonomy => $terms) {
+
+        $ids = [];
+
+        foreach ($terms as $term) {
+
+            $exists = term_exists($term['name'], $taxonomy);
+
+            if (!$exists) {
+                $exists = wp_insert_term($term['name'], $taxonomy);
+            }
+
+            if (!is_wp_error($exists)) {
+                $ids[] = (int)$exists['term_id'];
+            }
+        }
+
+        wp_set_post_terms($post_id, $ids, $taxonomy);
+    }
+}
+
+/*
+|--------------------------------------------------------------------------
+| Delete Post
+|--------------------------------------------------------------------------
+*/
+function nl_be_receive_delete(WP_REST_Request $request) {
+
+    $data = $request->get_json_params();
+
+    $existing = get_posts([
+        'meta_key'   => '_source_post_id',
+        'meta_value' => $data['source_post_id'] ?? 0,
+        'post_type'  => $data['post_type'] ?? 'post',
+        'numberposts'=> 1
+    ]);
+
+    if (!$existing) {
+        return new WP_REST_Response(['error' => 'Not found'], 404);
+    }
+
+    wp_delete_post($existing[0]->ID, true);
+
+    return new WP_REST_Response(['success' => true]);
 }
