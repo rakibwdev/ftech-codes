@@ -73,8 +73,11 @@ console.log( 'MLB RUMORS' ,posts);
             }
 
             if (images[index]) {
-                images[index].setAttribute("src", post.image);
+            const imgTag = images[index].querySelector("img");
+            if (imgTag) {
+                imgTag.setAttribute("src", post.image);
             }
+        }
 
             if (excerpts[index]) {
                 excerpts[index].innerHTML = post.excerpt;
