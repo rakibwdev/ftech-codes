@@ -121,4 +121,49 @@ console.log( 'PREMIUM ANALYSIS' ,posts);
 
     });
 
+
+
+// past-highlights
+fetch(msb_ajax.url + "?action=msb_get_past_highlights")
+    .then(res => res.json())
+    .then(posts => {
+
+        const titles   = document.querySelectorAll(".highlights_title");
+        const links    = document.querySelectorAll(".highlights_link");
+        const images   = document.querySelectorAll(".highlights_img");
+        const excerpts = document.querySelectorAll(".highlights_excerpt");
+        const categorys = document.querySelectorAll(".highlights_category");
+        const date  = document.querySelectorAll(".highlights_date");
+console.log( 'PAST HIGHLIGHTS' ,posts);
+        posts.forEach((post, index) => {
+
+            if (titles[index]) {
+                titles[index].innerHTML = post.title;
+            }
+
+            if (links[index]) {
+                links[index].setAttribute("href", post.link);
+            }
+
+          if (images[index]) {
+            images[index].style.backgroundImage = `url(${post.image})`;
+            images[index].srcset = ""; 
+            images[index].sizes = "";
+        }
+
+            if (excerpts[index]) {
+                excerpts[index].innerHTML = post.excerpt;
+            }
+
+            if (categorys[index]) {
+                categorys[index].innerHTML = post.category;
+            }
+            if (date[index]) {
+                date[index].innerHTML = timeAgo(post.date);
+            }
+
+        });
+
+    });
+
 });

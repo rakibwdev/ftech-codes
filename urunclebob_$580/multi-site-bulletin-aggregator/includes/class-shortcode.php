@@ -73,45 +73,4 @@ class MSB_Shortcode {
         <?php
         return ob_get_clean();
     }
-
-    // LATEST BULLETINS SHORTCODE
-    public function bulletins() {
-
-        $posts = MSB_Fetcher::get_posts();
-
-        ob_start();
-        ?>
-
-        <div class="mb-bulletins">
-
-            <?php foreach (array_slice($posts, 0, 5) as $post): ?>
-
-                <div class="mb-card"
-                     onclick="window.location.href='<?php echo esc_url($post->link); ?>'">
-
-                    <div class="mb-top">
-                        <span class="mb-tag">
-                            <?php
-                            echo !empty($post->_embedded->{'wp:term'}[0][0]->name)
-                                ? esc_html($post->_embedded->{'wp:term'}[0][0]->name)
-                                : 'News';
-                            ?>
-                        </span>
-
-                        <span class="mb-time"> ⏱ 
-                            <?php echo esc_html($this->time_ago($post->date)); ?>
-                        </span>
-                    </div>
-
-                    <h4><?php echo esc_html($post->title->rendered); ?></h4>
-
-                </div>
-
-            <?php endforeach; ?>
-
-        </div>
-
-        <?php
-        return ob_get_clean();
-    }
 }
