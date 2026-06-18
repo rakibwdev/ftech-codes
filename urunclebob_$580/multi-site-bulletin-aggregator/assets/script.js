@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+window.addEventListener("load", function () {
 
     fetch(msb_ajax.url + "?action=msb_get_posts")
         .then(res => res.json())
@@ -59,7 +59,7 @@ fetch(msb_ajax.url + "?action=msb_get_mlb_rumors")
 
         const titles   = document.querySelectorAll(".mlb_title");
         const links    = document.querySelectorAll(".mlb_link");
-        const images   = document.querySelectorAll(".mlb_img");
+        const images   = document.querySelectorAll(".mlb_img img");
         const excerpts = document.querySelectorAll(".mlb_excerpt");
 console.log( 'MLB RUMORS' ,posts);
         posts.forEach((post, index) => {
@@ -72,11 +72,45 @@ console.log( 'MLB RUMORS' ,posts);
                 links[index].setAttribute("href", post.link);
             }
 
-            if (images[index]) {
-            const imgTag = images[index].querySelector("img");
-            if (imgTag) {
-                imgTag.setAttribute("src", post.image);
+          if (images[index]) {
+            images[index].src = post.image;
+            images[index].srcset = ""; 
+            images[index].sizes = "";
+        }
+
+            if (excerpts[index]) {
+                excerpts[index].innerHTML = post.excerpt;
             }
+
+        });
+
+    });
+
+
+// premium-analysis
+fetch(msb_ajax.url + "?action=msb_get_premium_analysis")
+    .then(res => res.json())
+    .then(posts => {
+
+        const titles   = document.querySelectorAll(".premium_title");
+        const links    = document.querySelectorAll(".premium_link");
+        const images   = document.querySelectorAll(".premium_img");
+        const excerpts = document.querySelectorAll(".premium_excerpt");
+console.log( 'PREMIUM ANALYSIS' ,posts);
+        posts.forEach((post, index) => {
+
+            if (titles[index]) {
+                titles[index].innerHTML = post.title;
+            }
+
+            if (links[index]) {
+                links[index].setAttribute("href", post.link);
+            }
+
+          if (images[index]) {
+            images[index].style.backgroundImage = `url(${post.image})`;
+            images[index].srcset = ""; 
+            images[index].sizes = "";
         }
 
             if (excerpts[index]) {

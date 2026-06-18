@@ -118,3 +118,56 @@ function msb_get_mlb_rumors() {
 
     wp_send_json($data);
 }
+
+
+// premium-analysis
+add_action('wp_ajax_msb_get_premium_analysis', 'msb_get_premium_analysis');
+add_action('wp_ajax_nopriv_msb_get_premium_analysis', 'msb_get_premium_analysis');
+
+function msb_get_premium_analysis() {
+
+    $posts = MSB_Fetcher::get_posts();
+    $data = [];
+
+    foreach ($posts as $post) {
+
+        $is_premium = false;
+
+        //  Filter by tag slug
+        if (!empty($post->_embedded->{'wp:term'})) {
+            foreach ($post->_embedded->{'wp:term'} as $tax) {
+                foreach ($tax as $term) {
+                    if ($term->taxonomy === 'post_tag' && $term->slug === 'premium-analysis') {
+                        $is_premium = true;
+                    }
+                }
+            }
+        }
+
+        if (!$is_premium) continue;
+
+        // Image
+        $image = '';
+        if (!empty($post->_embedded->{'wp:featuredmedia'}[0]->source_url)) {
+            $image = $post->_embedded->{'wp:featuredmedia'}[0]->source_url;
+        }
+
+        //  Excerpt
+        $excerpt = '';
+        if (!empty($post->excerpt->rendered)) {
+            $excerpt = wp_strip_all_tags($post->excerpt->rendered);
+        }
+
+        $data[] = [
+            'title'   => wp_strip_all_tags($post->title->rendered),
+            'link'    => $post->link,
+            'image'   => $image,
+            'excerpt' => $excerpt
+        ];
+    }
+
+    // limit 5
+    $data = array_slice($data, 0, 5);
+
+    wp_send_json($data);
+}
