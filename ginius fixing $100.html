@@ -1,36 +1,22 @@
-<style>
-    .mob_card{
-        cursor: pointer;
-    }
-    .mob_inner {
-    display: none;
-    transition: all 0.3s ease;
-}
-.mob_inner.active {
-    display: flex;
-    
-}
-</style>
 
 <script>
+
 document.addEventListener('DOMContentLoaded', function () {
-    const mobCards = document.querySelectorAll('._mobile-menu .mob_card');
-    const inners = document.querySelectorAll('._mobile-menu .mob_inner');
+const menuDropdown = document.querySelector(".menu_dropdown");
+const inner_cards = document.querySelectorAll(".menu_dropdown ._card");
 
-    mobCards.forEach((card, index) => {
-        card.addEventListener('click', () => {
 
-            const currentInner = inners[index];
-            console.log(currentInner);
 
-            if (currentInner.classList.contains('active')) {
-                currentInner.classList.remove('active');
-            } else {
-                inners.forEach(inner => inner.classList.remove('active'));
-                currentInner.classList.add('active');
-            }
+// DROPDOWN CARD
+inner_cards.forEach(card => {
+  card.addEventListener("click", () => {
 
-        });
-    });
+    card.classList.toggle("active");
+    menuDropdown.classList.toggle("collapsed");
+
+  });
 });
+});
+
+
 </script>
