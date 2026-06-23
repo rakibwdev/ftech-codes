@@ -1,83 +1,41 @@
 <?php
-add_shortcode('skill_level_programs', function () {
-
-    ob_start();
-
-    // 1. Get all skill levels
+add_shortcode('skill_program_loop', function () {
     $skills = new WP_Query([
-        'post_type' => 'skill-level',
-        'post_status' => 'publish',
+        'post_type'      => 'skill-level',
+        'post_status'    => 'publish',
         'posts_per_page' => -1,
-        'orderby' => 'menu_order',
-        'order' => 'ASC'
+        'orderby'        => 'title',
+        'order'          => 'ASC',
     ]);
 
-    if ($skills->have_posts()) :
+    ob_start();
+    ?>
+    <div class="skill-wrapper">
+        <?php if ($skills->have_posts()) : ?>
+            <?php while ($skills->have_posts()) : $skills->the_post(); ?>
 
-        while ($skills->have_posts()) : $skills->the_post();
+                <?php $programs = get_field('iq_skills'); ?>
 
-            $skill_id = get_the_ID();
-            ?>
+                <div class="skill-group">
+                    <h2><?php the_title(); ?></h2>
 
-            <div class="skill-group">
-
-                <!-- Skill Title -->
-                <h2 class="skill-title"><?php the_title(); ?></h2>
-
-                <div class="skill-grid">
-
-                    <?php
-                    // 2. Get programs under this skill
-                    $programs = new WP_Query([
-                        'post_type' => 'vex-iq-skills-progra',
-                        'posts_per_page' => -1,
-                        'meta_query' => [
-                            [
-                                'key' => 'skill_level',
-                                'value' => '"' . $skill_id . '"',
-                                'compare' => 'LIKE'
-                            ]
-                        ]
-                    ]);
-
-                    if ($programs->have_posts()) :
-                        while ($programs->have_posts()) : $programs->the_post();
-                            ?>
-
-                            <div class="skill-card">
-
-                                <div class="card-img">
-                                    <?php 
-                                    if (has_post_thumbnail()) {
-                                        the_post_thumbnail('medium');
-                                    }
-                                    ?>
+                    <div class="program-list">
+                        <?php if (!empty($programs)) : ?>
+                            <?php foreach ($programs as $program) : ?>
+                                <div class="program-item">
+                                    <?php echo esc_html($program->post_title); ?>
                                 </div>
-
-                                <div class="card-content">
-                                    <h3><?php the_title(); ?></h3>
-                                    <p><?php echo get_the_excerpt(); ?></p>
-                                </div>
-
-                            </div>
-
-                            <?php
-                        endwhile;
-                        wp_reset_postdata();
-                    endif;
-                    ?>
-
+                            <?php endforeach; ?>
+                        <?php else : ?>
+                            <p>No Programs Found</p>
+                        <?php endif; ?>
+                    </div>
                 </div>
-            </div>
 
-            <?php
-
-        endwhile;
-        wp_reset_postdata();
-
-    else :
-        echo '<p>No Skill Levels Found</p>';
-    endif;
-
+            <?php endwhile; ?>
+            <?php wp_reset_postdata(); ?>
+        <?php endif; ?>
+    </div>
+    <?php
     return ob_get_clean();
 });
