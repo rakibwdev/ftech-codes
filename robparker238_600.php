@@ -10,21 +10,39 @@ add_shortcode('skill_program_loop', function () {
 
     ob_start();
     ?>
+    
     <div class="skill-wrapper">
         <?php if ($skills->have_posts()) : ?>
             <?php while ($skills->have_posts()) : $skills->the_post(); ?>
+            <?php echo '<pre>'; print_r(get_field('iq_skills')); echo '</pre>'; ?>
 
                 <?php $programs = get_field('iq_skills'); ?>
 
                 <div class="skill-group">
-                    <h2><?php the_title(); ?></h2>
+                    <h2 class="skill-title"><?php the_title(); ?></h2>
 
-                    <div class="program-list">
+                    <div class="skill-grid">
                         <?php if (!empty($programs)) : ?>
                             <?php foreach ($programs as $program) : ?>
-                                <div class="program-item">
-                                    <?php echo esc_html($program->post_title); ?>
-                                </div>
+                                <?php
+                                    $thumbnail = get_the_post_thumbnail($program->ID, 'medium');
+                                    // Strip tags from content for excerpt
+                                    $excerpt = wp_trim_words(strip_tags($program->post_content), 20, '...');
+                                    $link = get_permalink($program->ID);
+                                ?>
+                                <a href="<?php echo esc_url($link); ?>" class="skill-card">
+                                    <div class="card-img">
+                                        <?php if ($thumbnail) : ?>
+                                            <?php echo $thumbnail; ?>
+                                        <?php else : ?>
+                                            <div class="card-img-placeholder">📚</div>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="card-content">
+                                        <h3><?php echo esc_html($program->post_title); ?></h3>
+                                        <p><?php echo esc_html($excerpt); ?></p>
+                                    </div>
+                                </a>
                             <?php endforeach; ?>
                         <?php else : ?>
                             <p>No Programs Found</p>
@@ -39,3 +57,80 @@ add_shortcode('skill_program_loop', function () {
     <?php
     return ob_get_clean();
 });
+?>
+
+<style>
+        .skill-group {
+            margin-bottom: 50px;
+        }
+        .skill-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        .skill-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        @media (max-width: 768px) {
+            .skill-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 480px) {
+            .skill-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .skill-card {
+            background: #f7f7f7;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: 0.3s;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        .skill-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            color: inherit;
+            text-decoration: none;
+        }
+        .card-img img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+        }
+        .card-img-placeholder {
+            width: 100%;
+            height: 180px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 40px;
+        }
+        .card-content {
+            padding: 15px;
+        }
+        .card-content h3 {
+            font-size: 16px;
+            margin: 0 0 8px 0;
+            font-weight: 600;
+            color: #222;
+        }
+        .card-content p {
+            font-size: 14px;
+            color: #666;
+            margin: 0;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    </style>
