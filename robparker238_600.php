@@ -402,21 +402,23 @@ add_shortcode('program_links_loop', function () {
 
 
 // back button
-add_shortcode('back_button', function () {
-    $current_id = get_the_ID();
+add_shortcode('back_button_url', function() {
+    $program_id = get_the_ID();
 
-    $raw = get_posts([
+    // Search all skill-level posts where iq_skills contains this program ID
+    $skill_levels = get_posts([
         'post_type'      => 'skill-level',
-        'post_status'    => 'publish',
-        'posts_per_page' => -1,
+        'posts_per_page' => 1,
+        'meta_query'     => [
+            [
+                'key'     => 'iq_skills',
+                'value'   => serialize(strval($program_id)), 
+                'compare' => 'LIKE',
+            ],
+        ],
     ]);
 
-    foreach ($raw as $skill) {
-        $meta = get_post_meta($skill->ID, 'iq_skills', true);
-        echo '<pre>Skill: ' . $skill->post_title . ' | Meta: ';
-        var_dump($meta);
-        echo '</pre>';
-    }
+    if (empty($skill_levels)) return home_url('/skill-level/');
 
-    return '';
+    return get_permalink($skill_levels[0]->ID);
 });

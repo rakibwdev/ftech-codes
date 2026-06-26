@@ -427,6 +427,9 @@ add_action('rest_api_init', function () {
 | Verify Secret
 |--------------------------------------------------------------------------
 */
+?>
+
+<?php
 function nl_be_verify_secret(WP_REST_Request $request) {
     return $request->get_header('x-sync-secret') === 'KEY';
 }
