@@ -1,0 +1,65 @@
+<script>
+    const icon = document.querySelector(".float_icon");
+    const content = document.querySelector(".float_content");
+
+    icon.addEventListener("click", function () {
+        content.classList.toggle("active");
+        icon.classList.toggle("active");
+    });
+</script>
+
+<style>
+
+.float_icon {
+    width: 50px;
+    height: 50px;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.float_content {
+    bottom: -70px;
+    opacity:0;
+    pointer-events:none;
+    transition: 0.3s;
+}
+
+.float_content.active {
+    bottom:15px;
+    opacity:1;
+    pointer-events:all;
+}
+
+.float_icon.active {
+    rotate: 45deg;
+}
+
+
+/* elementor */
+
+selector{
+
+.elementor-icon-list-item{
+    flex-direction:row-reverse !important;
+}
+.elementor-icon-list-icon{
+    align-items: center;
+    justify-content: center;
+     background-color:#9a0000; 
+    border-radius:50px;
+    height:50px;
+    width:50px;
+     margin-left:13px;
+      padding:13px;
+}
+.elementor-icon-list-icon svg{
+ margin:0 !important;  
+}
+
+
+.elementor-icon-list-item a {
+    flex-direction: row-reverse;
+}
+}
+</style>
