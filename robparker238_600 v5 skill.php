@@ -1,8 +1,8 @@
 <?php
 // All iq skill loop
-add_shortcode('skill_program_loop', function () {
+add_shortcode('v5_skill_program_loop', function () {
     $skills = new WP_Query([
-        'post_type'      => 'skill-level',
+        'post_type'      => 'v5-skill-level',
         'post_status'    => 'publish',
         'posts_per_page' => -1,
         'orderby'        => 'title',
@@ -16,7 +16,7 @@ add_shortcode('skill_program_loop', function () {
         <?php if ($skills->have_posts()) : ?>
             <?php while ($skills->have_posts()) : $skills->the_post(); ?>
 
-				<?php $programs = get_field('iq_skills'); ?>
+				<?php $programs = get_field('v5_skill_level'); ?>
 
                 <div class="skill-group">
                     <h2 class="skill-title"><?php the_title(); ?></h2>
@@ -115,8 +115,8 @@ add_shortcode('program_links_loop', function () {
 
 // single skill level loop
 
-add_shortcode('single_skill_program_loop', function () {
-    $programs = get_field('iq_skills', get_the_ID());
+add_shortcode('v5_single_skill_program_loop', function () {
+    $programs = get_field('v5_skill_level', get_the_ID());
 
     if (empty($programs)) return '<p>No Programs Found</p>';
 
@@ -156,7 +156,7 @@ add_shortcode('back_button_url', function() {
 
     // Search all skill-level posts where iq_skills contains this program ID
     $skill_levels = get_posts([
-        'post_type'      => 'skill-level',
+        'post_type'      => 'v5-skill-level',
         'posts_per_page' => 1,
         'meta_query'     => [
             [
