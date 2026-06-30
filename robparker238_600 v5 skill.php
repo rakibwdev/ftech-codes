@@ -16,7 +16,7 @@ add_shortcode('v5_skill_program_loop', function () {
         <?php if ($skills->have_posts()) : ?>
             <?php while ($skills->have_posts()) : $skills->the_post(); ?>
 
-				<?php $programs = get_field('v5_skill_level'); ?>
+				<?php $programs = get_field('v5_skills'); ?>
 
                 <div class="skill-group">
                     <h2 class="skill-title"><?php the_title(); ?></h2>
@@ -116,7 +116,7 @@ add_shortcode('program_links_loop', function () {
 // single skill level loop
 
 add_shortcode('v5_single_skill_program_loop', function () {
-    $programs = get_field('v5_skill_level', get_the_ID());
+    $programs = get_field('v5_skills', get_the_ID());
 
     if (empty($programs)) return '<p>No Programs Found</p>';
 
@@ -151,16 +151,16 @@ add_shortcode('v5_single_skill_program_loop', function () {
 });
 
 // back button
-add_shortcode('back_button_url', function() {
+add_shortcode('v5_back_button_url', function() {
     $program_id = get_the_ID();
 
-    // Search all skill-level posts where iq_skills contains this program ID
+    // Search all skill-level posts where v5_skills contains this program ID
     $skill_levels = get_posts([
         'post_type'      => 'v5-skill-level',
         'posts_per_page' => 1,
         'meta_query'     => [
             [
-                'key'     => 'iq_skills',
+                'key'     => 'v5_skills',
                 'value'   => serialize(strval($program_id)), 
                 'compare' => 'LIKE',
             ],
@@ -172,4 +172,82 @@ add_shortcode('back_button_url', function() {
     return get_permalink($skill_levels[0]->ID);
 });
 
+// dinamic menu
+add_filter('wp_nav_menu_objects', function ($items, $args) {
 
+    // Change this to your menu ID or slug if needed
+    if (empty($args->menu)) {
+        return $items;
+    }
+
+    // Check by menu name
+    if (is_object($args->menu) && $args->menu->name !== 'Main Menu') {
+        return $items;
+    }
+
+    $item_ids = 800000; // Starting ID for new items
+
+    foreach ($items as $item) {
+        if ($item->object !== 'v5-skill-level') {
+            continue;
+        }
+        $item_ids++;
+
+        $get_weeks = get_field('v5_skills', $item->object_id);
+
+        if (!$get_weeks || !is_array($get_weeks) || empty($get_weeks)) {
+            continue;
+        }
+
+        foreach ($get_weeks as $week) {
+            $item_ids++;
+
+            $child = new stdClass();
+            $child->ID = $item_ids;
+            $child->db_id = $child->ID;
+            $child->menu_item_parent = $item->ID;
+
+            $child->object_id = $week->ID;
+            $child->object = $week->post_type;      // e.g. lesson, page, post
+            $child->type = 'post_type';
+            $child->type_label = get_post_type_object($week->post_type)->labels->singular_name;
+
+            $child->title = get_the_title($week);
+            $child->url = get_permalink($week);
+
+            $child->classes = [];
+            $child->current = false;
+
+            $items[] = $child;
+
+            $get_links = get_field('links', $week->ID);
+            if(!$get_links || !is_array($get_links) || empty($get_links)) {
+                continue;
+            }
+
+            foreach ($get_links as $link) {
+                $item_ids++;
+
+                $grandchild = new stdClass();
+                $grandchild->ID = $item_ids;
+                $grandchild->db_id = $grandchild->ID;
+                $grandchild->menu_item_parent = $child->ID;
+
+                $grandchild->object_id = 0; // No specific post ID for custom links
+                $grandchild->object = 'custom';
+                $grandchild->type = 'custom';
+                $grandchild->type_label = 'Custom';
+
+                $grandchild->title = $link['title'];
+                $grandchild->url = $link['connected_link'] ?? '#';
+
+                $grandchild->classes = [];
+                $grandchild->current = false;
+
+                $items[] = $grandchild;
+            }
+        }
+    }
+    return $items;
+
+}, 10, 2);
