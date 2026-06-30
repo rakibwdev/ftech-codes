@@ -58,6 +58,44 @@ add_shortcode('v5_skill_program_loop', function () {
     return ob_get_clean();
 });
 
+
+// single skill level loop
+
+add_shortcode('v5_single_skill_program_loop', function () {
+    $programs = get_field('v5_skills', get_the_ID());
+
+    if (empty($programs)) return '<p>No Programs Found</p>';
+
+    ob_start();
+    ?>
+    <div class="skill-wrapper">
+        <div class="skill-grid">
+            <?php foreach ($programs as $program) : ?>
+                <?php
+                $thumbnail = get_the_post_thumbnail($program->ID, 'medium');
+                $excerpt   = wp_trim_words(strip_tags($program->post_content), 20, '...');
+                $link      = get_permalink($program->ID);
+                ?>
+                <a href="<?php echo esc_url($link); ?>" class="skill-card">
+                    <div class="card-img">
+                        <?php if ($thumbnail) : ?>
+                            <?php echo $thumbnail; ?>
+                        <?php else : ?>
+                            <div class="card-img-placeholder">📚</div>
+                        <?php endif; ?>
+                    </div>
+                    <div class="card-content">
+                        <h3><?php echo esc_html($program->post_title); ?></h3>
+                        <p><?php echo esc_html($excerpt); ?></p>
+                    </div>
+                </a>
+            <?php endforeach; ?>
+        </div>
+    </div>
+    <?php
+    return ob_get_clean();
+});
+
 // link loop under the program
 
 add_shortcode('program_links_loop', function () {
@@ -113,43 +151,6 @@ add_shortcode('program_links_loop', function () {
 });
 
 
-// single skill level loop
-
-add_shortcode('v5_single_skill_program_loop', function () {
-    $programs = get_field('v5_skills', get_the_ID());
-
-    if (empty($programs)) return '<p>No Programs Found</p>';
-
-    ob_start();
-    ?>
-    <div class="skill-wrapper">
-        <div class="skill-grid">
-            <?php foreach ($programs as $program) : ?>
-                <?php
-                $thumbnail = get_the_post_thumbnail($program->ID, 'medium');
-                $excerpt   = wp_trim_words(strip_tags($program->post_content), 20, '...');
-                $link      = get_permalink($program->ID);
-                ?>
-                <a href="<?php echo esc_url($link); ?>" class="skill-card">
-                    <div class="card-img">
-                        <?php if ($thumbnail) : ?>
-                            <?php echo $thumbnail; ?>
-                        <?php else : ?>
-                            <div class="card-img-placeholder">📚</div>
-                        <?php endif; ?>
-                    </div>
-                    <div class="card-content">
-                        <h3><?php echo esc_html($program->post_title); ?></h3>
-                        <p><?php echo esc_html($excerpt); ?></p>
-                    </div>
-                </a>
-            <?php endforeach; ?>
-        </div>
-    </div>
-    <?php
-    return ob_get_clean();
-});
-
 // back button
 add_shortcode('v5_back_button_url', function() {
     $program_id = get_the_ID();
@@ -167,7 +168,7 @@ add_shortcode('v5_back_button_url', function() {
         ],
     ]);
 
-    if (empty($skill_levels)) return home_url('/skill-level/');
+    if (empty($skill_levels)) return home_url('/v5-skill-level/');
 
     return get_permalink($skill_levels[0]->ID);
 });
