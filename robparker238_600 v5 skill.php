@@ -186,7 +186,7 @@ add_filter('wp_nav_menu_objects', function ($items, $args) {
         return $items;
     }
 
-    $item_ids = 800000; // Starting ID for new items
+    $item_ids = 900000; // Starting ID for new items
 
     foreach ($items as $item) {
         if ($item->object !== 'v5-skill-level') {
