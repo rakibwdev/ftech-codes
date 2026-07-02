@@ -239,6 +239,8 @@ add_filter('wp_nav_menu_objects', function ($items, $args) {
                 $grandchild->type = 'custom';
                 $grandchild->type_label = 'Custom';
 
+                 $grandchild->target = '_blank';
+
                 $grandchild->title = $link['title'];
                 $grandchild->url = $link['connected_link'] ?? '#';
 
