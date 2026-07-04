@@ -38,3 +38,23 @@
     font-size: 24px !important;
 }
 </style>
+
+
+function allow_mp3_upload($mimes) {
+    $mimes['mp3'] = 'audio/mpeg';
+    return $mimes;
+}
+add_filter('upload_mimes', 'allow_mp3_upload');
+
+
+function fix_mp3_mime_check($data, $file, $filename, $mimes) {
+    $ext = pathinfo($filename, PATHINFO_EXTENSION);
+
+    if ($ext === 'mp3') {
+        $data['ext']  = 'mp3';
+        $data['type'] = 'audio/mpeg';
+    }
+
+    return $data;
+}
+add_filter('wp_check_filetype_and_ext', 'fix_mp3_mime_check', 10, 4);
