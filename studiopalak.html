@@ -465,3 +465,18 @@ textarea::placeholder{
     text-shadow: none;
 }
 </style>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const el = document.querySelector('.ld-expand-text');
+    const el2 = document.querySelectorAll('.ld_course_grid_button a');
+    
+    if (el) {
+        el.textContent = el.textContent.replace('Paragrafen', 'Video’s');
+    }
+    if (el2) {
+        el2.forEach(function(element) {
+            element.textContent = element.textContent.replace('To the training', 'Continue Study');
+        });
+    }
+});
+</script>
