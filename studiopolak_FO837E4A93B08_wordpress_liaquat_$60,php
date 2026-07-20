@@ -1,3 +1,183 @@
+/home/rakib/Local Sites/studiopalak/app/public/wp-content/plugins/teachpress/core/shortcodes.php
+Line NO: 1163
+
+
+function tp_publist_shortcode ($args) {
+
+    <!-- custom code start -->
+    if((isset($_GET['action']) && $_GET['action'] == "elementor") 
+        || (isset($_GET['action']) && $_GET['action'] == "elementor_ajax")
+        || !is_page()) {
+        return '';
+        }
+    <!-- custom code end -->
+
+    $atts = shortcode_atts(array(
+        'user'                  => '',
+        'tag'                   => '',
+        'tag_name'              => '',
+        'type'                  => '',
+        'author'                => '',
+        'year'                  => '',
+        'years_between'         => '',
+        'exclude'               => '',
+        'include'               => '',
+        'meta_keys'             => '',
+        'include_editor_as_author' => 1,
+        'order'                 => 'date DESC',
+        'headline'              => 1,
+        'maxsize'               => 35,
+        'minsize'               => 11,
+        'tag_limit'             => 30,
+        'hide_tags'             => '',
+        'exclude_tags'          => '',
+        'exclude_types'         => '',
+        'image'                 => 'none',
+        'image_size'            => 0,
+        'image_link'            => 'none',
+        'anchor'                => 1,
+        'author_name'           => 'initials',
+        'editor_name'           => 'initials',
+        'author_separator'      => ';',
+        'editor_separator'      => ';',
+        'style'                 => 'none',
+        'template'              => 'tp_template_2021',
+        'title_ref'             => 'links',
+        'link_style'            => 'inline',
+        'date_format'           => 'd.m.Y',
+        'pagination'            => 1,
+        'entries_per_page'      => 50,
+        'sort_list'             => '',
+        'show_tags_as'          => 'cloud',
+        'show_author_filter'    => 1,
+        'show_in_author_filter' => '',
+        'show_type_filter'      => 1,
+        'show_user_filter'      => 1,
+        'show_search_filter'    => 1,
+        'show_year_filter'      => 1,
+        'show_bibtex'           => 1,
+        'show_abstract'         => 1,
+        'show_comment'          => 0,
+        'comment_text'          => '',
+        'comment_tooltip'       => '',
+        'container_suffix'      => '',
+        'filter_class'          => 'default',
+        'custom_filter'         => '',
+        'custom_filter_label'   => '',
+        'show_altmetric_donut'  => 0,
+        'show_altmetric_entry'  => 0,
+        // Altmetric badge type. Accepted values: 'donut', 'medium-donut', 'large-donut',
+        // 'bar', 'medium-bar', 'large-bar'. Defaults to 'donut' when empty.
+        // See: https://badge-docs.altmetric.com/customizations.html#badge-types
+        'show_altmetric_type'   => '',
+        'show_dimensions_badge' => 0,
+        'show_plumx_widget'     => 0,
+        'use_jumpmenu'          => 1,
+        'use_as_filter'         => 1
+    ), $args);
+
+
+<!-- custom code -->
+    if((isset($_GET['action']) && $_GET['action'] == "elementor") 
+        || (isset($_GET['action']) && $_GET['action'] == "elementor_ajax")
+        || !is_page()) {
+        return '';
+        }
+
+
+
+
+
+        // function tplist_all_shortcode() {
+
+//     $labs = [
+//         20  => 'AI-FAIR Lab',
+//         66  => 'AI for Parkinson Lab',
+//         43  => 'AI4MRI Lab',
+//         68  => 'CARA Lab',
+//         38  => 'FEP Lab',
+//         4   => 'GENIUS Lab',
+//         260 => 'Healthy AI Lab',
+//         170 => 'ILUSTRE Lab',
+//         192 => 'MERAI Lab',
+//         261 => 'Mercury Machine Learning Lab',
+//         1   => 'RAIL Lab',
+//         211 => 'REM Lab',
+//         244 => 'Stroke Lab',
+//         253 => 'TAIM Lab',
+//         254 => 'TAIMRI Lab'
+//     ];
+
+//     ob_start();
+
+//     foreach ($labs as $tag => $title) {
+
+//         echo "<h2>{$title}</h2>";
+
+//         echo do_shortcode('[tplist tag="'.$tag.'author_name="initials" order="date DESC"]');
+//     }
+
+//     return ob_get_clean();
+// }
+
+// add_shortcode('tplist_all', 'tplist_all_shortcode');
+
+add_action('wp_ajax_load_lab_publications', 'load_lab_publications');
+add_action('wp_ajax_nopriv_load_lab_publications', 'load_lab_publications');
+
+function load_lab_publications() {
+    $tag = intval($_POST['tag']);
+
+    if (!$tag) {
+        wp_send_json_error('No tag provided');
+    }
+
+    $html = do_shortcode('[tplist tag="'.$tag.'" limit="5"]');
+
+    wp_send_json_success($html);
+}
+
+function lab_ajax_ui() {
+
+    $labs = [
+        20 => 'AI-FAIR Lab',
+        66 => 'AI for Parkinson Lab',
+        43 => 'AI4MRI Lab',
+        54 => 'AIMS Lab',
+        39 => 'Bioinformatics Lab',
+    ];
+
+    ob_start();
+    ?>
+
+    <div id="lab-buttons">
+        <?php foreach ($labs as $tag => $name): ?>
+            <button class="lab-btn" data-tag="<?php echo $tag; ?>">
+                <?php echo $name; ?>
+            </button>
+        <?php endforeach; ?>
+    </div>
+
+    <div id="lab-results">
+        <p>Select a lab to load publications</p>
+    </div>
+
+    <?php
+    return ob_get_clean();
+}
+
+add_shortcode('lab_ajax', 'lab_ajax_ui');
+
+function add_ajax_url() {
+    ?>
+    <script>
+        var ajaxurl = "<?php echo admin_url('admin-ajax.php'); ?>";
+    </script>
+    <?php
+}
+add_action('wp_head', 'add_ajax_url');
+
+
 
 <h2>AI-FAIR Lab</h2>
 [tplist tag="20" author_name="initials" order="date DESC"]
