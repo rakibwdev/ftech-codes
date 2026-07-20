@@ -1,0 +1,13 @@
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const tabs = document.querySelectorAll('.tab');
+
+    tabs.forEach((tab, index) => {
+        if ((index + 1) % 2 === 0) {
+            tab.style.backgroundColor = "#f3f4f6"; // even
+        } else {
+            tab.style.backgroundColor = "#ffffff"; // odd
+        }
+    });
+});
+</script>
