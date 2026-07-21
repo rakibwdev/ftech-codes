@@ -10,22 +10,60 @@
         }
     });
 });
+
+
+// first character
+
+// document.querySelectorAll('.first_character').forEach(el => {
+//   el.textContent = el.textContent.trim().charAt(0);
+// });
+
+const colors = [
+  { bg: '#f0f8ff', text: '#3a8fd9', border: '#cfe8ff' },
+  { bg: '#f0fbf4', text: '#2f9e5f', border: '#c9efd6' },
+  { bg: '#fff6ed', text: '#d48a3a', border: '#ffd8a8' },
+  { bg: '#f7f3ff', text: '#8e63c7', border: '#e2d4ff' },
+  { bg: '#f0fdfa', text: '#2aa198', border: '#c7f3ec' },
+  { bg: '#fff3f8', text: '#cc5c8a', border: '#ffd1e6' },
+  { bg: '#f0f5ff', text: '#4c6ef5', border: '#d6e4ff' },
+  { bg: '#fff9f0', text: '#c78a2c', border: '#ffe4b8' }
+];
+
+function applyFirstCharStyles() {
+  document.querySelectorAll('.first_character').forEach(el => {
+
+    const char = el.textContent.trim().charAt(0).toUpperCase();
+    el.textContent = char;
+
+    const index = Math.floor(Math.random() * colors.length);
+    const colorSet = colors[index];
+
+    el.style.backgroundColor = colorSet.bg;
+    el.style.color = colorSet.text;
+    el.style.border = `1px solid ${colorSet.border}`;
+
+  });
+}
+
+// Run on page load
+document.addEventListener("DOMContentLoaded", applyFirstCharStyles);
+
+// Run on scroll (for dynamically loaded content)
+window.addEventListener("scroll", applyFirstCharStyles);
+
+
+
 </script>
 
 <style>
-/*     .elementor-loop-container > div:nth-child(even) .tab {*/
-/*    background-color: #0644030f;*/
-/*}*/
-
-/* .elementor-loop-container > div:nth-child(odd) .tab {*/
-/*    background-color: #ffffff;*/
-/*}*/
-
+    .elementor-loop-container > div:nth-child(even) .tab {
+   background-color: #0cb20400;
+    }
 
 
 .DUP_text-headline-lg {
     padding: 10px 26px;
-    background: rgba(11, 61, 46, 0.08);
+    background: #06440316;
     letter-spacing: 1px;
     border-radius:12px
 }
@@ -34,7 +72,7 @@
     content: "";
     width: 200px;
     height: 3px;
-    background: #1abc9c;
+    background: #064403;
     display: block;
     margin: 8px auto 0;
     border-radius: 12px;
@@ -43,38 +81,58 @@
 .due-seconds{
     display: none;
 }
-.current-status-cancelled .tab{
-    background-color: #ffeaea !important; 
+
+.tab:has(.overdue) {
+    background-color: #ffe5e5 !important;
 }
 
-.current-status-client-review .tab {
+.status span {
+    padding: 5px 10px;
+    border-radius:8px;
+}
+
+.current-status-cancelled .tab .status span{
+    background-color: #ffeaea !important;
+    color: #e74c3c; 
+}
+
+.current-status-client-review .tab .status span{
     background-color: #e6f4ff !important; 
+    color: #3498db;
 }
 
-.current-status-completed .tab {
-    background-color: #eaf7ea !important; 
+.current-status-completed .tab .status span {
+    background-color: #eaf7ea !important;
+    color: #27ae60;
 }
 
-.current-status-delivered .tab  {
+.current-status-delivered .tab .status span {
     background-color: #e6fffb !important; 
+    color: #1abc9c;
 }
-.current-status-hold .tab {
+.current-status-hold .tab .status span {
     background-color: #fff7e6 !important; 
+    color: #f39c12;
 }
-.current-status-nra .tab {
+.current-status-nra .tab .status span{
     background-color: #fff4e6  !important; 
+    color: #eda54a;
+
 }
 
-.current-status-requirements-left .tab {
+.current-status-requirements-left .tab .status span {
     background-color: #f4ecff !important; 
+    color: #9b59b6;
 }
 
-.current-status-revision .tab {
+.current-status-revision .tab .status span {
     background-color: #fff0f6 !important;
+    color: #e84393;
 }
 
-.current-status-wip .tab {
+.current-status-wip .tab .status span {
     background-color: #f9f0ff !important; 
+    color: #9b59b6;
 }
 
 </style>
