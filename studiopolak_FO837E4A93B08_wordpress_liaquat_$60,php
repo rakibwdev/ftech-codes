@@ -4,13 +4,24 @@ Line NO: 1163
 
 function tp_publist_shortcode ($args) {
 
-    <!-- custom code start -->
-    if((isset($_GET['action']) && $_GET['action'] == "elementor") 
-        || (isset($_GET['action']) && $_GET['action'] == "elementor_ajax")
-        || !is_page()) {
-        return '';
-        }
-    <!-- custom code end -->
+//     <!-- custom code start -->
+//     if((isset($_GET['action']) && $_GET['action'] == "elementor") 
+//         || (isset($_GET['action']) && $_GET['action'] == "elementor_ajax")
+//         || !is_page()) {
+//         return '';
+//         }
+//     <!-- custom code end -->
+	
+	// 	custom code start
+		if (
+		class_exists('\Elementor\Plugin') &&
+		\Elementor\Plugin::$instance->editor->is_edit_mode()
+		) {
+		return '';
+		}
+	// 	custom code end
+
+
 
     $atts = shortcode_atts(array(
         'user'                  => '',
