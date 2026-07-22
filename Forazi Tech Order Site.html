@@ -158,7 +158,7 @@ window.addEventListener("scroll", applyFirstCharStyles);
 
 
 /* role based */
-
+/* operation member */
 body.role-operations_team_member .order_date_column,
 body.role-operations_team_member .team_column,
 body.role-operations_team_member .assign_status_column
@@ -169,6 +169,18 @@ body.role-operations_team_member  .tab,
 body.role-operations_team_member .tab_th {
     grid-template-columns: 2fr 2fr 1fr 1fr 2fr 2fr 1fr ;
 }
+
+/* team lead */
+body.role-operations_team_lead .team_column{
+  display: none;
+}
+body.role-operations_team_lead .tab, 
+body.role-operations_team_lead .tab_th {
+    display: grid ;
+    grid-template-columns: 2fr 2fr 1fr 1fr 1fr 1fr 2fr 2fr 1fr ;
+}
+
+
 
 
 
