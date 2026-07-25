@@ -55,6 +55,15 @@ document.addEventListener("DOMContentLoaded", applyFirstCharStyles);
 window.addEventListener("scroll", applyFirstCharStyles);
 
 
+// parallax effect
+const parallax = document.querySelector('.parlax_image');
+
+window.addEventListener('scroll', () => {
+  let offset = window.pageYOffset;
+  parallax.style.backgroundPositionY = offset * 0.5 + "px";
+});
+
+
 </script>
 
 <style>
