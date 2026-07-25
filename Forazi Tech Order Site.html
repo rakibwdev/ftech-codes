@@ -32,6 +32,8 @@ const colors = [
 function applyFirstCharStyles() {
   document.querySelectorAll('.first_character').forEach(el => {
 
+    if (el.dataset.styled) return; 
+
     const char = el.textContent.trim().charAt(0).toUpperCase();
     el.textContent = char;
 
@@ -42,6 +44,7 @@ function applyFirstCharStyles() {
     el.style.color = colorSet.text;
     el.style.border = `1px solid ${colorSet.border}`;
 
+    el.dataset.styled = "true"; 
   });
 }
 
@@ -50,7 +53,6 @@ document.addEventListener("DOMContentLoaded", applyFirstCharStyles);
 
 // Run on scroll (for dynamically loaded content)
 window.addEventListener("scroll", applyFirstCharStyles);
-
 
 
 </script>
@@ -152,8 +154,10 @@ window.addEventListener("scroll", applyFirstCharStyles);
 }
 
 .tab, .tab_th {
-    display: grid ;
-    grid-template-columns: 2fr 2fr 1fr 1fr 1fr 2fr 1fr 2fr 2fr 1fr ;
+
+display: grid ;
+grid-template-columns: 2fr 2fr 2fr 2fr 1fr 2fr 1fr 2fr 2fr 1fr ;
+
 }
 
 
@@ -167,18 +171,17 @@ body.role-operations_team_member .assign_status_column
 }
 body.role-operations_team_member  .tab, 
 body.role-operations_team_member .tab_th {
-    grid-template-columns: 2fr 2fr 1fr 1fr 2fr 2fr 1fr ;
+    grid-template-columns: 2fr 2fr 2fr 1fr 2fr 2fr 1fr ;
 }
 
-/* Operation team lead */
+/* team lead */
 body.role-operations_team_lead .team_column{
   display: none;
 }
 body.role-operations_team_lead .tab, 
 body.role-operations_team_lead .tab_th {
-    grid-template-columns: 2fr 2fr 1fr 1fr 1fr 1fr 2fr 2fr 1fr ;
+    grid-template-columns: 2fr 2fr 2fr 1fr 1fr 1fr 2fr 2fr 1fr ;
 }
-
 
 /* sales team member */
 body.role-sales_team_member .assign_status_column
@@ -187,7 +190,7 @@ body.role-sales_team_member .assign_status_column
 }
 body.role-sales_team_member .tab, 
 body.role-sales_team_member .tab_th {
-    grid-template-columns: 2fr 2fr 1fr 1fr 1fr 2fr 2fr 2fr 1fr ;
+    grid-template-columns: 2fr 2fr 2fr 1fr 1fr 2fr 2fr 2fr 1fr ;
 }
 
 /* sales team Lead */
@@ -197,7 +200,7 @@ body.role-sales_team_lead .assign_status_column
 }
 body.role-sales_team_lead .tab, 
 body.role-sales_team_lead .tab_th {
-    grid-template-columns: 2fr 2fr 1fr 1fr 1fr 2fr 2fr 2fr 1fr ;
+    grid-template-columns: 2fr 2fr 2fr 1fr 1fr 2fr 2fr 2fr 1fr ;
 }
 
 </style>
