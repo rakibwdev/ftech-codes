@@ -1,0 +1,32 @@
+<style>
+.parlax_image {
+  background-size: 110% !important;
+  transition: background-size 0.1s linear;
+   /* background-position: center;
+  background-repeat: no-repeat;
+  background-image: url('your-image.jpg');
+  background-attachment: fixed;
+  position: relative;
+  overflow: hidden; */
+}
+</style>
+
+<script>
+
+// parallax effect
+
+const parallaxItems = document.querySelectorAll('.parlax_image');
+
+window.addEventListener('scroll', () => {
+  requestAnimationFrame(() => {
+    parallaxItems.forEach(el => {
+      const rect = el.getBoundingClientRect();
+
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        el.style.backgroundPositionY = rect.top * 0.2 + "px";
+      }
+    });
+  });
+});
+
+</script>
