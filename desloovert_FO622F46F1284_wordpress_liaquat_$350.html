@@ -46,7 +46,7 @@ window.addEventListener('scroll', () => {
 </style>
 
 <script>
-
+document.addEventListener('DOMContentLoaded', () => {
 const videos = document.querySelectorAll('.parlax_image .elementor-background-video-container iframe');
 
 window.addEventListener('scroll', () => {
@@ -54,10 +54,42 @@ window.addEventListener('scroll', () => {
     const rect = el.closest('.parlax_image').getBoundingClientRect();
 
     if (rect.top < window.innerHeight && rect.bottom > 0) {
-      const y = rect.top * 0.2;
+      el.style.transform = `
+        translate(-50%, -50%)
+        translateY(${rect.top * 0.5}px)
+        scale(2)
+      `;
+    }
+  });
+});
+});
+</script>
 
-      el.style.transform =
-        `translate(-50%, calc(-50% + ${y}px)) scale(1.5)`;
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const videos = document.querySelectorAll('.parlax_image .elementor-background-video-container iframe');
+
+  let ticking = false;
+
+  function updateParallax() {
+    videos.forEach(el => {
+      const rect = el.closest('.parlax_image').getBoundingClientRect();
+
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        const y = rect.top * 0.3;
+
+        el.style.transform =
+          `translate(-50%, calc(-50% + ${y}px)) scale(2)`;
+      }
+    });
+
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      window.requestAnimationFrame(updateParallax);
+      ticking = true;
     }
   });
 });
