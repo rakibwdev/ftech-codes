@@ -29,4 +29,36 @@ window.addEventListener('scroll', () => {
   });
 });
 
+
+
+// Autamsunco Video Parlax
+
+</script>
+
+<style>
+.parlax_image .elementor-background-video-container iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1.5);
+  will-change: transform;
+}
+</style>
+
+<script>
+
+const videos = document.querySelectorAll('.parlax_image .elementor-background-video-container iframe');
+
+window.addEventListener('scroll', () => {
+  videos.forEach(el => {
+    const rect = el.closest('.parlax_image').getBoundingClientRect();
+
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      const y = rect.top * 0.2;
+
+      el.style.transform =
+        `translate(-50%, calc(-50% + ${y}px)) scale(1.5)`;
+    }
+  });
+});
 </script>
