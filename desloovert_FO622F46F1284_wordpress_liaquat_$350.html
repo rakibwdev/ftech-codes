@@ -2,12 +2,16 @@
 .parlax_image {
   background-size: 105% !important;
   transition: background-size 0.1s linear;
-   /* background-position: center;
+   background-position: center;
   background-repeat: no-repeat;
   background-image: url('your-image.jpg');
   background-attachment: fixed;
   position: relative;
-  overflow: hidden; */
+  overflow: hidden;
+   background-size: cover;             
+  background-position: center bottom;  
+  background-repeat: no-repeat;        
+  transition: background-position 0.1s linear;
 }
 </style>
 
@@ -15,82 +19,36 @@
 
 // parallax effect
 
-const parallaxItems = document.querySelectorAll('.parlax_image');
+// const parallaxItems = document.querySelectorAll('.parlax_image');
 
-window.addEventListener('scroll', () => {
-  requestAnimationFrame(() => {
-    parallaxItems.forEach(el => {
-      const rect = el.getBoundingClientRect();
+// window.addEventListener('scroll', () => {
+//   requestAnimationFrame(() => {
+//     parallaxItems.forEach(el => {
+//       const rect = el.getBoundingClientRect();
 
-      if (rect.top < window.innerHeight && rect.bottom > 0) {
-        el.style.backgroundPositionY = rect.top * 0.2 + "px";
-      }
-    });
-  });
-});
+//       if (rect.top < window.innerHeight && rect.bottom > 0) {
+//         el.style.backgroundPositionY = rect.top * 0.2 + "px";
+//       }
+//     });
+//   });
+// });
 
-
-
-// Autamsunco Video Parlax
-
-</script>
-
-<style>
-.parlax_image .elementor-background-video-container iframe {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(1.5);
-  will-change: transform;
-}
-</style>
-
-<script>
 document.addEventListener('DOMContentLoaded', () => {
-const videos = document.querySelectorAll('.parlax_image .elementor-background-video-container iframe');
-
-window.addEventListener('scroll', () => {
-  videos.forEach(el => {
-    const rect = el.closest('.parlax_image').getBoundingClientRect();
-
-    if (rect.top < window.innerHeight && rect.bottom > 0) {
-      el.style.transform = `
-        translate(-50%, -50%)
-        translateY(${rect.top * 0.5}px)
-        scale(2)
-      `;
-    }
-  });
-});
-});
-</script>
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const videos = document.querySelectorAll('.parlax_image .elementor-background-video-container iframe');
-
-  let ticking = false;
-
-  function updateParallax() {
-    videos.forEach(el => {
-      const rect = el.closest('.parlax_image').getBoundingClientRect();
-
-      if (rect.top < window.innerHeight && rect.bottom > 0) {
-        const y = rect.top * 0.3;
-
-        el.style.transform =
-          `translate(-50%, calc(-50% + ${y}px)) scale(2)`;
-      }
-    });
-
-    ticking = false;
-  }
+  const parallaxItems = document.querySelectorAll('.parlax_image');
 
   window.addEventListener('scroll', () => {
-    if (!ticking) {
-      window.requestAnimationFrame(updateParallax);
-      ticking = true;
-    }
+    requestAnimationFrame(() => {
+      parallaxItems.forEach(el => {
+        const rect = el.getBoundingClientRect();
+
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+          const offset = rect.top * 0.2;
+
+          el.style.backgroundPosition = `center calc(100vh + ${offset}vh)`;
+        }
+      });
+    });
   });
 });
+
 </script>

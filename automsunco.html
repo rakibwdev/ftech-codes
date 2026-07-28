@@ -1,0 +1,203 @@
+
+// Autamsunco Video Parlax
+
+</script>
+
+<style>
+.parlax_image .elementor-background-video-container iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1.5);
+  will-change: transform;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+const videos = document.querySelectorAll('.parlax_image .elementor-background-video-container iframe');
+
+window.addEventListener('scroll', () => {
+  videos.forEach(el => {
+    const rect = el.closest('.parlax_image').getBoundingClientRect();
+
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      el.style.transform = `
+        translate(-50%, -50%)
+        translateY(${rect.top * 0.5}px)
+        scale(2)
+      `;
+    }
+  });
+});
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const videos = document.querySelectorAll('.parlax_image .elementor-background-video-container iframe');
+
+  let ticking = false;
+
+  function updateParallax() {
+    videos.forEach(el => {
+      const rect = el.closest('.parlax_image').getBoundingClientRect();
+
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        const y = rect.top * 0.3;
+
+        el.style.transform =
+          `translate(-50%, calc(-50% + ${y}px)) scale(2)`;
+      }
+    });
+
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      window.requestAnimationFrame(updateParallax);
+      ticking = true;
+    }
+  });
+});
+</script>
+
+<style>
+    /* ==========================
+   PARALLAX VIDEO
+========================== */
+
+.parlax_image{
+    position:relative;
+    overflow:hidden !important;
+}
+
+/* Background Video Container */
+.parlax_image .elementor-background-video-container{
+    position:absolute !important;
+    top:50% !important;
+    left:50% !important;
+    width:110vw !important;
+    height:100vh !important;
+    transform:translate(-50%, -50%);
+    overflow:hidden !important;
+    z-index:0;
+}
+
+/* Vimeo iframe */
+.parlax_image .elementor-background-video-container iframe{
+    position:absolute !important;
+    top:50% !important;
+    left:50% !important;
+
+    width:100% !important;
+    height:100% !important;
+    min-width:100% !important;
+    min-height:100% !important;
+
+    border:0;
+    pointer-events:none;
+
+    transform:translate(-50%, -50%) scale(1.1);
+    transform-origin:center center;
+    will-change:transform;
+}
+
+/* Content above video */
+.parlax_image > .e-con-inner{
+    position:relative;
+    z-index:2;
+}
+
+
+
+
+.icon_Hide_Scroll{
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.icon_Hide_Scroll.hide{
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+
+
+
+/* ==========================
+   TABLET
+========================== */
+
+@media (max-width:1024px){
+
+    .parlax_image .elementor-background-video-container{
+        width:140vw !important;
+        height:140vh !important;
+    }
+
+}
+
+
+/* ==========================
+   MOBILE
+========================== */
+
+@media (max-width:767px){
+
+    .parlax_image .elementor-background-video-container{
+        width:180vw !important;
+        height:180vh !important;
+    }
+
+}
+</style>
+
+<script>
+window.addEventListener("load", function () {
+
+    const sections = document.querySelectorAll(".parlax_image");
+
+    function updateParallax() {
+
+        const w = window.innerWidth;
+
+        let speed = 0.6;
+        let scale = 2.5;
+
+        if (w <= 1024) {
+            speed = 0.45;
+            scale = 4;
+        }
+
+        if (w <= 767) {
+            speed = 0.30;
+            scale = 4;
+        }
+
+        sections.forEach(section => {
+
+            const iframe = section.querySelector(".elementor-background-video-container iframe");
+            if (!iframe) return;
+
+            const rect = section.getBoundingClientRect();
+
+            if (rect.bottom < 0 || rect.top > window.innerHeight) return;
+
+            const move = rect.top * speed;
+
+            iframe.style.transform =
+                `translate(-50%, calc(-50% + ${move}px)) scale(${scale})`;
+
+        });
+
+        requestAnimationFrame(updateParallax);
+    }
+
+    updateParallax();
+
+});
+</script>
