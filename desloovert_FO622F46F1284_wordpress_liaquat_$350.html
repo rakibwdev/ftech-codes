@@ -52,3 +52,42 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 </script>
+
+
+<!-- final Code -->
+
+<style>
+  .parlax_image {
+  background-size: 200vh;
+	  transition: background-size 0.1s linear;
+	background-attachment: fixed;
+  position: relative;
+  overflow: hidden;
+  background-position: center bottom; 
+  background-repeat: no-repeat;   
+
+}
+</style>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', () => {
+  const parallaxItems = document.querySelectorAll('.parlax_image');
+
+  window.addEventListener('scroll', () => {
+    requestAnimationFrame(() => {
+      parallaxItems.forEach(el => {
+        const rect = el.getBoundingClientRect();
+
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+          const offset = rect.top * 0.2;
+
+          el.style.backgroundPosition = `center calc(100% + ${offset}px)`;
+        }
+      });
+    });
+  });
+});
+
+
+</script>
