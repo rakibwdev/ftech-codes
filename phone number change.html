@@ -1,0 +1,69 @@
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const oldPattern = /778[\s\-\)]*760[\s\-]*4398/g; // flexible match
+  const newNumber = "778-400-6604";
+  const newTel = "tel:+17784006604";
+
+  // 1. Fix all tel links FIRST
+  document.querySelectorAll('a[href^="tel"]').forEach(link => {
+    if (oldPattern.test(link.href)) {
+      link.href = newTel;
+
+      // update all text inside link (including nested tags)
+      link.querySelectorAll("").forEach(child => {
+        if (child.textContent.match(oldPattern)) {
+          child.textContent = newNumber;
+        }
+      });
+
+      // also update direct text (if any)
+      if (link.childNodes.length === 1 && link.textContent.match(oldPattern)) {
+        link.textContent = newNumber;
+      }
+    }
+  });
+
+  //  2. Replace remaining plain text (outside links)
+  document.querySelectorAll("body *:not(a)").forEach(el => {
+    if (el.children.length === 0 && el.textContent.match(oldPattern)) {
+      el.textContent = el.textContent.replace(oldPattern, newNumber);
+    }
+  });
+
+});
+</script>
+
+
+<!-- final code  -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const oldPattern = /\(?\s*778[\s\-\)]*760[\s\-]*4398/g;
+  const newNumber = "(778) 400-6604";
+  const newTel = "tel:+17784006604";
+
+  // 1. Update all tel links
+  document.querySelectorAll('a[href^="tel"]').forEach(link => {
+    if (oldPattern.test(link.href) || oldPattern.test(link.textContent)) {
+      link.href = newTel;
+
+      // Replace ALL text inside the link safely
+      link.innerHTML = link.innerHTML.replace(oldPattern, newNumber);
+    }
+  });
+
+  // 2. Replace phone number everywhere in body text
+  const walker = document.createTreeWalker(
+    document.body,
+    NodeFilter.SHOW_TEXT,
+    null,
+    false
+  );
+
+  let node;
+  while (node = walker.nextNode()) {
+    if (node.nodeValue.match(oldPattern)) {
+      node.nodeValue = node.nodeValue.replace(oldPattern, newNumber);
+    }
+  }
+});
+</script>
