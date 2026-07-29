@@ -1,3 +1,21 @@
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const header = document.querySelector(".sticky-header");
+
+    if (!header) return;
+
+    window.addEventListener("scroll", function () {
+        if (window.scrollY > 50) {
+            header.classList.add("header-scrolled");
+        } else {
+            header.classList.remove("header-scrolled");
+        }
+    });
+
+});
+</script>
+
 <style>
 .parlax_image {
   background-size: 105% !important;
@@ -59,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
 <style>
   .parlax_image {
   background-size: 200vh;
-	  transition: background-size 0.1s linear;
+	transition: background-size 0.1s linear;
 	background-attachment: fixed;
   position: relative;
   overflow: hidden;
