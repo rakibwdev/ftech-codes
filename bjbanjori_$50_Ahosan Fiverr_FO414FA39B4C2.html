@@ -31,42 +31,32 @@ document.addEventListener("DOMContentLoaded", function () {
     backdrop-filter: blur(5px);
 }
 
+
 /* last button */
 
-/* .last_child {
-    background-color: red;
-} */
+.elementor-nav-menu li {
+    padding: 8px 12px;
+    border-radius:8px;
+    margin:0px 2px;
+}
 
-/* .elementor-nav-menu li:hover {
-    background-color:red;
-} */
-
-/* Default hover text + bg */
 .elementor-nav-menu li:hover {
-    /* --tw-text-opacity: 1; */
-    color: rgb(255 255 255 / var(--tw-text-opacity));
-    background-color: hsla(0, 0%, 100%, 0.05);
+    background-color: rgba(255, 255, 255, 0.05);
 }
 
-/* Last item hover (Gold Gradient + Shadow) */
-.elementor-nav-menu li:last-child:hover > a {
+.elementor-nav-menu li:last-child{
     background: linear-gradient(90deg, #b8962e, #d4af37);
-    color: #fff !important;
-    
-    /* Smooth effect */
     transition: all 0.3s ease;
-
-    /* Glow shadow */
-    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.5);
+    margin: 0 16px;
 }
 
-/* Optional: more premium glow */
+.elementor-nav-menu li:last-child > a {
+    font-size:13px !important;
+    color:black !important;
+    padding: 0 !important;
+}
+
 .elementor-nav-menu li:last-child:hover  {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: 6px;
-    box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
-    opacity: 0.6;
+    box-shadow: 0px 5px 10px #d4af3733;
 }
 </style>
