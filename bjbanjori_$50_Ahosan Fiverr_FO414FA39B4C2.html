@@ -1,0 +1,72 @@
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const header = document.querySelector(".sticky-header");
+
+    if (!header) return;
+
+    window.addEventListener("scroll", function () {
+        if (window.scrollY > 50) {
+            header.classList.add("header-scrolled");
+        } else {
+            header.classList.remove("header-scrolled");
+        }
+    });
+
+});
+</script>
+
+<style>
+/* header */
+.sticky-header {
+    transition: all .35s ease;
+    backdrop-filter: blur(5px);
+}
+
+
+/* Scroll */
+.sticky-header.header-scrolled {
+    border-bottom:1px solid #FFFFFF0D !important;
+    background-image: linear-gradient(360deg, #F2EFEC00 0%, #f2efec17 100%);
+    backdrop-filter: blur(5px);
+}
+
+/* last button */
+
+/* .last_child {
+    background-color: red;
+} */
+
+/* .elementor-nav-menu li:hover {
+    background-color:red;
+} */
+
+/* Default hover text + bg */
+.elementor-nav-menu li:hover {
+    /* --tw-text-opacity: 1; */
+    color: rgb(255 255 255 / var(--tw-text-opacity));
+    background-color: hsla(0, 0%, 100%, 0.05);
+}
+
+/* Last item hover (Gold Gradient + Shadow) */
+.elementor-nav-menu li:last-child:hover > a {
+    background: linear-gradient(90deg, #b8962e, #d4af37);
+    color: #fff !important;
+    
+    /* Smooth effect */
+    transition: all 0.3s ease;
+
+    /* Glow shadow */
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.5);
+}
+
+/* Optional: more premium glow */
+.elementor-nav-menu li:last-child:hover  {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 6px;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+    opacity: 0.6;
+}
+</style>

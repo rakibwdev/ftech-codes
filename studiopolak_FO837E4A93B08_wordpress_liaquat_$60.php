@@ -1,6 +1,6 @@
 <?php
-/home/rakib/Local Sites/studiopalak/app/public/wp-content/plugins/teachpress/core/shortcodes.php
-Line NO: 1163
+// /home/rakib/Local Sites/studiopalak/app/public/wp-content/plugins/teachpress/core/shortcodes.php
+// Line NO: 1163
 
 
 function tp_publist_shortcode ($args) {
@@ -21,6 +21,20 @@ function tp_publist_shortcode ($args) {
 		return '';
 		}
 	// 	custom code end
+
+
+
+    // Elementor + AJAX + Preview protection
+if (
+    (defined('ELEMENTOR_VERSION')) &&
+    (
+        \Elementor\Plugin::$instance->editor->is_edit_mode() ||
+        \Elementor\Plugin::$instance->preview->is_preview_mode() ||
+        (defined('DOING_AJAX') && DOING_AJAX)
+    )
+) {
+    return ''; // stop heavy query
+}
 
 
 
@@ -89,7 +103,7 @@ function tp_publist_shortcode ($args) {
     ), $args);
 
 
-<!-- custom code -->
+//<!-- custom code -->
     if((isset($_GET['action']) && $_GET['action'] == "elementor") 
         || (isset($_GET['action']) && $_GET['action'] == "elementor_ajax")
         || !is_page()) {
@@ -126,7 +140,7 @@ function tp_publist_shortcode ($args) {
 
 //         echo "<h2>{$title}</h2>";
 
-//         echo do_shortcode('[tplist tag="'.$tag.'author_name="initials" order="date DESC"]');
+//         echo do_shortcode('[tplist tag="'.$tag.'author_name="initials" order="date DESC" entries_per_page="10"]');
 //     }
 
 //     return ob_get_clean();
@@ -190,51 +204,51 @@ function add_ajax_url() {
 add_action('wp_head', 'add_ajax_url');
 
 
-
 <h2>AI-FAIR Lab</h2>
-[tplist tag="20" author_name="initials" order="date DESC"]
+[tplist tag="20" author_name="initials" order="date DESC" entries_per_page="10"]
 
 <h2>AI for Parkinson Lab</h2>
-[tplist tag="66" author_name="initials" order="date DESC"]
+[tplist tag="66" author_name="initials" order="date DESC" entries_per_page="10"]
 
 <h2>AI4MRI Lab</h2>
-[tplist tag="43" author_name="initials" order="date DESC"]
+[tplist tag="43" author_name="initials" order="date DESC" entries_per_page="10"]
 
 <h2>CARA Lab</h2>
-[tplist tag="68" author_name="initials" order="date DESC"]
+[tplist tag="68" author_name="initials" order="date DESC" entries_per_page="10"]
 
 
 <h2>FEP Lab</h2>
-[tplist tag="38" author_name="initials" order="date DESC"]
+[tplist tag="38" author_name="initials" order="date DESC" entries_per_page="10"]
 
 
 <h2>GENIUS Lab</h2>
-[tplist tag="4" author_name="initials" order="date DESC"]
+[tplist tag="4" author_name="initials" order="date DESC" entries_per_page="10"]
 
 
 <h2>Healthy AI Lab</h2>
-[tplist tag="260" author_name="initials" order="date DESC"]
+[tplist tag="260" author_name="initials" order="date DESC" entries_per_page="10"]
 
 <h2>ILUSTRE Lab</h2>
-[tplist tag="170" author_name="initials" order="date DESC"]
+[tplist tag="170" author_name="initials" order="date DESC" entries_per_page="10"]
 
 <h2>MERAI Lab</h2>
-[tplist tag="192" author_name="initials" order="date DESC"]
+[tplist tag="192" author_name="initials" order="date DESC" entries_per_page="10"]
 
 <h2>Mercury Machine Learning Lab</h2>
-[tplist tag="261" author_name="initials" order="date DESC"]
+[tplist tag="261" author_name="initials" order="date DESC" entries_per_page="10"]
 
 <h2>RAIL Lab</h2>
-[tplist tag="1" author_name="initials" order="date DESC"]
+[tplist tag="1" author_name="initials" order="date DESC" entries_per_page="10"]
 
 <h2>REM Lab</h2>
-[tplist tag="211" author_name="initials" order="date DESC"]
+[tplist tag="211" author_name="initials" order="date DESC" entries_per_page="10"]
 
 <h2>Stroke Lab</h2>
-[tplist tag="244" author_name="initials" order="date DESC"]
+[tplist tag="244" author_name="initials" order="date DESC" entries_per_page="10"]
 
 <h2>TAIM Lab</h2>
-[tplist tag="253" author_name="initials" order="date DESC"]
+[tplist tag="253" author_name="initials" order="date DESC" entries_per_page="10"]
 
 <h2>TAIMRI Lab</h2>
-[tplist tag="254" author_name="initials" order="date DESC"]
+[tplist tag="254" author_name="initials" order="date DESC" entries_per_page="10"]
+</html>
