@@ -1,4 +1,78 @@
+<script>
+// const labels = ['Home', 'About', 'Services', 'Contact'];
+//     const swiper = new Swiper('.swiper', {
+//   pagination: {
+//     el: '.swiper-pagination',
+//     clickable: true,
+
+//     renderBullet: function (index, className) {
+//       return '<span class="' + className + '">' + labels[index] + '</span>';
+//     }
+//   }
+// });
+
+
+// new
+const swiper = new Swiper('.swiper', {
+});
+
+document.querySelectorAll('.pagination_text li').forEach((item, index) => {
+  item.addEventListener('click', () => {
+    swiper.slideTo(index);
+  });
+});
+swiper.on('slideChange', () => {
+  document.querySelectorAll('.pagination_text li').forEach(li => {
+    li.classList.remove('active');
+  });
+
+  document.querySelectorAll('.pagination_text li')[swiper.activeIndex].classList.add('active');
+});
+
+</script>
+
 <style>
+
+
+.pagination_text li {
+  display: inline-block;
+  margin: 0 10px;
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+.pagination_text li.active {
+  opacity: 1;
+  font-weight: bold;
+  border-bottom: 2px solid black;
+}
+
+
+
+/* carosol */
+
+.swiper-pagination{
+display: flex;
+justify-content: center;
+align-items: center;
+column-gap: 10px;
+}
+
+span.swiper-pagination-bullet {
+    font-size:14px;
+    color:#000;
+    background-color: transparent !important;
+    padding:10px 20px;
+    display: inline-flex;
+}
+
+span.swiper-pagination-bullet-active {
+    background-color: #d4af37 !important;
+    color: #000 !important;
+}
+
+
+
     .main_header{
     z-index: 1 !important;
 }
