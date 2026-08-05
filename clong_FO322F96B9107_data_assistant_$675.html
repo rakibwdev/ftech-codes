@@ -46,6 +46,22 @@ swiper.on('slideChange', () => {
   font-weight: bold;
   border-bottom: 2px solid black;
 }
+selector{
+    --e-n-carousel-swiper-offset-size: 20% !important;
+}
+
+@media (max-width: 1024px){
+    selector{
+        --e-n-carousel-swiper-offset-size: 0% !important;
+    }
+}
+
+
+@media (max-width: 767px){
+    selector{
+        --e-n-carousel-swiper-offset-size: 0% !important;
+    }
+}
 
 
 
