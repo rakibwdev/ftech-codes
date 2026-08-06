@@ -1,3 +1,57 @@
+<!-- Event Carousol -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+const swiperEl = document.querySelector('.event_swiper .swiper');
+
+if (swiperEl) {
+
+  const event_swiper = new Swiper(swiperEl, {});
+
+  const paginations = document.querySelectorAll('.event_pagination');
+
+  if (paginations.length > 0) {
+    paginations[0].classList.add('active');
+  }
+
+  paginations.forEach((item, index) => {
+    item.addEventListener('click', () => {
+      event_swiper.slideTo(index);
+    });
+  });
+
+  event_swiper.on('slideChange', () => {
+    paginations.forEach(li => li.classList.remove('active'));
+
+    if (paginations[event_swiper.activeIndex]) {
+      paginations[event_swiper.activeIndex].classList.add('active');
+    }
+  });
+
+}
+
+});
+</script>
+
+
+<style>
+.event_pagination {
+  display: inline-block;
+  margin: 0 10px;
+  cursor: pointer;
+  opacity: 0.8;
+}
+event_pagination.active {
+  opacity: 1;
+  font-weight: bold;
+  border-bottom: 2px solid black;
+}
+
+.event_pagination.active * {
+  color: #00AEEF;
+}
+
+</style>
+
 <script>
 // const labels = ['Home', 'About', 'Services', 'Contact'];
 //     const swiper = new Swiper('.swiper', {
@@ -97,6 +151,12 @@ span.swiper-pagination-bullet-active {
 }
 #off-canvas-8e4ac7b{
     z-index:3 !important;
+}
+
+selector img{
+    aspect-ratio: 1/1.5;
+    border-radius: 22px;
+    object-fit: cover;
 }
 
 @media(max-width: 1024px) {
