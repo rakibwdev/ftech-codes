@@ -1,0 +1,939 @@
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+    const track =
+        document.querySelector(".carousel-track");
+
+    const viewport =
+        document.querySelector(".carousel-top");
+
+    const cards =
+        Array.from(
+            document.querySelectorAll(".carousel-card")
+        );
+
+    const leftArrow =
+        document.querySelector(".carousel-arrow-left");
+
+    const rightArrow =
+        document.querySelector(".carousel-arrow-right");
+
+    if (
+        !track ||
+        !viewport ||
+        cards.length < 3
+    ) {
+
+        console.log(
+            "Carousel: Required elements not found."
+        );
+
+        return;
+
+    }
+
+    const total =
+        cards.length;
+
+    let current =
+        1;
+
+    let isDragging =
+        false;
+
+    let startX =
+        0;
+
+    let dragDistance =
+        0;
+
+    const DRAG_THRESHOLD =
+        60;
+
+    function getOffset(index) {
+
+        let offset =
+            index - current;
+
+        if (
+            offset >
+            total / 2
+        ) {
+            offset -= total;
+        }
+
+        if (
+            offset <
+            -total / 2
+        ) {
+            offset += total;
+        }
+        return offset;
+
+    }
+
+
+    function updateCarousel(
+        animate = true
+    ) {
+
+        cards.forEach(
+            function (card, index) {
+                const offset =
+                    getOffset(index);
+                if (
+                    offset === 0
+                ) {
+                    card.classList.remove(
+                        "is-left",
+                        "is-right",
+                        "is-hidden"
+                    );
+
+                    card.classList.add(
+                        "is-active"
+                    );
+
+                    card.style.transform =
+                        "translate(-50%, -50%) scale(1)";
+
+
+                    card.style.opacity =
+                        "1";
+
+
+                    card.style.zIndex =
+                        "10";
+
+                    card.style.transition =
+                        animate
+                            ? ""
+                            : "none";
+
+                }
+
+
+                /* =================================================
+                   LEFT
+                ================================================= */
+
+                else if (
+                    offset === -1
+                ) {
+
+
+                    card.classList.remove(
+                        "is-active",
+                        "is-right",
+                        "is-hidden"
+                    );
+
+
+                    card.classList.add(
+                        "is-left"
+                    );
+
+
+                    /*
+                     * LEFT SIDE CARD
+                     */
+
+                    card.style.transform =
+                        "translate(calc(-50% - 100%), -50%) scale(0.82)";
+
+
+                    card.style.opacity =
+                        "1";
+
+
+                    card.style.zIndex =
+                        "2";
+
+
+                    card.style.transition =
+                        animate
+                            ? ""
+                            : "none";
+
+                }
+
+
+                /* =================================================
+                   RIGHT
+                ================================================= */
+
+                else if (
+                    offset === 1
+                ) {
+
+
+                    card.classList.remove(
+                        "is-active",
+                        "is-left",
+                        "is-hidden"
+                    );
+
+
+                    card.classList.add(
+                        "is-right"
+                    );
+
+
+                    /*
+                     * RIGHT SIDE CARD
+                     */
+
+                    card.style.transform =
+                        "translate(calc(-50% + 100%), -50%) scale(0.82)";
+
+
+                    card.style.opacity =
+                        "1";
+
+
+                    card.style.zIndex =
+                        "2";
+
+
+                    card.style.transition =
+                        animate
+                            ? ""
+                            : "none";
+
+                }
+
+                else {
+
+
+                    card.classList.remove(
+                        "is-active",
+                        "is-left",
+                        "is-right"
+                    );
+
+
+                    card.classList.add(
+                        "is-hidden"
+                    );
+
+
+                    card.style.transition =
+                        "none";
+
+
+                    card.style.opacity =
+                        "0";
+
+
+                    card.style.pointerEvents =
+                        "none";
+
+
+                    card.style.zIndex =
+                        "0";
+
+
+                    /*
+                     * Put it completely outside.
+                     */
+
+                    if (
+                        offset < 0
+                    ) {
+
+                        card.style.transform =
+                            "translate(-250%, -50%) scale(0.82)";
+
+                    } else {
+
+                        card.style.transform =
+                            "translate(150%, -50%) scale(0.82)";
+
+                    }
+
+                }
+
+            }
+        );
+
+    }
+
+    function nextSlide() {
+
+
+        current =
+            (current + 1)
+            % total;
+
+
+        updateCarousel(true);
+
+    }
+
+
+
+    function previousSlide() {
+
+
+        current =
+            (current - 1 + total)
+            % total;
+
+
+        updateCarousel(true);
+
+    }
+
+
+    /* =====================================================
+       RIGHT ARROW
+    ===================================================== */
+
+    if (
+        rightArrow
+    ) {
+
+        rightArrow.addEventListener(
+            "click",
+            function () {
+
+                if (
+                    isDragging
+                ) {
+                    return;
+                }
+
+
+                nextSlide();
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       LEFT ARROW
+    ===================================================== */
+
+    if (
+        leftArrow
+    ) {
+
+        leftArrow.addEventListener(
+            "click",
+            function () {
+
+                if (
+                    isDragging
+                ) {
+                    return;
+                }
+
+
+                previousSlide();
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       MOUSE DOWN
+    ===================================================== */
+
+    track.addEventListener(
+        "mousedown",
+        function (event) {
+
+
+            isDragging =
+                true;
+
+
+            startX =
+                event.clientX;
+
+
+            dragDistance =
+                0;
+
+
+            track.classList.add(
+                "is-dragging"
+            );
+
+
+            /*
+             * Temporarily remove
+             * animation while dragging.
+             */
+
+            cards.forEach(
+                function (card) {
+
+                    card.style.transition =
+                        "none";
+
+                }
+            );
+
+
+            event.preventDefault();
+
+        }
+    );
+
+
+    /* =====================================================
+       MOUSE MOVE
+    ===================================================== */
+
+    window.addEventListener(
+        "mousemove",
+        function (event) {
+
+
+            if (
+                !isDragging
+            ) {
+                return;
+            }
+
+
+            dragDistance =
+                event.clientX - startX;
+
+
+            /*
+             * Only move the CENTER card
+             * during the drag preview.
+             *
+             * The final swipe determines
+             * the new active slide.
+             */
+
+            const activeCard =
+                cards.find(
+                    function (card) {
+
+                        return card.classList.contains(
+                            "is-active"
+                        );
+
+                    }
+                );
+
+
+            if (
+                activeCard
+            ) {
+
+                activeCard.style.transform =
+                    "translate(calc(-50% + "
+                    +
+                    dragDistance
+                    +
+                    "px), -50%) scale(1)";
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       MOUSE UP
+    ===================================================== */
+
+    window.addEventListener(
+        "mouseup",
+        function () {
+
+
+            if (
+                !isDragging
+            ) {
+                return;
+            }
+
+
+            isDragging =
+                false;
+
+
+            track.classList.remove(
+                "is-dragging"
+            );
+
+
+            /*
+             * Determine direction.
+             */
+
+            if (
+                Math.abs(dragDistance)
+                >
+                DRAG_THRESHOLD
+            ) {
+
+
+                if (
+                    dragDistance < 0
+                ) {
+
+                    /*
+                     * Drag LEFT
+                     * → NEXT
+                     */
+
+                    nextSlide();
+
+                } else {
+
+                    /*
+                     * Drag RIGHT
+                     * → PREVIOUS
+                     */
+
+                    previousSlide();
+
+                }
+
+            } else {
+
+
+                /*
+                 * Not enough drag.
+                 * Return to position.
+                 */
+
+                updateCarousel(true);
+
+            }
+
+
+            dragDistance =
+                0;
+
+        }
+    );
+
+
+    /* =====================================================
+       TOUCH START
+    ===================================================== */
+
+    track.addEventListener(
+        "touchstart",
+        function (event) {
+
+
+            isDragging =
+                true;
+
+
+            startX =
+                event.touches[0].clientX;
+
+
+            dragDistance =
+                0;
+
+
+        },
+        {
+            passive: true
+        }
+    );
+
+
+    /* =====================================================
+       TOUCH MOVE
+    ===================================================== */
+
+    track.addEventListener(
+        "touchmove",
+        function (event) {
+
+
+            if (
+                !isDragging
+            ) {
+                return;
+            }
+
+
+            dragDistance =
+                event.touches[0].clientX
+                -
+                startX;
+
+
+        },
+        {
+            passive: true
+        }
+    );
+
+
+    /* =====================================================
+       TOUCH END
+    ===================================================== */
+
+    track.addEventListener(
+        "touchend",
+        function () {
+
+
+            if (
+                !isDragging
+            ) {
+                return;
+            }
+
+
+            isDragging =
+                false;
+
+
+            if (
+                Math.abs(dragDistance)
+                >
+                50
+            ) {
+
+
+                if (
+                    dragDistance < 0
+                ) {
+
+                    nextSlide();
+
+                } else {
+
+                    previousSlide();
+
+                }
+
+            } else {
+
+                updateCarousel(true);
+
+            }
+
+
+            dragDistance =
+                0;
+
+        }
+    );
+
+
+    /* =====================================================
+       RESIZE
+    ===================================================== */
+
+    window.addEventListener(
+        "resize",
+        function () {
+
+            updateCarousel(false);
+
+        }
+    );
+
+
+    /* =====================================================
+       INITIALIZE
+    ===================================================== */
+
+    updateCarousel(false);
+
+});
+</script>
+
+<style>
+
+/* =====================================================
+   MAIN CAROUSEL
+===================================================== */
+
+.video-carousel-main {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.video-carousel {
+    width: 100%;
+    position: relative;
+}
+
+
+/* =====================================================
+   VIEWPORT
+===================================================== */
+
+.carousel-top {
+    width: 100%;
+    height: 470px;
+
+    position: relative;
+
+    /*
+     * IMPORTANT:
+     * Only the 3 visible cards can be seen.
+     */
+    overflow: hidden;
+}
+
+
+/* =====================================================
+   TRACK
+===================================================== */
+
+.carousel-track {
+    width: 100%;
+    height: 100%;
+
+    position: relative;
+
+    touch-action: pan-y;
+
+    user-select: none;
+    -webkit-user-select: none;
+
+    cursor: grab;
+}
+
+.carousel-track.is-dragging {
+    cursor: grabbing;
+}
+
+
+.carousel-card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    width: 33.333333%;
+    height: 400px;
+
+    margin: 0;
+    padding: 0;
+
+    box-sizing: border-box;
+
+    overflow: hidden;
+
+    border: 3px solid #F5A623;
+    border-radius: 30px;
+
+    transform: translate(-50%, -50%) scale(0.82);
+
+    z-index: 1;
+
+    transition: transform 0.55s cubic-bezier(.22,.61,.36,1);
+
+    will-change: transform;
+}
+
+
+/* CENTER */
+.carousel-card.is-active {
+    transform:
+        translate(-50%, -50%)
+        scale(1);
+
+    z-index: 10;
+}
+
+
+/* LEFT */
+.carousel-card.is-left {
+    transform:
+        translate(
+            calc(-50% - 82%),
+            -50%
+        )
+        scale(0.82);
+
+    z-index: 2;
+}
+
+
+/* RIGHT */
+.carousel-card.is-right {
+    transform:
+        translate(
+            calc(-50% + 82%),
+            -50%
+        )
+        scale(0.82);
+
+    z-index: 2;
+}
+
+/* =====================================================
+   HIDDEN CARDS
+
+   IMPORTANT:
+   These cards are completely outside the viewport
+   and have NO transition.
+
+   This prevents you from seeing a card coming from
+   behind when the loop changes from 5 → 1.
+===================================================== */
+
+.carousel-card.is-hidden {
+
+    transition: none !important;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    z-index: 0;
+}
+
+
+/* =====================================================
+   VIDEO CONTAINER
+===================================================== */
+
+.carousel-video {
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+
+    z-index: 1;
+}
+
+
+/* =====================================================
+   WEBFLOW BACKGROUND VIDEO
+===================================================== */
+
+.carousel-video video {
+
+    width: 100% !important;
+
+    height: 100% !important;
+
+    object-fit: cover !important;
+
+}
+
+
+/* =====================================================
+   BOTTOM AREA
+===================================================== */
+
+.carousel-bottom {
+
+    width: 100%;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    position: relative;
+
+    margin-top: 18px;
+
+    z-index: 50;
+}
+
+
+/* =====================================================
+   ARROWS
+===================================================== */
+
+.carousel-arrow-left,
+.carousel-arrow-right {
+
+    cursor: pointer;
+
+    user-select: none;
+    -webkit-user-select: none;
+
+    z-index: 50;
+
+    transition:
+        transform 0.2s ease,
+        opacity 0.2s ease;
+}
+
+
+.carousel-arrow-left:hover,
+.carousel-arrow-right:hover {
+
+    opacity: 0.7;
+
+}
+
+
+.carousel-arrow-left:active,
+.carousel-arrow-right:active {
+
+    transform: scale(0.9);
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media screen and (max-width: 767px) {
+
+    .carousel-top {
+
+        height: 350px;
+
+        overflow: hidden;
+
+    }
+
+
+    .carousel-card {
+
+        width: 80%;
+
+        height: 320px;
+
+    }
+
+
+    .carousel-card.is-left,
+    .carousel-card.is-right {
+
+        opacity: 0;
+
+        pointer-events: none;
+
+    }
+
+
+    .carousel-card.is-active {
+
+        transform:
+            translate(-50%, -50%)
+            scale(1);
+
+    }
+
+}
+
+</style>
