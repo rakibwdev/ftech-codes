@@ -1,0 +1,38 @@
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const header = document.querySelector(".sticky-header");
+
+    if (!header) return;
+
+    window.addEventListener("scroll", function () {
+        if (window.scrollY > 50) {
+            header.classList.add("header-scrolled");
+        } else {
+            header.classList.remove("header-scrolled");
+        }
+    });
+
+});
+</script>
+
+<style>
+
+.sticky-header{
+    transition: all .3s ease;
+    backdrop-filter: blur(5px) !important;
+}
+
+.header-logo img{
+    transition: all .35s ease;
+}
+
+.sticky-header.header-scrolled{
+    min-height: 70px !important;
+}
+
+.sticky-header.header-scrolled .header-logo img{
+    width: 140px !important;
+}
+
+</style>
