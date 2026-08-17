@@ -36,3 +36,17 @@ document.addEventListener("DOMContentLoaded", function () {
 }
 
 </style>
+
+
+
+<style>
+    
+</style>
+
+<script>
+    jQuery(document).on('submit_success', '.elementor-form', function (event, response) {
+    console.log('My form submitted successfully');
+    document.querySelector('.contact_form').style.display = 'none';
+    document.querySelector('.calendy').style.display = 'block';
+});
+</script>
