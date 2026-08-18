@@ -70,7 +70,7 @@ ul{
 .elementor-counter{
     flex-direction: row-reverse;
 }
-.elementor-counter-number-suffix{
+.elementor-counter-number-suffix{   
     white-space: nowrap;
 }
 .elementor-counter-title{
@@ -87,6 +87,35 @@ selector{
     }
 }
 
+.elementor-widget-n-accordion .e-n-accordion-item-title {
+    justify-content: space-between;
+}
+
+.faqn{
+    color: #008F4C;
+}
+
+/* faQ Border Radius */
+selector .e-n-accordion-item{
+    background: #fff !important;
+    border-radius: 8px !important;
+    overflow: hidden;
+    border: none;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.06);
+    margin-bottom: 12px;
+}
+
+
+selector .e-n-accordion-item-title{
+    background: #fff !important;
+    border-radius: 8px !important;
+}
+
+selector .e-n-accordion-item-content{
+    background: #fff !important;
+}
+
+
 </style>
 
 <script>
@@ -96,3 +125,4 @@ selector{
     document.querySelector('.calendy').style.display = 'block';
 });
 </script>
+ 
