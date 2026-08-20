@@ -132,6 +132,32 @@ selector .e-n-accordion-item-content{
 }
 
 
+/* icon verticle line */
+
+ selector .elementor-icon {
+    position: relative;
+}
+
+selector .elementor-icon::after {
+    content: "";
+    position: absolute;
+    top: calc(100%);
+    left: 50%;
+    width: 2px;
+    height: 50px;
+    transform: translateX(-50%);
+
+    background: linear-gradient(
+        to top,
+        #00FF88,
+        #00E676,
+        rgba(0, 230, 118, 0)
+    );
+
+    box-shadow: 0 0 8px rgba(0, 230, 118, 0.5);
+}
+
+
 </style>
 
 <script>
