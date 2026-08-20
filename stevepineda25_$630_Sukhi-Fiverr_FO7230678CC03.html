@@ -134,11 +134,11 @@ selector .e-n-accordion-item-content{
 
 /* icon verticle line */
 
- selector .elementor-icon {
+selector .elementor-widget-icon-box:not(:last-child) .elementor-icon {
     position: relative;
 }
 
-selector .elementor-icon::after {
+selector .elementor-widget-icon-box:not(:last-child) .elementor-icon::after {
     content: "";
     position: absolute;
     top: calc(100%);
