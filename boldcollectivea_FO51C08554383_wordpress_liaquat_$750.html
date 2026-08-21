@@ -1,0 +1,55 @@
+<style>
+.sticky-header{
+    backdrop-filter: blur(5px);
+}
+
+.header-logo img{
+    transition: all .5s ease-in-out;
+}
+
+.sticky-header.header-scrolled .header-logo img{
+    width: 100px !important;
+}
+
+
+.sticky-header.header-scrolled{
+    min-height: 60px !important;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    backdrop-filter: blur(5px);
+}
+
+.sticky-header:has(.elementor-active) {
+    background-color: #ffffff !important;
+}
+
+
+/* 1450px and below */
+@media (max-width: 1450px) {
+    .menu_ {
+        display: none !important;
+    }
+    .social_icon{
+        display: none!important;
+    }
+}
+
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const header = document.querySelector(".sticky-header");
+
+    if (!header) return;
+
+    window.addEventListener("scroll", function () {
+        if (window.scrollY > 50) {
+            header.classList.add("header-scrolled");
+        } else {
+            header.classList.remove("header-scrolled");
+        }
+    });
+
+});
+</script>
