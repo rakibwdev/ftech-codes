@@ -13,4 +13,182 @@ selector ul li:hover {
     background-color: #00e6760f;
     box-shadow: 0 0 6px 0.5px #00e6768a inset;
 }
+
+
+/* sidebar */
+
+selector{
+    .elementor-icon-box-wrapper{
+        align-items: center !important;
+    }
+    .elementor-icon-box-title{
+        margin: 0;
+    }
+}
+
+selector{
+    min-width: 300px;
+}
+
+</style>
+
+
+
+<!-- button style -->
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+    const buttons = document.querySelectorAll(
+        ".elementor-button-text"
+    );
+
+    buttons.forEach(function (button) {
+
+        const text = button.textContent.trim();
+
+        button.innerHTML = "";
+
+        [...text].forEach(function (char, index) {
+
+            const span = document.createElement("span");
+
+            span.textContent = char === " " ? "\u00A0" : char;
+
+            span.style.setProperty("--i", index);
+
+            button.appendChild(span);
+
+        });
+
+    });
+
+});
+</script>
+
+<style>
+
+.elementor-button {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: auto;
+    min-height: 56px;
+    padding: 16px 32px;
+
+    background: #fff;
+    color: #111;
+    border: 1px solid #fff;
+    border-radius: 999px;
+
+    overflow: visible;
+    text-decoration: none;
+
+    transition:
+        transform 0.4s cubic-bezier(.22, 1, .36, 1),
+        background-color 0.3s ease,
+        color 0.3s ease;
+}
+
+
+.elementor-button:hover {
+    transform: scale(1.05);
+}
+
+
+/* =================================
+   TEXT
+================================= */
+
+.elementor-button-text {
+    position: relative;
+    z-index: 5;
+
+    display: inline-block;
+
+    transition: color 0.3s ease;
+}
+
+
+/* =================================
+   CORNER LINES
+================================= */
+
+ .elementor-button::before,
+ .elementor-button::after {
+    content: "";
+    position: absolute;
+
+    width: 28px;
+    height: 28px;
+
+    pointer-events: none;
+
+    transition:
+        transform 0.45s cubic-bezier(.22, 1, .36, 1),
+        opacity 0.3s ease;
+}
+
+
+/* Top-left corner */
+ .elementor-button::before {
+    top: -10px;
+    left: -10px;
+
+    border-top: 1px solid rgba(255,255,255,.5);
+    border-left: 1px solid rgba(255,255,255,.5);
+
+    transform: translate(-8px, -8px);
+}
+
+
+/* Bottom-right corner */
+ .elementor-button::after {
+    right: -10px;
+    bottom: -10px;
+
+    border-right: 1px solid rgba(255,255,255,.5);
+    border-bottom: 1px solid rgba(255,255,255,.5);
+
+    transform: translate(8px, 8px);
+}
+
+
+/* Hover corners */
+ .elementor-button:hover::before {
+    transform: translate(0, 0);
+}
+
+ .elementor-button:hover::after {
+    transform: translate(0, 0);
+}
+
+/* =================================
+   LETTER CASCADE
+================================= */
+
+ .elementor-button-text span {
+    display: inline-block;
+
+    transform: translateY(0);
+    opacity: 1;
+
+    transition:
+        transform 0.45s cubic-bezier(.22, 1, .36, 1),
+        opacity 0.3s ease;
+
+    transition-delay: calc(var(--i) * 0.025s);
+}
+
+
+/* Hover animation */
+ .elementor-button:hover
+.elementor-button-text span {
+
+    transform: translateY(-7px);
+
+    transition-delay: calc(var(--i) * 0.025s);
+}
 </style>
