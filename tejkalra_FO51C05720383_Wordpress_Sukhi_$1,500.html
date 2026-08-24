@@ -34,7 +34,7 @@ selector{
 
 
 
-<!-- button style -->
+<!-- Text animation -->
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -69,23 +69,6 @@ selector{
 <style>
 
 .elementor-button {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    width: auto;
-    min-height: 56px;
-    padding: 16px 32px;
-
-    background: #fff;
-    color: #111;
-    border: 1px solid #fff;
-    border-radius: 999px;
-
-    overflow: visible;
-    text-decoration: none;
-
     transition:
         transform 0.4s cubic-bezier(.22, 1, .36, 1),
         background-color 0.3s ease,
@@ -94,35 +77,23 @@ selector{
 
 
 .elementor-button:hover {
-    transform: scale(1.05);
+    transform: scale(1.03);
 }
 
-
-/* =================================
-   TEXT
-================================= */
-
+/* text */
 .elementor-button-text {
-    position: relative;
-    z-index: 5;
-
-    display: inline-block;
-
     transition: color 0.3s ease;
 }
 
-
-/* =================================
-   CORNER LINES
-================================= */
+/* corner */
 
  .elementor-button::before,
  .elementor-button::after {
     content: "";
     position: absolute;
 
-    width: 28px;
-    height: 28px;
+    width: 20px;
+    height: 22px;
 
     pointer-events: none;
 
@@ -134,25 +105,25 @@ selector{
 
 /* Top-left corner */
  .elementor-button::before {
-    top: -10px;
-    left: -10px;
+    top: -5px;
+    left: -5px;
 
     border-top: 1px solid rgba(255,255,255,.5);
     border-left: 1px solid rgba(255,255,255,.5);
 
-    transform: translate(-8px, -8px);
+    transform: translate(-5px, -5px);
 }
 
 
 /* Bottom-right corner */
  .elementor-button::after {
-    right: -10px;
-    bottom: -10px;
+    right: -5px;
+    bottom: -5px;
 
     border-right: 1px solid rgba(255,255,255,.5);
     border-bottom: 1px solid rgba(255,255,255,.5);
 
-    transform: translate(8px, 8px);
+    transform: translate(5px, 5px);
 }
 
 
@@ -165,19 +136,13 @@ selector{
     transform: translate(0, 0);
 }
 
-/* =================================
-   LETTER CASCADE
-================================= */
+/* LETTER CASCADE */
 
  .elementor-button-text span {
     display: inline-block;
 
-    transform: translateY(0);
+    transform: translateX(0px);
     opacity: 1;
-
-    transition:
-        transform 0.45s cubic-bezier(.22, 1, .36, 1),
-        opacity 0.3s ease;
 
     transition-delay: calc(var(--i) * 0.025s);
 }
@@ -187,8 +152,10 @@ selector{
  .elementor-button:hover
 .elementor-button-text span {
 
-    transform: translateY(-7px);
-
+    transform: translateX(3px);
+  
+  padding-left: calc(var(--padding) - 5px);
     transition-delay: calc(var(--i) * 0.025s);
 }
+
 </style>
