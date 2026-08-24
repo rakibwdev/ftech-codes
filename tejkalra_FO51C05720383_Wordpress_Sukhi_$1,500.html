@@ -159,3 +159,26 @@ selector{
 }
 
 </style>
+
+
+<!-- dropdown -->
+
+<script>
+    document.querySelector(".tools").addEventListener("click", function () {
+    document.querySelector(".sub-tools").classList.toggle("active");
+});
+</script>
+
+<style>
+    .sub-tools {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.4s ease, opacity 0.3s ease;
+}
+
+.sub-tools.active {
+    max-height: 500px;
+    opacity: 1;
+}
+</style>
