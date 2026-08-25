@@ -1,3 +1,4 @@
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
 
@@ -195,8 +196,7 @@ selector{
 
 <script>
     document.querySelector(".tools").addEventListener("click", function () {
-    document.querySelector(".sub-tools").classList.toggle("active");
-});
+    document.querySelectorAll(".sub-tools, .tools").forEach(el => el.classList.toggle("active"));});
 </script>
 
 <style>
@@ -210,5 +210,10 @@ selector{
 .sub-tools.active {
     max-height: 500px;
     opacity: 1;
+}
+
+
+.tools.active .elementor-element-3a6539f {
+    transform: rotate(-180deg);
 }
 </style>
