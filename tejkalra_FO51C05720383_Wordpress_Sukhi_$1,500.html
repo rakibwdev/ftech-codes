@@ -1,3 +1,33 @@
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+    const currentUrl = window.location.pathname;
+    const menuItems = document.querySelectorAll(".dashboard-menu");
+
+    menuItems.forEach(function (item) {
+
+        const itemUrl = new URL(item.href).pathname;
+
+        if (currentUrl === itemUrl) {
+            item.classList.add("active");
+        }
+
+    });
+
+});
+</script>
+
+
+<style>
+    .dashboard-menu.active {
+    background-color: #0f3824;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 6px 0.05px #00f46594; 
+}
+</style>
+
+
+
 <style>
 selector ul li {
     background-color: #ffffff0f;
