@@ -209,11 +209,11 @@ function course_lessons_shortcode() {
                                             ) === 'yes'
                                         ) {
 
-                                            echo '▶';
+                                            echo ' <svg class="lesson-icon-play" width="18" height="18" viewBox="8 3.1817946434020996 14.217500686645508 17.636409759521484" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M8 5.14V18.86C8 20.42 9.74 21.35 11.03 20.49L21.31 13.63C22.52 12.82 22.52 11.18 21.31 10.37L11.03 3.51C9.74 2.65 8 3.58 8 5.14Z" fill="currentColor"/></svg>';
 
                                         } else {
 
-                                            echo '🔓';
+                                            echo ' <svg class="lesson-icon-lock" width="18" height="18" viewBox="5 3 14 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M7 10V8C7 5.24 9.24 3 12 3C14.76 3 17 5.24 17 8V10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><rect x="5" y="10" width="14" height="11" rx="2" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="15.5" r="1.2" fill="currentColor"/></svg>';
 
                                         }
 
