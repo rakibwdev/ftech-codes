@@ -1,3 +1,239 @@
+// ==============
+// Start v2 style
+// ==============
+
+<style>
+    .course-learning-wrapper {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 20px;
+    background: #05090b;
+    color: #fff;
+    padding: 20px;
+}
+
+
+/* =========================
+   VIDEO
+========================= */
+
+.course-video-wrapper {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #1d2529;
+}
+
+.course-video {
+    width: 100%;
+    height: 100%;
+}
+
+.course-video iframe {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border: 0;
+}
+
+.course-video-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+}
+
+
+/* =========================
+   LESSON INFORMATION
+========================= */
+
+.course-lesson-info {
+    padding-top: 25px;
+}
+
+.course-current-module {
+    color: #888;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.course-lesson-info h1 {
+    font-size: 32px;
+    margin: 0 0 15px;
+    color: #fff;
+}
+
+.course-lesson-info p {
+    color: #999;
+    line-height: 1.7;
+}
+
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.course-sidebar {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.course-sidebar-title {
+    font-size: 13px;
+    letter-spacing: .5px;
+    padding: 18px;
+    border-bottom: 1px solid #1d2529;
+    color: #aaa;
+}
+
+
+/* =========================
+   MODULE
+========================= */
+
+.course-module {
+    border-bottom: 1px solid #1d2529;
+    background-color: #0c1215;
+}
+
+.course-module-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    cursor: pointer;
+}
+
+.course-module-header:hover {
+    background: #11191d;
+}
+
+.module-number {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #315b37;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #7ee787;
+    flex-shrink: 0;
+}
+
+.module-info {
+    flex: 1;
+}
+
+.module-info h3 {
+    margin: 0 0 5px;
+    font-size: 14px;
+    color: #fff;
+}
+
+.module-info span {
+    font-size: 11px;
+    color: #888;
+}
+
+.module-arrow {
+    font-size: 20px;
+    color: #777;
+    transition: transform .3s ease;
+}
+
+
+/* =========================
+   OPEN MODULE
+========================= */
+
+.course-module.active .module-arrow {
+    transform: rotate(45deg);
+}
+
+.course-lessons {
+    display: none;
+}
+
+.course-module.active .course-lessons {
+    display: block;
+}
+
+
+/* =========================
+   LESSON
+========================= */
+
+.course-lesson {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 14px;
+    cursor: pointer;
+    border-left: 2px solid transparent;
+    transition: background .2s ease;
+}
+
+.course-lesson:hover {
+    background: #151d20;
+}
+
+.course-lesson.active {
+    background: #17201d;
+    border-left-color: #7ee787;
+}
+
+.lesson-icon {
+    width: 20px;
+    text-align: center;
+    font-size: 12px;
+    color: #777;
+}
+
+.course-lesson.active .lesson-icon {
+    color: #7ee787;
+}
+
+.lesson-name {
+    flex: 1;
+    font-size: 12px;
+    color: #aaa;
+}
+
+.course-lesson.active .lesson-name {
+    color: #fff;
+}
+
+.lesson-duration {
+    font-size: 10px;
+    color: #777;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 900px) {
+
+    .course-learning-wrapper {
+        grid-template-columns: 1fr;
+    }
+
+    .course-sidebar {
+        width: 100%;
+    }
+
+}
+</style>
+
+// ==============
+// Start v2 Style
+// ==============
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
