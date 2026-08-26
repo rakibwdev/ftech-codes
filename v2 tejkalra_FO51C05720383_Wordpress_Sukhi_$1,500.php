@@ -40,6 +40,7 @@ function course_lessons_shortcode() {
 
         $course_data[] = [
             'title'       => $module['module_title'] ?? '',
+            'image'       => $module['module_image'] ?? '',
             'description' => $module['module_description'] ?? '',
             'duration'    => $module['module_duration'] ?? '',
             'lessons'     => $lessons,
@@ -101,11 +102,6 @@ function course_lessons_shortcode() {
 
         <aside class="course-sidebar">
 
-            <div class="course-sidebar-title">
-                KURSÜBERSICHT
-            </div>
-
-
             <div class="course-modules">
 
                 <?php foreach (
@@ -115,6 +111,7 @@ function course_lessons_shortcode() {
 
                     <div
                         class="course-module"
+                        style="background-image: url('<?php echo esc_url($module['image'] ?? ''); ?>')";
                         data-module="<?php echo esc_attr($module_index); ?>"
                     >
 
@@ -216,7 +213,7 @@ function course_lessons_shortcode() {
 
                                         } else {
 
-                                            echo '🔒';
+                                            echo '🔓';
 
                                         }
 
