@@ -1,0 +1,442 @@
+/* ==========================================
+   COURSE LEARNING WRAPPER
+========================================== */
+
+.course-learning-wrapper {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 380px;
+    gap: 30px;
+    width: 100%;
+}
+
+
+/* ==========================================
+   MAIN CONTENT
+========================================== */
+
+.course-main-content {
+    min-width: 0;
+}
+
+
+/* ==========================================
+   VIDEO
+========================================== */
+
+.course-video-wrapper {
+    width: 100%;
+    background: #111;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+
+.course-video {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #111;
+}
+
+
+.course-video iframe,
+.course-video video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+
+.course-upload-video {
+    object-fit: contain;
+    background: #000;
+}
+
+
+/* ==========================================
+   VIDEO PLACEHOLDER
+========================================== */
+
+.course-video-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    min-height: 250px;
+    color: #fff;
+    font-size: 18px;
+    background: #111;
+}
+
+
+/* ==========================================
+   LESSON INFORMATION
+========================================== */
+
+.course-lesson-info {
+    padding: 25px 0;
+}
+
+
+.course-current-module {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #777;
+}
+
+
+.current-module-name {
+    font-weight: 600;
+}
+
+
+.current-lesson-number {
+    font-weight: 500;
+}
+
+
+.current-lesson-title {
+    margin: 0 0 10px;
+    font-size: 28px;
+    line-height: 1.3;
+}
+
+
+.current-lesson-description {
+    margin: 0;
+    color: #666;
+    line-height: 1.7;
+}
+
+
+/* ==========================================
+   SIDEBAR
+========================================== */
+
+.course-sidebar {
+    min-width: 0;
+}
+
+
+.course-modules {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+
+/* ==========================================
+   MODULE
+========================================== */
+
+.course-module {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    border-bottom: 1px solid #1d2529;
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 0;
+}
+
+
+/*
+ * Background overlay
+ */
+
+.course-module::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 0;
+}
+
+
+.course-module > * {
+    position: relative;
+    z-index: 1;
+}
+
+
+/* ==========================================
+   MODULE HEADER
+========================================== */
+
+.course-module-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 18px;
+    cursor: pointer;
+    color: #fff;
+    user-select: none;
+}
+
+
+/* ==========================================
+   MODULE NUMBER
+========================================== */
+
+.module-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 35px;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+
+/* ==========================================
+   MODULE INFO
+========================================== */
+
+.module-info {
+    flex: 1;
+    min-width: 0;
+}
+
+
+.module-info h3 {
+    margin: 0 0 5px;
+    color: #fff;
+    font-size: 17px;
+    line-height: 1.3;
+}
+
+
+.module-info span {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 13px;
+}
+
+
+.module-separator {
+    margin: 0 4px;
+}
+
+
+/* ==========================================
+   MODULE ARROW
+========================================== */
+
+.module-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 25px;
+    width: 25px;
+    height: 25px;
+}
+
+
+.module-arrow-icon {
+    display: block;
+    font-size: 25px;
+    line-height: 1;
+    transition: transform 0.3s ease;
+}
+
+
+/*
+ * Rotate plus when active
+ */
+
+.course-module.active
+.module-arrow-icon {
+    transform: rotate(45deg);
+}
+
+
+/* ==========================================
+   LESSONS
+========================================== */
+
+.course-lessons {
+    display: none;
+    padding: 0 10px 10px;
+}
+
+
+/*
+ * IMPORTANT:
+ * This is what opens lessons.
+ */
+
+.course-module.active
+.course-lessons {
+    display: block;
+}
+
+
+/* ==========================================
+   LESSON
+========================================== */
+
+.course-lesson {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 12px;
+    border-radius: 6px;
+    color: #fff;
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.course-lesson:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+
+.course-lesson.active {
+    background: rgba(255, 255, 255, 0.16);
+}
+
+
+/* ==========================================
+   LESSON ICON
+========================================== */
+
+.lesson-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 18px;
+}
+
+
+.lesson-icon-play,
+.lesson-icon-lock {
+    width: 18px;
+    height: 18px;
+}
+
+
+/* ==========================================
+   LESSON NAME
+========================================== */
+
+.lesson-name {
+    flex: 1;
+    min-width: 0;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+
+/* ==========================================
+   LESSON DURATION
+========================================== */
+
+.lesson-duration {
+    flex: 0 0 auto;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 12px;
+}
+
+
+/* ==========================================
+   EXTERNAL VIDEO
+========================================== */
+
+.course-external-video {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    min-height: 250px;
+    padding: 30px;
+    box-sizing: border-box;
+    text-align: center;
+    color: #fff;
+    background: #111;
+}
+
+
+.course-external-video p {
+    margin: 0 0 20px;
+}
+
+
+.course-external-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    border-radius: 6px;
+    color: #fff;
+    background: #222;
+    text-decoration: none;
+}
+
+
+.course-external-button:hover {
+    color: #fff;
+}
+
+
+/* ==========================================
+   TABLET
+========================================== */
+
+@media (max-width: 1024px) {
+
+    .course-learning-wrapper {
+        grid-template-columns: 1fr;
+    }
+
+
+    .course-sidebar {
+        width: 100%;
+    }
+
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 767px) {
+
+    .course-learning-wrapper {
+        display: block;
+    }
+
+
+    .course-sidebar {
+        margin-top: 20px;
+    }
+
+
+    .current-lesson-title {
+        font-size: 23px;
+    }
+
+
+    .course-module-header {
+        padding: 15px;
+    }
+
+
+    .course-lesson {
+        padding: 12px 10px;
+    }
+
+}

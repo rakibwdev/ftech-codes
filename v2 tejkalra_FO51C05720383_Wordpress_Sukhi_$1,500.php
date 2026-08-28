@@ -31,9 +31,12 @@ function course_lessons_shortcode() {
                     'title'       => $lesson['lesson_title'] ?? '',
                     'description' => $lesson['lesson_description'] ?? '',
                     'video'       => $lesson['youtube_link'] ?? '',
-                    'type'        => $lesson['video_type'] ?? '',
                     'duration'    => $lesson['lesson_duration'] ?? '',
                     'preview'     => $lesson['lesson_preview'] ?? '',
+                    'type'     => $lesson['video_type'] ?? '',
+                    'youtube'  => $lesson['youtube_link'] ?? '',
+                    'upload'   => $lesson['upload_video'] ?? '',
+                    'external' => $lesson['external_link'] ?? '',
                 ];
             }
         }
@@ -622,153 +625,302 @@ function course_lessons_shortcode() {
                                     /*
                                      * =========================
                                      * VIDEO
-                                     * =========================
-                                     */
-
-                                    let videoUrl =
+                                     let videoUrl =
                                         String(
                                             selectedLesson.video || ''
                                         ).trim();
-
-
-                                    /*
-                                     * No video
-                                     */
-
-                                    if (!videoUrl) {
-
-                                        videoContainer.innerHTML =
-                                            '<div class="course-video-placeholder">' +
-                                            'Video unavailable' +
-                                            '</div>';
-
-                                        return;
-
-                                    }
-
-
-                                    /*
-                                     * YouTube WATCH URL
-                                     *
-                                     * https://www.youtube.com/watch?v=ABC123
-                                     */
-
-                                    if (
-                                        videoUrl.includes(
-                                            'watch?v='
-                                        )
-                                    ) {
-
-                                        const videoId =
-                                            videoUrl
-                                                .split(
-                                                    'watch?v='
-                                                )[1]
-                                                .split('&')[0];
-
-
-                                        videoUrl =
-                                            'https://www.youtube.com/embed/' +
-                                            videoId;
-
-                                    }
-
-
-                                    /*
-                                     * YouTube SHORT URL
-                                     *
-                                     * https://youtu.be/ABC123
-                                     */
-
-                                    else if (
-                                        videoUrl.includes(
-                                            'youtu.be/'
-                                        )
-                                    ) {
-
-                                        const videoId =
-                                            videoUrl
-                                                .split(
-                                                    'youtu.be/'
-                                                )[1]
-                                                .split('?')[0];
-
-
-                                        videoUrl =
-                                            'https://www.youtube.com/embed/' +
-                                            videoId;
-
-                                    }
-
-
-                                    /*
-                                     * Already embed URL
-                                     */
-
-                                    else if (
-                                        videoUrl.includes(
-                                            'youtube.com/embed/'
-                                        )
-                                    ) {
-
-                                        // Nothing to change
-
-                                    }
-
-
-                                    /*
-                                     * =========================
-                                     * CREATE IFRAME
                                      * =========================
                                      */
 
-                                    videoContainer.innerHTML =
-                                        '';
+                                  /*
+ * =========================
+ * VIDEO SYSTEM
+ * =========================
+ */
+
+const videoType =
+    String(
+        selectedLesson.type || ''
+    ).trim().toLowerCase();
 
 
-                                    const iframe =
-                                        document.createElement(
-                                            'iframe'
-                                        );
+/*
+ * Clear previous video
+ */
+
+videoContainer.innerHTML = '';
 
 
-                                    iframe.src =
-                                        videoUrl;
+/*
+ * =========================
+ * YOUTUBE
+ * =========================
+ */
+
+if (
+    videoType === 'youtube' &&
+    selectedLesson.youtube
+) {
+
+    let videoUrl =
+        String(
+            selectedLesson.youtube
+        ).trim();
 
 
-                                    iframe.title =
-                                        selectedLesson.title ||
-                                        'Course video';
+    /*
+     * Convert YouTube URL
+     */
+
+    let videoId = '';
 
 
-                                    iframe.setAttribute(
-                                        'frameborder',
-                                        '0'
-                                    );
+    /*
+     * youtube.com/watch?v=ID
+     */
+
+    if (
+        videoUrl.includes('watch?v=')
+    ) {
+
+        videoId =
+            videoUrl
+                .split('watch?v=')[1]
+                .split('&')[0];
+
+    }
 
 
-                                    iframe.setAttribute(
-                                        'allow',
-                                        'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-                                    );
+    /*
+     * youtu.be/ID
+     */
+
+    else if (
+        videoUrl.includes('youtu.be/')
+    ) {
+
+        videoId =
+            videoUrl
+                .split('youtu.be/')[1]
+                .split('?')[0];
+
+    }
 
 
-                                    iframe.setAttribute(
-                                        'allowfullscreen',
-                                        ''
-                                    );
+    /*
+     * youtube.com/embed/ID
+     */
+
+    else if (
+        videoUrl.includes('youtube.com/embed/')
+    ) {
+
+        videoId =
+            videoUrl
+                .split('youtube.com/embed/')[1]
+                .split('?')[0];
+
+    }
 
 
-                                    videoContainer.appendChild(
-                                        iframe
-                                    );
+    /*
+     * YouTube ID not found
+     */
 
-                                }
-                            );
+    if (!videoId) {
 
-                        }
-                    );
+        videoContainer.innerHTML =
+            '<div class="course-video-placeholder">' +
+            'Invalid YouTube URL' +
+            '</div>';
 
+        return;
+
+    }
+
+
+    /*
+     * Create YouTube iframe
+     */
+
+    const iframe =
+        document.createElement('iframe');
+
+
+    iframe.src =
+        'https://www.youtube.com/embed/' +
+        encodeURIComponent(videoId);
+
+
+    iframe.title =
+        selectedLesson.title ||
+        'Course video';
+
+
+    iframe.setAttribute(
+        'frameborder',
+        '0'
+    );
+
+
+    iframe.setAttribute(
+        'allow',
+        'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+    );
+
+
+    iframe.setAttribute(
+        'allowfullscreen',
+        ''
+    );
+
+
+    videoContainer.appendChild(
+        iframe
+    );
+
+}
+
+
+/*
+ * =========================
+ * UPLOADED VIDEO
+ * =========================
+ */
+
+else if (
+    videoType === 'upload' &&
+    selectedLesson.upload
+) {
+
+    const videoUrl =
+        String(
+            selectedLesson.upload
+        ).trim();
+
+
+    const video =
+        document.createElement('video');
+
+
+    video.className =
+        'course-upload-video';
+
+
+    video.controls = true;
+
+    video.playsInline = true;
+
+    video.preload = 'metadata';
+
+
+    /*
+     * Video source
+     */
+
+    const source =
+        document.createElement('source');
+
+
+    source.src =
+        videoUrl;
+
+
+    /*
+     * If your uploads are MP4
+     */
+
+    source.type =
+        'video/mp4';
+
+
+    video.appendChild(
+        source
+    );
+
+
+    /*
+     * Browser fallback
+     */
+
+    video.appendChild(
+        document.createTextNode(
+            'Your browser does not support video playback.'
+        )
+    );
+
+
+    videoContainer.appendChild(
+        video
+    );
+
+}
+
+
+/*
+ * =========================
+ * EXTERNAL LINK
+ * =========================
+ */
+
+else if (
+    videoType === 'external_link' &&
+    selectedLesson.external
+) {
+
+    const externalUrl =
+        String(
+            selectedLesson.external
+        ).trim();
+
+
+    const externalWrapper =
+        document.createElement('div');
+
+
+    externalWrapper.className =
+        'course-external-video';
+
+
+    externalWrapper.innerHTML = `
+        <p>
+            This lesson is available on an external website.
+        </p>
+
+        <a
+            href="${externalUrl}"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="course-external-button"
+        >
+            Open Lesson
+        </a>
+    `;
+
+
+    videoContainer.appendChild(
+        externalWrapper
+    );
+
+}
+
+
+/*
+ * =========================
+ * UNKNOWN / EMPTY VIDEO
+ * =========================
+ */
+
+else {
+
+    videoContainer.innerHTML =
+        '<div class="course-video-placeholder">' +
+        'Video unavailable' +
+        '</div>';
+
+}
+
+                                   
 
                     /*
                      * =========================
