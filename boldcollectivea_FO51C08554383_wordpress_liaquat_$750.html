@@ -53,3 +53,319 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 </script>
+
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+
+<div class="iht-tour" id="iht-tour">
+<style>
+#iht-tour{
+  --iht-navy:#122B31;
+  --iht-navy-deep:#0C1F24;
+  --iht-teal:#1E5C5A;
+  --iht-gold:#B08D4F;
+  --iht-gold-light:#D9C08F;
+  --iht-ivory:#F7F3E9;
+  --iht-ink:#20302E;
+  --iht-ink-soft:#4B5B58;
+  --iht-line:#E3DCC8;
+  --iht-radius:14px;
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  color:var(--iht-ink);
+  background:var(--iht-ivory);
+  padding:56px 5vw 64px;
+  box-sizing:border-box;
+}
+#iht-tour *{box-sizing:border-box;}
+#iht-tour .iht-eyebrow{
+  font-family:'Inter',sans-serif;font-size:12px;font-weight:600;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--iht-gold);margin:0 0 10px;
+}
+#iht-tour h2.iht-title{
+  font-family:'Fraunces',serif;font-weight:500;font-size:clamp(28px,4vw,42px);
+  line-height:1.12;margin:0 0 14px;color:var(--iht-navy);
+}
+#iht-tour p.iht-intro{
+  font-size:16px;line-height:1.7;color:var(--iht-ink-soft);max-width:640px;margin:0 0 40px;
+}
+#iht-tour .iht-grid{
+  display:grid;grid-template-columns:minmax(0,1.55fr) minmax(280px,1fr);gap:32px;align-items:start;
+}
+#iht-tour .iht-map-panel{
+  position:relative;border-radius:var(--iht-radius);overflow:hidden;
+  border:1px solid var(--iht-line);background:var(--iht-navy-deep);
+}
+#iht-tour #iht-map{height:560px;width:100%;background:#DDE7E3;}
+#iht-tour .iht-map-caption{
+  display:flex;align-items:center;gap:8px;font-size:13px;color:var(--iht-ink-soft);
+  padding:14px 4px 0;
+}
+#iht-tour .iht-map-caption svg{flex:none;opacity:.7;}
+#iht-tour .iht-side{display:flex;flex-direction:column;gap:24px;position:sticky;top:24px;}
+#iht-tour .iht-video-card{
+  background:var(--iht-navy);border-radius:var(--iht-radius);overflow:hidden;
+  border:1px solid var(--iht-line);
+}
+#iht-tour .iht-video-head{padding:20px 20px 4px;}
+#iht-tour .iht-video-head .iht-eyebrow{color:var(--iht-gold-light);}
+#iht-tour .iht-video-head h3{
+  font-family:'Fraunces',serif;font-weight:500;font-size:20px;color:#fff;margin:0 0 4px;
+}
+#iht-tour .iht-video-head p{font-size:14px;color:#C9D3D0;margin:0 0 16px;line-height:1.6;}
+#iht-tour .iht-video-frame{position:relative;width:100%;aspect-ratio:16/9;background:#000;cursor:pointer;}
+#iht-tour .iht-video-frame img{width:100%;height:100%;object-fit:cover;display:block;opacity:.78;}
+#iht-tour .iht-play-btn{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+}
+#iht-tour .iht-play-btn span{
+  width:64px;height:64px;border-radius:50%;background:var(--iht-gold);
+  display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(0,0,0,.35);
+  transition:transform .18s ease;
+}
+#iht-tour .iht-video-frame:hover .iht-play-btn span{transform:scale(1.06);}
+#iht-tour .iht-video-frame iframe{width:100%;height:100%;border:0;display:block;}
+#iht-tour .iht-note-card{
+  background:#fff;border:1px solid var(--iht-line);border-radius:var(--iht-radius);
+  padding:20px;
+}
+#iht-tour .iht-note-card h4{
+  font-family:'Fraunces',serif;font-weight:500;font-size:16px;margin:0 0 8px;color:var(--iht-navy);
+}
+#iht-tour .iht-note-card p{font-size:13.5px;line-height:1.6;color:var(--iht-ink-soft);margin:0;}
+#iht-tour .iht-waypoint-icon{
+  width:26px;height:26px;border-radius:50%;background:var(--iht-gold);
+  border:2px solid var(--iht-ivory);color:var(--iht-navy-deep);
+  display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;
+  font-weight:600;font-size:11px;box-shadow:0 2px 6px rgba(0,0,0,.35);cursor:pointer;
+  transition:transform .15s ease;
+}
+#iht-tour .iht-waypoint-icon:hover,#iht-tour .iht-waypoint-icon.iht-active{
+  transform:scale(1.18);background:var(--iht-gold-light);
+}
+#iht-tour .iht-waypoint-icon:focus-visible{outline:2px solid var(--iht-teal);outline-offset:3px;}
+#iht-tour .leaflet-popup, #iht-tour .leaflet-control-attribution{font-family:'Inter',sans-serif;}
+#iht-tour .iht-backdrop{
+  position:fixed;inset:0;background:rgba(12,31,36,.42);z-index:9998;opacity:0;pointer-events:none;
+  transition:opacity .2s ease;
+}
+#iht-tour .iht-backdrop.iht-show{opacity:1;pointer-events:auto;}
+#iht-tour .iht-modal{
+  position:fixed;z-index:9999;width:280px;background:#fff;border-radius:12px;
+  box-shadow:0 16px 40px rgba(12,31,36,.28);border:1px solid var(--iht-line);
+  opacity:0;transform:translateY(6px);pointer-events:none;transition:opacity .16s ease,transform .16s ease;
+}
+#iht-tour .iht-modal.iht-show{opacity:1;transform:translateY(0);pointer-events:auto;}
+#iht-tour .iht-modal-close{
+  position:absolute;top:8px;right:8px;width:26px;height:26px;border-radius:50%;border:none;
+  background:var(--iht-ivory);color:var(--iht-ink);cursor:pointer;font-size:15px;line-height:1;
+  display:flex;align-items:center;justify-content:center;
+}
+#iht-tour .iht-modal-body{padding:18px 18px 16px;}
+#iht-tour .iht-modal-body .iht-eyebrow{font-size:10.5px;margin-bottom:6px;}
+#iht-tour .iht-modal-body h4{
+  font-family:'Fraunces',serif;font-weight:500;font-size:19px;margin:0 0 8px;color:var(--iht-navy);
+}
+#iht-tour .iht-modal-body p{font-size:13.5px;line-height:1.55;color:var(--iht-ink-soft);margin:0 0 16px;}
+#iht-tour .iht-learn-more{
+  display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;
+  color:var(--iht-navy);text-decoration:none;border-bottom:1.5px solid var(--iht-gold);
+  padding-bottom:2px;transition:color .15s ease;
+}
+#iht-tour .iht-learn-more:hover{color:var(--iht-teal);}
+@media (max-width:900px){
+  #iht-tour .iht-grid{grid-template-columns:1fr;}
+  #iht-tour .iht-side{position:static;}
+  #iht-tour #iht-map{height:420px;}
+  #iht-tour .iht-modal{
+    position:fixed;left:12px !important;right:12px;bottom:12px;top:auto !important;width:auto;
+    transform:translateY(16px);
+  }
+  #iht-tour .iht-modal.iht-show{transform:translateY(0);}
+}
+@media (prefers-reduced-motion:reduce){
+  #iht-tour .iht-modal,#iht-tour .iht-backdrop,#iht-tour .iht-waypoint-icon{transition:none;}
+}
+</style>
+
+<p class="iht-eyebrow">Digital tour</p>
+<h2 class="iht-title">Explore Roatán, waypoint by waypoint</h2>
+<p class="iht-intro">Roatán runs about 35 miles east to west, and every community along it has its own character. Hover or tap a waypoint on the map for a quick look, then open the full guide to see what makes each one worth knowing before you buy.</p>
+
+<div class="iht-grid">
+  <div class="iht-map-panel">
+    <div id="iht-map"></div>
+  </div>
+  <div class="iht-side">
+    <div class="iht-video-card">
+      <div class="iht-video-head">
+        <p class="iht-eyebrow">Watch</p>
+        <h3>Take the full video tour</h3>
+        <p>A guided flyover of the island, from West Bay to the East End.</p>
+      </div>
+      <div class="iht-video-frame" id="iht-video-frame" data-yt-id="dQw4w9WgXcQ">
+        <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg" alt="" loading="lazy">
+        <div class="iht-play-btn" aria-hidden="true">
+          <span>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7-11-7z" fill="#122B31"/></svg>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="iht-note-card">
+      <h4>How this works</h4>
+      <p>On desktop, hover a gold waypoint for a preview, click it (or the pin) to pin the card open, then "Learn more" to visit that community's page. On phone or tablet, tap a waypoint to open it and tap again to visit the page.</p>
+    </div>
+  </div>
+</div>
+
+<div class="iht-backdrop" id="iht-backdrop"></div>
+<div class="iht-modal" id="iht-modal" role="dialog" aria-modal="true" aria-labelledby="iht-modal-title">
+  <button class="iht-modal-close" id="iht-modal-close" aria-label="Close">&times;</button>
+  <div class="iht-modal-body">
+    <p class="iht-eyebrow" id="iht-modal-eyebrow">Roatán</p>
+    <h4 id="iht-modal-title">Community name</h4>
+    <p id="iht-modal-desc">Description goes here.</p>
+    <a href="#" id="iht-modal-link" class="iht-learn-more">Learn more &rarr;</a>
+  </div>
+</div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+(function(){
+  var YOUTUBE_VIDEO_ID = "dQw4w9WgXcQ";
+
+  var communities = [
+    { slug:"west-bay", name:"West Bay", lat:16.2765, lng:-86.5968,
+      blurb:"The island's white-sand showpiece, backed by the second-largest barrier reef on earth and a run of upscale resorts and condos steps from the water." },
+    { slug:"turtle-bay", name:"Turtle Bay", lat:16.2845, lng:-86.5860,
+      blurb:"A quieter oceanfront pocket between West Bay and West End, popular with divers for its easy reef access and private-dock feel." },
+    { slug:"west-end", name:"West End", lat:16.2940, lng:-86.5780,
+      blurb:"A walkable village of dive shops, restaurants, and small hotels along one paved road, and the most visited town on the island." },
+    { slug:"sandy-bay", name:"Sandy Bay", lat:16.3080, lng:-86.5560,
+      blurb:"Home to the island's marine reserve and a cluster of conservation and community organizations, with a calmer, residential pace." },
+    { slug:"pristine-bay", name:"Pristine Bay", lat:16.3727, lng:-86.4617,
+      blurb:"An upscale golf and beach community on the north shore, built around the Black Pearl, Roatán's only 18-hole course." },
+    { slug:"palmetto-bay", name:"Palmetto Bay", lat:16.3760, lng:-86.4500,
+      blurb:"A tucked-away enclave near Pristine Bay favored for its privacy, with a small resort and restaurant anchoring the shoreline." },
+    { slug:"first-bight", name:"First Bight", lat:16.3830, lng:-86.4260,
+      blurb:"Just east of French Harbour, a low-key expat community that trades some convenience for quiet, waterfront living." },
+    { slug:"big-bight", name:"Big Bight", lat:16.3860, lng:-86.4100,
+      blurb:"Neighboring First Bight along the same stretch of coast, with a similar mix of privacy and easy reach of French Harbour." },
+    { slug:"oak-ridge", name:"Oak Ridge", lat:16.3980, lng:-86.3760,
+      blurb:"A historic fishing village built over a lagoon and threaded with canals, still best explored by water taxi." },
+    { slug:"punta-blanca", name:"Punta Blanca", lat:16.4010, lng:-86.3600,
+      blurb:"A north-shore community about a mile from Oak Ridge, known among expats for its quiet hillside and inlet views." },
+    { slug:"camp-bay", name:"Camp Bay", lat:16.4140, lng:-86.3200,
+      blurb:"Past the paved road on the island's eastern reaches, a remote beach community for those who want distance from it all." },
+    { slug:"east-end", name:"East End", lat:16.4280, lng:-86.2650,
+      blurb:"The least developed stretch of Roatán, and in many ways its most dramatic coastline, for buyers chasing seclusion." }
+  ];
+
+  var LEARN_MORE_BASE = "/communities/";
+
+  var map = L.map('iht-map', { scrollWheelZoom:false, attributionControl:true })
+    .setView([16.345, -86.44], 11);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+    maxZoom: 18
+  }).addTo(map);
+
+  var routeLatLngs = communities.map(function(c){ return [c.lat, c.lng]; });
+  L.polyline(routeLatLngs, {
+    color:'#B08D4F', weight:2, dashArray:'2,8', opacity:.85, lineCap:'round'
+  }).addTo(map);
+
+  var backdrop = document.getElementById('iht-backdrop');
+  var modal = document.getElementById('iht-modal');
+  var modalClose = document.getElementById('iht-modal-close');
+  var modalTitle = document.getElementById('iht-modal-title');
+  var modalDesc = document.getElementById('iht-modal-desc');
+  var modalLink = document.getElementById('iht-modal-link');
+  var modalEyebrow = document.getElementById('iht-modal-eyebrow');
+  var isTouch = !window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+  var activeIcon = null;
+
+  function closeModal(){
+    modal.classList.remove('iht-show');
+    backdrop.classList.remove('iht-show');
+    if (activeIcon) { activeIcon.classList.remove('iht-active'); activeIcon = null; }
+  }
+
+  function openModal(community, marker, iconEl){
+    modalEyebrow.textContent = "Roatán";
+    modalTitle.textContent = community.name;
+    modalDesc.textContent = community.blurb;
+    modalLink.href = LEARN_MORE_BASE + community.slug + "/";
+
+    if (activeIcon && activeIcon !== iconEl) activeIcon.classList.remove('iht-active');
+    iconEl.classList.add('iht-active');
+    activeIcon = iconEl;
+
+    var isMobile = window.innerWidth <= 900;
+    if (!isMobile) {
+      var point = map.latLngToContainerPoint(marker.getLatLng());
+      var mapRect = document.getElementById('iht-map').getBoundingClientRect();
+      var modalW = 280;
+      var left = mapRect.left + point.x + 18;
+      if (left + modalW > window.innerWidth - 12) left = mapRect.left + point.x - modalW - 18;
+      var top = Math.max(12, mapRect.top + point.y - 20);
+      var maxTop = window.innerHeight - 220;
+      if (top > maxTop) top = maxTop;
+      modal.style.left = left + 'px';
+      modal.style.top = top + 'px';
+    }
+
+    modal.classList.add('iht-show');
+    if (isMobile) backdrop.classList.add('iht-show');
+  }
+
+  communities.forEach(function(c){
+    var icon = L.divIcon({
+      className:'',
+      html:'<div class="iht-waypoint-icon" tabindex="0" role="button" aria-label="'+c.name+'">'+ (communities.indexOf(c)+1) +'</div>',
+      iconSize:[26,26], iconAnchor:[13,13]
+    });
+    var marker = L.marker([c.lat, c.lng], { icon:icon, keyboard:false }).addTo(map);
+
+    marker.on('add', function(){
+      var el = marker.getElement();
+      if (!el) return;
+      var iconEl = el.querySelector('.iht-waypoint-icon');
+
+      function trigger(){ openModal(c, marker, iconEl); }
+
+      if (!isTouch) {
+        iconEl.addEventListener('mouseenter', trigger);
+      }
+      iconEl.addEventListener('click', function(e){
+        e.stopPropagation();
+        trigger();
+      });
+      iconEl.addEventListener('keydown', function(e){
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); trigger(); }
+      });
+    });
+  });
+
+  modalClose.addEventListener('click', closeModal);
+  backdrop.addEventListener('click', closeModal);
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeModal(); });
+  document.addEventListener('click', function(e){
+    if (modal.classList.contains('iht-show') && !modal.contains(e.target) && !e.target.closest('.iht-waypoint-icon')) {
+      closeModal();
+    }
+  });
+  map.on('movestart zoomstart', closeModal);
+
+  var videoFrame = document.getElementById('iht-video-frame');
+  videoFrame.addEventListener('click', function(){
+    var id = YOUTUBE_VIDEO_ID;
+    videoFrame.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + id +
+      '?autoplay=1&rel=0" title="Island Horizons video tour of Roat\u00e1n" ' +
+      'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+  }, { once:true });
+})();
+</script>
