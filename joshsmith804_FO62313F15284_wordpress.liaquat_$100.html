@@ -18,6 +18,56 @@ document.addEventListener("DOMContentLoaded", function () {
 
 <style>
 
+/* language Switcher */
+
+.elementor-widget-wp-widget-polylang ul {
+    display: flex;
+    gap: 10px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.elementor-widget-wp-widget-polylang .lang-item a {
+    font-size: 0 !important;
+    line-height: 0;
+}
+
+.elementor-widget-wp-widget-polylang .lang-item-en a::after {
+    content: "EN";
+    font-size: 16px;
+    color: #fff;
+}
+
+.elementor-widget-wp-widget-polylang .lang-item-zh a::after {
+    content: "CN";
+    font-size: 16px;
+    color: #fff;
+}
+
+.elementor-widget-wp-widget-polylang .lang-item-zh::before {
+    content: "/";
+    margin-right: 10px;
+    color: #fff;
+}
+
+.current-lang a{
+    color: #6EC1E4 !important;
+}
+
+@media (max-width: 1450px) {
+.elementor-widget-wp-widget-polylang a::after {
+    font-size: 14px !important;
+}
+}
+@media (max-width: 1450px) {
+.elementor-widget-wp-widget-polylang a::after {
+    font-size: 14px !important;
+}
+}
+
+/* lang */
+
 
 .sticky-header{
     transition: all .3s ease;
