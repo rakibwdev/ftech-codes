@@ -1,3 +1,51 @@
+<script>
+window.addEventListener("load", function () {
+
+    const imag_sections = document.querySelectorAll(".parlax_image");
+
+    function updateParallax() {
+
+        const w = window.innerWidth;
+
+        let speed = 0.6;
+        let scale = 2.5;
+
+        if (w <= 1024) {
+            speed = 0.45;
+            scale = 4;
+        }
+
+        if (w <= 767) {
+            speed = 0.30;
+            scale = 4;
+        }
+
+        imag_sections.forEach(section => {
+
+            const iframe = section.querySelector(".elementor-background-video-container iframe");
+            if (!iframe) return;
+
+            const rect = section.getBoundingClientRect();
+
+            if (rect.bottom < 0 || rect.top > window.innerHeight) return;
+
+            const move = rect.top * speed;
+
+            iframe.style.transform =
+                `translate(-50%, calc(-50% + ${move}px)) scale(${scale})`;
+
+        });
+
+        requestAnimationFrame(updateParallax);
+    }
+
+    updateParallax();
+
+});
+</script>
+
+
+
 <style>
 
     .ld-profile-stat-certificates {
