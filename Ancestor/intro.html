@@ -1,0 +1,128 @@
+<!-- ==========================================================================
+     THE ANCESTORS' ROOM — INTRO / THRESHOLD PAGE
+     --------------------------------------------------------------------------
+     HOW TO USE
+     • Elementor: create a page → Page Layout "Elementor Canvas" → add ONE
+       Container (full width, no padding) → drop an HTML widget → paste this.
+     • Replace the two data-src URLs with your Media Library URLs
+       (Media → click image → copy "File URL").
+     • data-door-*  = the rectangle covered by the two door leaves, as % of the
+       image (left / right / top / bottom). Measured for threshold-doors.jpg.
+       If you swap artwork, measure again in any image editor.
+     • data-home-url = where "Enter" goes if the homepage is a separate page.
+       If this block lives on the homepage itself (recommended — see guide),
+       leave the homepage markup (#tar-home) on the same page and the JS will
+       reveal it instead of navigating.
+     • data-skip-key = sessionStorage key; repeat visitors in the same session
+       skip straight into the room. Set to "" to always show the doors.
+     ========================================================================== -->
+<section id="tar-threshold" class="tar-threshold"
+         data-door-left="37.2" data-door-right="62.8" data-door-top="15.5" data-door-bottom="86.5"
+         data-lintel-y="11.8"
+         data-home-url="/home/"
+         data-skip-key="tar_entered">
+
+  <!-- ===== SCENE (artwork + 3D door leaves) ===== -->
+  <div class="tar-scene">
+    <div class="tar-scene__base" data-src="/home/rakib/ftech-codes/Ancestor/assets/goru.jpg"></div>
+    <div class="tar-scene__clip">
+      <div class="tar-scene__room" data-src="/home/rakib/ftech-codes/Ancestor/assets/goru.jpg"></div>
+    </div>
+    <div class="tar-scene__panels">
+      <div class="tar-panel tar-panel--left"><span class="tar-panel__shade"></span></div>
+      <div class="tar-panel tar-panel--right"><span class="tar-panel__shade"></span></div>
+      <div class="tar-seam"></div>
+    </div>
+    <div class="tar-lintel"><span>✠</span>IBÁ AṢẸ EGÚN<span>✠</span></div>
+  </div>
+  <div class="tar-glow"></div>
+  <div class="tar-flicker"></div>
+  <div class="tar-vignette"></div>
+  <div class="tar-grain"></div>
+
+  <!-- ===== UI LAYER ===== -->
+  <div class="tar-threshold__ui">
+
+    <!-- Top bar -->
+    <header class="tar-topbar">
+      <a class="tar-logo tar-rise" style="--d:.2s" href="/">
+        <span class="tar-logo__name">The<br>Ancestors’<br>Room</span>
+        <span class="tar-logo__rule"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="2.4"/><path d="M12 1.5v6M12 16.5v6M1.5 12h6M16.5 12h6"/></svg></span>
+        <span class="tar-logo__tag">Rooted. Grounded. Guided.</span>
+      </a>
+      <nav class="tar-topbar__nav tar-rise" style="--d:.4s" aria-label="Threshold">
+        <button class="tar-nav-link" type="button" data-tar-enter>Enter</button>
+        <button class="tar-nav-link" type="button" data-tar-sound aria-pressed="false">Sound <span class="tar-eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button>
+        <button class="tar-nav-link" type="button" data-tar-menu-open>Menu
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+        </button>
+      </nav>
+    </header>
+
+    <!-- Parchment on the left wall -->
+    <aside class="tar-parchment tar-threshold__parchment tar-fade" style="--d:.9s" aria-hidden="true">
+      <svg class="tar-ornament" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="2.4"/><path d="M12 1.5v6M12 16.5v6M1.5 12h6M16.5 12h6"/></svg>
+      <span class="tar-parchment__word">Honor</span>
+      <span class="tar-parchment__word">Learn</span>
+      <span class="tar-parchment__word">Heal</span>
+      <span class="tar-parchment__word">Practice</span>
+      <span class="tar-parchment__word">Remember</span>
+      <span class="tar-parchment__word">Return</span>
+      <svg class="tar-ornament" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="2.4"/><path d="M12 1.5v6M12 16.5v6M1.5 12h6M16.5 12h6"/></svg>
+    </aside>
+
+    <!-- Centre copy -->
+    <div class="tar-threshold__content">
+      <div class="tar-threshold__scrim">
+        <h1 class="tar-display tar-glow-text tar-rise" style="--d:.5s">There is a Room<br>Beyond This Door.</h1>
+        <svg class="tar-ornament tar-threshold__ornament tar-rise" style="--d:.65s" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
+          <circle cx="12" cy="12" r="2.4"/><path d="M12 1.5v6M12 16.5v6M1.5 12h6M16.5 12h6"/>
+          <path d="M12 1.5l-1.6 2.2M12 1.5l1.6 2.2M12 22.5l-1.6-2.2M12 22.5l1.6-2.2M1.5 12l2.2-1.6M1.5 12l2.2 1.6M22.5 12l-2.2-1.6M22.5 12l-2.2 1.6"/>
+        </svg>
+        <p class="tar-rise" style="--d:.75s">
+          A place where memory is kept.<br>
+          Where tradition is carried forward.<br>
+          Where the living remember<br>
+          the ones who came before.
+        </p>
+        <div class="tar-rise" style="--d:1s">
+          <button class="tar-btn" type="button" data-tar-enter>
+            <span>Enter the Room</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h17M14 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom lines -->
+    <footer class="tar-threshold__foot">
+      <p class="tar-smallcaps tar-rise" style="--d:1.2s">Same Roots.<br>Different Generations.<br>Always Home.</p>
+      <div class="tar-threshold__mark tar-fade" style="--d:1.4s" aria-hidden="true">
+        <svg class="tar-ornament" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="2.4"/><path d="M12 1.5v6M12 16.5v6M1.5 12h6M16.5 12h6"/></svg>
+        <i></i>
+      </div>
+      <p class="tar-smallcaps tar-rise tar-threshold__foot-right" style="--d:1.2s">People. Places. Practices.<br>You Belong Here.</p>
+    </footer>
+  </div>
+</section>
+
+<!-- ===== FULL-SCREEN MENU (shared markup — include once per page) ===== -->
+<div class="tar-menu" id="tar-menu" role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="tar-grain"></div>
+  <div class="tar-menu__bar">
+    <a class="tar-logo" href="/"><span class="tar-logo__name">The<br>Ancestors’<br>Room</span><span class="tar-logo__tag" style="margin-top:8px">Rooted. Grounded. Guided.</span></a>
+    <button class="tar-nav-link" type="button" data-tar-menu-close>Close
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+    </button>
+  </div>
+  <nav class="tar-menu__links">
+    <a href="/">Home</a>
+    <a href="/the-rooms/">The Rooms</a>
+    <a href="/shop/">Shop</a>
+    <a href="/services/">Services</a>
+    <a href="/journal/">Journal</a>
+    <a href="/about/">About</a>
+    <a href="/connect/">Connect</a>
+  </nav>
+  <div class="tar-menu__foot"><span class="tar-smallcaps">Same Roots. Different Generations. Always Home.</span></div>
+</div>

@@ -1,0 +1,177 @@
+<!-- ==========================================================================
+     THE ANCESTORS' ROOM — HOMEPAGE ("Inside the Room")
+     --------------------------------------------------------------------------
+     HOW TO USE
+     • Elementor: Homepage → Page Layout "Elementor Canvas" (or "Full Width" if
+       you use an Elementor header/footer template) → one full-width Container
+       → HTML widget → paste blocks 1–3. Block 4 (cards) and 5 (footer) can be
+       real Elementor sections instead — they're included so the demo is complete.
+     • data-img-w / data-img-h = pixel size of room-interior.jpg (used to keep
+       hotspots pinned to the objects under any crop). Update if you swap art.
+     • Each .tar-hotspot: data-x / data-y = position as % of the IMAGE,
+       data-href = page it links to. The modal copy comes from data-* too.
+     ========================================================================== -->
+
+<!-- ===== 1. HERO ===== -->
+<section id="tar-home" class="tar-home" data-img-w="1792" data-img-h="1024">
+  <div class="tar-home__bg" style="background-image:url('https://YOURSITE.com/wp-content/uploads/room-interior.jpg')"></div>
+  <div class="tar-flicker"></div>
+  <div class="tar-vignette"></div>
+  <div class="tar-grain"></div>
+  <div class="tar-home__scrim tar-home__scrim--top"></div>
+  <div class="tar-home__scrim tar-home__scrim--bottom"></div>
+
+  <!-- carved plank above the altar (editable) -->
+  <div class="tar-lintel tar-home__lintel tar-fade" style="--d:1.2s" data-x="50" data-y="10"><span>✠</span>IBÁ AṢẸ EGÚN<span>✠</span></div>
+
+  <!-- Top navigation -->
+  <header class="tar-topbar tar-fade" style="--d:.2s">
+    <a class="tar-logo" href="/">
+      <span class="tar-logo__name">The<br>Ancestors’<br>Room</span>
+      <span class="tar-logo__rule"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="2.4"/><path d="M12 1.5v6M12 16.5v6M1.5 12h6M16.5 12h6"/></svg></span>
+      <span class="tar-logo__tag">Rooted. Grounded. Guided.</span>
+    </a>
+    <nav class="tar-home__nav" aria-label="Primary">
+      <a class="tar-nav-link is-active" href="/">Home</a>
+      <a class="tar-nav-link" href="/the-rooms/">The Rooms</a>
+      <a class="tar-nav-link" href="/shop/">Shop</a>
+      <a class="tar-nav-link" href="/services/">Services</a>
+      <a class="tar-nav-link" href="/journal/">Journal</a>
+      <a class="tar-nav-link" href="/about/">About</a>
+      <a class="tar-nav-link" href="/connect/">Connect</a>
+    </nav>
+    <div class="tar-home__icons">
+      <a class="tar-icon-btn" href="/?s=" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/></svg></a>
+      <a class="tar-icon-btn tar-hide-sm" href="/my-account/" aria-label="Account"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></a>
+      <a class="tar-icon-btn" href="/cart/" aria-label="Cart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></a>
+      <button class="tar-icon-btn" type="button" data-tar-sound aria-pressed="false" aria-label="Toggle ambient sound"><span class="tar-eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button>
+      <button class="tar-icon-btn tar-home__burger" type="button" data-tar-menu-open aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M3 7h18M3 12h18M3 17h18"/></svg></button>
+    </div>
+  </header>
+
+  <!-- Headline -->
+  <div class="tar-home__headline">
+    <p class="tar-smallcaps tar-home__eyebrow tar-rise" style="--d:.5s">Welcome to</p>
+    <h1 class="tar-display tar-glow-text tar-rise" style="--d:.65s">The Ancestors’ Room</h1>
+    <svg class="tar-ornament tar-rise" style="--d:.8s;margin:16px auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><circle cx="12" cy="12" r="2.4"/><path d="M12 1.5v6M12 16.5v6M1.5 12h6M16.5 12h6"/><path d="M12 1.5l-1.6 2.2M12 1.5l1.6 2.2M12 22.5l-1.6-2.2M12 22.5l1.6-2.2M1.5 12l2.2-1.6M1.5 12l2.2 1.6M22.5 12l-2.2-1.6M22.5 12l-2.2 1.6"/></svg>
+    <p class="tar-smallcaps tar-home__sub tar-rise" style="--d:.95s">A space for remembrance,<br>ritual, and return.</p>
+  </div>
+
+  <!-- Hotspots (desktop / tablet). data-x/data-y are % of the image. -->
+  <div class="tar-hotspots" aria-label="Explore the table">
+    <button class="tar-hotspot" type="button" data-x="27" data-y="60" data-href="/apothecary/" style="--d:.9s"
+            data-title="The Apothecary" data-kicker="Herbs · Oils · Remedies" data-cta="Enter the Apothecary"
+            data-text="Prepared by hand, in the old way. Teas, tinctures, anointing oils and baths rooted in the traditions our elders carried across oceans and generations.">
+      <span class="tar-hotspot__dot"><i></i></span><span class="tar-hotspot__label">The Apothecary</span>
+    </button>
+    <button class="tar-hotspot" type="button" data-x="17" data-y="76" data-href="/shop/" style="--d:1.02s"
+            data-title="Shop" data-kicker="Candles · Cloths · Altar Tools" data-cta="Browse the Shop"
+            data-text="Everything needed to tend an ancestral space — hand-poured candles, white cloths, vessels, cowries, incense, and offerings chosen with care.">
+      <span class="tar-hotspot__dot"><i></i></span><span class="tar-hotspot__label">Shop</span>
+    </button>
+    <button class="tar-hotspot" type="button" data-x="50" data-y="71" data-href="/the-rooms/" style="--d:1.14s"
+            data-title="The Rooms" data-kicker="Altar · Kitchen · Garden · Library" data-cta="Walk the Rooms"
+            data-text="Rooms within the room. Each holds a practice, a teaching, and a way of returning. Step through them at your own pace.">
+      <span class="tar-hotspot__dot"><i></i></span><span class="tar-hotspot__label">The Rooms</span>
+    </button>
+    <button class="tar-hotspot" type="button" data-x="72" data-y="60" data-href="/services/" style="--d:1.26s"
+            data-title="Services" data-kicker="Readings · Guidance · Ceremony" data-cta="View Services"
+            data-text="One-to-one readings, ancestral veneration guidance, altar consultations and ceremony support — in the room, or wherever you are.">
+      <span class="tar-hotspot__dot"><i></i></span><span class="tar-hotspot__label">Services</span>
+    </button>
+    <button class="tar-hotspot tar-hotspot--flip" type="button" data-x="84" data-y="70" data-href="/journal/" style="--d:1.38s"
+            data-title="Journal" data-kicker="Stories · Teachings · Reflections" data-cta="Read the Journal"
+            data-text="What the room remembers. Essays on lineage, ritual, grief, joy and return — written for those learning to listen to the ones who came before.">
+      <span class="tar-hotspot__dot"><i></i></span><span class="tar-hotspot__label">Journal</span>
+    </button>
+    <button class="tar-hotspot" type="button" data-x="64" data-y="80" data-href="/connect/" style="--d:1.5s"
+            data-title="Connect" data-kicker="Ask · Visit · Join the Circle" data-cta="Connect With Us"
+            data-text="Ask a question, book a visit, or join the circle for gatherings and new-moon letters. The door stays open for you.">
+      <span class="tar-hotspot__dot"><i></i></span><span class="tar-hotspot__label">Connect</span>
+    </button>
+  </div>
+
+  <!-- Banner on the right wall -->
+  <aside class="tar-banner tar-home__banner tar-fade" style="--d:1.1s" aria-hidden="true">
+    <div class="tar-parchment">
+      <svg class="tar-ornament" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="2.4"/><path d="M12 1.5v6M12 16.5v6M1.5 12h6M16.5 12h6"/></svg>
+      <span class="tar-parchment__word">Honor</span><span class="tar-parchment__word">Learn</span><span class="tar-parchment__word">Heal</span>
+      <span class="tar-parchment__word">Practice</span><span class="tar-parchment__word">Remember</span><span class="tar-parchment__word">Return</span>
+      <svg class="tar-ornament" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="2.4"/><path d="M12 1.5v6M12 16.5v6M1.5 12h6M16.5 12h6"/></svg>
+    </div>
+  </aside>
+
+  <!-- Corner copy -->
+  <p class="tar-home__bl tar-rise" style="--d:1.3s">People.<br>Places.<br>Practices.<br>You belong here.</p>
+  <div class="tar-home__br tar-rise" style="--d:1.45s">
+    <svg class="tar-ornament" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="2.4"/><path d="M12 1.5v6M12 16.5v6M1.5 12h6M16.5 12h6"/></svg>
+    <p>“A place to remember<br>who you are.”</p>
+  </div>
+
+  <!-- Mobile: chips replace the hotspots (JS clones labels + opens the same modal) -->
+  <div class="tar-chips tar-fade" style="--d:1s">
+    <p class="tar-smallcaps tar-chips__label">Explore the table</p>
+    <div class="tar-chips__row"></div>
+  </div>
+
+  <a class="tar-home__cue tar-fade" style="--d:2s" href="#tar-rooms" aria-label="Scroll to explore"><span class="tar-smallcaps">Step further in</span><i></i></a>
+</section>
+
+<!-- ===== 2. HOTSPOT MODAL (one element, filled by JS) ===== -->
+<div class="tar-modal" id="tar-modal" hidden>
+  <div class="tar-modal__backdrop" data-tar-modal-close></div>
+  <div class="tar-modal__card" role="dialog" aria-modal="true" aria-labelledby="tar-modal-title">
+    <button class="tar-icon-btn tar-modal__close" type="button" data-tar-modal-close aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
+    <div class="tar-modal__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><circle cx="12" cy="12" r="2.4"/><path d="M12 1.5v6M12 16.5v6M1.5 12h6M16.5 12h6"/></svg></div>
+    <p class="tar-smallcaps tar-modal__kicker" data-field="kicker"></p>
+    <h3 class="tar-display" id="tar-modal-title" data-field="title"></h3>
+    <p class="tar-modal__text" data-field="text"></p>
+    <a class="tar-btn tar-btn--sm" data-field="cta" href="#"></a>
+    <div class="tar-modal__nav">
+      <button class="tar-nav-link" type="button" data-tar-modal-prev>← Prev</button>
+      <span class="tar-modal__count" data-field="count"></span>
+      <button class="tar-nav-link" type="button" data-tar-modal-next>Next →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 3. FULL-SCREEN MENU — paste the #tar-menu block from intro.html here if this page has no threshold ===== -->
+
+<!-- ===== 4. (OPTIONAL) "SIX DOORS" CARDS — also the mobile navigation fallback ===== -->
+<section id="tar-rooms" class="tar-rooms">
+  <div class="tar-grain"></div>
+  <div class="tar-rooms__head">
+    <p class="tar-smallcaps tar-rooms__eyebrow">Step further in</p>
+    <h2 class="tar-display">Six Doors Within the Room</h2>
+    <p>Everything on the table leads somewhere. Choose a door — each one opens onto a practice, a place, or a person waiting to be remembered.</p>
+  </div>
+  <div class="tar-rooms__grid">
+    <a class="tar-card" href="/apothecary/"><span class="tar-smallcaps">Herbs · Oils · Remedies</span><h3 class="tar-display">The Apothecary</h3><p>Prepared by hand, in the old way.</p><span class="tar-card__cta">Enter <i>→</i></span></a>
+    <a class="tar-card" href="/shop/"><span class="tar-smallcaps">Candles · Cloths · Altar Tools</span><h3 class="tar-display">Shop</h3><p>Everything needed to tend an ancestral space.</p><span class="tar-card__cta">Browse <i>→</i></span></a>
+    <a class="tar-card" href="/the-rooms/"><span class="tar-smallcaps">Altar · Kitchen · Garden · Library</span><h3 class="tar-display">The Rooms</h3><p>Rooms within the room. Each holds a practice.</p><span class="tar-card__cta">Walk <i>→</i></span></a>
+    <a class="tar-card" href="/services/"><span class="tar-smallcaps">Readings · Guidance · Ceremony</span><h3 class="tar-display">Services</h3><p>Readings, guidance and ceremony support.</p><span class="tar-card__cta">View <i>→</i></span></a>
+    <a class="tar-card" href="/journal/"><span class="tar-smallcaps">Stories · Teachings · Reflections</span><h3 class="tar-display">Journal</h3><p>What the room remembers.</p><span class="tar-card__cta">Read <i>→</i></span></a>
+    <a class="tar-card" href="/connect/"><span class="tar-smallcaps">Ask · Visit · Join the Circle</span><h3 class="tar-display">Connect</h3><p>The door stays open for you.</p><span class="tar-card__cta">Connect <i>→</i></span></a>
+  </div>
+</section>
+
+<!-- ===== 5. FOOTER (or rebuild as an Elementor Footer template using the same classes) ===== -->
+<footer class="tar-footer">
+  <div class="tar-footer__brand">
+    <span class="tar-footer__name">The Ancestors’ Room</span>
+    <span class="tar-footer__tag">Rooted. Grounded. Guided.</span>
+  </div>
+  <nav class="tar-footer__legal" aria-label="Legal">
+    <a href="/privacy-policy/">Privacy Policy</a>
+    <a href="/terms-of-service/">Terms of Service</a>
+    <a href="/shipping-returns/">Shipping &amp; Returns</a>
+  </nav>
+  <div class="tar-footer__social">
+    <span>Follow the Journey</span>
+    <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg></a>
+    <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"><path d="M14 8h3V4h-3a4 4 0 0 0-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8z"/></svg></a>
+    <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="2.5" y="6" width="19" height="12" rx="4"/><path d="M10 9.5v5l4.5-2.5L10 9.5z" fill="currentColor" stroke="none"/></svg></a>
+    <a href="#" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M14 3v11.5a3.5 3.5 0 1 1-3.5-3.5"/><path d="M14 3c.5 3 2.5 5 5.5 5.5"/></svg></a>
+    <a href="#" aria-label="Pinterest"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M10 21l2-7M12 14c2.5.5 4.5-1.5 4.5-4 0-2.5-2-4.2-4.6-4.2S7.5 7.6 7.5 10c0 1.2.5 2 1.2 2.4"/></svg></a>
+  </div>
+</footer>

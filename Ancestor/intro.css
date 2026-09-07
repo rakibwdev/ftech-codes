@@ -1,0 +1,137 @@
+/* =====================================================================
+   THE ANCESTORS' ROOM — INTRO / THRESHOLD STYLES
+   Where: the Intro page → Page Settings → Advanced → Custom CSS
+          (or the same site-wide stylesheet as shared.css — it's namespaced)
+   Requires: shared.css
+   ===================================================================== */
+
+/* ---------- Layout ---------- */
+.tar-threshold {
+  position: fixed;               /* sits above the homepage when used as an overlay */
+  inset: 0;
+  z-index: 800;
+  overflow: hidden;
+  background: var(--tar-ink);
+}
+.tar-threshold.is-done { display: none; }
+/* no page scroll while the doors are closed (single-page setup) */
+body:has(.tar-threshold:not(.is-done)) { overflow: hidden; }
+
+/* ---------- Scene: artwork + door leaves ---------- */
+.tar-scene { position: absolute; inset: 0; will-change: transform; }
+.tar-scene__base { position: absolute; inset: 0; background-repeat: no-repeat; }
+.tar-scene__clip { position: absolute; inset: 0; visibility: hidden; }
+.is-open .tar-scene__clip,
+.is-entering .tar-scene__clip { visibility: visible; }
+.tar-scene__room {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  filter: brightness(1.7) saturate(1.05);
+  transform: scale(1.3);
+  transition: filter 1.8s ease;
+  will-change: transform, filter;
+}
+.is-open .tar-scene__room { filter: brightness(1.15) saturate(1.05); }
+
+.tar-scene__panels {
+  position: absolute; inset: 0;
+  perspective: 1500px; perspective-origin: 50% 50%;
+  transform-style: preserve-3d;
+}
+.tar-panel {
+  position: absolute;
+  background-repeat: no-repeat;
+  backface-visibility: hidden;
+  transition: transform 1.9s var(--tar-ease-door);
+  will-change: transform;
+}
+.tar-panel--left  { transform-origin: 0% 50%; }
+.tar-panel--right { transform-origin: 100% 50%; }
+.is-open .tar-panel--left,  .is-entering .tar-panel--left  { transform: rotateY(98deg); }
+.is-open .tar-panel--right, .is-entering .tar-panel--right { transform: rotateY(-98deg); }
+.tar-panel__shade { position: absolute; inset: 0; opacity: 0; transition: opacity 1.9s ease; }
+.tar-panel--left  .tar-panel__shade { background: linear-gradient(to right, rgba(0,0,0,.05), rgba(0,0,0,.75)); }
+.tar-panel--right .tar-panel__shade { background: linear-gradient(to left,  rgba(0,0,0,.05), rgba(0,0,0,.75)); }
+.is-open .tar-panel__shade, .is-entering .tar-panel__shade { opacity: 1; }
+
+/* candle light leaking through the seam before the doors move */
+.tar-seam {
+  position: absolute; pointer-events: none;
+  background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(255,190,110,.55), rgba(255,160,70,.18) 45%, transparent 70%);
+  mix-blend-mode: screen; opacity: .7;
+  animation: tar-flicker 3.8s ease-in-out infinite;
+}
+.is-open .tar-seam, .is-entering .tar-seam { animation: none; opacity: 0; transition: opacity .9s ease; }
+
+/* golden bloom that floods the frame as you walk through */
+.tar-glow {
+  position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen; opacity: 0;
+  background: radial-gradient(ellipse 34% 52% at var(--gx, 50%) var(--gy, 50%), rgba(255,205,140,.95), rgba(255,170,80,.5) 30%, transparent 68%);
+}
+.is-open .tar-glow { opacity: .55; transition: opacity 1.6s ease; }
+
+/* ---------- UI layer ---------- */
+.tar-threshold__ui {
+  position: absolute; inset: 0; z-index: 5;
+  transition: opacity .7s ease, transform .9s var(--tar-ease-out);
+}
+.is-leaving .tar-threshold__ui { opacity: 0; transform: scale(1.03); pointer-events: none; }
+
+.tar-threshold__parchment {
+  position: absolute; left: 3.2%; top: 30%;
+}
+@media (max-width: 1023px) { .tar-threshold__parchment { display: none; } }
+
+.tar-threshold__content {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 20px;
+}
+.tar-threshold__scrim {
+  max-width: 680px; padding: 56px 56px; text-align: center;
+  background: radial-gradient(ellipse 60% 55% at 50% 50%, rgba(10,8,6,.55), rgba(10,8,6,.25) 50%, transparent 75%);
+}
+.tar-threshold__scrim h1 {
+  margin: 0;
+  font-size: clamp(1.55rem, 3.3vw, 2.7rem);
+  line-height: 1.28; letter-spacing: .06em; font-weight: 400;
+  color: var(--tar-cream);
+}
+.tar-threshold__ornament { margin: 22px auto; }
+.tar-threshold__scrim p {
+  margin: 0;
+  font-family: var(--tar-body);
+  font-size: clamp(1.1rem, 1.55vw, 1.5rem);
+  line-height: 1.55; color: rgba(241,230,207,.9);
+  text-shadow: 0 1px 12px rgba(0,0,0,.8);
+}
+.tar-threshold__scrim .tar-btn { margin-top: 42px; }
+
+.tar-threshold__foot {
+  position: absolute; inset: auto 0 0 0;
+  display: flex; align-items: flex-end; justify-content: space-between;
+  padding: 0 40px 28px;
+  color: rgba(241,230,207,.8);
+}
+.tar-threshold__foot p { margin: 0; }
+.tar-threshold__foot-right { text-align: right; }
+.tar-threshold__mark {
+  position: absolute; left: 50%; bottom: 0; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; color: rgba(201,166,107,.8);
+}
+.tar-threshold__mark .tar-ornament { width: 14px; height: 14px; color: inherit; }
+.tar-threshold__mark i { display: block; width: 1px; height: 40px; margin-top: 4px; background: linear-gradient(to bottom, rgba(201,166,107,.7), transparent); }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 640px) {
+  .tar-threshold__scrim { padding: 40px 18px; }
+  .tar-threshold__foot { padding: 0 20px 20px; }
+  .tar-threshold__foot .tar-smallcaps { font-size: .55rem; }
+  .tar-threshold__mark { display: none; }
+  .tar-topbar__nav .tar-nav-link:first-child { display: none; } /* keep SOUND + MENU only */
+}
+
+/* ---------- Reduced motion: doors simply fade ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .tar-panel, .tar-panel__shade, .tar-scene__room { transition-duration: .6s !important; }
+}

@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Ancestors' Room</title>
+  <link rel="stylesheet" href="shared.css">
+  <link rel="stylesheet" href="intro.css">
+  <link rel="stylesheet" href="home.css">
+</head>
+<body class="tar-body">
+  <main id="app" aria-live="polite"></main>
+  <script>
+    Promise.all([
+      fetch('intro.html').then(function (response) { return response.text(); }),
+      fetch('home.html').then(function (response) { return response.text(); })
+    ]).then(function (pages) {
+      document.getElementById('app').innerHTML = pages[0] + pages[1];
+      var script = document.createElement('script');
+      script.src = 'ancestors-room.js';
+      document.body.appendChild(script);
+    }).catch(function (error) {
+      document.getElementById('app').textContent = 'Unable to load the project files. Start it with a local web server.';
+      console.error(error);
+    });
+  </script>
+</body>
+</html>
