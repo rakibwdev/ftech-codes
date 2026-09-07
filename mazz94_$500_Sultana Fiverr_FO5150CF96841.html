@@ -17,35 +17,36 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 
 <style>
-    /* Header */
-  .sticky-header{
-    transition: all .3s ease;
-    backdrop-filter: blur(5px) !important;
+
+/* Header */
+
+ .sticky-header {
+    transition: all 0.3s ease;
     width: 100% !important;
-  }
-  
-  .header-logo img{
-    transition: all .35s ease;
-  }
-  
-  .sticky-header.header-scrolled{
-    min-height: 70px !important;
-  }
-  
-  .sticky-header.header-scrolled .header-logo img{
-    width: 140px !important;
-  }
+
+    &.header-scrolled {
+        min-height: 70px !important;
+
+        .header-logo img {
+            width: 190px !important;
+        }
+    }
+
+    .header-logo img {
+        transition: all 0.35s ease;
+    }
+}
 
 
-  /* Menu last element */
+/* Menu last element */
 
-  selector .elementor-nav-menu--main ul > li:last-child {
+  selector .elementor-nav-menu--main ul > li:last-child a {
     border: 1px solid white;
-    padding: 0 12px;
+    padding: 0 18px;
     transition: all 0.3s ease;
 }
 
-selector .elementor-nav-menu--main ul > li:last-child:hover {
+selector .elementor-nav-menu--main ul > li:last-child:hover a {
     border:1px solid #C8B38E;
     scale: 1.02;
 
