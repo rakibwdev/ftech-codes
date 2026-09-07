@@ -18,6 +18,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
 <style>
 
+/* atomic header */
+body{
+    position: relative;
+}
+header{
+    position: sticky;
+    top: 0;
+    z-index: 999;
+}
+
+.logged-in .admin-bar{
+    header{
+    top: 32px;
+}
+}
+
+
 /* Header */
 
  .sticky-header {
@@ -42,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   selector .elementor-nav-menu--main ul > li:last-child a {
     border: 1px solid white;
-    padding: 0 18px;
+    padding: 12px 24px;
     transition: all 0.3s ease;
 }
 
@@ -51,4 +68,24 @@ selector .elementor-nav-menu--main ul > li:last-child:hover a {
     scale: 1.02;
 
 }
+
+
+/* offcanvas menu last element */
+selector .elementor-icon-list-text{
+    display: flex;
+    transition: transform 0.3s ease !important;
+}
+.list_number{
+    font-size: 12px;
+    line-height: 20px;
+    margin-right: 10px;
+}
+
+selector .elementor-icon-list-text:hover{
+    transform: translateX(-5px);
+}
+
 </style>
+
+
+<span class="list_number">01</span>Home
