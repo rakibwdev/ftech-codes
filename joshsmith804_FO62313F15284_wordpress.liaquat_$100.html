@@ -1,3 +1,17 @@
+<php>  
+add_filter('wp_robots', function ($robots) {
+
+    if (is_page(4701)) {
+        $robots['noindex']   = true;
+        $robots['nofollow']  = true;
+        $robots['noarchive'] = true;
+    }
+
+    return $robots;
+});
+</php>
+
+
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 

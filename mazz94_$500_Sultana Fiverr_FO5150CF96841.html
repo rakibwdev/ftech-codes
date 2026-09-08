@@ -37,15 +37,16 @@ header{
 
 /* Header */
 
- .sticky-header {
+.sticky-header {
     transition: all 0.3s ease;
     width: 100% !important;
-
+    backdrop-filter: blur(3px);
     &.header-scrolled {
         min-height: 70px !important;
-
+        background-color: #073D33;
+        background-image: linear-gradient(180deg, #073D33 0%, #073d3300 100%) ;
         .header-logo img {
-            width: 190px !important;
+            width: 90px !important;
         }
     }
 
@@ -54,8 +55,7 @@ header{
     }
 }
 
-
-/* Menu last element */
+/* Menu last element green: #073D33 yellow: #C8B38E */ 
 
   selector .elementor-nav-menu--main > ul > li:last-child > a{
     border: 1px solid var(--White);
