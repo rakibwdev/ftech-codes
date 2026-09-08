@@ -84,6 +84,26 @@ selector .elementor-icon-list-text:hover{
     transform: translateX(-5px);
 }
 
+/* image galary */
+
+@media (min-width: 1024px) {
+    
+    
+ .elementor-gallery__container.e-gallery-container > *:nth-child(2) {
+    grid-column: span 2;
+}
+
+
+.e-gallery-item.elementor-gallery-item.elementor-animated-content {
+    height:400px;
+    width:100%;
+    aspect-ratio:300/200;
+    object-fit: cover;
+    align-items:center;
+    display: flex ;
+}
+}
+
 </style>
 
 
