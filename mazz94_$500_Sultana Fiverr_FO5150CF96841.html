@@ -104,6 +104,38 @@ selector .elementor-icon-list-text:hover{
 }
 }
 
+
+/* slider */
+
+selector .swiper-slide-image {
+    aspect-ratio: 1 / 1.4;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+selector::before,
+selector::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 6%;
+    z-index: 10;
+    pointer-events: none;
+}
+
+selector::before {
+    left: 0;
+    background: linear-gradient( to right, #c8b38ee7, transparent );
+}
+
+selector::after {
+    right: 0;
+    background: linear-gradient( to left, #c8b38eaf, transparent );
+
+}
+
+
 </style>
 
 
