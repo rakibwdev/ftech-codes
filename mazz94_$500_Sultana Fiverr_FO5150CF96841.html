@@ -139,20 +139,98 @@ selector::after {
 /* offset Carousol */
 selector {
 
-.swiper-wrapper{
-    align-items: center;
-}
- img {
-    object-fit: cover;
-}
-.swiper-slide-next img {
-    height: 650px !important;
-}
+    .swiper-wrapper {
+        align-items: center;
+        height: 750px;
+        gap: 25px;
+    }
+
+    .swiper-slide img {
+        height: 550px;
+        /*width: 450px;*/
+        /*aspect-ratio: 550/450;*/
+        object-fit: cover;
+        transition: height 0.5s ease;
+    }
+
+    .swiper-slide-next img {
+        height: 700px !important;
+    }
 
 }
+
+/* responsive carousel */
+selector {
+
+    .swiper-wrapper {
+        align-items: center;
+        height: 750px;
+        gap: 25px;
+    }
+
+    .swiper-slide img {
+        height: 550px;
+        width: 100%;
+        object-fit: cover;
+        transition: height 0.5s ease;
+    }
+
+    .swiper-slide-next img {
+        height: 700px !important;
+    }
+
+    /* Tablet */
+    @media (max-width: 1024px) {
+        .swiper-wrapper {
+            height: 600px;
+            gap: 20px;
+        }
+
+        .swiper-slide img {
+            height: 450px;
+        }
+
+        .swiper-slide-next img {
+            height: 550px !important;
+        }
+    }
+
+    /* Mobile */
+    @media (max-width: 767px) {
+        .swiper-wrapper {
+            height: 450px;
+            gap: 10px;
+        }
+
+        .swiper-slide img {
+            height: 350px;
+        }
+
+        .swiper-slide-next img {
+            height: 420px !important;
+        }
+    }
+
+}
+
+/* Floating icon animation */
+
+.floating_icon {
+    animation: floating 2s ease-in-out infinite;
+    rotate:270deg;
+}
+
+@keyframes floating {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(8px);
+    }
+}
+
 
 
 </style>
-
 
 <span class="list_number">01</span>Home

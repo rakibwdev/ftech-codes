@@ -1,14 +1,17 @@
 <php>  
-add_filter('wp_robots', function ($robots) {
+add_action('wp_head', function () {
+    echo '<meta name="robots" content="noindex, nofollow, noarchive, noimageindex">' . "\n";
+}, 1, 0);
 
-    if (is_page(4701)) {
-        $robots['noindex']   = true;
-        $robots['nofollow']  = true;
-        $robots['noarchive'] = true;
-    }
+// add_filter('wp_robots', function ($robots) {
 
-    return $robots;
-});
+//     $robots['noindex']      = true;
+//     $robots['nofollow']     = true;
+//     $robots['noarchive']    = true;
+//     $robots['noimageindex'] = true;
+
+//     return $robots;
+// });
 </php>
 
 
