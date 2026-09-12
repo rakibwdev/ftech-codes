@@ -23,23 +23,40 @@ setInterval(updateDateTime, 1000);
 
 <!-- randomize -->
  <script>
-    document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function () {
 
     const roundInput = document.getElementById('e-form-round');
     const randomizationInput = document.getElementById('e-form-randomization');
 
     const submitButton = document.getElementById('submit-button');
+    const nextRoundButton = document.getElementById('next-round');
     const clearButton = document.getElementById('clear-button');
 
-    if (!roundInput || !randomizationInput || !submitButton) {
+    if (!roundInput || !randomizationInput || !submitButton || !nextRoundButton) {
         return;
     }
 
+    // Store original participants
+    let participants = [];
+
+    // Current round
+    let currentRound = 0;
+
+    // Total rounds
+    let totalRounds = 0;
+
+
+    // Hide Next Round initially
+    nextRoundButton.style.display = 'none';
+
+
     // Fisher-Yates shuffle
     function shuffle(array) {
+
         const result = [...array];
 
         for (let i = result.length - 1; i > 0; i--) {
+
             const j = Math.floor(Math.random() * (i + 1));
 
             [result[i], result[j]] = [result[j], result[i]];
@@ -48,100 +65,155 @@ setInterval(updateDateTime, 1000);
         return result;
     }
 
-    submitButton.addEventListener('click', function (event) {
 
-        event.preventDefault();
+    // Generate one round
+    function generateRound() {
 
-        const rounds = parseInt(roundInput.value, 10);
-
-        const names = randomizationInput.value
-            .split(/\r?\n/)
-            .map(name => name.trim())
-            .filter(name => name !== '');
-
-        if (!rounds || rounds < 1) {
-            alert('Please enter the number of rounds.');
+        if (currentRound >= totalRounds) {
             return;
         }
 
-        if (names.length < 2) {
-            alert('Please enter at least two participants.');
-            return;
-        }
+        currentRound++;
 
-        // Create random results
-        const results = [];
+        // Randomize ORIGINAL participants
+        const randomizedNames = shuffle(participants);
 
-        for (let round = 1; round <= rounds; round++) {
+        let output = '';
 
-            const randomizedNames = shuffle(names);
+        randomizedNames.forEach(function (name, index) {
 
-            results.push({
-                round: round,
-                participants: randomizedNames
-            });
-        }
+            output += (index + 1) + '. ' + name + '\n';
 
-        console.log(results);
-
-        // Show results
-        displayResults(results);
-    });
-
-
-    function displayResults(results) {
-
-        let output = document.getElementById('e-form-randomization');
-
-        if (!output) {
-
-            output = document.createElement('div');
-            output.id = 'randomization-results';
-
-            randomizationInput.parentElement.appendChild(output);
-        }
-
-        output.innerHTML = '';
-
-        results.forEach(function (result) {
-
-            const roundTitle = document.createElement('h3');
-
-            roundTitle.textContent = 'Round ' + result.round;
-
-            output.appendChild(roundTitle);
-
-            const list = document.createElement('ol');
-
-            result.participants.forEach(function (name) {
-
-                const item = document.createElement('li');
-
-                item.textContent = name;
-
-                list.appendChild(item);
-            });
-
-            output.appendChild(list);
         });
+
+        // Show only current round result
+        randomizationInput.value = output;
+
+
+        // If final round
+        if (currentRound >= totalRounds) {
+
+            nextRoundButton.style.display = 'none';
+
+        } else {
+
+            nextRoundButton.style.display = 'block';
+
+        }
+
+        console.log('Round ' + currentRound, randomizedNames);
     }
 
 
-    // Clear button
+    // =========================
+    // SUBMIT BUTTON
+    // =========================
+
+    submitButton.addEventListener('click', function (event) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        // Get total rounds
+        totalRounds = parseInt(roundInput.value, 10);
+
+        if (!totalRounds || totalRounds < 1) {
+
+            alert('Please enter the number of rounds.');
+
+            return;
+        }
+
+
+        // Get participants ONLY ONCE
+        participants = randomizationInput.value
+            .split(/\r?\n/)
+            .map(function (name) {
+                return name.trim();
+            })
+            .filter(function (name) {
+                return name !== '';
+            });
+
+
+        if (participants.length < 2) {
+
+            alert('Please enter at least two participants.');
+
+            participants = [];
+
+            return;
+        }
+
+
+        // Reset round
+        currentRound = 0;
+
+
+        // Generate first round
+        generateRound();
+
+
+        // Hide Submit
+        submitButton.style.display = 'none';
+
+
+        // Show Next Round
+        if (totalRounds > 1) {
+            nextRoundButton.style.display = 'block';
+        }
+
+
+        return false;
+    });
+
+
+    // =========================
+    // NEXT ROUND BUTTON
+    // =========================
+
+    nextRoundButton.addEventListener('click', function (event) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        generateRound();
+
+        return false;
+    });
+
+
+    // =========================
+    // CLEAR BUTTON
+    // =========================
+
     if (clearButton) {
 
-        clearButton.addEventListener('click', function () {
+        clearButton.addEventListener('click', function (event) {
 
+            event.preventDefault();
+            event.stopPropagation();
+
+            // Reset everything
+            participants = [];
+            currentRound = 0;
+            totalRounds = 0;
+
+            // Clear textarea
             randomizationInput.value = '';
 
-            const output =
-                document.getElementById('e-form-randomization');
+            // Clear round
+            roundInput.value = '';
 
-            if (output) {
-                output.innerHTML = '';
-            }
+            // Show Submit again
+            submitButton.style.display = 'block';
+
+            // Hide Next Round
+            nextRoundButton.style.display = 'none';
+
+            return false;
         });
     }
 
 });
- </script>
+</script>
