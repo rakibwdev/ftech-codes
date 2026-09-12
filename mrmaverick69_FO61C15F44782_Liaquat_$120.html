@@ -19,3 +19,129 @@ function updateDateTime() {
 updateDateTime();
 setInterval(updateDateTime, 1000);
 </script>
+
+
+<!-- randomize -->
+ <script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+    const roundInput = document.getElementById('e-form-round');
+    const randomizationInput = document.getElementById('e-form-randomization');
+
+    const submitButton = document.getElementById('submit-button');
+    const clearButton = document.getElementById('clear-button');
+
+    if (!roundInput || !randomizationInput || !submitButton) {
+        return;
+    }
+
+    // Fisher-Yates shuffle
+    function shuffle(array) {
+        const result = [...array];
+
+        for (let i = result.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+
+            [result[i], result[j]] = [result[j], result[i]];
+        }
+
+        return result;
+    }
+
+    submitButton.addEventListener('click', function (event) {
+
+        event.preventDefault();
+
+        const rounds = parseInt(roundInput.value, 10);
+
+        const names = randomizationInput.value
+            .split(/\r?\n/)
+            .map(name => name.trim())
+            .filter(name => name !== '');
+
+        if (!rounds || rounds < 1) {
+            alert('Please enter the number of rounds.');
+            return;
+        }
+
+        if (names.length < 2) {
+            alert('Please enter at least two participants.');
+            return;
+        }
+
+        // Create random results
+        const results = [];
+
+        for (let round = 1; round <= rounds; round++) {
+
+            const randomizedNames = shuffle(names);
+
+            results.push({
+                round: round,
+                participants: randomizedNames
+            });
+        }
+
+        console.log(results);
+
+        // Show results
+        displayResults(results);
+    });
+
+
+    function displayResults(results) {
+
+        let output = document.getElementById('e-form-randomization');
+
+        if (!output) {
+
+            output = document.createElement('div');
+            output.id = 'randomization-results';
+
+            randomizationInput.parentElement.appendChild(output);
+        }
+
+        output.innerHTML = '';
+
+        results.forEach(function (result) {
+
+            const roundTitle = document.createElement('h3');
+
+            roundTitle.textContent = 'Round ' + result.round;
+
+            output.appendChild(roundTitle);
+
+            const list = document.createElement('ol');
+
+            result.participants.forEach(function (name) {
+
+                const item = document.createElement('li');
+
+                item.textContent = name;
+
+                list.appendChild(item);
+            });
+
+            output.appendChild(list);
+        });
+    }
+
+
+    // Clear button
+    if (clearButton) {
+
+        clearButton.addEventListener('click', function () {
+
+            randomizationInput.value = '';
+
+            const output =
+                document.getElementById('e-form-randomization');
+
+            if (output) {
+                output.innerHTML = '';
+            }
+        });
+    }
+
+});
+ </script>
