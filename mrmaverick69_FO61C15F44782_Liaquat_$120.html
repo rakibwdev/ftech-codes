@@ -22,7 +22,7 @@ setInterval(updateDateTime, 1000);
 
 
 <!-- randomize -->
- <script>
+<script>
 document.addEventListener('DOMContentLoaded', function () {
 
     const roundInput = document.getElementById('e-form-round');
@@ -30,43 +30,36 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const submitButton = document.getElementById('submit-button');
     const nextRoundButton = document.getElementById('next-round');
+    const finalRoundButton = document.getElementById('final-round');
     const clearButton = document.getElementById('clear-button');
 
-    if (!roundInput || !randomizationInput || !submitButton || !nextRoundButton) {
+    if (!roundInput || !randomizationInput || !submitButton) {
         return;
     }
 
-    // Store original participants
     let participants = [];
-
-    // Current round
     let currentRound = 0;
-
-    // Total rounds
     let totalRounds = 0;
 
+    if (nextRoundButton) {
+        nextRoundButton.style.display = 'none';
+    }
 
-    // Hide Next Round initially
-    nextRoundButton.style.display = 'none';
+    if (finalRoundButton) {
+        finalRoundButton.style.display = 'none';
+    }
 
-
-    // Fisher-Yates shuffle
     function shuffle(array) {
-
         const result = [...array];
 
         for (let i = result.length - 1; i > 0; i--) {
-
             const j = Math.floor(Math.random() * (i + 1));
-
             [result[i], result[j]] = [result[j], result[i]];
         }
 
         return result;
     }
 
-
-    // Generate one round
     function generateRound() {
 
         if (currentRound >= totalRounds) {
@@ -75,57 +68,60 @@ document.addEventListener('DOMContentLoaded', function () {
 
         currentRound++;
 
-        // Randomize ORIGINAL participants
         const randomizedNames = shuffle(participants);
 
         let output = '';
 
         randomizedNames.forEach(function (name, index) {
-
             output += (index + 1) + '. ' + name + '\n';
-
         });
 
-        // Show only current round result
         randomizationInput.value = output;
 
-
-        // If final round
         if (currentRound >= totalRounds) {
 
-            nextRoundButton.style.display = 'none';
+            if (nextRoundButton) {
+                nextRoundButton.style.display = 'none';
+            }
+
+            if (finalRoundButton) {
+                finalRoundButton.style.display = 'none';
+            }
+
+        } else if (currentRound === totalRounds - 1) {
+
+            if (nextRoundButton) {
+                nextRoundButton.style.display = 'none';
+            }
+
+            if (finalRoundButton) {
+                finalRoundButton.style.display = 'block';
+            }
 
         } else {
 
-            nextRoundButton.style.display = 'block';
+            if (nextRoundButton) {
+                nextRoundButton.style.display = 'block';
+            }
 
+            if (finalRoundButton) {
+                finalRoundButton.style.display = 'none';
+            }
         }
-
-        console.log('Round ' + currentRound, randomizedNames);
     }
-
-
-    // =========================
-    // SUBMIT BUTTON
-    // =========================
 
     submitButton.addEventListener('click', function (event) {
 
         event.preventDefault();
         event.stopPropagation();
 
-        // Get total rounds
         totalRounds = parseInt(roundInput.value, 10);
 
         if (!totalRounds || totalRounds < 1) {
-
             alert('Please enter the number of rounds.');
-
             return;
         }
 
-
-        // Get participants ONLY ONCE
         participants = randomizationInput.value
             .split(/\r?\n/)
             .map(function (name) {
@@ -135,57 +131,46 @@ document.addEventListener('DOMContentLoaded', function () {
                 return name !== '';
             });
 
-
         if (participants.length < 2) {
-
             alert('Please enter at least two participants.');
-
             participants = [];
-
             return;
         }
 
-
-        // Reset round
         currentRound = 0;
 
-
-        // Generate first round
         generateRound();
 
-
-        // Hide Submit
         submitButton.style.display = 'none';
 
-
-        // Show Next Round
-        if (totalRounds > 1) {
-            nextRoundButton.style.display = 'block';
-        }
-
-
         return false;
     });
 
+    if (nextRoundButton) {
 
-    // =========================
-    // NEXT ROUND BUTTON
-    // =========================
+        nextRoundButton.addEventListener('click', function (event) {
 
-    nextRoundButton.addEventListener('click', function (event) {
+            event.preventDefault();
+            event.stopPropagation();
 
-        event.preventDefault();
-        event.stopPropagation();
+            generateRound();
 
-        generateRound();
+            return false;
+        });
+    }
 
-        return false;
-    });
+    if (finalRoundButton) {
 
+        finalRoundButton.addEventListener('click', function (event) {
 
-    // =========================
-    // CLEAR BUTTON
-    // =========================
+            event.preventDefault();
+            event.stopPropagation();
+
+            generateRound();
+
+            return false;
+        });
+    }
 
     if (clearButton) {
 
@@ -194,22 +179,22 @@ document.addEventListener('DOMContentLoaded', function () {
             event.preventDefault();
             event.stopPropagation();
 
-            // Reset everything
             participants = [];
             currentRound = 0;
             totalRounds = 0;
 
-            // Clear textarea
             randomizationInput.value = '';
-
-            // Clear round
             roundInput.value = '';
 
-            // Show Submit again
             submitButton.style.display = 'block';
 
-            // Hide Next Round
-            nextRoundButton.style.display = 'none';
+            if (nextRoundButton) {
+                nextRoundButton.style.display = 'none';
+            }
+
+            if (finalRoundButton) {
+                finalRoundButton.style.display = 'none';
+            }
 
             return false;
         });
