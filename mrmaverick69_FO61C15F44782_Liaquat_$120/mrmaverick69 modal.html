@@ -1,0 +1,250 @@
+<style>
+.giveaway-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    background: rgba(0, 0, 0, 0.5);
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 24px;
+    box-sizing: border-box;
+}
+
+.giveaway-modal-overlay.active {
+    display: flex;
+}
+
+.giveaway-modal {
+    display: none;
+    width: 600px;
+    max-width: calc(100% - 30px);
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.giveaway-modal.active {
+    display: block;
+}
+
+.giveaway-modal-header {
+    position: relative;
+    padding: 16px 15px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.giveaway-modal-header h2 {
+    margin: 0;
+    padding-right: 35px;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 21px;
+    font-weight: 400;
+    line-height: 1.4;
+    color: #222;
+}
+
+.giveaway-modal-close {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    border: 0;
+    background: transparent;
+    color: #bbb;
+    font-size: 25px;
+    font-weight: bold;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+}
+
+.giveaway-modal-close:hover {
+    color: #888;
+    background: transparent;
+}
+
+.giveaway-modal-body {
+    padding: 16px 15px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.giveaway-modal-body p {
+    margin: 0;
+    color: #222;
+    font-size: 15px;
+    line-height: 1.5;
+    font-weight: 400;
+}
+
+.giveaway-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 16px 15px;
+}
+
+.giveaway-btn {
+    border-radius: 4px;
+    padding: 8px 14px;
+    font-size: 14px;
+    line-height: 1.5;
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+
+.giveaway-btn-cancel {
+    background: #f5f5f5;
+    border-color: #ccc;
+    color: #333;
+}
+
+.giveaway-btn-cancel:hover {
+    background: #e6e6e6;
+}
+
+.giveaway-btn-primary {
+    background: #337ab7;
+    border-color: #2e6da4;
+    color: #fff;
+}
+
+.giveaway-btn-primary:hover {
+    background: #286090;
+    border-color: #204d74;
+}
+
+@media (max-width: 640px) {
+
+    .giveaway-modal-overlay {
+        padding-top: 15px;
+    }
+
+    .giveaway-modal {
+        width: calc(100% - 30px);
+    }
+
+    .giveaway-modal-footer {
+        flex-wrap: wrap;
+    }
+
+}
+</style>
+
+<div id="giveaway-modal-overlay" class="giveaway-modal-overlay">
+
+    <div id="giveaway-confirm-modal" class="giveaway-modal">
+
+        <div class="giveaway-modal-header">
+            <h2>Your giveaway is ready</h2>
+            <button type="button" class="giveaway-modal-close" data-close-modal>
+                &times;
+            </button>
+        </div>
+
+        <div class="giveaway-modal-body">
+            <p>Do you wish continue?</p>
+        </div>
+
+        <div class="giveaway-modal-footer">
+            <button type="button"
+                    class="giveaway-btn giveaway-btn-cancel"
+                    data-close-modal>
+                Cancel
+            </button>
+
+            <button type="button"
+                    id="beginGiveaway"
+                    class="giveaway-btn giveaway-btn-primary">
+                Begin the Giveaway
+            </button>
+        </div>
+
+    </div>
+
+
+    <div id="giveaway-error-modal" class="giveaway-modal">
+
+        <div class="giveaway-modal-header">
+            <h2>Oops, there was a problem...</h2>
+
+            <button type="button"
+                    class="giveaway-modal-close"
+                    data-close-modal>
+                &times;
+            </button>
+        </div>
+
+        <div class="giveaway-modal-body">
+            <p id="giveawayErrorMessage"></p>
+        </div>
+
+        <div class="giveaway-modal-footer">
+            <button type="button"
+                    class="giveaway-btn giveaway-btn-primary"
+                    data-close-modal>
+                Got it
+            </button>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+const giveawayModalOverlay = document.getElementById('giveaway-modal-overlay');
+const giveawayConfirmModal = document.getElementById('giveaway-confirm-modal');
+const giveawayErrorModal = document.getElementById('giveaway-error-modal');
+const giveawayErrorMessage = document.getElementById('giveawayErrorMessage');
+const beginGiveawayButton = document.getElementById('beginGiveaway');
+
+function openGiveawayModal(modal) {
+
+    giveawayModalOverlay.classList.add('active');
+
+    giveawayConfirmModal.classList.remove('active');
+    giveawayErrorModal.classList.remove('active');
+
+    modal.classList.add('active');
+}
+
+function closeGiveawayModal() {
+
+    giveawayModalOverlay.classList.remove('active');
+
+    giveawayConfirmModal.classList.remove('active');
+    giveawayErrorModal.classList.remove('active');
+}
+
+function showErrorModal(message) {
+
+    giveawayErrorMessage.textContent = message;
+
+    openGiveawayModal(giveawayErrorModal);
+}
+
+document.querySelectorAll('[data-close-modal]').forEach(function (button) {
+
+    button.addEventListener('click', function () {
+        closeGiveawayModal();
+    });
+
+});
+
+giveawayModalOverlay.addEventListener('click', function (event) {
+
+    if (event.target === giveawayModalOverlay) {
+        closeGiveawayModal();
+    }
+
+});
+
+document.addEventListener('keydown', function (event) {
+
+    if (event.key === 'Escape') {
+        closeGiveawayModal();
+    }
+
+});
+</script>

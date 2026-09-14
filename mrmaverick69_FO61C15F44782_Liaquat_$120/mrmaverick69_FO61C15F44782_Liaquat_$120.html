@@ -14,6 +14,15 @@
     color: #777;
 }
 
+
+.submenu {
+    display: none !important;
+}
+
+.menu.active .submenu {
+    display: block !important;
+}
+
 </style>
 
 <script>
@@ -36,6 +45,24 @@ function updateDateTime() {
 
 updateDateTime();
 setInterval(updateDateTime, 1000);
+
+
+
+// Menu Click
+document.querySelectorAll('.menu').forEach(function(menu) {
+    menu.addEventListener('click', function(event) {
+        event.preventDefault();
+
+        document.querySelectorAll('.menu').forEach(function(item) {
+            if (item !== menu) {
+                item.classList.remove('active');
+            }
+        });
+
+        menu.classList.toggle('active');
+    });
+});
+
 </script>
 
 
@@ -187,41 +214,59 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 }
 
-    submitButton.addEventListener('click', function (event) {
+submitButton.addEventListener('click', function (event) {
 
-        event.preventDefault();
-        event.stopPropagation();
+    event.preventDefault();
+    event.stopPropagation();
 
-        totalRounds = parseInt(roundInput.value, 10);
+    totalRounds = parseInt(roundInput.value, 10);
 
-        if (!totalRounds || totalRounds < 1) {
-            alert('Please enter the number of rounds.');
-            return;
-        }
+    if (!totalRounds || totalRounds < 1) {
 
-        participants = randomizationInput.value
-            .split(/\r?\n/)
-            .map(function (name) {
-                return name.trim();
-            })
-            .filter(function (name) {
-                return name !== '';
-            });
+        showErrorModal('Please enter the number of rounds.');
 
-        if (participants.length < 2) {
-            alert('Please enter at least two participants.');
-            participants = [];
-            return;
-        }
+        return;
+    }
 
-        currentRound = 0;
+    participants = randomizationInput.value
+        .split(/\r?\n/)
+        .map(function (name) {
+            return name.trim();
+        })
+        .filter(function (name) {
+            return name !== '';
+        });
 
-        generateRandomRound();
+    if (participants.length < 2) {
 
-        submitButton.style.display = 'none';
+        showErrorModal('Please enter at least two participants.');
 
-        return false;
-    });
+        participants = [];
+
+        return;
+    }
+
+    openGiveawayModal(giveawayConfirmModal);
+
+    return false;
+});
+
+
+document.getElementById('beginGiveaway').addEventListener('click', function (event) {
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    closeGiveawayModal();
+
+    currentRound = 0;
+
+    generateRandomRound();
+
+    submitButton.style.display = 'none';
+
+    return false;
+});
 
     if (nextRoundButton) {
 
