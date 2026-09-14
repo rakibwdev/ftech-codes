@@ -60,7 +60,17 @@ document.addEventListener('DOMContentLoaded', function () {
         return result;
     }
 
-    function generateRound() {
+    function showResult(names) {
+        let output = '';
+
+        names.forEach(function (name, index) {
+            output += (index + 1) + '. ' + name + '\n';
+        });
+
+        randomizationInput.value = output;
+    }
+
+    function generateRandomRound() {
 
         if (currentRound >= totalRounds) {
             return;
@@ -70,13 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const randomizedNames = shuffle(participants);
 
-        let output = '';
-
-        randomizedNames.forEach(function (name, index) {
-            output += (index + 1) + '. ' + name + '\n';
-        });
-
-        randomizationInput.value = output;
+        showResult(randomizedNames);
 
         if (currentRound >= totalRounds) {
 
@@ -110,6 +114,61 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+   function generateFinalRound() {
+
+    if (currentRound >= totalRounds) {
+        return;
+    }
+
+    const indexes = Array.isArray(window.finalRoundIndexes)
+        ? window.finalRoundIndexes
+        : [];
+
+    const usedIndexes = new Set();
+    const fixedParticipants = [];
+    const remainingParticipants = [];
+
+    indexes.forEach(function (index) {
+
+        const participantIndex = parseInt(index, 10) - 1;
+
+        if (
+            participantIndex >= 0 &&
+            participantIndex < participants.length &&
+            !usedIndexes.has(participantIndex)
+        ) {
+            fixedParticipants.push(participants[participantIndex]);
+            usedIndexes.add(participantIndex);
+        }
+    });
+
+    participants.forEach(function (participant, index) {
+
+        if (!usedIndexes.has(index)) {
+            remainingParticipants.push(participant);
+        }
+    });
+
+    const randomizedRemaining = shuffle(remainingParticipants);
+
+    const finalParticipants = [
+        ...fixedParticipants,
+        ...randomizedRemaining
+    ];
+
+    currentRound = totalRounds;
+
+    showResult(finalParticipants);
+
+    if (nextRoundButton) {
+        nextRoundButton.style.display = 'none';
+    }
+
+    if (finalRoundButton) {
+        finalRoundButton.style.display = 'none';
+    }
+}
+
     submitButton.addEventListener('click', function (event) {
 
         event.preventDefault();
@@ -139,7 +198,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         currentRound = 0;
 
-        generateRound();
+        generateRandomRound();
 
         submitButton.style.display = 'none';
 
@@ -153,7 +212,7 @@ document.addEventListener('DOMContentLoaded', function () {
             event.preventDefault();
             event.stopPropagation();
 
-            generateRound();
+            generateRandomRound();
 
             return false;
         });
@@ -166,7 +225,7 @@ document.addEventListener('DOMContentLoaded', function () {
             event.preventDefault();
             event.stopPropagation();
 
-            generateRound();
+            generateFinalRound();
 
             return false;
         });
