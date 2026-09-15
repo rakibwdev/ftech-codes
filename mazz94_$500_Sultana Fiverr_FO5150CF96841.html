@@ -243,6 +243,50 @@ selector {
 
 }
 
+/* carousol offset code */
+
+selector{
+    --e-n-carousel-swiper-offset-size: 4% !important;
+}
+
+@media (max-width: 1024px){
+    selector{
+        --e-n-carousel-swiper-offset-size: 0% !important;
+    }
+}
+
+
+@media (max-width: 767px){
+    selector{
+        --e-n-carousel-swiper-offset-size: 0% !important;
+    }
+}
+
+/* carousol icon */
+.elementor-swiper-button-next {
+    transform:rotate(180deg) !important;
+}
+
+selector .swiper-pagination.swiper-pagination-fraction.swiper-pagination-horizontal {
+    position:absolute;
+    top: 80%;
+    left: 96%;
+}
+
+@media(max-width:425px){
+    .elementor-swiper-button-next, .elementor-swiper-button-prev{
+        display: none !important;
+    }
+    selector .swiper-pagination.swiper-pagination-fraction.swiper-pagination-horizontal {
+    top: 96%;
+    left:85%;
+}
+}
+
+.elementor-swiper-button-next {
+    transform:rotate(180deg) !important;
+}
+
 
 </style>
 
