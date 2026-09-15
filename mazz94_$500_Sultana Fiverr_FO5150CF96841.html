@@ -17,6 +17,12 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 
 <style>
+/* header Code */
+.sticky-header {
+        background-color: #073D33;
+        background-image: linear-gradient(180deg, #073D33 0%, #073d3300 100%) ;
+}
+
 
 /* atomic header */
 body{
@@ -287,6 +293,57 @@ selector .swiper-pagination.swiper-pagination-fraction.swiper-pagination-horizon
     transform:rotate(180deg) !important;
 }
 
+
+/* image carousol icon */
+
+
+
+/* Next Arrow */
+.elementor-swiper-button.elementor-swiper-button-next svg {
+    transform: rotate(180deg);
+}
+
+
+
+selector {
+    position: relative;
+    padding-bottom: 60px;
+}
+
+selector .elementor-swiper-button {
+    top: auto !important;
+    bottom: 0 !important;
+    transform: none !important;
+    width: 42px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+selector .elementor-swiper-button-prev {
+    left: auto !important;
+    right: 140px !important;
+}
+
+
+selector .elementor-swiper-button-next {
+    right: 60px !important;
+}
+
+
+selector .elementor-swiper-button svg {
+    width: 51px;
+    height: auto;
+}
+
+
+
+selector .elementor-swiper-button-prev,
+selector .elementor-swiper-button-next {
+    margin: 0 !important;
+}
 
 </style>
 
