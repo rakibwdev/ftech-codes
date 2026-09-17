@@ -1,0 +1,195 @@
+<!-- final version -->
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const cards = document.querySelectorAll(".card");
+
+    const checkboxGroup = document.querySelector(
+        '.elementor-field-group-checkbox_field .elementor-field-subgroup'
+    );
+
+    const htmlField = document.querySelector(
+        '.elementor-field-type-html'
+    );
+
+    if (!checkboxGroup) return;
+
+    const originalOption = checkboxGroup.querySelector("span");
+
+    if (!originalOption) return;
+
+    originalOption.style.display = "none";
+
+    cards.forEach(function (card, index) {
+
+        card.addEventListener("click", function () {
+
+            if (htmlField) {
+                htmlField.style.display = "none";
+            }
+
+            // Get selected card text
+            // const cardText = card.querySelector("p")?.textContent.trim() || "";
+            const cardText = card.getAttribute("checkbox_value") || "";
+
+
+            const checkboxId = "card-checkbox-" + index;
+
+            const existingCheckbox =
+                document.getElementById(checkboxId);
+
+            // If already selected, remove it
+            if (existingCheckbox) {
+
+                existingCheckbox.closest("span").remove();
+
+                card.classList.remove("active");
+
+                const activeCards =
+                    document.querySelectorAll(".card.active");
+
+                if (activeCards.length === 0 && htmlField) {
+                    htmlField.style.display = "";
+                }
+
+                return;
+            }
+
+            // Clone Elementor checkbox option
+            const newOption = originalOption.cloneNode(true);
+
+            const checkbox = newOption.querySelector(
+                'input[type="checkbox"]'
+            );
+
+            const label = newOption.querySelector("label");
+
+            // Set checkbox data
+            checkbox.id = checkboxId;
+
+            checkbox.value = cardText;
+
+            /*
+             * IMPORTANT:
+             * Use checkbox_field instead of email.
+             */
+            checkbox.name = "form_fields[checkbox_field][]";
+
+            checkbox.checked = true;
+
+            label.setAttribute("for", checkboxId);
+
+            label.textContent = cardText;
+
+            newOption.style.display = "";
+
+            checkboxGroup.appendChild(newOption);
+
+            card.classList.add("active");
+
+            // Trigger Elementor change event
+            checkbox.dispatchEvent(
+                new Event("change", {
+                    bubbles: true
+                })
+            );
+
+        });
+
+    });
+
+});
+</script>
+
+<!-- first v -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const cards = document.querySelectorAll(".card");
+
+    const checkboxGroup = document.querySelector(
+        '.elementor-field-type-checkbox .elementor-field-subgroup'
+    );
+
+    const htmlField = document.querySelector(
+        '.elementor-field-type-html'
+    );
+
+    if (!checkboxGroup) return;
+
+    const originalOption = checkboxGroup.querySelector("span");
+
+    if (originalOption) {
+        originalOption.style.display = "none";
+    }
+
+    cards.forEach(function (card, index) {
+
+        card.addEventListener("click", function () {
+
+            if (htmlField) {
+                htmlField.style.display = "none";
+            }
+
+            const cardText = card.querySelector("p")?.textContent.trim() || "";
+
+            const checkboxId = "card-checkbox-" + index;
+
+            const existingCheckbox = document.getElementById(checkboxId);
+
+            if (existingCheckbox) {
+
+                existingCheckbox.closest("span").remove();
+
+                card.classList.remove("active");
+
+                // Check if any card is still selected
+                const activeCards = document.querySelectorAll(".card.active");
+
+                // If no card is selected, show HTML field again
+                if (activeCards.length === 0 && htmlField) {
+                    htmlField.style.display = "";
+                }
+
+                return;
+            }
+
+            const newOption = originalOption.cloneNode(true);
+
+            const checkbox = newOption.querySelector(
+                'input[type="checkbox"]'
+            );
+
+            const label = newOption.querySelector("label");
+
+            checkbox.id = checkboxId;
+
+            checkbox.value = cardText;
+
+            checkbox.name = "form_fields[email][]";
+
+            checkbox.checked = true;
+
+            label.setAttribute("for", checkboxId);
+            label.textContent = cardText;
+
+            newOption.style.display = "";
+
+            checkboxGroup.appendChild(newOption);
+
+            card.classList.add("active");
+
+            checkbox.dispatchEvent(
+                new Event("change", {
+                    bubbles: true
+                })
+            );
+
+        });
+
+    });
+
+});
+</script>
+
