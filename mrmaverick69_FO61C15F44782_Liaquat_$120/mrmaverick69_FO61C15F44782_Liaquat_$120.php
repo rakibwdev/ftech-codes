@@ -104,24 +104,42 @@ add_action('wp_enqueue_scripts', function () {
         'frm-final-round-data',
         false,
         [],
-        '1.0.0',
+        null,
         true
     );
 
     wp_enqueue_script('frm-final-round-data');
 
-    $indexes = get_option('frm_final_round_index', '');
-
-    $indexes = array_filter(
-        array_map('intval', explode(',', $indexes)),
-        function ($number) {
-            return $number > 0;
-        }
-    );
-
     wp_add_inline_script(
         'frm-final-round-data',
-        'window.finalRoundIndexes = ' . wp_json_encode(array_values($indexes)) . ';',
+        'window.frmAjaxUrl = ' . wp_json_encode(admin_url('admin-ajax.php')) . ';
+         window.frmFinalRoundNonce = ' . wp_json_encode(wp_create_nonce('frm_get_final_round')) . ';',
         'before'
     );
+
 });
+
+add_action('wp_ajax_frm_get_final_round', 'frm_get_final_round');
+add_action('wp_ajax_nopriv_frm_get_final_round', 'frm_get_final_round');
+
+function frm_get_final_round() {
+
+    check_ajax_referer('frm_get_final_round', 'nonce');
+
+    $saved_value = get_option('frm_final_round_index', '');
+
+    $numbers = preg_split(
+        '/[\s,]+/',
+        trim($saved_value)
+    );
+
+    $numbers = array_filter($numbers, function ($number) {
+        return ctype_digit($number) && intval($number) > 0;
+    });
+
+    $numbers = array_map('intval', $numbers);
+
+    wp_send_json_success([
+        'indexes' => array_values($numbers),
+    ]);
+}

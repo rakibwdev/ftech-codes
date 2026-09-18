@@ -78,9 +78,15 @@
     font-weight: 400;
 }
 
+.button_group{
+   display: flex;
+    gap: 10px;
+    /* padding: 16px 15px; */
+}
+
 .giveaway-modal-footer {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     gap: 10px;
     padding: 16px 15px;
 }
@@ -128,6 +134,9 @@
     .giveaway-modal-footer {
         flex-wrap: wrap;
     }
+    button_group{
+         flex-wrap: wrap;
+    }
 
 }
 </style>
@@ -148,6 +157,14 @@
         </div>
 
         <div class="giveaway-modal-footer">
+
+            <button type="button"
+                    class="giveaway-btn giveaway-btn-cancel"
+                    data-close-modal>
+                Show Price
+            </button>
+
+        <div class="button_group">
             <button type="button"
                     class="giveaway-btn giveaway-btn-cancel"
                     data-close-modal>
@@ -160,6 +177,9 @@
                 Begin the Giveaway
             </button>
         </div>
+
+        </div>
+
 
     </div>
 

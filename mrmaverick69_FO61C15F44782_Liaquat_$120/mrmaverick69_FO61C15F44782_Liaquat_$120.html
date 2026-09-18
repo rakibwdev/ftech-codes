@@ -65,8 +65,48 @@ document.querySelectorAll('.menu').forEach(function(menu) {
 
 </script>
 
+<!-- loader -->
+
+<style>
+    .round-loader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px;
+}
+
+.round-spinner {
+    width: 35px;
+    height: 35px;
+    border: 4px solid #ddd;
+    border-top-color: #333;
+    border-radius: 50%;
+    animation: roundSpinner 0.7s linear infinite;
+}
+
+.round-loading-text {
+    font-size: 14px;
+}
+
+@keyframes roundSpinner {
+    to {
+        transform: rotate(360deg);
+    }
+}
+</style>
+
+
+<div class="round-loader" style="display: none;">
+    <div class="round-spinner"></div>
+    <div class="round-loading-text">Preparing round...</div>
+</div>
+
+
 
 <!-- randomize -->
+
 <script>
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -85,6 +125,73 @@ document.addEventListener('DOMContentLoaded', function () {
     let participants = [];
     let currentRound = 0;
     let totalRounds = 0;
+
+
+const roundCountElement = document.querySelector('.round_count');
+const leftRoundElement = document.querySelector('.left_round');
+const roundLoader = document.querySelector('.round-loader');
+
+function updateRoundInfo() {
+
+    if (roundCountElement) {
+        roundCountElement.textContent = 'Round ' + currentRound;
+    }
+
+    if (leftRoundElement) {
+
+        const leftRounds = Math.max(
+            totalRounds - currentRound,
+            0
+        );
+
+        if (leftRounds === 0) {
+            leftRoundElement.textContent = 'No rounds left';
+        } else if (leftRounds === 1) {
+            leftRoundElement.textContent = '1 round left';
+        } else {
+            leftRoundElement.textContent = leftRounds + ' rounds left';
+        }
+    }
+}
+
+function showRoundLoader() {
+
+    if (roundLoader) {
+        roundLoader.style.display = 'flex';
+    }
+
+    if (randomizationInput) {
+        randomizationInput.style.display = 'none';
+    }
+}
+
+function hideRoundLoader() {
+
+    if (roundLoader) {
+        roundLoader.style.display = 'none';
+    }
+
+    if (randomizationInput) {
+        randomizationInput.style.display = '';
+    }
+}
+
+function waitForRoundLoader() {
+
+    return new Promise(function (resolve) {
+
+        showRoundLoader();
+
+        setTimeout(function () {
+
+            hideRoundLoader();
+
+            resolve();
+
+        }, 800);
+
+    });
+}
 
     if (nextRoundButton) {
         nextRoundButton.style.display = 'none';
@@ -115,17 +222,64 @@ document.addEventListener('DOMContentLoaded', function () {
         randomizationInput.value = output;
     }
 
-    function generateRandomRound() {
+function getLatestFinalRoundIndexes() {
 
-        if (currentRound >= totalRounds) {
-            return;
+    return fetch(
+        window.frmAjaxUrl +
+        '?action=frm_get_final_round&nonce=' +
+        encodeURIComponent(window.frmFinalRoundNonce),
+        {
+            method: 'GET',
+            cache: 'no-store'
+        }
+    )
+    .then(function (response) {
+
+        if (!response.ok) {
+            throw new Error('AJAX request failed: ' + response.status);
         }
 
-        currentRound++;
+        return response.json();
 
-        const randomizedNames = shuffle(participants);
+    })
+    .then(function (data) {
 
-        showResult(randomizedNames);
+        if (
+            data.success &&
+            data.data &&
+            Array.isArray(data.data.indexes)
+        ) {
+            return data.data.indexes;
+        }
+
+        return [];
+
+    })
+    .catch(function (error) {
+
+        console.error('Final Round AJAX Error:', error);
+
+        return [];
+
+    });
+
+}
+
+async function generateRandomRound() {
+
+    if (currentRound >= totalRounds) {
+        return;
+    }
+
+    currentRound++;
+
+    updateRoundInfo();
+
+    await waitForRoundLoader();
+
+    const randomizedNames = shuffle(participants);
+
+    showResult(randomizedNames);
 
         if (currentRound >= totalRounds) {
 
@@ -159,49 +313,57 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-   function generateFinalRound() {
+async function generateFinalRound() {
 
-    if (currentRound >= totalRounds) {
+   if (currentRound >= totalRounds) {
         return;
     }
 
-    const indexes = Array.isArray(window.finalRoundIndexes)
-        ? window.finalRoundIndexes
-        : [];
+    currentRound++;
 
-    const usedIndexes = new Set();
-    const fixedParticipants = [];
-    const remainingParticipants = [];
+    updateRoundInfo();
 
-    indexes.forEach(function (index) {
+    await waitForRoundLoader();
 
-        const participantIndex = parseInt(index, 10) - 1;
+    const indexes = await getLatestFinalRoundIndexes();
 
-        if (
-            participantIndex >= 0 &&
-            participantIndex < participants.length &&
-            !usedIndexes.has(participantIndex)
-        ) {
-            fixedParticipants.push(participants[participantIndex]);
-            usedIndexes.add(participantIndex);
+    const finalParticipants = new Array(participants.length);
+    const usedParticipants = new Set();
+    const emptyPositions = [];
+
+    for (let i = 0; i < participants.length; i++) {
+
+        if (i < indexes.length) {
+
+            const participantIndex = parseInt(indexes[i], 10) - 1;
+
+            if (
+                participantIndex >= 0 &&
+                participantIndex < participants.length &&
+                !usedParticipants.has(participantIndex)
+            ) {
+                finalParticipants[i] = participants[participantIndex];
+                usedParticipants.add(participantIndex);
+            } else {
+                emptyPositions.push(i);
+            }
+
+        } else {
+            emptyPositions.push(i);
         }
-    });
+    }
 
-    participants.forEach(function (participant, index) {
-
-        if (!usedIndexes.has(index)) {
-            remainingParticipants.push(participant);
-        }
+    const remainingParticipants = participants.filter(function (_, index) {
+        return !usedParticipants.has(index);
     });
 
     const randomizedRemaining = shuffle(remainingParticipants);
 
-    const finalParticipants = [
-        ...fixedParticipants,
-        ...randomizedRemaining
-    ];
+    emptyPositions.forEach(function (position, index) {
+        finalParticipants[position] = randomizedRemaining[index];
+    });
 
-    currentRound = totalRounds;
+    // currentRound = totalRounds;
 
     showResult(finalParticipants);
 
