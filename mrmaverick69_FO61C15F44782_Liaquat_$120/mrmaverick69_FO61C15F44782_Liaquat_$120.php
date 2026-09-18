@@ -67,14 +67,13 @@ function frm_admin_page() {
                     </th>
 
                     <td>
-                        <input
-                            type="text"
+                        <textarea
                             id="final_round_index"
                             name="final_round_index"
-                            value="<?php echo esc_attr($display_value); ?>"
                             class="regular-text"
-                            placeholder="Example: 2 3 1"
-                        >
+                            rows="8"
+                            placeholder="Example: 2 3 1 5 4 8 7 6..."
+                        ><?php echo esc_textarea($display_value); ?></textarea>
 
                         <p class="description">
                             Enter participant indexes separated by spaces or commas.
