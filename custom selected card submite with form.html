@@ -1,3 +1,145 @@
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const button = document.getElementById("workflow-mailto-btn");
+
+    if (!button) return;
+
+
+    function updateMailto() {
+
+        // Selected Part / Bedrijfstype Handling (ID: selected_part)
+        const packageElement = document.getElementById("selected_part");
+        let packageName = "";
+
+        if (packageElement) {
+            if (packageElement.tagName === "SELECT") {
+                // Standard HTML <select> dropdown
+                packageName = packageElement.options[packageElement.selectedIndex] 
+                    ? packageElement.options[packageElement.selectedIndex].text.trim() 
+                    : packageElement.value.trim();
+            } else {
+                // Custom JS Dropdown: active option ba visible text khujbe
+                const activeOption = packageElement.querySelector(".selected, .active, option:checked");
+                if (activeOption) {
+                    packageName = activeOption.textContent.trim();
+                } else {
+                    // Custom select-er main element e thaka single text nibe
+                    packageName = packageElement.childNodes[0] 
+                        ? packageElement.childNodes[0].textContent.trim() 
+                        : packageElement.textContent.trim();
+                }
+            }
+        }
+
+        if (!packageName) {
+            packageName = "Niet opgegeven";
+        }
+
+
+        // Selected cards values for Body & Subject
+        const selectedItems = [];
+        const selectedValuesOnly = [];
+
+        document.querySelectorAll(".card.active").forEach(function (card) {
+
+            const value = card.getAttribute("checkbox_value");
+
+            if (value) {
+                const trimmedValue = value.trim();
+                selectedItems.push("- " + trimmedValue);
+                selectedValuesOnly.push(trimmedValue);
+            }
+
+        });
+
+
+        const selectedComponents = selectedItems.join("\n");
+        const selectedForSubject = selectedValuesOnly.length > 0 
+            ? " (" + selectedValuesOnly.join(", ") + ")" 
+            : "";
+
+
+        // Subject line containing selected parts
+        const subject = "WorkflowKompas pakket bespreken - " + packageName ;
+
+
+        // Body
+        const body =
+`Hallo WorkflowKompas,
+
+Ik wil graag dit pakket bespreken.
+
+Bedrijfstype: ${packageName}
+
+Geselecteerde onderdelen:
+${selectedComponents || "- Geen onderdelen geselecteerd"}
+
+Aanvullende context:
+
+Naam:
+Organisatie:
+Telefoonnummer:`;
+
+
+        // Mailto URL
+        const mailto =
+            "mailto:intshawrov@gmail.com" +
+            "?subject=" + encodeURIComponent(subject) +
+            "&body=" + encodeURIComponent(body);
+
+
+        // Update actual button URL
+        button.setAttribute("href", mailto);
+        
+        return mailto;
+    }
+
+
+    // Initial update
+    updateMailto();
+
+
+    // Dropdown change & click listener for custom select
+    const packageElement = document.getElementById("selected_part");
+    if (packageElement) {
+        packageElement.addEventListener("change", updateMailto);
+        packageElement.addEventListener("click", function () {
+            setTimeout(updateMailto, 100);
+        });
+    }
+
+
+    // Card click event listener
+    document.addEventListener("click", function (e) {
+
+        if (e.target.closest(".card")) {
+
+            requestAnimationFrame(function () {
+                updateMailto();
+            });
+
+        }
+
+    });
+
+
+    // Button click trigger
+    button.addEventListener("click", function (e) {
+
+        e.preventDefault();
+
+        const mailto = updateMailto();
+
+        window.location.href = mailto;
+
+    });
+
+});
+</script>
+
+
+
 <!-- final version -->
 
 <script>

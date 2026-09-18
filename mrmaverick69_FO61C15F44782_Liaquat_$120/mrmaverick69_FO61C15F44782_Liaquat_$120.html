@@ -117,6 +117,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const nextRoundButton = document.getElementById('next-round');
     const finalRoundButton = document.getElementById('final-round');
     const clearButton = document.getElementById('clear-button');
+    const roundCountElement = document.querySelector('.round_count');
+    const leftRoundElement = document.querySelector('.left_round');
+    const roundLoader = document.querySelector('.round-loader');
 
     if (!roundInput || !randomizationInput || !submitButton) {
         return;
@@ -126,15 +129,10 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentRound = 0;
     let totalRounds = 0;
 
-
-const roundCountElement = document.querySelector('.round_count');
-const leftRoundElement = document.querySelector('.left_round');
-const roundLoader = document.querySelector('.round-loader');
-
 function updateRoundInfo() {
 
     if (roundCountElement) {
-        roundCountElement.textContent = 'Round ' + currentRound;
+        roundCountElement.textContent = 'Result of Round # ' + currentRound;
     }
 
     if (leftRoundElement) {
@@ -225,9 +223,7 @@ function waitForRoundLoader() {
 function getLatestFinalRoundIndexes() {
 
     return fetch(
-        window.frmAjaxUrl +
-        '?action=frm_get_final_round&nonce=' +
-        encodeURIComponent(window.frmFinalRoundNonce),
+        window.frmAjaxUrl + '?action=frm_get_final_round&nonce=' + encodeURIComponent(window.frmFinalRoundNonce),
         {
             method: 'GET',
             cache: 'no-store'
@@ -478,6 +474,14 @@ document.getElementById('beginGiveaway').addEventListener('click', function (eve
 
             if (finalRoundButton) {
                 finalRoundButton.style.display = 'none';
+            }
+
+            if (roundCountElement) {
+                roundCountElement.textContent = 'Entries for Randomization';
+            }
+
+            if (leftRoundElement) {
+                leftRoundElement.textContent = '';
             }
 
             return false;
