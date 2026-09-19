@@ -350,29 +350,22 @@
         return H * floorTopFrac;
     }
 
-    function waveY(u, v, t) {
-        const y0 =
-            floorTop() +
-            v * (H - floorTop());
+ function waveY(u, v, t) {
+    const y0 = floorTop() + v * (H - floorTop());
 
-        const base =
-            Math.sin(
-                u * 5.2 +
-                t * 0.5 +
-                v * 3.1
-            ) * (7 + v * 16) +
-            Math.sin(
-                u * 2.1 -
-                t * 0.32 +
-                v * 5.3
-            ) * (5 + v * 11) +
-            Math.sin(
-                u * 9.0 +
-                t * 0.8
-            ) * 2.5 * v;
+    const base =
+        Math.sin(
+            u * 5.2 + t * 0.5 + v * 3.1
+        ) * (9 + v * 22) +
+        Math.sin(
+            u * 2.1 - t * 0.32 + v * 5.3
+        ) * (7 + v * 15) +
+        Math.sin(
+            u * 9.0 + t * 0.8
+        ) * 3.5 * v;
 
-        return y0 + base * (0.35 + v * 0.65);
-    }
+    return y0 + base * (0.35 + v * 0.65);
+}
 
     function rippleOffset(px, py, t) {
         let off = 0;
@@ -431,224 +424,168 @@
     }
 
     function drawFloor(t) {
-        const fTop = floorTop();
-        const fH = H - fTop;
+    const fTop = floorTop();
+    const fH = H - fTop;
 
-        ctx.save();
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(0, fTop - 40, W, fH + 40);
+    ctx.clip();
+
+    // Premium green gradient
+    const grad = ctx.createLinearGradient(0, fTop, 0, H);
+
+    grad.addColorStop(0, 'rgba(220,235,195,0)');
+    grad.addColorStop(0.22, 'rgba(188,215,150,0.18)');
+    grad.addColorStop(0.52, 'rgba(130,170,92,0.34)');
+    grad.addColorStop(0.78, 'rgba(82,125,55,0.48)');
+    grad.addColorStop(1, 'rgba(45,82,32,0.68)');
+
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, fTop - 40, W, fH + 40);
+
+    // Point grid
+    const pts = [];
+
+    for (let r = 0; r <= ROWS; r++) {
+        const row = [];
+        const v = r / ROWS;
+
+        for (let c = 0; c <= COLS; c++) {
+            const u = c / COLS;
+            const x = u * W;
+            const baseY = waveY(u, v, t);
+
+            const y = baseY + rippleOffset(x, baseY, t);
+
+            row.push({ x, y, u, v });
+        }
+
+        pts.push(row);
+    }
+
+    // Fabric folds
+    for (let r = 0; r < ROWS; r++) {
+        const top = pts[r];
+        const bot = pts[r + 1];
 
         ctx.beginPath();
-        ctx.rect(0, fTop - 40, W, fH + 40);
-        ctx.clip();
+        ctx.moveTo(top[0].x, top[0].y);
 
-        // Base wash
-        const grad = ctx.createLinearGradient(
-            0,
-            fTop,
-            0,
-            H
-        );
+        for (let c = 1; c <= COLS; c++) {
+            const p0 = top[c - 1];
+            const p1 = top[c];
 
-        grad.addColorStop(
-            0,
-            'rgba(220,231,204,0)'
-        );
+            const mx = (p0.x + p1.x) / 2;
+            const my = (p0.y + p1.y) / 2;
 
-        grad.addColorStop(
-            0.4,
-            'rgba(214,227,196,0.35)'
-        );
-
-        grad.addColorStop(
-            1,
-            'rgba(198,216,176,0.65)'
-        );
-
-        ctx.fillStyle = grad;
-        ctx.fillRect(
-            0,
-            fTop - 40,
-            W,
-            fH + 40
-        );
-
-        // Point grid
-        const pts = [];
-
-        for (let r = 0; r <= ROWS; r++) {
-            const row = [];
-            const v = r / ROWS;
-
-            for (let c = 0; c <= COLS; c++) {
-                const u = c / COLS;
-                const x = u * W;
-                const baseY = waveY(u, v, t);
-
-                const y =
-                    baseY +
-                    rippleOffset(
-                        x,
-                        baseY,
-                        t
-                    );
-
-                row.push({
-                    x,
-                    y,
-                    u,
-                    v
-                });
-            }
-
-            pts.push(row);
+            ctx.quadraticCurveTo(p0.x, p0.y, mx, my);
         }
 
-        // Fabric folds
-        for (let r = 0; r < ROWS; r++) {
-            const top = pts[r];
-            const bot = pts[r + 1];
+        ctx.lineTo(bot[COLS].x, bot[COLS].y);
 
-            ctx.beginPath();
-            ctx.moveTo(top[0].x, top[0].y);
+        for (let c = COLS; c >= 1; c--) {
+            const p0 = bot[c];
+            const p1 = bot[c - 1];
 
-            for (let c = 1; c <= COLS; c++) {
-                const p0 = top[c - 1];
-                const p1 = top[c];
+            const mx = (p0.x + p1.x) / 2;
+            const my = (p0.y + p1.y) / 2;
 
-                const mx = (p0.x + p1.x) / 2;
-                const my = (p0.y + p1.y) / 2;
-
-                ctx.quadraticCurveTo(
-                    p0.x,
-                    p0.y,
-                    mx,
-                    my
-                );
-            }
-
-            ctx.lineTo(
-                bot[COLS].x,
-                bot[COLS].y
-            );
-
-            for (let c = COLS; c >= 1; c--) {
-                const p0 = bot[c];
-                const p1 = bot[c - 1];
-
-                const mx = (p0.x + p1.x) / 2;
-                const my = (p0.y + p1.y) / 2;
-
-                ctx.quadraticCurveTo(
-                    p0.x,
-                    p0.y,
-                    mx,
-                    my
-                );
-            }
-
-            ctx.closePath();
-
-            const v = (r + 0.5) / ROWS;
-            const fold = r % 2 === 0 ? 0.16 : 0.05;
-            const alpha =
-                0.18 + v * 0.38 + fold;
-
-            ctx.fillStyle =
-                `rgba(255,255,255,${Math.min(alpha, 0.72).toFixed(3)})`;
-
-            ctx.fill();
+            ctx.quadraticCurveTo(p0.x, p0.y, mx, my);
         }
 
-        // Contour lines
-        for (let r = 0; r <= ROWS; r++) {
-            const v = r / ROWS;
+        ctx.closePath();
 
-            ctx.beginPath();
-            ctx.moveTo(
-                pts[r][0].x,
-                pts[r][0].y
-            );
+        const v = (r + 0.5) / ROWS;
+        const fold = r % 2 === 0 ? 0.12 : 0.04;
+        const alpha = 0.10 + v * 0.22 + fold;
 
-            for (let c = 1; c <= COLS; c++) {
-                const p0 = pts[r][c - 1];
-                const p1 = pts[r][c];
+        ctx.fillStyle =
+            `rgba(235,245,220,${Math.min(alpha, 0.38).toFixed(3)})`;
 
-                const mx = (p0.x + p1.x) / 2;
-                const my = (p0.y + p1.y) / 2;
-
-                ctx.quadraticCurveTo(
-                    p0.x,
-                    p0.y,
-                    mx,
-                    my
-                );
-            }
-
-            ctx.strokeStyle =
-                `rgba(255,255,255,${(0.32 + v * 0.46).toFixed(3)})`;
-
-            ctx.lineWidth = 1;
-            ctx.stroke();
-        }
-
-        // Stipple
-        stipple.forEach(sp => {
-            const y = waveY(sp.u, sp.v, t);
-            const x = sp.u * W;
-            const y2 =
-                y +
-                rippleOffset(x, y, t);
-
-            ctx.beginPath();
-            ctx.arc(
-                x,
-                y2,
-                sp.r,
-                0,
-                Math.PI * 2
-            );
-
-            ctx.fillStyle =
-                `rgba(255,255,255,${sp.a.toFixed(3)})`;
-
-            ctx.fill();
-        });
-
-        // Floor nodes
-        floorNodes.forEach(fn => {
-            const y = waveY(
-                fn.u,
-                fn.v,
-                t
-            );
-
-            const x = fn.u * W;
-
-            const y2 =
-                y +
-                rippleOffset(x, y, t);
-
-            const pulse =
-                0.6 +
-                0.4 *
-                Math.sin(
-                    t * 1.4 +
-                    fn.phase
-                );
-
-            drawPoly(
-                x,
-                y2,
-                fn.size * pulse,
-                fn.dark
-                    ? GREEN_DARK
-                    : GREEN_MID,
-                fn.rotPhase +
-                t * fn.rotSpeed
-            );
-        });
-
-        ctx.restore();
+        ctx.fill();
     }
+
+    // Premium contour lines
+    for (let r = 0; r <= ROWS; r++) {
+        const v = r / ROWS;
+
+        ctx.beginPath();
+        ctx.moveTo(pts[r][0].x, pts[r][0].y);
+
+        for (let c = 1; c <= COLS; c++) {
+            const p0 = pts[r][c - 1];
+            const p1 = pts[r][c];
+
+            const mx = (p0.x + p1.x) / 2;
+            const my = (p0.y + p1.y) / 2;
+
+            ctx.quadraticCurveTo(p0.x, p0.y, mx, my);
+        }
+
+        ctx.strokeStyle =
+            `rgba(45,82,32,${(0.12 + v * 0.24).toFixed(3)})`;
+
+        ctx.lineWidth = 0.8;
+        ctx.stroke();
+    }
+
+    // Soft highlight lines
+    for (let r = 1; r < ROWS; r += 2) {
+        ctx.beginPath();
+        ctx.moveTo(pts[r][0].x, pts[r][0].y);
+
+        for (let c = 1; c <= COLS; c++) {
+            const p0 = pts[r][c - 1];
+            const p1 = pts[r][c];
+
+            const mx = (p0.x + p1.x) / 2;
+            const my = (p0.y + p1.y) / 2;
+
+            ctx.quadraticCurveTo(p0.x, p0.y, mx, my);
+        }
+
+        ctx.strokeStyle = 'rgba(225,240,205,0.20)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+    }
+
+    // Stipple
+    stipple.forEach(sp => {
+        const y = waveY(sp.u, sp.v, t);
+        const x = sp.u * W;
+        const y2 = y + rippleOffset(x, y, t);
+
+        ctx.beginPath();
+        ctx.arc(x, y2, sp.r, 0, Math.PI * 2);
+
+        ctx.fillStyle =
+            `rgba(220,235,195,${(sp.a * 0.65).toFixed(3)})`;
+
+        ctx.fill();
+    });
+
+    // Floor nodes
+    floorNodes.forEach(fn => {
+        const y = waveY(fn.u, fn.v, t);
+        const x = fn.u * W;
+        const y2 = y + rippleOffset(x, y, t);
+
+        const pulse =
+            0.6 +
+            0.4 * Math.sin(t * 1.4 + fn.phase);
+
+        drawPoly(
+            x,
+            y2,
+            fn.size * pulse,
+            fn.dark ? GREEN_DARK : GREEN_MID,
+            fn.rotPhase + t * fn.rotSpeed
+        );
+    });
+
+    ctx.restore();
+}
 
     // Floor nodes
     let floorNodes = [];
