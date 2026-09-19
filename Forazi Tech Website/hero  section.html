@@ -1,0 +1,39 @@
+<style>    
+    selector .hero-gradient{
+background: linear-gradient(90deg, #D0D91E 0%, #4B851D 40%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.hero_title {
+    background: linear-gradient(
+             60deg,
+        #053602 0%,
+        #053602 42%,
+        #D0D91E 46%,
+        #a6ce39 50%,
+        #053602 54%,
+        #053602 58%,
+        #053602 100%
+    );
+
+    background-size: 220% 100%;
+    background-position: 100% center;
+
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    animation: heroGradient 15s linear infinite;
+}
+
+@keyframes heroGradient {
+    from {
+        background-position: 100% center;
+    }
+
+    to {
+        background-position: 0% center;
+    }
+}
+</style>
