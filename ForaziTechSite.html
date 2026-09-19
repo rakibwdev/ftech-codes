@@ -81,6 +81,7 @@ canvas.addEventListener('click', e => {
         const r = c.spread * (0.4 + 0.6 * Math.random());
         const bx = c.cx * W + Math.cos(angle) * r * W;
         const by = c.cy * H + Math.sin(angle) * r * H;
+        
         nodes.push({
           baseX: bx, baseY: by,
           x: bx, y: by,
@@ -89,10 +90,17 @@ canvas.addEventListener('click', e => {
           phase: Math.random() * Math.PI * 2,
           speed: 0.15 + Math.random() * 0.25,
           amp: 10 + Math.random() * 14,
+          
+          orbitX: 20 + Math.random() * 35,
+            orbitY: 10 + Math.random() * 25,
+            orbitSpeed: 0.45 + Math.random() * 0.35,
+            orbitPhase: Math.random() * Math.PI * 2,
+
           hue: Math.random() < 0.5 ? 'dark' : 'light',
           rotPhase: Math.random() * Math.PI * 2,
           rotSpeed: (Math.random() < 0.5 ? -1 : 1) * (0.06 + Math.random() * 0.10)
         });
+
       }
     });
  
@@ -144,8 +152,16 @@ canvas.addEventListener('click', e => {
  
   function drawNetwork(t) {
     nodes.forEach(n => {
-      let tx = n.baseX + Math.cos(t * n.speed + n.phase) * n.amp * 0.35;
-      let ty = n.baseY + Math.sin(t * n.speed * 0.8 + n.phase) * n.amp * 0.35;
+    //   let tx = n.baseX + Math.cos(t * n.speed + n.phase) * n.amp * 0.35;
+    //   let ty = n.baseY + Math.sin(t * n.speed * 0.8 + n.phase) * n.amp * 0.35;
+
+    const time = t * n.orbitSpeed + n.orbitPhase;
+
+let tx = n.baseX +
+  Math.sin(time) * n.orbitX;
+
+let ty = n.baseY +
+  Math.sin(time * 2) * n.orbitY;
  
       // gentle repulsion from cursor
       if (mouse.active) {
