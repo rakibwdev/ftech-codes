@@ -1,0 +1,395 @@
+<canvas id="bg-canvas"></canvas>
+<script>
+(function () {
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, DPR;
+ 
+  const GREEN_DARK = '#1f3d17';
+  const GREEN_MID  = '#4a7c2f';
+  const GREEN_LIME = '#a6ce39';
+ 
+  // ---------------- Mouse state ----------------
+  const mouse = { x: -9999, y: -9999, active: false };
+  // smoothed "press point" the fabric follows (eases toward mouse)
+  const press = { x: -9999, y: -9999, depth: 0 };
+  let ripples = []; // click ripples on the floor: {x,y,t0}
+ 
+  function setMouse(x, y) {
+    mouse.x = x; mouse.y = y; mouse.active = true;
+  }
+  canvas.addEventListener('mousemove', e => {
+  setMouse(e.clientX, e.clientY);
+});
+
+canvas.addEventListener('mouseleave', () => {
+  mouse.active = false;
+});
+
+canvas.addEventListener('touchmove', e => {
+  if (e.touches[0]) {
+    setMouse(e.touches[0].clientX, e.touches[0].clientY);
+  }
+}, { passive: true });
+
+canvas.addEventListener('touchend', () => {
+  mouse.active = false;
+});
+
+canvas.addEventListener('click', e => {
+  ripples.push({
+    x: e.clientX,
+    y: e.clientY,
+    t0: performance.now() * 0.001
+  });
+
+  if (ripples.length > 6) ripples.shift();
+});
+ 
+  function resize() {
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    W = window.innerWidth;
+    H = window.innerHeight;
+    canvas.width = W * DPR;
+    canvas.height = H * DPR;
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    buildNodes();
+    buildFloorNodes();
+    buildStipple();
+  }
+ 
+  // ================= Low-poly network (top) =================
+  let nodes = [];
+  let edges = [];
+ 
+  function buildNodes() {
+    nodes = [];
+    const clusters = [
+      { cx: 0.07, cy: 0.20, n: 6, spread: 0.16 },
+      { cx: 0.28, cy: 0.14, n: 3, spread: 0.10 },
+      { cx: 0.83, cy: 0.15, n: 6, spread: 0.15 },
+      { cx: 0.97, cy: 0.32, n: 4, spread: 0.12 },
+      { cx: 0.63, cy: 0.68, n: 3, spread: 0.10 },
+      { cx: 0.12, cy: 0.62, n: 2, spread: 0.08 }
+    ];
+ 
+    clusters.forEach((c, ci) => {
+      for (let i = 0; i < c.n; i++) {
+        const angle = (i / c.n) * Math.PI * 2 + ci;
+        const r = c.spread * (0.4 + 0.6 * Math.random());
+        const bx = c.cx * W + Math.cos(angle) * r * W;
+        const by = c.cy * H + Math.sin(angle) * r * H;
+        nodes.push({
+          baseX: bx, baseY: by,
+          x: bx, y: by,
+          vx: 0, vy: 0,
+          size: 3 + Math.random() * 6,
+          phase: Math.random() * Math.PI * 2,
+          speed: 0.15 + Math.random() * 0.25,
+          amp: 10 + Math.random() * 14,
+          hue: Math.random() < 0.5 ? 'dark' : 'light',
+          rotPhase: Math.random() * Math.PI * 2,
+          rotSpeed: (Math.random() < 0.5 ? -1 : 1) * (0.06 + Math.random() * 0.10)
+        });
+      }
+    });
+ 
+    edges = [];
+    for (let i = 0; i < nodes.length; i++) {
+      const dists = [];
+      for (let j = 0; j < nodes.length; j++) {
+        if (i === j) continue;
+        const dx = nodes[i].baseX - nodes[j].baseX;
+        const dy = nodes[i].baseY - nodes[j].baseY;
+        dists.push({ j, d: Math.hypot(dx, dy) });
+      }
+      dists.sort((a, b) => a.d - b.d);
+      const linkCount = 1 + Math.floor(Math.random() * 2);
+      for (let k = 0; k < Math.min(linkCount, dists.length); k++) {
+        if (dists[k].d < W * 0.22) edges.push([i, dists[k].j]);
+      }
+    }
+  }
+ 
+  function drawPoly(x, y, r, color, rot) {
+    const sides = 6;
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(rot);
+    ctx.beginPath();
+    for (let i = 0; i < sides; i++) {
+      const a = (i / sides) * Math.PI * 2;
+      const px = Math.cos(a) * r, py = Math.sin(a) * r;
+      if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+    }
+    ctx.closePath();
+    ctx.fillStyle = color;
+    ctx.globalAlpha = 0.85;
+    ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(Math.cos(0) * r, Math.sin(0) * r);
+    ctx.lineTo(Math.cos(Math.PI / 3) * r, Math.sin(Math.PI / 3) * r);
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(255,255,255,0.25)';
+    ctx.fill();
+    ctx.globalAlpha = 1;
+    ctx.restore();
+  }
+ 
+  const REPEL_RADIUS = 150;
+  const CONNECT_RADIUS = 190;
+ 
+  function drawNetwork(t) {
+    nodes.forEach(n => {
+      let tx = n.baseX + Math.cos(t * n.speed + n.phase) * n.amp * 0.35;
+      let ty = n.baseY + Math.sin(t * n.speed * 0.8 + n.phase) * n.amp * 0.35;
+ 
+      // gentle repulsion from cursor
+      if (mouse.active) {
+        const dx = tx - mouse.x, dy = ty - mouse.y;
+        const d = Math.hypot(dx, dy);
+        if (d < REPEL_RADIUS && d > 0.01) {
+          const f = (1 - d / REPEL_RADIUS);
+          tx += (dx / d) * f * 40;
+          ty += (dy / d) * f * 40;
+        }
+      }
+      // ease current position toward target (springy feel)
+      n.x += (tx - n.x) * 0.12;
+      n.y += (ty - n.y) * 0.12;
+    });
+ 
+    ctx.lineWidth = 1;
+    edges.forEach(([a, b]) => {
+      const n1 = nodes[a], n2 = nodes[b];
+      const d = Math.hypot(n1.x - n2.x, n1.y - n2.y);
+      const alpha = Math.max(0, 0.22 - d / (W * 1.4));
+      ctx.strokeStyle = `rgba(74,124,47,${alpha.toFixed(3)})`;
+      ctx.beginPath();
+      ctx.moveTo(n1.x, n1.y);
+      ctx.lineTo(n2.x, n2.y);
+      ctx.stroke();
+    });
+ 
+    // interactive links from cursor to nearby nodes
+    if (mouse.active) {
+      nodes.forEach(n => {
+        const d = Math.hypot(n.x - mouse.x, n.y - mouse.y);
+        if (d < CONNECT_RADIUS) {
+          const alpha = (1 - d / CONNECT_RADIUS) * 0.55;
+          ctx.strokeStyle = `rgba(166,206,57,${alpha.toFixed(3)})`;
+          ctx.lineWidth = 1.2;
+          ctx.beginPath();
+          ctx.moveTo(mouse.x, mouse.y);
+          ctx.lineTo(n.x, n.y);
+          ctx.stroke();
+        }
+      });
+      // cursor node itself
+      drawPoly(mouse.x, mouse.y, 5, GREEN_LIME, t * 0.5);
+    }
+ 
+    nodes.forEach(n => {
+      const rot = n.rotPhase + t * n.rotSpeed;
+      drawPoly(n.x, n.y, n.size, n.hue === 'dark' ? GREEN_DARK : GREEN_LIME, rot);
+    });
+  }
+ 
+  // ================= Flowing fabric floor (bottom) =================
+  const COLS = 46;
+  const ROWS = 7;              // fold bands
+  const floorTopFrac = 0.56;
+ 
+  function floorTop() { return H * floorTopFrac; }
+ 
+  // height field: base rolling waves + local ripple deformation (mouse / clicks)
+  function waveY(u, v, t) {
+    const y0 = floorTop() + v * (H - floorTop());
+    const base =
+      Math.sin(u * 5.2 + t * 0.5 + v * 3.1) * (7 + v * 16) +
+      Math.sin(u * 2.1 - t * 0.32 + v * 5.3) * (5 + v * 11) +
+      Math.sin(u * 9.0 + t * 0.8) * 2.5 * v;
+    return y0 + base * (0.35 + v * 0.65);
+  }
+ 
+  function rippleOffset(px, py, t) {
+    let off = 0;
+    // continuous "press" bump that follows the cursor while over the floor
+    if (press.depth > 0.001) {
+      const d = Math.hypot(px - press.x, py - press.y);
+      const radius = 220;
+      if (d < radius) {
+        off += Math.cos((d / radius) * Math.PI * 0.5) * -26 * press.depth;
+      }
+    }
+    // expanding click ripples
+    for (let i = 0; i < ripples.length; i++) {
+      const r = ripples[i];
+      const age = t - r.t0;
+      if (age < 0 || age > 1.6) continue;
+      const d = Math.hypot(px - r.x, py - r.y);
+      const ringR = age * 420;
+      const width = 70;
+      const env = Math.max(0, 1 - Math.abs(d - ringR) / width) * Math.max(0, 1 - age / 1.6);
+      off += Math.sin((d - ringR) * 0.06) * 18 * env;
+    }
+    return off;
+  }
+ 
+  function drawFloor(t) {
+    const fTop = floorTop();
+    const fH = H - fTop;
+ 
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(0, fTop - 40, W, fH + 40);
+    ctx.clip();
+ 
+    // base wash
+    const grad = ctx.createLinearGradient(0, fTop, 0, H);
+    grad.addColorStop(0, 'rgba(220,231,204,0.0)');
+    grad.addColorStop(0.4, 'rgba(214,227,196,0.35)');
+    grad.addColorStop(1, 'rgba(198,216,176,0.65)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, fTop - 40, W, fH + 40);
+ 
+    // build point grid with ripple-aware wave heights
+    const pts = [];
+    for (let r = 0; r <= ROWS; r++) {
+      const row = [];
+      const v = r / ROWS;
+      for (let c = 0; c <= COLS; c++) {
+        const u = c / COLS;
+        const x = u * W;
+        const y = waveY(u, v, t) + rippleOffset(x, waveY(u, v, t), t);
+        row.push({ x, y, u, v });
+      }
+      pts.push(row);
+    }
+ 
+    // ---- filled ribbon folds between consecutive rows (satin look) ----
+    for (let r = 0; r < ROWS; r++) {
+      const top = pts[r], bot = pts[r + 1];
+      ctx.beginPath();
+      ctx.moveTo(top[0].x, top[0].y);
+      for (let c = 1; c <= COLS; c++) {
+        const p0 = top[c - 1], p1 = top[c];
+        const mx = (p0.x + p1.x) / 2, my = (p0.y + p1.y) / 2;
+        ctx.quadraticCurveTo(p0.x, p0.y, mx, my);
+      }
+      ctx.lineTo(bot[COLS].x, bot[COLS].y);
+      for (let c = COLS; c >= 1; c--) {
+        const p0 = bot[c], p1 = bot[c - 1];
+        const mx = (p0.x + p1.x) / 2, my = (p0.y + p1.y) / 2;
+        ctx.quadraticCurveTo(p0.x, p0.y, mx, my);
+      }
+      ctx.closePath();
+ 
+      const v = (r + 0.5) / ROWS;
+      const fold = (r % 2 === 0) ? 0.16 : 0.05; // alternating light/shadow bands
+      const alpha = 0.18 + v * 0.38 + fold;
+      ctx.fillStyle = `rgba(255,255,255,${Math.min(alpha, 0.72).toFixed(3)})`;
+      ctx.fill();
+    }
+ 
+    // ---- soft contour lines along each fold ridge ----
+    for (let r = 0; r <= ROWS; r++) {
+      const v = r / ROWS;
+      ctx.beginPath();
+      ctx.moveTo(pts[r][0].x, pts[r][0].y);
+      for (let c = 1; c <= COLS; c++) {
+        const p0 = pts[r][c - 1], p1 = pts[r][c];
+        const mx = (p0.x + p1.x) / 2, my = (p0.y + p1.y) / 2;
+        ctx.quadraticCurveTo(p0.x, p0.y, mx, my);
+      }
+      ctx.strokeStyle = `rgba(255,255,255,${(0.32 + v * 0.46).toFixed(3)})`;
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+ 
+    // ---- fine woven stipple texture ----
+    stipple.forEach(sp => {
+      const y = waveY(sp.u, sp.v, t);
+      const x = sp.u * W;
+      const y2 = y + rippleOffset(x, y, t);
+      ctx.beginPath();
+      ctx.arc(x, y2, sp.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,255,255,${sp.a.toFixed(3)})`;
+      ctx.fill();
+    });
+ 
+    // ---- accent node clusters resting on the fabric ----
+    floorNodes.forEach(fn => {
+      const y = waveY(fn.u, fn.v, t);
+      const x = fn.u * W;
+      const y2 = y + rippleOffset(x, y, t);
+      const pulse = 0.6 + 0.4 * Math.sin(t * 1.4 + fn.phase);
+      const rot = fn.rotPhase + t * fn.rotSpeed;
+      drawPoly(x, y2, fn.size * pulse, fn.dark ? GREEN_DARK : GREEN_MID, rot);
+    });
+ 
+    ctx.restore();
+  }
+ 
+  let floorNodes = [];
+  function buildFloorNodes() {
+    floorNodes = [];
+    const count = 9;
+    for (let i = 0; i < count; i++) {
+      floorNodes.push({
+        u: Math.random(),
+        v: 0.15 + Math.random() * 0.85,
+        size: 3 + Math.random() * 5,
+        phase: Math.random() * Math.PI * 2,
+        dark: Math.random() < 0.4,
+        rotPhase: Math.random() * Math.PI * 2,
+        rotSpeed: (Math.random() < 0.5 ? -1 : 1) * (0.05 + Math.random() * 0.08)
+      });
+    }
+  }
+ 
+  let stipple = [];
+  function buildStipple() {
+    stipple = [];
+    const count = Math.round((W * H) / 5200); // density scales with area
+    for (let i = 0; i < count; i++) {
+      stipple.push({
+        u: Math.random(),
+        v: Math.random(),
+        r: 0.5 + Math.random() * 1.1,
+        a: 0.10 + Math.random() * 0.22
+      });
+    }
+  }
+ 
+  // ---------------- Main loop ----------------
+  function animate(time) {
+    const t = time * 0.001;
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#f6f7f3';
+    ctx.fillRect(0, 0, W, H);
+ 
+    drawNetwork(t);
+ 
+    // ease the "press" point toward the mouse when it's over the floor
+    if (mouse.active && mouse.y > floorTop() - 60) {
+      press.x += (mouse.x - press.x) * 0.15;
+      press.y += (mouse.y - press.y) * 0.15;
+      press.depth += (1 - press.depth) * 0.1;
+    } else {
+      press.depth += (0 - press.depth) * 0.08;
+    }
+ 
+    drawFloor(t);
+ 
+    requestAnimationFrame(animate);
+  }
+ 
+  window.addEventListener('resize', resize);
+  resize();
+  requestAnimationFrame(animate);
+})();
+</script>
