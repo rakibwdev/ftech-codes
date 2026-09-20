@@ -1,0 +1,238 @@
+<style>
+
+.green-dots-canvas {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+    pointer-events: none !important;
+    z-index: 0 !important;
+}
+</style>
+
+<script>
+(function () {
+
+    function initGreenDots() {
+
+        const containers = document.querySelectorAll('.green-dots-bg');
+
+        if (!containers.length) return;
+
+        containers.forEach(function (container) {
+
+            /* Prevent duplicate canvas */
+            if (container.querySelector('.green-dots-canvas')) {
+                return;
+            }
+
+            /* Create canvas */
+            const canvas = document.createElement('canvas');
+
+            canvas.className = 'green-dots-canvas';
+
+            container.insertBefore(
+                canvas,
+                container.firstChild
+            );
+
+            const ctx = canvas.getContext('2d');
+
+            /* SETTINGS */
+            const DOT_COUNT = 60;
+            const DOT_SIZE = 2;
+            const SPEED = 0.2;
+
+          const COLORS = [
+                    'rgba(5, 54, 2, 0.35)',      // #053602
+                    'rgba(208, 217, 30, 0.30)',  // #D0D91E
+                    'rgba(166, 206, 57, 0.30)'   // #A6CE39
+                ];
+
+            let dots = [];
+            let width = 0;
+            let height = 0;
+
+            /* =========================
+               RESIZE
+            ========================= */
+
+            function resize() {
+
+                const rect = container.getBoundingClientRect();
+
+                width = rect.width;
+                height = rect.height;
+
+                if (width <= 0 || height <= 0) {
+                    return;
+                }
+
+                const dpr = window.devicePixelRatio || 1;
+
+                canvas.width = width * dpr;
+                canvas.height = height * dpr;
+
+                canvas.style.width = width + 'px';
+                canvas.style.height = height + 'px';
+
+                ctx.setTransform(
+                    dpr,
+                    0,
+                    0,
+                    dpr,
+                    0,
+                    0
+                );
+
+                createDots();
+            }
+
+            /* =========================
+               CREATE DOTS
+            ========================= */
+
+            function createDots() {
+
+                dots = [];
+
+                for (let i = 0; i < DOT_COUNT; i++) {
+
+                    const angle =
+                        Math.random() * Math.PI * 2;
+
+                    dots.push({
+
+                        x: Math.random() * width,
+
+                        y: Math.random() * height,
+
+                        vx:
+                            Math.cos(angle) * SPEED,
+
+                        vy:
+                            Math.sin(angle) * SPEED,
+
+                        size: DOT_SIZE,
+
+                        color:
+                            COLORS[
+                                Math.floor(
+                                    Math.random() *
+                                    COLORS.length
+                                )
+                            ]
+
+                    });
+
+                }
+            }
+
+            /* =========================
+               ANIMATION
+            ========================= */
+
+            function animate() {
+
+                ctx.clearRect(
+                    0,
+                    0,
+                    width,
+                    height
+                );
+
+                for (let i = 0; i < dots.length; i++) {
+
+                    const dot = dots[i];
+
+                    dot.x += dot.vx;
+                    dot.y += dot.vy;
+
+                    /* LEFT / RIGHT */
+
+                    if (dot.x > width + 5) {
+                        dot.x = -5;
+                    }
+
+                    if (dot.x < -5) {
+                        dot.x = width + 5;
+                    }
+
+                    /* TOP / BOTTOM */
+
+                    if (dot.y > height + 5) {
+                        dot.y = -5;
+                    }
+
+                    if (dot.y < -5) {
+                        dot.y = height + 5;
+                    }
+
+                    /* DRAW */
+
+                    ctx.beginPath();
+
+                    ctx.arc(
+                        dot.x,
+                        dot.y,
+                        dot.size,
+                        0,
+                        Math.PI * 2
+                    );
+
+                    ctx.fillStyle = dot.color;
+
+                    ctx.fill();
+                }
+
+                requestAnimationFrame(animate);
+            }
+
+            /* START */
+
+            resize();
+
+            animate();
+
+            /* RESIZE */
+
+            window.addEventListener(
+                'resize',
+                resize
+            );
+
+        });
+    }
+
+
+    /* Wait for Elementor */
+
+    if (
+        document.readyState === 'complete' ||
+        document.readyState === 'interactive'
+    ) {
+
+        setTimeout(
+            initGreenDots,
+            500
+        );
+
+    } else {
+
+        document.addEventListener(
+            'DOMContentLoaded',
+            function () {
+
+                setTimeout(
+                    initGreenDots,
+                    500
+                );
+
+            }
+        );
+
+    }
+
+})();
+</script>

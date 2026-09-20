@@ -1,9 +1,24 @@
-<canvas id="bg-canvas"></canvas>
+<style>
+    selector{
+  height: 100% !important;   
+}
+
+
+#hero_bg_canvas{
+  position: absolute;
+  width: 100%;
+  height: 100% !important;
+  z-index: 0;
+}
+</style>
+
+
+<canvas id="hero_bg_canvas"></canvas>
 
 <script>
 (function () {
 
-    const canvas = document.getElementById('bg-canvas');
+    const canvas = document.getElementById('hero_bg_canvas');
     const ctx = canvas.getContext('2d');
 
     let W, H, DPR;
