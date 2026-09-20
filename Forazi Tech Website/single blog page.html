@@ -1,0 +1,55 @@
+
+add_shortcode( 'author_designation', function() {
+
+    $author_id = get_the_author_meta( 'ID' );
+
+    if ( ! $author_id ) {
+        return '';
+    }
+
+    $designation = get_field( 'designation', 'user_' . $author_id );
+
+    if ( empty( $designation ) ) {
+        return '';
+    }
+
+    return esc_html( $designation );
+});
+
+<style>
+    
+       selector{
+    .elementor-author-box__text {
+    display: flex;
+    flex-direction: column;
+}
+
+.elementor-author-box__text > div:first-child {
+    order: 1;
+}
+
+.elementor-author-box__button {
+    order: 2;
+    align-self: flex-start;
+    padding-bottom: 20px !important;
+    pointer-events: none;
+    cursor: default;
+    padding: 0;
+    border: none;
+    color: #fff ;
+}
+
+.elementor-author-box__bio {
+    order: 3;
+}
+
+ 
+}
+
+ @media(max-width:576px){
+     selector .elementor-author-box {
+    flex-direction: column;
+}
+ }
+
+</style>
