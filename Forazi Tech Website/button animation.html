@@ -1,0 +1,338 @@
+
+<!-- buutton border circle animation  normal state -->
+  <style>
+
+@property --border_circle-angle {
+    syntax: "<angle>";
+    initial-value: 90deg;
+    inherits: false;
+}
+
+
+.border_circle::before{
+    content: "" !important;
+
+  position: absolute !important;
+    top: -1px !important;
+    right: -1px !important;
+    bottom: -1px !important;
+    left: -1px !important;
+
+    padding: 3px !important;
+    border-radius: 25px !important;
+
+    pointer-events: none !important;
+    z-index: 999 !important;
+
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0) !important;
+
+    -webkit-mask-composite: xor !important;
+    mask-composite: exclude !important;
+}
+
+
+.border_circle::before {
+    background: conic-gradient(
+        from var(--border_circle-angle),
+        #053602 0deg 55deg,
+        transparent 60deg 175deg,
+        #053602 180deg 235deg,
+        transparent 240deg 355deg
+    ) !important;
+
+    animation: borderRotate 10s linear infinite !important;
+}
+
+
+@keyframes borderRotate {
+
+    from {
+        --border_circle-angle: 90deg;
+    }
+
+    to {
+        --border_circle-angle: 450deg;
+    }
+
+}
+
+
+ </style>
+
+
+<!-- button border circle animation  normal state and hover-->
+ <style>
+
+.elementor-icon-wrapper{
+    display: flex;
+}
+
+
+/* =========================================
+   COMMON
+========================================= */
+
+.rainbow,
+.rainbow-white {
+    position: relative !important;
+    border-radius: 6px !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+    isolation: isolate !important;
+}
+
+
+/* =========================================
+   ANIMATED ANGLE
+========================================= */
+
+@property --rainbow-angle {
+    syntax: "<angle>";
+    initial-value: 90deg;
+    inherits: false;
+}
+
+
+/* =========================================
+   OUTER BORDER
+========================================= */
+
+.rainbow::before,
+.rainbow-white::before {
+    content: "" !important;
+
+    position: absolute !important;
+    top: -8px !important;
+    right: -8px !important;
+    bottom: -8px !important;
+    left: -8px !important;
+
+    padding: 1px !important;
+    border-radius: 6px !important;
+
+    pointer-events: none !important;
+    z-index: 999 !important;
+
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0) !important;
+
+    -webkit-mask-composite: xor !important;
+    mask-composite: exclude !important;
+}
+
+
+/* =========================================
+   RAINBOW
+   NORMAL = WHITE
+========================================= */
+
+.rainbow::before {
+    background: conic-gradient(
+        from var(--rainbow-angle),
+        #053602 0deg 90deg,
+        transparent 90deg 180deg,
+        #053602 180deg 270deg,
+        transparent 270deg 360deg
+    ) !important;
+}
+
+
+/* =========================================
+   RAINBOW
+   HOVER = GREEN
+========================================= */
+
+.rainbow:hover::before {
+    background: conic-gradient(
+        from var(--rainbow-angle),
+        #00ff88 0deg 90deg,
+        transparent 90deg 180deg,
+        #00ff88 180deg 270deg,
+        transparent 270deg 360deg
+    ) !important;
+
+    animation: rainbowRotate 4s linear infinite !important;
+}
+
+
+/* =========================================
+   RAINBOW-WHITE
+   NORMAL = WHITE
+========================================= */
+
+.rainbow-white::before {
+    background: conic-gradient(
+        from var(--rainbow-angle),
+        #ffffff 0deg 90deg,
+        transparent 90deg 180deg,
+        #ffffff 180deg 270deg,
+        transparent 270deg 360deg
+    ) !important;
+}
+
+
+/* =========================================
+   RAINBOW-WHITE
+   HOVER = WHITE + ANIMATION
+========================================= */
+
+.rainbow-white:hover::before {
+    background: conic-gradient(
+        from var(--rainbow-angle),
+        #ffffff 0deg 90deg,
+        transparent 90deg 180deg,
+        #ffffff 180deg 270deg,
+        transparent 270deg 360deg
+    ) !important;
+
+    animation: rainbowRotate 4s linear infinite !important;
+}
+
+
+/* =========================================
+   ROTATION
+========================================= */
+
+@keyframes rainbowRotate {
+
+    from {
+        --rainbow-angle: 90deg;
+    }
+
+    to {
+        --rainbow-angle: 450deg;
+    }
+
+}
+
+ </style>
+
+<!-- Text animation -->
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+    const buttons = document.querySelectorAll(
+        ".elementor-button-text"
+    );
+
+    buttons.forEach(function (button) {
+
+        const text = button.textContent.trim();
+
+        button.innerHTML = "";
+
+        [...text].forEach(function (char, index) {
+
+            const span = document.createElement("span");
+
+            span.textContent = char === " " ? "\u00A0" : char;
+
+            span.style.setProperty("--i", index);
+
+            button.appendChild(span);
+
+        });
+
+    });
+
+});
+</script>
+
+<style>
+
+.elementor-button {
+    transition:
+        transform 0.4s cubic-bezier(.22, 1, .36, 1),
+        background-color 0.3s ease,
+        color 0.3s ease;
+}
+
+
+.elementor-button:hover {
+    transform: scale(1.03);
+}
+
+/* text */
+.elementor-button-text {
+    transition: color 0.3s ease;
+}
+
+/* corner */
+
+/*  .elementor-button::before,
+ .elementor-button::after {
+    content: "";
+    position: absolute;
+
+    width: 20px;
+    height: 22px;
+
+    pointer-events: none;
+
+    transition:
+        transform 0.45s cubic-bezier(.22, 1, .36, 1),
+        opacity 0.3s ease;
+} */
+
+
+/* Top-left corner */
+/*  .elementor-button::before {
+    top: -5px;
+    left: -5px;
+
+    border-top: 1px solid rgba(255,255,255,.5);
+    border-left: 1px solid rgba(255,255,255,.5);
+
+    transform: translate(-5px, -5px);
+} */
+
+
+/* Bottom-right corner */
+/*  .elementor-button::after {
+    right: -5px;
+    bottom: -5px;
+
+    border-right: 1px solid rgba(255,255,255,.5);
+    border-bottom: 1px solid rgba(255,255,255,.5);
+
+    transform: translate(5px, 5px);
+}
+ */
+
+/* Hover corners */
+/*  .elementor-button:hover::before {
+    transform: translate(0, 0);
+}
+
+ .elementor-button:hover::after {
+    transform: translate(0, 0);
+} */
+
+/* LETTER CASCADE */
+
+ .elementor-button-text span {
+    display: inline-block;
+
+    transform: translateX(0px);
+    opacity: 1;
+
+    transition-delay: calc(var(--i) * 0.025s);
+}
+
+
+/* Hover animation */
+ .elementor-button:hover
+.elementor-button-text span {
+
+    transform: translateX(3px);
+  
+  padding-left: calc(var(--padding) - 5px);
+    transition-delay: calc(var(--i) * 0.025s);
+}
+
+</style>
