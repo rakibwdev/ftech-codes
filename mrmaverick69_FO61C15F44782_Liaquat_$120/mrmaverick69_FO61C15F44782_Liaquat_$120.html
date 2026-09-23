@@ -118,6 +118,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const submitButton = document.getElementById('submit-button');
     const nextRoundButton = document.getElementById('next-round');
     const finalRoundButton = document.getElementById('final-round');
+    const newGiveawayButton = document.getElementById('new_giveway_form_button');
     const clearButton = document.getElementById('clear-button');
     const roundCountElement = document.querySelector('.round_count');
     const leftRoundElement = document.querySelector('.left_round');
@@ -188,7 +189,7 @@ function waitForRoundLoader() {
 
             resolve();
 
-        }, 800);
+        }, 500);
 
     });
 }
@@ -374,6 +375,17 @@ async function generateFinalRound() {
     }
 }
 
+newGiveawayButton.addEventListener('click', function (event) {
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    openGiveawayModal(giveawayNewModal);
+
+    return false;
+});
+
+
 submitButton.addEventListener('click', function (event) {
 
     event.preventDefault();
@@ -428,6 +440,18 @@ document.getElementById('beginGiveaway').addEventListener('click', function (eve
     return false;
 });
 
+
+document.getElementById('newGiveaway').addEventListener('click', function (event) {
+     event.preventDefault();
+            event.stopPropagation();
+            
+            closeGiveawayModal();
+            clearRandomization();
+    
+            return false;
+});
+
+
     if (nextRoundButton) {
 
         nextRoundButton.addEventListener('click', function (event) {
@@ -461,7 +485,15 @@ document.getElementById('beginGiveaway').addEventListener('click', function (eve
             event.preventDefault();
             event.stopPropagation();
 
-            participants = [];
+            clearRandomization();
+    
+            return false;
+        });
+    }
+
+
+    function clearRandomization(){
+ participants = [];
             currentRound = 0;
             totalRounds = 0;
 
@@ -485,9 +517,6 @@ document.getElementById('beginGiveaway').addEventListener('click', function (eve
             if (leftRoundElement) {
                 leftRoundElement.textContent = '';
             }
-
-            return false;
-        });
     }
 
 });

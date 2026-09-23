@@ -86,9 +86,14 @@
 
 .giveaway-modal-footer {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     gap: 10px;
     padding: 16px 15px;
+}
+
+giveaway-modal-footer--confirm {
+    justify-content: space-between;
+    align-items: center;
 }
 
 .giveaway-btn {
@@ -156,7 +161,7 @@
             <p>Do you wish continue?</p>
         </div>
 
-        <div class="giveaway-modal-footer">
+        <div class="giveaway-modal-footer giveaway-modal-footer--confirm">
 
             <button type="button"
                     class="giveaway-btn giveaway-btn-cancel"
@@ -175,6 +180,45 @@
                     id="beginGiveaway"
                     class="giveaway-btn giveaway-btn-primary">
                 Begin the Giveaway
+            </button>
+        </div>
+
+        </div>
+
+
+    </div>
+
+
+     <div id="giveaway-new-modal" class="giveaway-modal">
+
+        <div class="giveaway-modal-header">
+            <h2>Begin a new giveaway?</h2>
+            <button type="button" class="giveaway-modal-close" data-close-modal>
+                &times;
+            </button>
+        </div>
+
+        <div class="giveaway-modal-body">
+            <p>
+                The window with your completed giveaway will be cleared.
+                <br>
+                Nothing will be charged to your account yet.
+        </p>
+        </div>
+
+        <div class="giveaway-modal-footer">
+
+        <div class="button_group">
+            <button type="button"
+                    class="giveaway-btn giveaway-btn-cancel"
+                    data-close-modal>
+                Cancel
+            </button>
+
+            <button type="button"
+                    id="newGiveaway"
+                    class="giveaway-btn giveaway-btn-primary">
+                New Giveaway
             </button>
         </div>
 
@@ -215,15 +259,18 @@
 <script>
 const giveawayModalOverlay = document.getElementById('giveaway-modal-overlay');
 const giveawayConfirmModal = document.getElementById('giveaway-confirm-modal');
+const giveawayNewModal = document.getElementById('giveaway-new-modal');
 const giveawayErrorModal = document.getElementById('giveaway-error-modal');
 const giveawayErrorMessage = document.getElementById('giveawayErrorMessage');
 const beginGiveawayButton = document.getElementById('beginGiveaway');
+const newGiveawayButton = document.getElementById('newGiveaway');
 
 function openGiveawayModal(modal) {
 
     giveawayModalOverlay.classList.add('active');
 
     giveawayConfirmModal.classList.remove('active');
+    giveawayNewModal.classList.remove('active');
     giveawayErrorModal.classList.remove('active');
 
     modal.classList.add('active');
@@ -234,6 +281,7 @@ function closeGiveawayModal() {
     giveawayModalOverlay.classList.remove('active');
 
     giveawayConfirmModal.classList.remove('active');
+    giveawayNewModal.classList.remove('active');
     giveawayErrorModal.classList.remove('active');
 }
 
