@@ -162,7 +162,8 @@ function showRoundLoader() {
     }
 
     if (randomizationInput) {
-        randomizationInput.style.color = 'white';
+        randomizationInput.value = '';
+        randomizationInput.placeholder = '';
     }
 }
 
@@ -170,10 +171,6 @@ function hideRoundLoader() {
 
     if (roundLoader) {
         roundLoader.style.display = 'none';
-    }
-
-    if (randomizationInput) {
-        randomizationInput.style.color = 'black';
     }
 }
 
