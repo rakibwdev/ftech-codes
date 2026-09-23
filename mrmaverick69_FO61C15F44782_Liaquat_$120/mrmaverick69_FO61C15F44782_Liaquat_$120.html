@@ -201,6 +201,9 @@ function waitForRoundLoader() {
     if (finalRoundButton) {
         finalRoundButton.style.display = 'none';
     }
+     if(newGiveawayButton){
+        newGiveawayButton.style.display = 'none';
+    }
 
     function shuffle(array) {
         const result = [...array];
@@ -373,6 +376,9 @@ async function generateFinalRound() {
     if (finalRoundButton) {
         finalRoundButton.style.display = 'none';
     }
+    if(newGiveawayButton){
+        newGiveawayButton.style.display = 'block';
+    }
 }
 
 newGiveawayButton.addEventListener('click', function (event) {
@@ -444,8 +450,13 @@ document.getElementById('beginGiveaway').addEventListener('click', function (eve
 document.getElementById('newGiveaway').addEventListener('click', function (event) {
      event.preventDefault();
             event.stopPropagation();
-            
+
             closeGiveawayModal();
+
+                 if(newGiveawayButton){
+                    newGiveawayButton.style.display = 'none';
+                }
+
             clearRandomization();
     
             return false;
