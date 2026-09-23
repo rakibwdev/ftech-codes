@@ -323,6 +323,9 @@ async function generateFinalRound() {
 
     currentRound++;
 
+     randomizationInput.value = '';
+     randomizationInput.placeholder = '';
+
     updateRoundInfo();
 
     await waitForRoundLoader();
