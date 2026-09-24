@@ -30,6 +30,11 @@
   line-height: 20px !important;
   }
 
+  strong{
+    color: #333 !important;
+    font-weight: 300;
+  }
+
 </style>
 
 <script>
@@ -193,7 +198,7 @@ function waitForRoundLoader() {
 
             resolve();
 
-        }, 500);
+        }, 100);
 
     });
 }
@@ -332,7 +337,9 @@ async function generateFinalRound() {
 
     updateRoundInfo();
 
-    await waitForRoundLoader();
+     showRoundLoader();
+
+       try {
 
     const indexes = await getLatestFinalRoundIndexes();
 
@@ -385,6 +392,12 @@ async function generateFinalRound() {
     }
     if(newGiveawayButton){
         newGiveawayButton.style.display = 'block';
+    }
+
+
+      } finally {
+            hideRoundLoader();
+
     }
 }
 
