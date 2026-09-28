@@ -124,6 +124,7 @@ document.querySelectorAll('.menu').forEach(function(menu) {
 <script>
 document.addEventListener('DOMContentLoaded', function () {
 
+    const roundDescription = document.getElementById('e-form-description');
     const roundInput = document.getElementById('e-form-round');
     const randomizationInput = document.getElementById('e-form-randomization');
 
@@ -282,6 +283,8 @@ async function generateRandomRound() {
         return;
     }
 
+    disableGiveawayInputs();
+
     currentRound++;
 
     updateRoundInfo();
@@ -407,6 +410,8 @@ newGiveawayButton.addEventListener('click', function (event) {
     event.stopPropagation();
 
     openGiveawayModal(giveawayNewModal);
+
+    enableGiveawayInputs();
 
     return false;
 });
@@ -549,6 +554,45 @@ document.getElementById('newGiveaway').addEventListener('click', function (event
                 leftRoundElement.textContent = '';
             }
     }
+
+    function disableGiveawayInputs() {
+
+    if (roundInput) {
+        roundInput.disabled = true;
+        roundInput.style.cursor='not-allowed';
+        roundInput.style.backgroundImage =
+            'linear-gradient(to bottom, #f5f5f5 0, #e8e8e8 100%)';
+    }
+
+    if (roundDescription) {
+        roundDescription.disabled = true;
+        roundDescription.style.cursor='not-allowed';
+        roundDescription.style.backgroundImage =
+            'linear-gradient(to bottom, #f5f5f5 0, #e8e8e8 100%)';
+    }
+
+    if (clearButton) {
+        clearButton.disabled = true;
+        clearButton.style.cursor= 'not-allowed';
+    }
+}
+
+function enableGiveawayInputs() {
+
+    if (roundInput) {
+        roundInput.disabled = false;
+        roundInput.style.backgroundImage = '';
+    }
+
+    if (roundDescription) {
+        roundDescription.disabled = false;
+        roundDescription.style.backgroundImage = '';
+    }
+
+    if (clearButton) {
+        clearButton.disabled = false;
+    }
+}
 
 });
 </script>
