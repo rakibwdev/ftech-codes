@@ -136,6 +136,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const roundCountElement = document.querySelector('.round_count');
     const leftRoundElement = document.querySelector('.left_round');
     const roundLoader = document.querySelector('.round-loader');
+    const participants_count =document.querySelector('.total_entries');
 
     if (!roundInput || !randomizationInput || !submitButton) {
         return;
@@ -449,8 +450,13 @@ submitButton.addEventListener('click', function (event) {
         return;
     }
 
+    if(participants_count){
+    participants_count.textContent= participants.length + ' entries';
+    }
+
     openGiveawayModal(giveawayConfirmModal);
 
+  
     return false;
 });
 
@@ -529,7 +535,7 @@ document.getElementById('newGiveaway').addEventListener('click', function (event
 
 
     function clearRandomization(){
- participants = [];
+            participants = [];
             currentRound = 0;
             totalRounds = 0;
 
@@ -553,6 +559,10 @@ document.getElementById('newGiveaway').addEventListener('click', function (event
 
             if (leftRoundElement) {
                 leftRoundElement.textContent = '';
+            }
+
+            if (participants_count){
+            participants_count.textContent= '';
             }
     }
 
@@ -583,15 +593,18 @@ function enableGiveawayInputs() {
     if (roundInput) {
         roundInput.disabled = false;
         roundInput.style.backgroundImage = '';
+        roundInput.style.cursor= 'pointer';
     }
 
     if (roundDescription) {
         roundDescription.disabled = false;
         roundDescription.style.backgroundImage = '';
+        roundDescription.style.cursor= 'pointer';
     }
 
     if (clearButton) {
         clearButton.disabled = false;
+        clearButton.style.cursor= 'pointer';
     }
 }
 
