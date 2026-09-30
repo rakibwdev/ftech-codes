@@ -2,7 +2,6 @@
 // /home/rakib/Local Sites/studiopalak/app/public/wp-content/plugins/teachpress/core/shortcodes.php
 // Line NO: 1163
 
-
 function tp_publist_shortcode ($args) {
 
 //     <!-- custom code start -->
