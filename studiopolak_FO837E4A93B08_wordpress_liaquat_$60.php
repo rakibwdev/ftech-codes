@@ -1,15 +1,4 @@
 <?php
-// for debug log
-add_action('init', function () {
-    if (defined('WP_DEBUG') && WP_DEBUG) {
-        return;
-    }
-
-    ini_set('log_errors', '1');
-    ini_set('display_errors', '0');
-});
-
-
 // /home/rakib/Local Sites/studiopalak/app/public/wp-content/plugins/teachpress/core/shortcodes.php
 // Line NO: 1163
 
