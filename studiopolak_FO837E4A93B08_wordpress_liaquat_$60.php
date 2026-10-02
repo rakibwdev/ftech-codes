@@ -1,4 +1,54 @@
 <?php
+
+latest find out the problem  1.10.26
+wp-content/plugins/echo-knowledge-base/includes/admin/class-epkb-site-builders.php
+line no :500
+
+// replace this code 
+
+		// Get the raw meta value for quick string check
+		$meta_value = get_post_meta( $post_id, '_elementor_data', true );
+		if ( empty( $meta_value ) || strpos( $meta_value, '[epkb-knowledge-base' ) === false ) {
+			return;
+		}
+// to
+
+        // custom code start
+
+        // Get the raw Elementor data for quick string check
+        $meta_value = get_post_meta( $post_id, '_elementor_data', true );
+
+        if ( empty( $meta_value ) ) {
+            return;
+        }
+
+        // Elementor data should normally be a JSON string.
+        // Prevent strpos() from receiving an array.
+        if ( ! is_string( $meta_value ) ) {
+            return;
+        }
+
+        if ( strpos( $meta_value, '[epkb-knowledge-base' ) === false ) {
+            return;
+        }
+
+        // custom code end
+
+
+
+// old code 
+
+// for debug log
+add_action('init', function () {
+    if (defined('WP_DEBUG') && WP_DEBUG) {
+        return;
+    }
+
+    ini_set('log_errors', '1');
+    ini_set('display_errors', '0');
+});
+
+
 // /home/rakib/Local Sites/studiopalak/app/public/wp-content/plugins/teachpress/core/shortcodes.php
 // Line NO: 1163
 
