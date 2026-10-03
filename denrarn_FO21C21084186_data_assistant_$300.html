@@ -18,4 +18,29 @@ display: none;
 selector:hover  .elementor-widget-heading{
 display: block;
 }
+
+
+.stockout {
+    display: none;
+}
+
+[stock="0"] .stockout {
+    display: block;
+    cursor: 'not-allowed';
+    /*disabled: true;*/
+}
+
+
+.stockout {
+    display: none !important;
+}
+
+[stock="0"] .stockout {
+    display: flex !important;
+    cursor:not-allowed;
+}
+
+[stock="0"] .add_to_btn {
+    display: none !important;
+}
 </style>
