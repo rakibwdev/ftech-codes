@@ -1,8 +1,8 @@
 <?php
 
-latest find out the problem  1.10.26
-wp-content/plugins/echo-knowledge-base/includes/admin/class-epkb-site-builders.php
-line no :500
+// latest find out the problem  1.10.26
+// wp-content/plugins/echo-knowledge-base/includes/admin/class-epkb-site-builders.php
+// line no :500
 
 // replace this code 
 
