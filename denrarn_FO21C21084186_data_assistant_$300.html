@@ -108,6 +108,7 @@ table.cfvsw-shop-variations.variations.cfvsw-variation-disable-logic {
         e.preventDefault();
 
         targetSlide = $('.home_grid > a').index(this);
+        $('body').addClass('opening-shop-look');
 
         elementorProFrontend.modules.popup.showPopup({
             id: 476
@@ -120,24 +121,69 @@ table.cfvsw-shop-variations.variations.cfvsw-variation-disable-logic {
             return;
         }
 
-        setTimeout(function () {
+        const popup = document.querySelector('#elementor-popup-modal-476');
 
-            const swiperElement = document.querySelector(
-                '#elementor-popup-modal-476 .swiper'
-            );
+        if (!popup) {
+            return;
+        }
 
-            if (swiperElement && swiperElement.swiper) {
+        popup.classList.add('shop-look-loading');
 
-                swiperElement.swiper.slideToLoop(
-                    targetSlide,
-                    0
-                );
+        function setCorrectSlide() {
 
+            const swiperElement = popup.querySelector('.swiper');
+
+            if (!swiperElement || !swiperElement.swiper) {
+                setTimeout(setCorrectSlide, 50);
+                return;
             }
 
-        }, 200);
+            const swiper = swiperElement.swiper;
+
+            swiper.slideToLoop(targetSlide, 0);
+
+            swiper.update();
+
+            requestAnimationFrame(function () {
+
+                popup.classList.remove('shop-look-loading');
+                $('body').removeClass('opening-shop-look');
+
+            });
+        }
+
+        setCorrectSlide();
+
+    });
+
+
+    $(document).on('elementor/popup/hide', function (event, popupId) {
+
+        if (popupId === 476) {
+
+            const popup = document.querySelector('#elementor-popup-modal-476');
+
+            if (popup) {
+                popup.classList.remove('shop-look-loading');
+            }
+
+            $('body').removeClass('opening-shop-look');
+        }
 
     });
 
 });
 </script>
+
+
+<style>
+
+    #elementor-popup-modal-476.shop-look-loading .dialog-widget-content {
+    visibility: hidden;
+    }
+
+    #elementor-popup-modal-476.shop-look-loading {
+        visibility: visible;
+    }
+    
+</style>
