@@ -76,4 +76,68 @@ img.attachment-woocommerce_thumbnail.size-woocommerce_thumbnail {
 }
 
 
+a.woocommerce-LoopProduct-link.woocommerce-loop-product__link {
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:center !important;
+}
+
+tbody {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+table.cfvsw-shop-variations.variations.cfvsw-variation-disable-logic {
+    tbody {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+}
+}
+
 </style>
+
+<script>
+    jQuery(function ($) {
+
+    let targetSlide = 0;
+
+    $(document).on('click', '.home_grid > a', function (e) {
+
+        e.preventDefault();
+
+        targetSlide = $('.home_grid > a').index(this);
+
+        elementorProFrontend.modules.popup.showPopup({
+            id: 476
+        });
+    });
+
+    $(document).on('elementor/popup/show', function (event, popupId) {
+
+        if (popupId !== 476) {
+            return;
+        }
+
+        setTimeout(function () {
+
+            const swiperElement = document.querySelector(
+                '#elementor-popup-modal-476 .swiper'
+            );
+
+            if (swiperElement && swiperElement.swiper) {
+
+                swiperElement.swiper.slideToLoop(
+                    targetSlide,
+                    0
+                );
+
+            }
+
+        }, 200);
+
+    });
+
+});
+</script>
