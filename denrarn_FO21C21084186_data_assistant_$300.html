@@ -185,5 +185,32 @@ table.cfvsw-shop-variations.variations.cfvsw-variation-disable-logic {
     #elementor-popup-modal-476.shop-look-loading {
         visibility: visible;
     }
-    
+
+</style>
+
+
+<script>
+    jQuery(function ($) {
+
+    $('.cat_link').on('click', function (e) {
+
+        if ($(e.target).closest('a').length) {
+            return;
+        }
+
+        const mainCategoryUrl = $(this).find('h2 a').last().attr('href');
+
+        if (mainCategoryUrl) {
+            window.location.href = mainCategoryUrl;
+        }
+
+    });
+
+});
+</script>
+
+<style>
+    selector {
+    cursor: pointer;
+}
 </style>
