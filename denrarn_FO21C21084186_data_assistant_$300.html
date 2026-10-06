@@ -1,6 +1,33 @@
 <style>
-    .elementor-swiper-button-prev {
-    transform:rotate(180deg) !important;
+
+/* wocommerce single page element ordering */
+.summary.entry-summary {
+    display: flex;
+    flex-direction: column;
+}
+
+.summary.entry-summary > h1 {
+    order: 1;
+}
+.summary.entry-summary > .product_meta .sku_wrapper {
+    order: 2;
+}
+
+.summary.entry-summary > .price {
+    order: 3;
+}
+
+.summary.entry-summary > .variations_form {
+    order: 4;
+}
+
+.summary.entry-summary > .woocommerce-product-details__short-description {
+    order: 5;
+}
+
+
+.elementor-swiper-button-prev {
+transform:rotate(180deg) !important;
 }
 selector img{
 aspect-ratio: 1300/750 ;
