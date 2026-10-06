@@ -1,0 +1,229 @@
+#wac-chatbot {
+    position: fixed;
+    right: 25px;
+    bottom: 25px;
+    z-index: 999999;
+    font-family: Arial, sans-serif;
+}
+
+
+/*
+ * Open button
+ */
+#wac-open {
+    width: 60px;
+    height: 60px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: #053602;
+
+    color: white;
+
+    font-size: 24px;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 25px
+        rgba(0, 0, 0, 0.25);
+}
+
+
+/*
+ * Chat window
+ */
+#wac-window {
+
+    position: absolute;
+
+    right: 0;
+
+    bottom: 75px;
+
+    width: 360px;
+
+    height: 500px;
+
+    background: white;
+
+    border-radius: 15px;
+
+    overflow: hidden;
+
+    display: none;
+
+    flex-direction: column;
+
+    box-shadow:
+        0 10px 40px
+        rgba(0, 0, 0, 0.25);
+
+    border: 1px solid #ddd;
+}
+
+
+#wac-window.active {
+    display: flex;
+}
+
+
+/*
+ * Header
+ */
+.wac-header {
+
+    background: #053602;
+
+    color: white;
+
+    padding: 15px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+}
+
+
+#wac-close {
+
+    border: none;
+
+    background: transparent;
+
+    color: white;
+
+    font-size: 25px;
+
+    cursor: pointer;
+}
+
+
+/*
+ * Messages
+ */
+#wac-messages {
+
+    flex: 1;
+
+    padding: 15px;
+
+    overflow-y: auto;
+
+    background: #f6f6f6;
+}
+
+
+.wac-message {
+
+    max-width: 80%;
+
+    padding: 10px 13px;
+
+    margin-bottom: 10px;
+
+    border-radius: 12px;
+
+    line-height: 1.5;
+
+    font-size: 14px;
+
+    white-space: pre-wrap;
+}
+
+
+.wac-message.user {
+
+    margin-left: auto;
+
+    background: #053602;
+
+    color: white;
+}
+
+
+.wac-message.bot {
+
+    margin-right: auto;
+
+    background: white;
+
+    border: 1px solid #ddd;
+
+    color: #222;
+}
+
+
+/*
+ * Form
+ */
+#wac-form {
+
+    display: flex;
+
+    gap: 8px;
+
+    padding: 10px;
+
+    border-top: 1px solid #ddd;
+}
+
+
+#wac-input {
+
+    flex: 1;
+
+    min-width: 0;
+
+    padding: 10px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 8px;
+}
+
+
+#wac-form button {
+
+    border: none;
+
+    padding: 0 15px;
+
+    border-radius: 8px;
+
+    background: #053602;
+
+    color: white;
+
+    cursor: pointer;
+}
+
+
+/*
+ * Mobile
+ */
+@media (max-width: 500px) {
+
+    #wac-chatbot {
+
+        right: 15px;
+
+        bottom: 15px;
+
+    }
+
+
+    #wac-window {
+
+        width:
+            calc(100vw - 30px);
+
+        height: 70vh;
+
+    }
+
+}
