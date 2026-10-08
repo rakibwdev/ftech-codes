@@ -29,4 +29,30 @@ selector .has-submenu{
         transform: skew(30deg);
 } 
 
+
+.meg_menu{}
+.sub_meg_menu{
+    display: none;
+}
 </style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const menuItems = document.querySelectorAll(".meg_menu li");
+    const subMenuItems = document.querySelectorAll(".sub_meg_menu");
+
+    menuItems.forEach((item, index) => {
+        item.addEventListener("mouseenter", () => {
+            if (subMenuItems[index]) {
+                subMenuItems[index].style.display = "block";
+            }
+        });
+
+        item.addEventListener("mouseleave", () => {
+            if (subMenuItems[index]) {
+                subMenuItems[index].style.display = "none";
+            }
+        });
+    });
+});
+</script>
