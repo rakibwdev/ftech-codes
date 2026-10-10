@@ -53,6 +53,33 @@ selector .has-submenu{
     background-color:red;
 }
 
+
+/* motion effect */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translate3d(0,10%,0) !important;
+    }
+
+    to {
+        opacity: 1;
+        transform: none
+    }
+}
+
+.fadeInUp {
+    animation-name: fadeInUp
+}
+
+
+/* image slider */
+img.swiper-slide-image{
+    width:100% !important;
+    aspect-ratio :960/720 !important;
+    object-fit:cover;
+}
+
+
 </style>
 
 <script>
