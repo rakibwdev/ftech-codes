@@ -1,3 +1,20 @@
+
+fix memory limit critical issue
+domains/yiscusa.com/public_html/wp-config.php
+line no: 97:102 
+/* Add any custom values between this line and the "stop editing" line. */
+
+define( 'WP_MEMORY_LIMIT', '256M' );
+define( 'WP_MAX_MEMORY_LIMIT', '512M' );
+
+/* That's all, stop editing! Happy publishing. */
+
+<!-- debug on -->
+define( 'WP_DEBUG', true );
+define( 'WP_DEBUG_LOG', true );
+define( 'WP_DEBUG_DISPLAY', false );
+@ini_set( 'display_errors', 0 );
+
 <style>
 
 /* wocommerce single page element ordering */

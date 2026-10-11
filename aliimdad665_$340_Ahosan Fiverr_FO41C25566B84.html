@@ -34,4 +34,199 @@ transform: translate3d(290px, 0px, 0px);
     .elementor-icon-box-wrapper{
         min-height: 66px;
     }
+
+/* form Code */
+
+.elementor-field-type-text.elementor-field-group.elementor-column.elementor-field-group-field_04e65c5.elementor-col-100 {
+border: solid ;
+    label{
+        position:absolute;
+    }
+    label:before{
+        content: " ";
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+    background-image: url("https://mydayinsure.com/wp-content/uploads/2026/10/svgexport-2.svg") ;
+ background-size: contain;
+    margin-right: 8px;
+    }
+}
+
+
+/* home page form */
+
+.elementor-field-option input[type="radio"] {
+    display: none !important;
+}
+
+.elementor-field-subgroup{
+    span{
+        padding: 10px;
+        margin:10px;
+    }
+}
+
+.elementor-field-option:has(input[type="radio"]:checked) label {
+    background-color: #0674d1;
+    color: #ffffff !important;
+}
+
+.elementor-field-option label {
+    border:solid 1px black;
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.1s ease;
+}
+
+
+/* .chose_duration */
+
+.elementor-field-group-field_b1e6775, .elementor-field-group-field_4a9773b{
+    display: none;
+}
+
 </style>
+
+
+<script>
+
+document.addEventListener('change', function (event) {
+    const form = event.target.closest('.elementor-form');
+
+    if (!form) return;
+
+    // Cover type radio buttons
+    if (event.target.name !== 'form_fields[name]') return;
+
+    const cover = event.target.value;
+
+    const durationOptions = {
+        'Car, Van, Motorhome': [
+            '1 hour',
+            '1 day',
+            '1 week',
+            '1 month (30 days)'
+        ],
+        'Learner': [
+            '1 day',
+            '1 month (28 days)',
+            '3 months (84 days)',
+            '5 months (140 days)'
+        ]
+    };
+
+    const allowed = durationOptions[cover] || [];
+
+    const durationGroup = form.querySelector(
+        '.elementor-field-group-field_5f3f983'
+    );
+
+    if (!durationGroup) return;
+
+    durationGroup.querySelectorAll('.elementor-field-option').forEach(function (option) {
+        const radio = option.querySelector('input[type="radio"]');
+
+        if (!radio) return;
+
+        const visible = allowed.includes(radio.value);
+
+        option.style.display = visible ? '' : 'none';
+
+        // Clear the selection if it is no longer allowed
+        if (!visible && radio.checked) {
+            radio.checked = false;
+        }
+    });
+});
+
+</script>
+
+<script>
+
+    document.addEventListener("DOMContentLoaded",function(){
+
+(function () {
+    const durationOptions = {
+        'Car, Van, Motorhome': [
+            '1 hour',
+            '1 day',
+            '1 week',
+            '1 month (30 days)'
+        ],
+        'Learner': [
+            '1 day',
+            '1 month (28 days)',
+            '3 months (84 days)',
+            '5 months (140 days)'
+        ]
+    };
+
+    function updateDuration(form) {
+        const cover = form.querySelector(
+            'input[name="form_fields[name]"]:checked'
+        );
+
+        const group = form.querySelector(
+            '.elementor-field-group-field_5f3f983'
+        );
+
+        if (!group) return;
+
+        const allowed = cover
+            ? (durationOptions[cover.value] || [])
+            : [];
+
+        group.querySelectorAll('.elementor-field-option').forEach(function (option) {
+            const radio = option.querySelector('input[type="radio"]');
+
+            if (!radio) return;
+
+            const visible = allowed.includes(radio.value);
+
+            option.style.display = visible ? '' : 'none';
+
+            if (!visible && radio.checked) {
+                radio.checked = false;
+            }
+        });
+    }
+
+    function initializeForms() {
+        document.querySelectorAll('.elementor-form').forEach(updateDuration);
+    }
+
+    document.addEventListener('change', function (event) {
+        if (event.target.matches('input[name="form_fields[name]"]')) {
+            const form = event.target.closest('.elementor-form');
+            if (form) updateDuration(form);
+        }
+    });
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initializeForms);
+    } else {
+        initializeForms();
+    }
+})();
+
+jQuery(document).ready(function ($) {
+
+    $('.elementor-field-option').on('click', function(e){
+    $('.elementor-field-group-field_b1e6775, .elementor-field-group-field_4a9773b')
+        .hide();
+    })
+   
+
+    $('.chose_duration').on('click', function (e) {
+        e.preventDefault();
+
+        $('.elementor-field-group-field_b1e6775, .elementor-field-group-field_4a9773b')
+            .css('display', 'block');
+    });
+});
+
+});
+</script>
