@@ -73,13 +73,38 @@ border: solid ;
 }
 
 .elementor-field-option label {
-    border:solid 1px black;
-    display: inline-block;
-    padding: 10px 20px;
+    border:solid 2px #00000066;
+    display: flex !important;
+    padding: 20px 20px !important;
     border-radius: 6px;
     cursor: pointer;
     transition: all 0.1s ease;
+    justify-content: center;
 }
+
+.elementor-field-subgroup.elementor-subgroup-inline {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    width: 100%;
+}
+
+.elementor-field-subgroup .elementor-field-option {
+    width: 100%;
+    margin: 0 !important;
+    box-sizing: border-box;
+}
+
+.elementor-field-type-html.elementor-field-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    p{
+        margin:0;
+    }
+}
+
 
 
 /* .chose_duration */
@@ -90,63 +115,9 @@ border: solid ;
 
 </style>
 
-
 <script>
 
-document.addEventListener('change', function (event) {
-    const form = event.target.closest('.elementor-form');
-
-    if (!form) return;
-
-    // Cover type radio buttons
-    if (event.target.name !== 'form_fields[name]') return;
-
-    const cover = event.target.value;
-
-    const durationOptions = {
-        'Car, Van, Motorhome': [
-            '1 hour',
-            '1 day',
-            '1 week',
-            '1 month (30 days)'
-        ],
-        'Learner': [
-            '1 day',
-            '1 month (28 days)',
-            '3 months (84 days)',
-            '5 months (140 days)'
-        ]
-    };
-
-    const allowed = durationOptions[cover] || [];
-
-    const durationGroup = form.querySelector(
-        '.elementor-field-group-field_5f3f983'
-    );
-
-    if (!durationGroup) return;
-
-    durationGroup.querySelectorAll('.elementor-field-option').forEach(function (option) {
-        const radio = option.querySelector('input[type="radio"]');
-
-        if (!radio) return;
-
-        const visible = allowed.includes(radio.value);
-
-        option.style.display = visible ? '' : 'none';
-
-        // Clear the selection if it is no longer allowed
-        if (!visible && radio.checked) {
-            radio.checked = false;
-        }
-    });
-});
-
-</script>
-
-<script>
-
-    document.addEventListener("DOMContentLoaded",function(){
+document.addEventListener("DOMContentLoaded",function(){
 
 (function () {
     const durationOptions = {
@@ -212,6 +183,8 @@ document.addEventListener('change', function (event) {
     }
 })();
 
+
+// selector
 jQuery(document).ready(function ($) {
 
     $('.elementor-field-option').on('click', function(e){
@@ -229,4 +202,186 @@ jQuery(document).ready(function ($) {
 });
 
 });
+</script>
+
+
+<!-- form submit -->
+
+<script>
+
+jQuery(function ($) {
+    const page2URL = 'https://mydayinsure.com/quote/driver/';
+    const page3URL = 'https://mydayinsure.com/quote/details/';
+    const storageKey = 'elementor_multi_form_data';
+
+    function readData() {
+        try {
+            return JSON.parse(sessionStorage.getItem(storageKey)) || {
+                form1: {},
+                form2: {}
+            };
+        } catch (e) {
+            return { form1: {}, form2: {} };
+        }
+    }
+
+    function collectFields(form) {
+        const result = {};
+
+        $(form).serializeArray().forEach(function (field) {
+            const match = field.name.match(
+                /^form_fields\[([^\]]+)\]$/
+            );
+
+            if (!match || match[1] === 'all_previous_data') {
+                return;
+            }
+
+            const id = match[1];
+
+            if (Object.prototype.hasOwnProperty.call(result, id)) {
+                if (!Array.isArray(result[id])) {
+                    result[id] = [result[id]];
+                }
+                result[id].push(field.value);
+            } else {
+                result[id] = field.value;
+            }
+        });
+
+        return result;
+    }
+
+    function saveData(data) {
+        sessionStorage.setItem(storageKey, JSON.stringify(data));
+    }
+
+    // Restore previous data into the final form's hidden field.
+    function updateFinalField() {
+        const data = readData();
+        const field = document.querySelector(
+            '.form-step-3 input[name="form_fields[all_previous_data]"]'
+        );
+
+        if (field) {
+            field.value = JSON.stringify({
+                form1: data.form1,
+                form2: data.form2
+            });
+        }
+    }
+
+    updateFinalField();
+
+    // Handle successful Elementor form submissions.
+    $(document).on('submit_success', '.elementor-form', function () {
+        const form = this;
+        const $wrapper = $(form).closest(
+            '.form-step-1, .form-step-2, .form-step-3'
+        );
+
+        if ($wrapper.hasClass('form-step-1')) {
+            const data = readData();
+            data.form1 = collectFields(form);
+            data.form2 = {};
+            saveData(data);
+
+            window.location.href = page2URL;
+
+        } else if ($wrapper.hasClass('form-step-2')) {
+            const data = readData();
+            data.form2 = collectFields(form);
+            saveData(data);
+
+            window.location.href = page3URL;
+
+        } else if ($wrapper.hasClass('form-step-3')) {
+            // Form 3 has already been submitted successfully.
+            sessionStorage.removeItem(storageKey);
+        }
+    });
+
+    // Populate the hidden field immediately before Form 3 submits.
+    $(document).on('submit', '.form-step-3 form.elementor-form', function () {
+        const data = readData();
+        const field = this.querySelector(
+            'input[name="form_fields[all_previous_data]"]'
+        );
+
+        if (field) {
+            field.value = JSON.stringify({
+                form1: data.form1,
+                form2: data.form2
+            });
+        }
+    });
+});
+
+
+
+
+jQuery(function ($) {
+    const field = document.querySelector(
+        'input[name="form_fields[all_previous_data]"]'
+    );
+
+    if (!field) return;
+
+    function formatData() {
+        try {
+            const data = JSON.parse(field.value);
+            const labels = {
+                name: 'Cover Type',
+                field_5f3f983: 'Duration',
+                field_b1e6775: 'Quantity',
+                field_4a9773b: 'Unit',
+                field_521735b: 'Additional Information',
+                field_288a866: 'Address',
+                field_463cf1a: 'City',
+                field_2783b2b: 'Postcode',
+                field_5ad7e40: 'Phone',
+                field_7635f53: 'Email',
+                field_116aea9: 'Other Details',
+                field_3f6ce71: 'Reason for Enquiry',
+                field_b49ce09: 'Additional Notes',
+                field_0b75226: 'Comments'
+            };
+
+            let output = 'FORM SUBMISSION DETAILS\n\n';
+
+            const sections = {
+                form1: 'COVER DETAILS',
+                form2: 'ADDITIONAL DETAILS'
+            };
+
+            Object.entries(sections).forEach(([key, heading]) => {
+                output += heading + '\n';
+
+                Object.entries(data[key] || {}).forEach(([id, value]) => {
+                    if (Array.isArray(value)) value = value.join(', ');
+                    if (value == null || String(value).trim() === '') return;
+
+                    const label = labels[id] ||
+                        id.replace(/^field_/, '')
+                          .replace(/[_-]/g, ' ');
+
+                    output += label + ': ' + value + '\n';
+                });
+
+                output += '\n';
+            });
+
+            field.value = output.trim();
+        } catch (error) {
+            console.error('Unable to format previous form data:', error);
+        }
+    }
+
+    const form = field.closest('form');
+
+    if (form) {
+        form.addEventListener('submit', formatData, true);
+    }
+});
+
 </script>
