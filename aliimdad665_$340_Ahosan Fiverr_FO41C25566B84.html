@@ -1,4 +1,136 @@
 <style>
+    selector {
+    .elementor-field-type-text,
+    .elementor-field-type-email,
+    .elementor-field-type-select,
+    .elementor-field-type-number,
+    .elementor-field-type-date {
+        border: 2px solid #00000066;
+        border-radius: 8px;
+
+        label {
+            position: absolute;
+            
+            &:before {
+                content: " ";
+                display: inline-block;
+                width: 20px;
+                height: 20px;
+                background-size: contain;
+                margin-right: 8px;
+            }
+        }
+    }
+
+    .elementor-field-type-text {
+        &:nth-child(1),
+        &:nth-child(2),
+        &:nth-child(6) {
+            label:before { background-image: url("/wp-content/uploads/2026/10/svgviewer-output-4.svg"); }
+        }
+
+        &:nth-child(3) {
+            label:before { background-image: url("/wp-content/uploads/2026/10/svgviewer-output-6.svg"); }
+        }
+
+        &:nth-child(7) {
+            label:before { background-image: url("/wp-content/uploads/2026/10/svgviewer-output-9.svg"); }
+        }
+
+        &:nth-child(9) {
+            label:before { background-image: url("/wp-content/uploads/2026/10/svgviewer-output-11.svg"); }
+        }
+    }
+
+    .elementor-field-type-email label:before,
+    .elementor-field-type-select label:before {
+        background-image: url("/wp-content/uploads/2026/10/svgviewer-output-7.svg");
+    }
+
+    .elementor-field-type-date label:before {
+        background-image: url("/wp-content/uploads/2026/10/svgviewer-output-8.svg");
+    }
+    
+        .elementor-field-type-number label:before {
+        background-image: url("/wp-content/uploads/2026/10/svgviewer-output-8.svg");
+    }
+}
+
+
+/*selector .elementor-field-type-text:focus-within label::before {*/
+/*    top: 10px !important;*/
+
+/*}*/
+
+selector .elementor-field-type-text:focus-within label {
+    top: -10px !important;
+    bottom: auto !important;
+    font-size: 12px !important;
+    transition: all 0.3s ease !important;
+
+}
+
+
+selector .elementor-field-type-text:focus-within label {
+    top: -7px !important;
+    bottom: auto !important;
+    font-size: 12px !important;
+    transition: all 0.3s ease !important;
+}
+
+
+
+selector{
+    .elementor-form .elementor-field-type-text:focus-within .elementor-field-label,
+.elementor-form .elementor-field-type-text:has(input.is-filled) .elementor-field-label,
+ .elementor-form .elementor-field-type-email:focus-within .elementor-field-label,
+  .elementor-form .elementor-field-type-email:has(input.is-filled) .elementor-field-label {
+    top: 2px !important;
+    bottom: auto !important;
+    font-size: 12px !important;
+    transition: all 0.3s ease !important;
+     &:before {
+                content: " ";
+                display: inline-block;
+                width: 14px;
+                height: 14px;
+                background-size: contain;
+                margin-right: 8px;
+                transition: all 0.3s ease !important;
+            }
+}
+}
+
+
+
+
+/* selector .elementor-form .elementor-field-type-text:focus-within .elementor-field-label,
+selector .elementor-form .elementor-field-type-text:has(input.is-filled) .elementor-field-label,
+selector .elementor-form .elementor-field-type-email:focus-within .elementor-field-label,
+selector .elementor-form .elementor-field-type-email:has(input.is-filled) .elementor-field-label {
+    top: 0 !important;
+    bottom: auto !important;
+    font-size: 12px !important;
+    transition: all 0.3s ease !important;
+}
+
+selector .elementor-form .elementor-field-type-text .elementor-field-label::before,
+selector .elementor-form .elementor-field-type-email .elementor-field-label::before {
+    content: " ";
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-right: 8px;
+    transition: all 0.3s ease !important;
+} */
+
+
+</style>
+
+
+<style>
     selector{
         b{
             font-weight: 400;
@@ -113,6 +245,50 @@ border: solid ;
     display: none;
 }
 
+
+
+
+.elementor-form .elementor-field-type-text:focus-within .elementor-field-label,
+.elementor-form .elementor-field-type-text:has(input.is-filled) .elementor-field-label {
+    top: 0 !important;
+    bottom: auto !important;
+    font-size: 12px !important;
+    transition: all 0.3s ease;
+}
+
+.elementor-field-type-text.elementor-field-group.elementor-column{
+    overflow: hidden;
+}
+
+
+/* All Elementor form fields — normal, focused, and unfocused states */
+.elementor-form .elementor-field-group input.elementor-field,
+.elementor-form .elementor-field-group textarea.elementor-field,
+.elementor-form .elementor-field-group select.elementor-field {
+    border: 0 !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background-color: #fff;
+}
+
+/* Prevent border changes on focus */
+.elementor-form .elementor-field-group input.elementor-field:focus,
+.elementor-form .elementor-field-group textarea.elementor-field:focus,
+.elementor-form .elementor-field-group select.elementor-field:focus {
+    border: 0 !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Prevent border changes after focus */
+.elementor-form .elementor-field-group input.elementor-field:not(:focus),
+.elementor-form .elementor-field-group textarea.elementor-field:not(:focus),
+.elementor-form .elementor-field-group select.elementor-field:not(:focus) {
+    border: 0 !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
 </style>
 
 <script>
@@ -135,35 +311,50 @@ document.addEventListener("DOMContentLoaded",function(){
         ]
     };
 
-    function updateDuration(form) {
-        const cover = form.querySelector(
-            'input[name="form_fields[name]"]:checked'
+
+
+function updateDuration(form) {
+    const cover = form.querySelector(
+        'input[name="form_fields[name]"]:checked'
+    );
+
+    const group = form.querySelector(
+        '.elementor-field-group-field_5f3f983'
+    );
+
+    if (!group) return;
+
+    const allowed = cover
+        ? (durationOptions[cover.value] || [])
+        : [];
+
+    group.querySelectorAll('.elementor-field-option').forEach(function (option) {
+        const radio = option.querySelector('input[type="radio"]');
+
+        if (!radio) return;
+
+        const visible = allowed.includes(radio.value);
+
+        option.style.display = visible ? '' : 'none';
+
+        // Uncheck options that are not allowed
+        if (!visible && radio.checked) {
+            radio.checked = false;
+        }
+    });
+
+    // Select the first allowed duration automatically
+    if (allowed.length > 0) {
+        const firstOption = group.querySelector(
+            'input[type="radio"][value="' + allowed[0] + '"]'
         );
 
-        const group = form.querySelector(
-            '.elementor-field-group-field_5f3f983'
-        );
-
-        if (!group) return;
-
-        const allowed = cover
-            ? (durationOptions[cover.value] || [])
-            : [];
-
-        group.querySelectorAll('.elementor-field-option').forEach(function (option) {
-            const radio = option.querySelector('input[type="radio"]');
-
-            if (!radio) return;
-
-            const visible = allowed.includes(radio.value);
-
-            option.style.display = visible ? '' : 'none';
-
-            if (!visible && radio.checked) {
-                radio.checked = false;
-            }
-        });
+        if (firstOption) {
+            firstOption.checked = true;
+        }
     }
+}
+
 
     function initializeForms() {
         document.querySelectorAll('.elementor-form').forEach(updateDuration);
@@ -201,27 +392,280 @@ jQuery(document).ready(function ($) {
     });
 });
 
+
+const fields = document.querySelectorAll('.elementor-form input');
+
+fields.forEach(function (field) {
+    field.classList.toggle('is-filled', field.value.trim() !== '');
+
+    field.addEventListener('input', function () {
+        this.classList.toggle('is-filled', this.value.trim() !== '');
+    });
 });
+
+});
+
 </script>
 
 
-<!-- form submit -->
+<!-- form submit  
+[field id="formatted_previous_data"]
+all_previous_data
+-->
 
 <script>
 
 jQuery(function ($) {
     const page2URL = 'https://mydayinsure.com/quote/driver/';
     const page3URL = 'https://mydayinsure.com/quote/details/';
+    const page4URL = 'https://mydayinsure.com/quote/payment/';
+
+    const storageKey = 'elementor_multi_form_data';
+
+    // Read all saved form data.
+    function readData() {
+        try {
+            return JSON.parse(sessionStorage.getItem(storageKey)) || {
+                form1: {},
+                form2: {},
+                form3: {},
+                form4: {}
+            };
+        } catch (error) {
+            return {
+                form1: {},
+                form2: {},
+                form3: {},
+                form4: {}
+            };
+        }
+    }
+
+    // Collect form fields without collecting our hidden data fields.
+    function collectFields(form) {
+        const result = {};
+
+        $(form).serializeArray().forEach(function (field) {
+            const match = field.name.match(
+                /^form_fields\[([^\]]+)\]$/
+            );
+
+            if (!match) return;
+
+            const id = match[1];
+
+            if (
+                id === 'all_previous_data' ||
+                id === 'formatted_previous_data'
+            ) {
+                return;
+            }
+
+            if (Object.prototype.hasOwnProperty.call(result, id)) {
+                if (!Array.isArray(result[id])) {
+                    result[id] = [result[id]];
+                }
+
+                result[id].push(field.value);
+            } else {
+                result[id] = field.value;
+            }
+        });
+
+        return result;
+    }
+
+    function saveData(data) {
+        sessionStorage.setItem(storageKey, JSON.stringify(data));
+    }
+
+    // Write combined JSON to the hidden field on Form 3 or Form 4.
+    function updateCombinedField(form, data) {
+        const field = form.querySelector(
+            'input[name="form_fields[all_previous_data]"]'
+        );
+
+        if (!field) return;
+
+        field.value = JSON.stringify({
+            form1: data.form1 || {},
+            form2: data.form2 || {},
+            form3: data.form3 || {},
+            form4: data.form4 || {}
+        });
+    }
+
+    // Labels used in the formatted email.
+    const labels = {
+        name: 'Cover Type',
+        field_5f3f983: 'Duration',
+        field_b1e6775: 'Quantity',
+        field_4a9773b: 'Unit',
+        field_521735b: 'Additional Information',
+        field_288a866: 'Address',
+        field_463cf1a: 'City',
+        field_2783b2b: 'Postcode',
+        field_5ad7e40: 'Phone',
+        field_7635f53: 'Email',
+        field_116aea9: 'Other Details',
+        field_3f6ce71: 'Reason for Enquiry',
+        field_b49ce09: 'Additional Notes',
+        field_0b75226: 'Comments'
+    };
+
+    // Convert combined JSON into readable email text.
+    function formatData(data) {
+        let output = ' \n\n';
+
+        const sections = [
+            ['form1', 'FORM 1 : '],
+            ['form2', 'FORM 2 : '],
+            ['form3', 'FORM 3 : '],
+            ['form4', 'FORM 4 : ']
+        ];
+
+        sections.forEach(function ([key, heading]) {
+            const fields = data[key] || {};
+            const lines = [];
+
+            Object.entries(fields).forEach(function ([id, value]) {
+                if (Array.isArray(value)) {
+                    value = value.join(', ');
+                }
+
+                if (
+                    value == null ||
+                    String(value).trim() === ''
+                ) {
+                    return;
+                }
+
+                const label = labels[id] ||
+                    id.replace(/^field_/, '').replace(/[_-]/g, ' ');
+
+                lines.push(label + ': ' + value);
+            });
+
+            // Do not show empty sections.
+            if (lines.length) {
+                output += heading + '\n';
+                output += lines.join('\n') + '\n\n';
+            }
+        });
+
+        return output.trim();
+    }
+
+    // Populate the previous data when Form 3 or Form 4 loads.
+    function populateHiddenFields() {
+        const data = readData();
+
+        document.querySelectorAll(
+            '.form-step-3 form.elementor-form, ' +
+            '.form-step-4 form.elementor-form'
+        ).forEach(function (form) {
+            updateCombinedField(form, data);
+        });
+    }
+
+    populateHiddenFields();
+
+    // Capture submission before Elementor serializes the form.
+    document.addEventListener('submit', function (event) {
+        const form = event.target;
+
+        if (!form.matches('form.elementor-form')) return;
+
+        const wrapper = form.closest(
+            '.form-step-1, .form-step-2, ' +
+            '.form-step-3, .form-step-4'
+        );
+
+        if (!wrapper) return;
+
+        const data = readData();
+
+        if (wrapper.classList.contains('form-step-3')) {
+            updateCombinedField(form, data);
+        }
+
+        if (wrapper.classList.contains('form-step-4')) {
+            // Include the current Form 4 fields in the final data.
+            data.form4 = collectFields(form);
+
+            updateCombinedField(form, data);
+
+            const formattedField = form.querySelector(
+                'input[name="form_fields[formatted_previous_data]"]'
+            );
+
+            if (formattedField) {
+                formattedField.value = formatData(data);
+            }
+        }
+    }, true);
+
+    // Handle successful Elementor form submissions.
+    $(document).on('submit_success', '.elementor-form', function () {
+        const form = this;
+
+        const wrapper = $(form).closest(
+            '.form-step-1, .form-step-2, ' +
+            '.form-step-3, .form-step-4'
+        );
+
+        const data = readData();
+
+        if (wrapper.hasClass('form-step-1')) {
+            data.form1 = collectFields(form);
+            data.form2 = {};
+            data.form3 = {};
+            data.form4 = {};
+
+            saveData(data);
+            window.location.href = page2URL;
+
+        } else if (wrapper.hasClass('form-step-2')) {
+            data.form2 = collectFields(form);
+            data.form3 = {};
+            data.form4 = {};
+
+            saveData(data);
+            window.location.href = page3URL;
+
+        } else if (wrapper.hasClass('form-step-3')) {
+            data.form3 = collectFields(form);
+            data.form4 = {};
+
+            saveData(data);
+            window.location.href = page4URL;
+
+        } else if (wrapper.hasClass('form-step-4')) {
+            // Final form submitted successfully.
+            sessionStorage.removeItem(storageKey);
+        }
+    });
+});
+
+</script>
+
+<!-- <script>
+
+jQuery(function ($) {
+    const page2URL = 'https://mydayinsure.com/quote/driver/';
+    const page3URL = 'https://mydayinsure.com/quote/details/';
+    const page4URL = 'https://mydayinsure.com/quote/payment/';
     const storageKey = 'elementor_multi_form_data';
 
     function readData() {
         try {
             return JSON.parse(sessionStorage.getItem(storageKey)) || {
                 form1: {},
-                form2: {}
+                form2: {},
+                form3: {}
             };
         } catch (e) {
-            return { form1: {}, form2: {} };
+            return { form1: {}, form2: {}, form3: {} };
         }
     }
 
@@ -266,7 +710,8 @@ jQuery(function ($) {
         if (field) {
             field.value = JSON.stringify({
                 form1: data.form1,
-                form2: data.form2
+                form2: data.form2,
+                form3: data.form3
             });
         }
     }
@@ -311,7 +756,8 @@ jQuery(function ($) {
         if (field) {
             field.value = JSON.stringify({
                 form1: data.form1,
-                form2: data.form2
+                form2: data.form2,
+                form3: data.form3
             });
         }
     });
@@ -351,7 +797,8 @@ jQuery(function ($) {
 
             const sections = {
                 form1: 'COVER DETAILS',
-                form2: 'ADDITIONAL DETAILS'
+                form2: 'ADDITIONAL DETAILS',
+                form3: 'FINAL DETAILS'  
             };
 
             Object.entries(sections).forEach(([key, heading]) => {
@@ -384,4 +831,4 @@ jQuery(function ($) {
     }
 });
 
-</script>
+</script> -->
