@@ -49,18 +49,31 @@ add_action( 'admin_footer', function () {
                     /\s*(Form-\d+\s*:)/gi,
                     '\n\n$1'
                 );
-                                
+
                 // Separate field labels.
                 text = text.replace(
                     /\s+(Cover Type|Duration|Quantity|Unit|First Name|Last Name|Mobile Number|Email Address|Date of Birth|Gender|Occupation|What brings|Postcode|Driving Licence|City|Phone|Email|Vehicle registration|pay name|pay email|amount)\s*:/gi,
                     '\n    $1:'
                 );
-                                
+
                 // Separate the email/SMS consent field.
                 text = text.replace(
                     /\s+(checkbox:)/gi,
                     '\n    $1'
                 );
+
+                // Put Payment Details on a new line.
+                text = text.replace(
+                    /\s*(Payment Details\s*:)/i,
+                    '\n\n$1'
+                );
+                                
+                // Hide only the fields under Payment Details.
+                text = text.replace(
+                    /(Payment Details\s*:)[\s\S]*?(?=\s*Form-\d+\s*:|$)/i,
+                    '$1\n'
+                );
+
 
                     output.push(key + ':\n' + text.trim());
 
@@ -671,7 +684,7 @@ jQuery(function ($) {
             ['form1', 'Form-1 : '],
             ['form2', 'Form-2 : '],
             ['form3', 'Form-3 : '],
-            ['form4', 'Form-4 : ']
+            ['form4', 'Payment Details : ']
         ];
 
         sections.forEach(function ([key, heading]) {
