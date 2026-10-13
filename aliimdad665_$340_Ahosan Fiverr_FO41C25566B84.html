@@ -1,10 +1,13 @@
 <style>
+    
     selector {
     .elementor-field-type-text,
     .elementor-field-type-email,
     .elementor-field-type-select,
     .elementor-field-type-number,
+    .elementor-date-field,
     .elementor-field-type-date {
+        
         border: 2px solid #00000066;
         border-radius: 8px;
 
@@ -18,6 +21,7 @@
                 height: 20px;
                 background-size: contain;
                 margin-right: 8px;
+                transition: all 0.3s ease-in-out !important;
             }
         }
     }
@@ -47,22 +51,24 @@
         background-image: url("/wp-content/uploads/2026/10/svgviewer-output-7.svg");
     }
 
+    .elementor-field-type-select label:before{
+        z-index: 1;
+        width: 13px;
+        height: 13px;
+    }
+
     .elementor-field-type-date label:before {
         background-image: url("/wp-content/uploads/2026/10/svgviewer-output-8.svg");
     }
     
-        .elementor-field-type-number label:before {
+        .elementor-field-type-text label:before {
         background-image: url("/wp-content/uploads/2026/10/svgviewer-output-8.svg");
     }
 }
 
 
-/*selector .elementor-field-type-text:focus-within label::before {*/
-/*    top: 10px !important;*/
-
-/*}*/
-
-selector .elementor-field-type-text:focus-within label {
+selector .elementor-field-type-text:focus-within label,
+selector .elementor-field-type-date:focus-within label{
     top: -10px !important;
     bottom: auto !important;
     font-size: 12px !important;
@@ -71,7 +77,8 @@ selector .elementor-field-type-text:focus-within label {
 }
 
 
-selector .elementor-field-type-text:focus-within label {
+selector .elementor-field-type-text:focus-within label,
+selector .elementor-field-type-date:focus-within label{
     top: -7px !important;
     bottom: auto !important;
     font-size: 12px !important;
@@ -79,16 +86,19 @@ selector .elementor-field-type-text:focus-within label {
 }
 
 
+/*rakib*/
 
 selector{
     .elementor-form .elementor-field-type-text:focus-within .elementor-field-label,
 .elementor-form .elementor-field-type-text:has(input.is-filled) .elementor-field-label,
  .elementor-form .elementor-field-type-email:focus-within .elementor-field-label,
-  .elementor-form .elementor-field-type-email:has(input.is-filled) .elementor-field-label {
+  .elementor-form .elementor-field-type-email:has(input.is-filled) .elementor-field-label,
+  .elementor-form .elementor-field-type-date:focus-within .elementor-field-label,
+  .elementor-form .elementor-field-type-date:has(input.is-filled) .elementor-field-label {
     top: 2px !important;
     bottom: auto !important;
     font-size: 12px !important;
-    transition: all 0.3s ease !important;
+    transition: all 0.5s ease !important;
      &:before {
                 content: " ";
                 display: inline-block;
@@ -96,35 +106,57 @@ selector{
                 height: 14px;
                 background-size: contain;
                 margin-right: 8px;
-                transition: all 0.3s ease !important;
+                transition: all 0.5s ease !important;
             }
 }
 }
 
-
-
-
-/* selector .elementor-form .elementor-field-type-text:focus-within .elementor-field-label,
-selector .elementor-form .elementor-field-type-text:has(input.is-filled) .elementor-field-label,
-selector .elementor-form .elementor-field-type-email:focus-within .elementor-field-label,
-selector .elementor-form .elementor-field-type-email:has(input.is-filled) .elementor-field-label {
-    top: 0 !important;
-    bottom: auto !important;
-    font-size: 12px !important;
-    transition: all 0.3s ease !important;
+/* All Elementor form fields — normal, focused, and unfocused states */
+.elementor-form .elementor-field-group input.elementor-field,
+.elementor-form .elementor-field-group textarea.elementor-field,
+.elementor-form .elementor-field-group select.elementor-field,
+.elementor-form .elementor-field-group select.elementor-field-textual {
+    border: 0 !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background-color: #fff;
 }
 
-selector .elementor-form .elementor-field-type-text .elementor-field-label::before,
-selector .elementor-form .elementor-field-type-email .elementor-field-label::before {
-    content: " ";
-    display: inline-block;
-    width: 14px;
-    height: 14px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    margin-right: 8px;
-    transition: all 0.3s ease !important;
-} */
+/* Prevent border changes on focus */
+.elementor-form .elementor-field-group input.elementor-field:focus,
+.elementor-form .elementor-field-group textarea.elementor-field:focus,
+.elementor-form .elementor-field-group select.elementor-field:focus,
+.elementor-form .elementor-field-group select.elementor-field-textual:focus {
+    border: 0 !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Prevent border changes after focus */
+.elementor-form .elementor-field-group input.elementor-field:not(:focus),
+.elementor-form .elementor-field-group textarea.elementor-field:not(:focus),
+.elementor-form .elementor-field-group select.elementor-field:not(:focus),
+.elementor-form .elementor-field-group select.elementor-field-textual:not(:focus) {
+    border: 0 !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+label.elementor-field-label {
+    display:flex;
+    align-items: center;
+}
+
+
+
+/*sodib*/
+.elementor-field-group-field_8a06ead, 
+.elementor-field-group-field_cac4ead,
+.elementor-field-group-field_f24fb43,
+.e-form__buttons{
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
 
 
 </style>
