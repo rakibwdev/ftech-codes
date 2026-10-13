@@ -1,3 +1,116 @@
+
+add_action( 'admin_footer', function () {
+
+    if (
+        ! isset( $_GET['page'] ) ||
+        $_GET['page'] !== 'elementor-pay-addons-transactions'
+    ) {
+        return;
+    }
+    ?>
+   <script>
+
+(function () {
+    'use strict';
+
+    function formatTransactionData() {
+        document.querySelectorAll('#epa-details-content tr').forEach(function (row) {
+            const label = row.querySelector('th');
+            const valueCell = row.querySelector('td');
+
+            // Format only the form_data row.
+            if (!label || !valueCell) return;
+            if (label.textContent.trim() !== 'form_data') return;
+            if (valueCell.dataset.formatted === 'yes') return;
+
+            let data;
+
+            try {
+                data = JSON.parse(valueCell.textContent.trim());
+            } catch (error) {
+                // The content may not be valid JSON yet.
+                return;
+            }
+
+            if (!data || typeof data !== 'object' || Array.isArray(data)) {
+                return;
+            }
+
+            const output = [];
+
+            Object.entries(data).forEach(function ([key, value]) {
+                if (value === null || value === '') return;
+
+                if (key === 'Form Data' && typeof value === 'string') {
+                    let text = value;
+
+                // Separate form sections.
+                text = text.replace(
+                    /\s*(Form-\d+\s*:)/gi,
+                    '\n\n$1'
+                );
+                                
+                // Separate field labels.
+                text = text.replace(
+                    /\s+(Cover Type|Duration|Quantity|Unit|First Name|Last Name|Mobile Number|Email Address|Date of Birth|Gender|Occupation|What brings|Postcode|Driving Licence|City|Phone|Email|Vehicle registration|pay name|pay email|amount)\s*:/gi,
+                    '\n    $1:'
+                );
+                                
+                // Separate the email/SMS consent field.
+                text = text.replace(
+                    /\s+(checkbox:)/gi,
+                    '\n    $1'
+                );
+
+                    output.push(key + ':\n' + text.trim());
+
+                } else if (typeof value === 'object') {
+                    output.push(
+                        key + ':\n' + JSON.stringify(value, null, 2)
+                    );
+
+                } else {
+                    output.push(key + ': ' + value);
+                }
+            });
+
+            valueCell.textContent = output.join('\n\n');
+            valueCell.style.whiteSpace = 'pre-wrap';
+            valueCell.style.overflowWrap = 'anywhere';
+
+            // Mark as formatted to prevent duplicate processing.
+            valueCell.dataset.formatted = 'yes';
+        });
+    }
+
+    function init() {
+        if (!document.body) return;
+
+        formatTransactionData();
+
+        const observer = new MutationObserver(function () {
+            formatTransactionData();
+        });
+
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init, { once: true });
+    } else {
+        init();
+    }
+})();
+
+
+</script>
+    <?php
+});
+
+
 <style>
     
     selector {
@@ -51,10 +164,15 @@
         background-image: url("/wp-content/uploads/2026/10/svgviewer-output-7.svg");
     }
 
+
+    .elementor-field-type-select select{
+        padding-left: 30px;
+    }
+
     .elementor-field-type-select label:before{
         z-index: 1;
-        width: 13px;
-        height: 13px;
+        /* width: 13px;
+        height: 13px; */
     }
 
     .elementor-field-type-date label:before {
@@ -151,7 +269,7 @@ label.elementor-field-label {
 
 /*sodib*/
 .elementor-field-group-field_8a06ead, 
-.elementor-field-group-field_cac4ead,
+.elementor-field-group-checkbox,
 .elementor-field-group-field_f24fb43,
 .e-form__buttons{
     padding-left: 0 !important;
@@ -533,16 +651,16 @@ jQuery(function ($) {
         field_5f3f983: 'Duration',
         field_b1e6775: 'Quantity',
         field_4a9773b: 'Unit',
-        field_521735b: 'Additional Information',
-        field_288a866: 'Address',
-        field_463cf1a: 'City',
-        field_2783b2b: 'Postcode',
-        field_5ad7e40: 'Phone',
-        field_7635f53: 'Email',
-        field_116aea9: 'Other Details',
-        field_3f6ce71: 'Reason for Enquiry',
-        field_b49ce09: 'Additional Notes',
-        field_0b75226: 'Comments'
+        field_521735b: 'First Name',
+        field_288a866: 'Last Name',
+        field_463cf1a: 'Mobile Number',
+        field_2783b2b: 'Email Address',
+        field_5ad7e40: 'Date of Birth',
+        field_7635f53: 'Gender',
+        field_116aea9: 'Occupation',
+        field_3f6ce71: 'What brings',
+        field_b49ce09: 'Postcode',
+        field_0b75226: 'Driving Licence',
     };
 
     // Convert combined JSON into readable email text.
@@ -550,10 +668,10 @@ jQuery(function ($) {
         let output = ' \n\n';
 
         const sections = [
-            ['form1', 'FORM 1 : '],
-            ['form2', 'FORM 2 : '],
-            ['form3', 'FORM 3 : '],
-            ['form4', 'FORM 4 : ']
+            ['form1', 'Form-1 : '],
+            ['form2', 'Form-2 : '],
+            ['form3', 'Form-3 : '],
+            ['form4', 'Form-4 : ']
         ];
 
         sections.forEach(function ([key, heading]) {
