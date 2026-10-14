@@ -1,0 +1,145 @@
+
+<div id="all-form-data-summary">
+    Loading your quote details...
+</div>
+
+<style>
+
+#all-form-data-summary {
+    width: 100%;
+}
+
+.quote-summary-section {
+    margin-bottom: 24px;
+    padding: 20px;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+}
+
+.quote-summary-section h3 {
+    margin: 0 0 16px;
+}
+
+.quote-summary-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.quote-summary-row:last-child {
+    border-bottom: none;
+}
+
+.quote-summary-row strong {
+    flex: 1;
+}
+
+.quote-summary-row span {
+    flex: 1;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+    .quote-summary-row {
+        flex-direction: column;
+        gap: 5px;
+    }
+}
+
+</style>
+
+<script>
+
+jQuery(function ($) {
+    const storageKey = 'elementor_multi_form_data';
+    const summary = document.getElementById('all-form-data-summary');
+
+    if (!summary) return;
+
+    const labels = {
+        name: 'Cover Type',
+        field_5f3f983: 'Duration',
+        field_b1e6775: 'Quantity',
+        field_4a9773b: 'Unit',
+        field_521735b: 'First Name',
+        field_288a866: 'Last Name',
+        field_463cf1a: 'Mobile Number',
+        field_2783b2b: 'Email Address',
+        field_5ad7e40: 'Date of Birth',
+        field_7635f53: 'Gender',
+        field_116aea9: 'Occupation',
+        field_3f6ce71: 'What brings you here?',
+        field_b49ce09: 'Postcode',
+        field_0b75226: 'Driving Licence',
+        checkbox: 'Marketing Preferences',
+        vehicle_registration: 'Vehicle Registration'
+    };
+
+    let data;
+
+    try {
+        data = JSON.parse(sessionStorage.getItem(storageKey));
+    } catch (error) {
+        data = null;
+    }
+
+    if (!data) {
+        summary.textContent = 'No saved quote details found.';
+        return;
+    }
+
+    const sections = [
+        ['form1', 'Cover Details'],
+        ['form2', 'Driver Details'],
+        ['form3', 'Vehicle Details'],
+        ['form4', 'Payment Details']
+    ];
+
+    summary.replaceChildren();
+
+    sections.forEach(function ([key, heading]) {
+        const fields = data[key] || {};
+        const entries = Object.entries(fields).filter(function ([id, value]) {
+            return value !== null &&
+                value !== undefined &&
+                String(value).trim() !== '';
+        });
+
+        if (!entries.length) return;
+
+        const section = document.createElement('div');
+        section.className = 'quote-summary-section';
+
+        const title = document.createElement('h3');
+        title.textContent = heading;
+        section.appendChild(title);
+
+        const list = document.createElement('div');
+        list.className = 'quote-summary-fields';
+
+        entries.forEach(function ([id, value]) {
+            const row = document.createElement('div');
+            row.className = 'quote-summary-row';
+
+            const label = document.createElement('strong');
+            label.textContent = labels[id] || id.replace(/^field_/, '').replace(/[_-]/g, ' ');
+
+            const output = document.createElement('span');
+            output.textContent = Array.isArray(value) ? value.join(', ') : String(value);
+
+            row.append(label, output);
+            list.appendChild(row);
+        });
+
+        section.appendChild(list);
+        summary.appendChild(section);
+    });
+
+    if (!summary.children.length) {
+        summary.textContent = 'No quote details found.';
+    }
+});
+
+</script>
