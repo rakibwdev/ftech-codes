@@ -1,0 +1,13 @@
+
+add_action( 'wp_enqueue_scripts', function() {
+    wp_enqueue_script(
+        'my-custom-script',
+        get_stylesheet_directory_uri() . '/js/custom.js',
+        array( 'jquery' ),
+        '1.0.0',
+        array(
+            'in_footer' => true,
+            'strategy'  => 'defer',
+        )
+    );
+} );
