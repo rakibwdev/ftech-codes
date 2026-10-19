@@ -1,0 +1,41 @@
+<script>
+    jQuery(document).on('submit_success', '.elementor-form', function () {
+    const form = this;
+    const container = form.closest('.form_container');
+
+    if (!container) return;
+
+    container.classList.add('form-submitted');
+});
+</script>
+
+<style>
+ .success_message {
+    display: none;
+}
+
+.form_container.form-submitted .success_message {
+    display: flex;
+}
+
+.form_container.form-submitted .seo_form {
+    display: none;
+}
+</style>
+
+
+<style>
+
+selector::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    background-color: #d0d91e88;
+}
+
+
+
+
+</style>

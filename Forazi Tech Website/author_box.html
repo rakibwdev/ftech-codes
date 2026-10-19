@@ -1,0 +1,91 @@
+
+// add_shortcode( 'author_designation', function() {
+
+//     $author_id = get_the_author_meta( 'ID' );
+
+//     if ( ! $author_id ) {
+//         return '';
+//     }
+
+//     $designation = get_field( 'designation', 'user_' . $author_id );
+
+//     if ( empty( $designation ) ) {
+//         return '';
+//     }
+
+//     return esc_html( $designation );
+// });
+
+
+add_filter( 'elementor/widget/render_content', function( $content, $widget ) {
+
+    if ( 'author-box' !== $widget->get_name() ) {
+        return $content;
+    }
+
+    $author_id = get_the_author_meta( 'ID' );
+
+    if ( ! $author_id ) {
+        return $content;
+    }
+
+    $designation = get_field( 'designation', 'user_' . $author_id );
+
+    if ( empty( $designation ) ) {
+        return $content;
+    }
+
+    $heading = '<div class="elementor-author-box__designation">'
+        . esc_html( $designation )
+        . '</div>';
+
+
+	$pattern = '/(<h[1-6][^>]*class="[^"]*elementor-author-box__name[^"]*"[^>]*>.*?<\/h[1-6]>)/s';
+
+    return preg_replace( $pattern, '$1' . $heading, $content, 1 );
+
+}, 10, 2 );
+
+
+<style>
+       selector{
+/*    .elementor-author-box__text {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*}*/
+
+/*.elementor-author-box__text > div:first-child {*/
+/*    order: 1;*/
+/*}*/
+
+/*.elementor-author-box__button {*/
+/*    order: 2;*/
+/*    align-self: flex-start;*/
+/*    padding-bottom: 20px !important;*/
+/*    pointer-events: none;*/
+/*    cursor: default;*/
+/*    padding: 0;*/
+/*    border: none;*/
+/*    color: #00000 ;*/
+/*}*/
+
+/*.elementor-author-box__bio {*/
+/*    order: 3;*/
+/*}*/
+
+.elementor-author-box__designation {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 18px;
+    color: #3d6a17;
+}
+ 
+}
+
+
+ @media(max-width:576px){
+     selector .elementor-author-box {
+    flex-direction: column;
+}
+ }
+</style>
