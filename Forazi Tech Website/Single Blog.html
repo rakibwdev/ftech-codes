@@ -137,7 +137,7 @@ add_filter( 'elementor/widget/render_content', function( $content, $widget ) {
     }
 
             /* animation */
-            
+
             /* h2.wp-block-heading,
             h3.wp-block-heading,
             p.wp-block-paragraph,
@@ -320,4 +320,71 @@ document.addEventListener('DOMContentLoaded', function () {
         passive: true
     });
 });
+</script>
+
+
+<!-- Remove List Id from url -->
+
+<script>
+document.addEventListener('click', function (e) {
+    const link = e.target.closest(
+        '.elementor-toc__list-wrapper a[href*="#elementor-toc__heading-anchor-"]'
+    );
+
+    if (!link) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+
+    const id = link.getAttribute('href').split('#')[1];
+    const target = document.getElementById(id);
+
+    // Keep the URL clean
+    history.replaceState(
+        null,
+        '',
+        window.location.pathname + window.location.search
+    );
+
+    if (target) {
+        target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+    }
+}, true);
+
+window.addEventListener('hashchange', function () {
+    if (window.location.hash.startsWith('#elementor-toc__heading-anchor-')) {
+        history.replaceState(
+            null,
+            '',
+            window.location.pathname + window.location.search
+        );
+    }
+});
+
+</script>
+
+<!-- Short version -->
+<script>
+document.addEventListener('click', function (e) {
+    const link = e.target.closest(
+        '.elementor-toc__list-wrapper a[href*="#elementor-toc__heading-anchor-"]'
+    );
+
+    if (!link) return;
+
+    e.preventDefault();
+    e.stopImmediatePropagation();
+
+    const target = document.getElementById(link.hash.slice(1));
+
+    history.replaceState(null, '', location.pathname + location.search);
+
+    if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}, true);
 </script>
