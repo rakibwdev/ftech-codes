@@ -137,7 +137,8 @@ add_filter( 'elementor/widget/render_content', function( $content, $widget ) {
     }
 
             /* animation */
-            h2.wp-block-heading,
+            
+            /* h2.wp-block-heading,
             h3.wp-block-heading,
             p.wp-block-paragraph,
             ul.wp-block-list,
@@ -160,6 +161,17 @@ add_filter( 'elementor/widget/render_content', function( $content, $widget ) {
             .wp-block-paragraph a.is-visible,
             img.is-visible,
             table.is-visible {
+                opacity: 1;
+                transform: translateY(0);
+            } */
+
+             * {
+                opacity: 0;
+                transform: translateY(10px);
+                transition: opacity 0.9s ease, transform 0.9s ease;
+            }
+
+             *.is-visible {
                 opacity: 1;
                 transform: translateY(0);
             }
@@ -221,7 +233,7 @@ selector h2:first-of-type {
 </style>
 
 
-<script>
+<!-- <script>
 document.addEventListener('DOMContentLoaded', function () {
     const elements = document.querySelectorAll(
         '.blog_containter h2.wp-block-heading, ' +
@@ -245,6 +257,48 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }, {
         rootMargin: '-89% 0px -10% 0px',
+        threshold: 0
+    });
+
+    let hasScrolled = false;
+
+    function onFirstScroll() {
+        if (hasScrolled) return;
+
+        hasScrolled = true;
+
+        elements.forEach((element) => {
+            observer.observe(element);
+        });
+
+        window.removeEventListener('scroll', onFirstScroll);
+    }
+
+    window.addEventListener('scroll', onFirstScroll, {
+        passive: true
+    });
+});
+</script> -->
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const container = document.querySelector('.blog_containter');
+
+    if (!container) return;
+
+    const elements = container.querySelectorAll('*');
+
+    if (!elements.length) return;
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        rootMargin: '-30% 0px -69% 0px',
         threshold: 0
     });
 
