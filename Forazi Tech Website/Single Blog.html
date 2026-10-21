@@ -96,18 +96,21 @@ add_filter( 'elementor/widget/render_content', function( $content, $widget ) {
 <style>
 
 .blog_containter{
+
      h2.wp-block-heading{
     font-size: 32px !important;
-    line-height: 32px !important;
-    font-weight: 500 !important;
+    line-height: 46px !important;
+    font-weight: 600 !important;
     padding-top: 42px !important;
     padding-bottom: 12px !important;
     }
-    h3{
-        font-size: 20px !important;
-        line-height: 28px !important;
-        font-weight: 500 !important;
+
+    h3.wp-block-heading{
+        font-size: 28px !important;
+        line-height: 36px !important;
+        font-weight: 600 !important;
     }
+    
     .wp-block-paragraph a {
         color: #9ca317 !important;
     }
@@ -120,6 +123,7 @@ add_filter( 'elementor/widget/render_content', function( $content, $widget ) {
         color: #485772 !important;
         font-size: 18px !important;
         line-height: 30px !important;
+        padding-top: 8px !important;
     }
 
     img{
@@ -127,7 +131,41 @@ add_filter( 'elementor/widget/render_content', function( $content, $widget ) {
         height: 100% !important;
         object-fit: cover !important;
     }
+    ul.wp-block-list{
+        padding-top: 8px !important;
+        padding-bottom: 8px !important;
+    }
 
+            /* animation */
+            h2.wp-block-heading,
+            h3.wp-block-heading,
+            p.wp-block-paragraph,
+            ul.wp-block-list,
+            ul.wp-block-list li,
+            .wp-block-paragraph a,
+            img,
+            table {
+                opacity: 0;
+                transform: translateY(10px);
+                transition:
+                    opacity 0.9s ease,
+                    transform 0.9s ease;
+            }
+
+            h2.wp-block-heading.is-visible,
+            h3.wp-block-heading.is-visible,
+            p.wp-block-paragraph.is-visible,
+            ul.wp-block-list.is-visible,
+            ul.wp-block-list li.is-visible,
+            .wp-block-paragraph a.is-visible,
+            img.is-visible,
+            table.is-visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+
+    /* mobile */
     @media(max-width: 767px){
         img{
         width: 100% !important;
@@ -136,20 +174,21 @@ add_filter( 'elementor/widget/render_content', function( $content, $widget ) {
     }
 
     h2.wp-block-heading{
-        font-size: 22px !important;
-        line-height: 30px !important;
-        font-weight: 500 !important;
+        font-size: 24px !important;
+        line-height: 36px !important;
+        font-weight: 600 !important;
     }
-    h3{
-        font-size: 18px !important;
-        line-height: 26px !important;
-        font-weight: 500 !important;
+    h3.wp-block-heading{
+        font-size: 22px !important;
+        line-height: 28px !important;
+        font-weight: 600 !important;
     }
 
       p.wp-block-paragraph, ul.wp-block-list li{
         color: #485772 !important;
         font-size: 16px !important;
         line-height: 28px !important;
+        padding-top: 5px !important;
     }
 
     }
@@ -178,4 +217,53 @@ selector h2:first-of-type {
 }
 
 
+
 </style>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const elements = document.querySelectorAll(
+        '.blog_containter h2.wp-block-heading, ' +
+        '.blog_containter h3.wp-block-heading, ' +
+        '.blog_containter p.wp-block-paragraph, ' +
+        '.blog_containter ul.wp-block-list, ' +
+        '.blog_containter ul.wp-block-list li, ' +
+        '.blog_containter .wp-block-paragraph a, ' +
+        '.blog_containter img, ' +
+        '.blog_containter table'
+    );
+
+    if (!elements.length) return;
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        rootMargin: '-89% 0px -10% 0px',
+        threshold: 0
+    });
+
+    let hasScrolled = false;
+
+    function onFirstScroll() {
+        if (hasScrolled) return;
+
+        hasScrolled = true;
+
+        elements.forEach((element) => {
+            observer.observe(element);
+        });
+
+        window.removeEventListener('scroll', onFirstScroll);
+    }
+
+    window.addEventListener('scroll', onFirstScroll, {
+        passive: true
+    });
+});
+</script>
