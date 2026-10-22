@@ -1,3 +1,91 @@
+<style>
+
+/* Archive loop */
+    .loop_container {
+    position: relative;
+    overflow: hidden;
+}
+
+.loop_container .loop_inner_container {
+    transform: translateY(29%);
+    transition: transform 0.5s ease;
+}
+
+.loop_container:hover .loop_inner_container {
+    transform: translateY(0);
+    backdrop-filter: blur(2px);
+}
+
+selector {
+
+h2, h4 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+h2 {
+    -webkit-line-clamp: 2;
+}
+
+h4 {
+    -webkit-line-clamp: 3;
+}
+
+}
+
+
+/* hover animation */
+    .main_container {
+    position: relative;
+    overflow: hidden;
+}
+
+.main_container .inner_container {
+    transform: translateY(48%);
+    transition: transform 0.5s ease;
+}
+
+.main_container:hover .inner_container {
+    transform: translateY(0);
+    backdrop-filter: blur(2px);
+}
+
+
+
+
+/* case archive */
+
+selector {
+
+ .elementor-post__card {
+    background-image: radial-gradient(circle at top right, #cfd91ebf 0%,#cfd91e4a 90%);
+    box-shadow:0px 0px 5px 0px rgba(4.9, 54, 2.0, 0.09);
+}
+
+.elementor-post__meta-data {
+        display: flex;
+    justify-content: space-between;
+}
+
+h3.elementor-post__title, .elementor-post__excerpt {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+h3.elementor-post__title {
+    -webkit-line-clamp: 2;
+}
+
+.elementor-post__excerpt {
+    -webkit-line-clamp: 3;
+}
+
+}
+
+</style>
+
 
 // add_shortcode( 'author_designation', function() {
 

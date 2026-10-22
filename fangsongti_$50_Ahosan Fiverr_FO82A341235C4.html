@@ -1,4 +1,45 @@
 <style>
+.checkbox_content > div {
+    display: none;
+
+}
+
+.checkbox_content > div.is-active {
+    display: block;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.querySelector('.form_checkbox');
+    const contents = document.querySelectorAll('.checkbox_content > div');
+
+    if (!form || !contents.length) return;
+
+    const checkboxes = form.querySelectorAll(
+        'input[name="form_fields[name][]"]'
+    );
+
+    function updateContent() {
+        const hasChecked = [...checkboxes].some(cb => cb.checked);
+
+        contents.forEach((content, index) => {
+            content.classList.toggle(
+                'is-active',
+                !hasChecked || (checkboxes[index] && checkboxes[index].checked)
+            );
+        });
+    }
+
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', updateContent);
+    });
+
+    updateContent();
+});
+</script>
+
+<style>
      selector svg {
         transform: rotate(360deg) skew(30deg);
       }
