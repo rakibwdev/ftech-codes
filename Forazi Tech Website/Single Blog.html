@@ -51,7 +51,44 @@ h4 {
     backdrop-filter: blur(2px);
 }
 
+@media(max-width: 465px) {
+    .main_container .inner_container {
+        transform: translateY(60%);
+    }
+}
 
+
+
+
+
+/* hover with opacity */
+.main_container {
+    position: relative;
+    overflow: hidden;
+}
+
+.main_container .inner_container {
+    transform: translateY(60%);
+    opacity: 0;
+        transition: all 0.8s ease;
+
+}
+
+.main_container:hover .inner_container {
+    transform: translateY(0);
+    backdrop-filter: blur(2px);
+    opacity: 1;
+    
+}
+
+.happy_title{
+        opacity: 1;
+        transition: opacity 0.9s ease-in;
+    }
+
+.main_container:hover .happy_title{
+        opacity: 0;
+    }
 
 
 /* case archive */
