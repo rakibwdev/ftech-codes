@@ -1,0 +1,420 @@
+<style>
+
+/* Main filter wrapper */
+.pdf-document-library {
+    --pdf-filter-accent: #08324e;
+    --pdf-filter-border: #d8e0e6;
+    --pdf-filter-text: #243746;
+
+    width: 100%;
+    color: var(--pdf-filter-text);
+    font-family: inherit;
+}
+
+/* Two tabs */
+.pdf-filter-tabs {
+    display: flex;
+    align-items: stretch;
+    gap: 8px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--pdf-filter-border);
+}
+
+.pdf-filter-tab {
+    appearance: none;
+    border: 1px solid var(--pdf-filter-border);
+    border-bottom: 0;
+    border-radius: 6px 6px 0 0;
+    padding: 13px 22px;
+    background: #f5f8fa;
+    color: var(--pdf-filter-text);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .2s ease, color .2s ease;
+}
+
+.pdf-filter-tab:hover,
+.pdf-filter-tab.is-active {
+    background: var(--pdf-filter-accent);
+    border-color: var(--pdf-filter-accent);
+    color: #fff;
+}
+
+/* Checkbox panel */
+.pdf-filter-panel {
+    padding: 4px 0 18px;
+}
+
+.pdf-filter-panel[hidden] {
+    display: none !important;
+}
+
+.pdf-filter-options {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px 24px;
+}
+
+.pdf-filter-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    color: var(--pdf-filter-text);
+    font-size: 15px;
+    line-height: 1.5;
+    cursor: pointer;
+}
+
+.pdf-filter-option input[type="checkbox"] {
+    flex: 0 0 17px;
+    width: 17px;
+    height: 17px;
+    margin: 0;
+    accent-color: var(--pdf-filter-accent);
+    cursor: pointer;
+}
+
+.pdf-filter-option span {
+    overflow-wrap: anywhere;
+}
+
+/* Sorting and reset controls */
+.pdf-filter-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin: 12px 0 20px;
+}
+
+.pdf-filter-toolbar label {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.pdf-filter-sort {
+    min-width: 100px;
+    padding: 9px 12px;
+    border: 1px solid var(--pdf-filter-border);
+    border-radius: 5px;
+    background: #fff;
+    color: var(--pdf-filter-text);
+    font: inherit;
+}
+
+.pdf-filter-reset {
+    margin-left: auto;
+    padding: 9px 14px;
+    border: 1px solid var(--pdf-filter-border);
+    border-radius: 5px;
+    background: #fff;
+    color: var(--pdf-filter-accent);
+    font: inherit;
+    cursor: pointer;
+}
+
+.pdf-filter-reset:hover {
+    background: #f0f5f8;
+}
+
+/* Status */
+.pdf-filter-status {
+    margin-bottom: 14px;
+    font-size: 13px;
+    color: #64748b;
+}
+
+.pdf-filter-empty,
+.pdf-filter-no-results {
+    padding: 18px 0;
+    color: #64748b;
+}
+
+/* PDF document cards */
+.pdf-document-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.pdf-document-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    min-width: 0;
+    padding: 20px;
+    border: 1px solid var(--pdf-filter-border);
+    border-radius: 8px;
+    background: #fff;
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.pdf-document-card:hover {
+    border-color: #a8bbc9;
+    box-shadow: 0 5px 18px rgb(8 50 78 / 7%);
+}
+
+.pdf-document-title {
+    margin: 0;
+    color: var(--pdf-filter-accent);
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+}
+
+.pdf-document-download {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border: 1px solid var(--pdf-filter-accent);
+    border-radius: 5px;
+    background: var(--pdf-filter-accent);
+    color: #fff !important;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none !important;
+    transition: background .2s ease, color .2s ease;
+}
+
+.pdf-document-download:hover {
+    background: #125e84;
+    border-color: #125e84;
+    color: #fff !important;
+}
+
+.pdf-document-library [aria-busy="true"] {
+    opacity: .65;
+}
+
+/* Tablet and mobile */
+@media (max-width: 767px) {
+    .pdf-filter-tabs {
+        gap: 5px;
+    }
+
+    .pdf-filter-tab {
+        flex: 1;
+        padding: 11px 8px;
+        font-size: 14px;
+    }
+
+    .pdf-filter-options,
+    .pdf-document-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pdf-filter-toolbar {
+        align-items: flex-start;
+    }
+
+    .pdf-filter-reset {
+        margin-left: 0;
+    }
+
+    .pdf-document-card {
+        padding: 16px;
+    }
+}
+
+</style>
+
+
+<script>
+(function () {
+    'use strict';
+
+    function initPdfLibrary(root) {
+        if (root.dataset.initialized === 'true') return;
+        root.dataset.initialized = 'true';
+
+        const ajaxUrl = root.dataset.ajaxUrl;
+        const nonce = root.dataset.nonce;
+        const storageKey = 'pdf-library-state:' + location.pathname;
+
+        const tabs = root.querySelectorAll('.pdf-filter-tab');
+        const panels = root.querySelectorAll('.pdf-filter-panel');
+        const checkboxes = root.querySelectorAll('.pdf-filter-checkbox');
+        const sortSelect = root.querySelector('.pdf-filter-sort');
+        const resetButton = root.querySelector('.pdf-filter-reset');
+        const results = root.querySelector('.pdf-filter-results');
+        const status = root.querySelector('.pdf-filter-status');
+
+        let requestController = null;
+        let requestNumber = 0;
+        let debounceTimer = null;
+
+        function readState() {
+            try {
+                return JSON.parse(localStorage.getItem(storageKey)) || {};
+            } catch (error) {
+                return {};
+            }
+        }
+
+        function saveState() {
+            const state = {
+                fileIds: Array.from(
+                    root.querySelectorAll('[data-group="file"]:checked')
+                ).map(input => input.value),
+
+                productIds: Array.from(
+                    root.querySelectorAll('[data-group="product"]:checked')
+                ).map(input => input.value),
+
+                sort: sortSelect.value
+            };
+
+            try {
+                localStorage.setItem(storageKey, JSON.stringify(state));
+            } catch (error) {
+                // Filtering still works if storage is unavailable.
+            }
+        }
+
+        function restoreState() {
+            const state = readState();
+
+            checkboxes.forEach(input => {
+                const savedIds = input.dataset.group === 'file'
+                    ? state.fileIds
+                    : state.productIds;
+
+                input.checked = Array.isArray(savedIds) &&
+                    savedIds.includes(input.value);
+            });
+
+            if (state.sort === 'asc' || state.sort === 'desc') {
+                sortSelect.value = state.sort;
+            }
+        }
+
+        function switchTab(name) {
+            tabs.forEach(tab => {
+                const active = tab.dataset.tab === name;
+                tab.classList.toggle('is-active', active);
+                tab.setAttribute('aria-selected', String(active));
+            });
+
+            panels.forEach(panel => {
+                const active = panel.dataset.panel === name;
+                panel.classList.toggle('is-active', active);
+                panel.hidden = !active;
+            });
+        }
+
+        async function fetchDocuments() {
+            const currentRequest = ++requestNumber;
+
+            if (requestController) {
+                requestController.abort();
+            }
+
+            requestController = new AbortController();
+
+            const fileIds = Array.from(
+                root.querySelectorAll('[data-group="file"]:checked')
+            ).map(input => input.value);
+
+            const productIds = Array.from(
+                root.querySelectorAll('[data-group="product"]:checked')
+            ).map(input => input.value);
+
+            const data = new FormData();
+            data.append('action', 'rakib_filter_pdf_documents');
+            data.append('nonce', nonce);
+            data.append('sort', sortSelect.value);
+
+            fileIds.forEach(id => data.append('file_ids[]', id));
+            productIds.forEach(id => data.append('product_ids[]', id));
+
+            results.setAttribute('aria-busy', 'true');
+            status.textContent = 'Loading documents…';
+
+            try {
+                const response = await fetch(ajaxUrl, {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    body: data,
+                    signal: requestController.signal
+                });
+
+                const json = await response.json();
+
+                if (currentRequest !== requestNumber) return;
+
+                if (!response.ok || !json.success) {
+                    throw new Error(
+                        json.data && json.data.message
+                            ? json.data.message
+                            : 'Unable to load documents.'
+                    );
+                }
+
+                // HTML is generated and escaped by our WordPress PHP handler.
+                results.innerHTML = json.data.html;
+                status.textContent =
+                    json.data.count + ' document(s) found.';
+            } catch (error) {
+                if (error.name === 'AbortError') return;
+
+                if (currentRequest === requestNumber) {
+                    results.textContent = 'Could not load documents. Please try again.';
+                    status.textContent = 'An error occurred.';
+                }
+            } finally {
+                if (currentRequest === requestNumber) {
+                    results.removeAttribute('aria-busy');
+                }
+            }
+        }
+
+        function scheduleUpdate() {
+            saveState();
+            window.clearTimeout(debounceTimer);
+            debounceTimer = window.setTimeout(fetchDocuments, 180);
+        }
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                switchTab(tab.dataset.tab);
+            });
+        });
+
+        checkboxes.forEach(input => {
+            input.addEventListener('change', scheduleUpdate);
+        });
+
+        sortSelect.addEventListener('change', scheduleUpdate);
+
+        resetButton.addEventListener('click', () => {
+            checkboxes.forEach(input => {
+                input.checked = false;
+            });
+
+            sortSelect.value = 'asc';
+            saveState();
+            fetchDocuments();
+        });
+
+        restoreState();
+        switchTab('file');
+        fetchDocuments();
+    }
+
+    function startPdfLibraries() {
+        document.querySelectorAll('.pdf-document-library').forEach(initPdfLibrary);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', startPdfLibraries);
+    } else {
+        startPdfLibraries();
+    }
+})();
+</script>

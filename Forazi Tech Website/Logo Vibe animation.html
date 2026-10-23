@@ -9,15 +9,15 @@
   const BOX = 100, BW = 85.8, STAR_C = [19.2, 63.8];
 
 const BG = ["#EAF4E5", "#F5F9F0", "#FFFFFF"];
-const mouseSpeed = 0.02;
+const mouseSpeed = 0.01;
 
 const IRIS = [
-  [0.00, "rgba(234,244,229,0)"],
-  [0.20, "rgba(235,248,226,0.95)"],
-  [0.40, "rgba(210,238,190,0.95)"],
-  [0.60, "rgba(180,220,150,0.90)"],
-  [0.80, "rgba(145,200,110,0.80)"],
-  [1.00, "rgba(234,244,229,0)"]
+  [0.00, "rgba(255,255,255,0)"],
+  [0.20, "rgba(202,222,186,0.95)"], 
+  [0.40, "rgba(220,229,111,0.95)"], 
+  [0.60, "rgba(208,217,30,0.90)"],  
+  [0.80, "rgba(75,133,29,0.90)"],    
+  [1.00, "rgba(255,255,255,0)"]
 ];
 
   const ITEMS = [
@@ -125,33 +125,51 @@ const IRIS = [
         ctx.stroke(logo);
         ctx.restore();
 
-        // crisp rim
-        ctx.lineWidth = 1.6 / k;
-        ctx.strokeStyle = irisGradient(o, x0 + 25);
+        // soft white glass glow
+        ctx.save();
+
         ctx.globalAlpha = a;
+
+        // Subtle diffused white glow
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.65)";
+        ctx.lineWidth = 2 / k;
+        ctx.shadowColor = "rgba(255, 255, 255, 0.45)";
+        ctx.shadowBlur = Math.min(16, 8 / k);
         ctx.stroke(logo);
+
+        // Thin, crisp glass highlight
+        ctx.shadowBlur = 0;
         ctx.lineWidth = 0.8 / k;
-        ctx.strokeStyle = "rgba(255,255,255,0.9)";
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.9)";
         ctx.stroke(logo);
+
+        ctx.restore();
 
         // glass sparkle (logo star), twinkling
         const tw = 0.85 + 0.15 * Math.sin(t * 2.5 * o.sp + o.ph);
-        ctx.translate(STAR_C[0], STAR_C[1]); ctx.scale(tw, tw); ctx.translate(-STAR_C[0], -STAR_C[1]);
 
-      const sg = ctx.createLinearGradient(0, 48, 36, 80);
-        sg.addColorStop(0, "rgba(255,255,255,1)");
-        sg.addColorStop(0.5, "rgba(235,248,226,0.95)");
-        sg.addColorStop(1, "rgba(205,235,185,0.85)");
+        ctx.translate(STAR_C[0], STAR_C[1]);
+        ctx.scale(tw, tw);
+        ctx.translate(-STAR_C[0], -STAR_C[1]);
 
-        ctx.shadowColor = "rgba(205,235,185,0.3)";
-        ctx.shadowBlur = 16 / k;
+        // Soft white glass gradient
+        const sg = ctx.createLinearGradient(0, 48, 36, 80);
+        sg.addColorStop(0, "rgba(255, 255, 255, 0.9)");
+        sg.addColorStop(0.5, "rgba(255, 255, 255, 0.5)");
+        sg.addColorStop(1, "rgba(255, 255, 255, 0.25)");
+
+        // Subtle white glass glow
+        ctx.shadowColor = "rgba(255, 255, 255, 0.4)";
+        ctx.shadowBlur = Math.min(14, 7 / k);
         ctx.fillStyle = sg;
         ctx.fill(star);
 
-        ctx.shadowColor = "transparent";
-        ctx.lineWidth = 1.4 / k;
-        ctx.strokeStyle = irisGradient(o, x0 + 50);
+        // Thin, crisp white glass edge
+        ctx.shadowBlur = 0;
+        ctx.lineWidth = 1.2 / k;
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.8)";
         ctx.stroke(star);
+
         ctx.restore();
       }
 
