@@ -9,13 +9,14 @@
   const BOX = 100, BW = 85.8, STAR_C = [19.2, 63.8];
 
 const BG = ["#EAF4E5", "#F5F9F0", "#FFFFFF"];
+const mouseSpeed = 0.02;
 
 const IRIS = [
   [0.00, "rgba(234,244,229,0)"],
-  [0.20, "rgba(168,213,141,0.95)"],   
-  [0.40, "rgba(120,185,82,0.95)"],   
-  [0.60, "rgba(75,133,29,0.90)"],    
-  [0.80, "rgba(5,54,2,0.85)"],       
+  [0.20, "rgba(235,248,226,0.95)"],
+  [0.40, "rgba(210,238,190,0.95)"],
+  [0.60, "rgba(180,220,150,0.90)"],
+  [0.80, "rgba(145,200,110,0.80)"],
   [1.00, "rgba(234,244,229,0)"]
 ];
 
@@ -164,7 +165,7 @@ const IRIS = [
         if (document.hidden || !w || !h) return;
         const dt = last ? Math.min(now - last, 40) : 16;
         last = now;
-        mx += (tx - mx) * 0.05; my += (ty - my) * 0.05;
+        mx += (tx - mx) * mouseSpeed; my += (ty - my) * mouseSpeed;
         if (!reducedMotion.matches) t += dt * 0.001 * SPEED * 3;
         render();
         raf = requestAnimationFrame(animate);
