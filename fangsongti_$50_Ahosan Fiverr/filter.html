@@ -1,9 +1,9 @@
-<style>
 
+<style>
 /* Main filter wrapper */
 .pdf-document-library {
-    --pdf-filter-accent: #08324e;
-    --pdf-filter-border: #d8e0e6;
+    --pdf-filter-accent: #2872E3;
+    --pdf-filter-border: #2872E3;
     --pdf-filter-text: #243746;
 
     width: 100%;
@@ -11,7 +11,7 @@
     font-family: inherit;
 }
 
-/* Two tabs */
+/* Filter tabs */
 .pdf-filter-tabs {
     display: flex;
     align-items: stretch;
@@ -24,14 +24,13 @@
     appearance: none;
     border: 1px solid var(--pdf-filter-border);
     border-bottom: 0;
-    border-radius: 6px 6px 0 0;
     padding: 13px 22px;
     background: #f5f8fa;
     color: var(--pdf-filter-text);
     font: inherit;
     font-weight: 600;
     cursor: pointer;
-    transition: background .2s ease, color .2s ease;
+    transition: background 0.2s ease, color 0.2s ease;
 }
 
 .pdf-filter-tab:hover,
@@ -41,7 +40,7 @@
     color: #fff;
 }
 
-/* Checkbox panel */
+/* Checkbox panels */
 .pdf-filter-panel {
     padding: 4px 0 18px;
 }
@@ -52,7 +51,7 @@
 
 .pdf-filter-options {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 12px 24px;
 }
 
@@ -119,7 +118,7 @@
     background: #f0f5f8;
 }
 
-/* Status */
+/* Filter status and empty messages */
 .pdf-filter-status {
     margin-bottom: 14px;
     font-size: 13px;
@@ -132,67 +131,103 @@
     color: #64748b;
 }
 
-/* PDF document cards */
+/* PDF document grid */
 .pdf-document-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 18px;
 }
 
+/* Individual document card */
 .pdf-document-card {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
+    align-items: stretch;
+    gap: 12px;
     min-width: 0;
-    padding: 20px;
-    border: 1px solid var(--pdf-filter-border);
-    border-radius: 8px;
-    background: #fff;
-    transition: border-color .2s ease, box-shadow .2s ease;
+    padding: 0;
+    border: 0;
+    transition: box-shadow 0.2s ease;
 }
 
 .pdf-document-card:hover {
-    border-color: #a8bbc9;
     box-shadow: 0 5px 18px rgb(8 50 78 / 7%);
 }
 
+/* PDF preview container */
+.pdf-document-preview {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    padding: 7px;
+    overflow: hidden;
+    border: 1px solid var(--pdf-filter-border);
+    background: #fff;
+    box-sizing: border-box;
+}
+
+/* PDF featured image */
+.pdf-document-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+}
+
+/* Document title */
 .pdf-document-title {
     margin: 0;
-    color: var(--pdf-filter-accent);
-    font-size: 17px;
-    font-weight: 600;
-    line-height: 1.45;
+    color: var(--pdf-filter-text);
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
     overflow-wrap: anywhere;
 }
 
+/* Blue download ribbon */
 .pdf-document-download {
-    display: inline-flex;
+    position: absolute;
+    right: -1px;
+    bottom: 20px;
+    display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    padding: 10px 16px;
-    border: 1px solid var(--pdf-filter-accent);
-    border-radius: 5px;
-    background: var(--pdf-filter-accent);
-    color: #fff !important;
-    font-size: 14px;
-    font-weight: 600;
-    text-decoration: none !important;
-    transition: background .2s ease, color .2s ease;
+    width: 54px;
+    height: 30px;
+    background: #075bd8;
+    clip-path: polygon(28% 0, 100% 0, 100% 100%, 0 100%);
+    z-index: 2;
 }
 
-.pdf-document-download:hover {
-    background: #125e84;
-    border-color: #125e84;
-    color: #fff !important;
+/* Download icon */
+.pdf-document-download img,
+.pdf-download-icon {
+    display: block;
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    margin-left: 10px;
 }
 
+/* Loading state */
 .pdf-document-library [aria-busy="true"] {
-    opacity: .65;
+    opacity: 0.65;
 }
 
-/* Tablet and mobile */
+/* Tablet */
+@media (max-width: 1024px) {
+    .pdf-document-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .pdf-filter-options {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+/* Mobile */
 @media (max-width: 767px) {
     .pdf-filter-tabs {
         gap: 5px;
@@ -204,9 +239,14 @@
         font-size: 14px;
     }
 
-    .pdf-filter-options,
+    .pdf-filter-options {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
     .pdf-document-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px 14px;
     }
 
     .pdf-filter-toolbar {
@@ -216,13 +256,9 @@
     .pdf-filter-reset {
         margin-left: 0;
     }
-
-    .pdf-document-card {
-        padding: 16px;
-    }
 }
-
 </style>
+
 
 
 <script>

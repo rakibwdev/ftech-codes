@@ -370,19 +370,44 @@ function rakib_pdf_filter_ajax() {
         echo '<div class="pdf-document-grid">';
 
         foreach ( $documents as $document ) {
+            
             echo '<article class="pdf-document-card">';
 
-            echo '<h3 class="pdf-document-title">' .
-                esc_html( $document['title'] ) . '</h3>';
+            echo '<div class="pdf-document-preview">';
 
+            // Featured image
+            $thumbnail = get_the_post_thumbnail(
+                $document['id'],
+                'medium',
+                array(
+                    'class'   => 'pdf-document-image',
+                    'alt'     => esc_attr( $document['title'] ),
+                    'loading' => 'lazy',
+                )
+            );
+
+            if ( $thumbnail ) {
+                echo wp_kses_post( $thumbnail );
+            }
+
+            // Download ribbon
             echo '<a class="pdf-document-download" href="' .
                 esc_url( $document['url'] ) .
                 '" target="_blank" rel="noopener" download>';
 
-            echo '<span>Download PDF</span>';
+            echo '<img src="https://prevor.pekingdesign.com/wp-content/uploads/2026/10/imgi_19_default.webp" alt="Download PDF">';
+
             echo '</a>';
 
+            echo '</div>';
+
+            // Document title
+            echo '<h3 class="pdf-document-title">' .
+                esc_html( $document['title'] ) .
+                '</h3>';
+
             echo '</article>';
+
         }
 
         echo '</div>';
