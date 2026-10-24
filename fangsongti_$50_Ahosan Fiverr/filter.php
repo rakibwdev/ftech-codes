@@ -1,12 +1,5 @@
 <?php
 /**
- * PDF Document Library Filter
- *
- * Post type:       pdf-post
- * File Type:       file-type
- * Product Name:    product-name
- * ACF PDF field:   pdf_link
- *
  * Shortcode: [pdf_document_filter]
  */
 
