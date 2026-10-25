@@ -1,5 +1,47 @@
 
 <style>
+    .pdf_fiter_head {
+    display: flex;
+}
+
+.pdf-filter-status {
+    margin: 0;
+}
+
+.pdf-filter-status-heading {
+    margin: 0 0 20px;
+    padding: 0 0 10px;
+    border-bottom: 1px solid #075bd8;
+    color: #243746;
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 1.4;
+}
+
+    /* .pdf-filter-sort-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+} */
+
+.pdf-filter-sort-btn {
+    padding: 10px 16px;
+    border: 1px solid #2872E3;
+    border-radius: 4px;
+    background: #fff;
+    color: #243746;
+    font: inherit;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.pdf-filter-sort-btn:hover,
+.pdf-filter-sort-btn.is-active {
+    background: #2872E3;
+    color: #fff;
+}
+
 /* Main filter wrapper */
 .pdf-document-library {
     --pdf-filter-accent: #2872E3;
@@ -80,7 +122,7 @@
 }
 
 /* Sorting and reset controls */
-.pdf-filter-toolbar {
+/* .pdf-filter-toolbar {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -91,7 +133,7 @@
 .pdf-filter-toolbar label {
     font-size: 14px;
     font-weight: 600;
-}
+} */
 
 .pdf-filter-sort {
     min-width: 100px;
@@ -103,7 +145,7 @@
     font: inherit;
 }
 
-.pdf-filter-reset {
+/* .pdf-filter-reset {
     margin-left: auto;
     padding: 9px 14px;
     border: 1px solid var(--pdf-filter-border);
@@ -116,7 +158,7 @@
 
 .pdf-filter-reset:hover {
     background: #f0f5f8;
-}
+} */
 
 /* Filter status and empty messages */
 .pdf-filter-status {
@@ -160,7 +202,6 @@
     width: 100%;
     aspect-ratio: 3 / 4;
     padding: 7px;
-    overflow: hidden;
     border: 1px solid var(--pdf-filter-border);
     background: #fff;
     box-sizing: border-box;
@@ -178,7 +219,7 @@
 /* Document title */
 .pdf-document-title {
     margin: 0;
-    color: var(--pdf-filter-text);
+    color: var(--pdf-filter-text) !important;
     font-size: 13px;
     font-weight: 400;
     line-height: 1.5;
@@ -191,13 +232,6 @@
     position: absolute;
     right: -1px;
     bottom: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 54px;
-    height: 30px;
-    background: #075bd8;
-    clip-path: polygon(28% 0, 100% 0, 100% 100%, 0 100%);
     z-index: 2;
 }
 
@@ -205,8 +239,7 @@
 .pdf-document-download img,
 .pdf-download-icon {
     display: block;
-    width: 20px;
-    height: 20px;
+    width: 77px;
     object-fit: contain;
     margin-left: 10px;
 }
@@ -248,14 +281,14 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 20px 14px;
     }
-
+/* 
     .pdf-filter-toolbar {
         align-items: flex-start;
-    }
+    } */
 
-    .pdf-filter-reset {
+    /* .pdf-filter-reset {
         margin-left: 0;
-    }
+    } */
 }
 </style>
 
@@ -276,14 +309,16 @@
         const tabs = root.querySelectorAll('.pdf-filter-tab');
         const panels = root.querySelectorAll('.pdf-filter-panel');
         const checkboxes = root.querySelectorAll('.pdf-filter-checkbox');
-        const sortSelect = root.querySelector('.pdf-filter-sort');
-        const resetButton = root.querySelector('.pdf-filter-reset');
+        // const sortSelect = root.querySelector('.pdf-filter-sort');
+        const sortButtons = root.querySelectorAll('.pdf-filter-sort-btn');
+        // const resetButton = root.querySelector('.pdf-filter-reset');
         const results = root.querySelector('.pdf-filter-results');
         const status = root.querySelector('.pdf-filter-status');
 
         let requestController = null;
         let requestNumber = 0;
         let debounceTimer = null;
+        let sortOrder = 'asc';
 
         function readState() {
             try {
@@ -303,7 +338,7 @@
                     root.querySelectorAll('[data-group="product"]:checked')
                 ).map(input => input.value),
 
-                sort: sortSelect.value
+                // sort: sortSelect.value
             };
 
             try {
@@ -311,6 +346,42 @@
             } catch (error) {
                 // Filtering still works if storage is unavailable.
             }
+        }
+
+        sortButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                sortButtons.forEach(function (btn) {
+                    btn.classList.remove('is-active');
+                });
+
+                button.classList.add('is-active');
+                sortOrder = button.dataset.sort;
+
+                saveState();
+                fetchDocuments();
+            });
+        });
+
+        function updateFileTypeHeadings() {
+            status.innerHTML = '';
+
+            const checkedFileTypes = root.querySelectorAll(
+                '[data-group="file"]:checked'
+            );
+
+            checkedFileTypes.forEach(function (checkbox) {
+                const label = checkbox.closest('label');
+                const name = label
+                    ? label.querySelector('span')?.textContent.trim()
+                    : '';
+
+                if (name) {
+                    const heading = document.createElement('h2');
+                    heading.className = 'pdf-filter-status-heading';
+                    heading.textContent = name;
+                    status.appendChild(heading);
+                }
+            });
         }
 
         function restoreState() {
@@ -325,9 +396,9 @@
                     savedIds.includes(input.value);
             });
 
-            if (state.sort === 'asc' || state.sort === 'desc') {
-                sortSelect.value = state.sort;
-            }
+            // if (state.sort === 'asc' || state.sort === 'desc') {
+            //     sortSelect.value = state.sort;
+            // }
         }
 
         function switchTab(name) {
@@ -364,13 +435,13 @@
             const data = new FormData();
             data.append('action', 'rakib_filter_pdf_documents');
             data.append('nonce', nonce);
-            data.append('sort', sortSelect.value);
+            data.append('sort', sortOrder);
 
             fileIds.forEach(id => data.append('file_ids[]', id));
             productIds.forEach(id => data.append('product_ids[]', id));
 
             results.setAttribute('aria-busy', 'true');
-            status.textContent = 'Loading documents…';
+            // status.textContent = 'Loading documents…';
 
             try {
                 const response = await fetch(ajaxUrl, {
@@ -394,14 +465,13 @@
 
                 // HTML is generated and escaped by our WordPress PHP handler.
                 results.innerHTML = json.data.html;
-                status.textContent =
-                    json.data.count + ' document(s) found.';
+                // status.textContent =json.data.count + ' document(s) found.';
             } catch (error) {
                 if (error.name === 'AbortError') return;
 
                 if (currentRequest === requestNumber) {
                     results.textContent = 'Could not load documents. Please try again.';
-                    status.textContent = 'An error occurred.';
+                    // status.textContent = 'An error occurred.';
                 }
             } finally {
                 if (currentRequest === requestNumber) {
@@ -423,23 +493,27 @@
         });
 
         checkboxes.forEach(input => {
-            input.addEventListener('change', scheduleUpdate);
-        });
-
-        sortSelect.addEventListener('change', scheduleUpdate);
-
-        resetButton.addEventListener('click', () => {
-            checkboxes.forEach(input => {
-                input.checked = false;
+            input.addEventListener('change',function (){
+                updateFileTypeHeadings();
+                scheduleUpdate();
             });
-
-            sortSelect.value = 'asc';
-            saveState();
-            fetchDocuments();
         });
+
+        // sortSelect.addEventListener('change', scheduleUpdate);
+
+        // resetButton.addEventListener('click', () => {
+        //     checkboxes.forEach(input => {
+        //         input.checked = false;
+        //     });
+
+        //     sortSelect.value = 'asc';
+        //     saveState();
+        //     fetchDocuments();
+        // });
 
         restoreState();
         switchTab('file');
+        updateFileTypeHeadings();
         fetchDocuments();
     }
 

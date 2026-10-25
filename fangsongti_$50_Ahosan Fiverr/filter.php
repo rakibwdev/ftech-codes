@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * Shortcode: [pdf_document_filter]
  */
 
@@ -83,6 +83,7 @@ function rakib_pdf_filter_render_checkboxes( $taxonomy, $group ) {
     $html .= '</div>';
 
     return $html;
+
 }
 
 /* -------------------------------------------------------
@@ -112,6 +113,8 @@ add_shortcode( 'pdf_document_filter', function() {
         data-nonce="<?php echo esc_attr( wp_create_nonce( 'rakib_pdf_filter_nonce' ) ); ?>"
     >
 
+    <div class="pdf_fiter_head" >
+
         <div class="pdf-filter-tabs" role="tablist">
             <button
                 type="button"
@@ -128,9 +131,23 @@ add_shortcode( 'pdf_document_filter', function() {
                 role="tab"
                 aria-selected="false"
             >Product Name</button>
+
+            <button type="button"
+                    class="pdf-filter-sort-btn is-active"
+                    data-sort="asc">
+                Product Name (A - Z) ↑
+            </button>
+
+            <button type="button"
+                    class="pdf-filter-sort-btn"
+                    data-sort="desc">
+                Product Name (Z - A) ↓
+            </button>
+
         </div>
 
-        <div class="pdf-filter-panels">
+    </div>
+            <div class="pdf-filter-panels">
 
             <div
                 class="pdf-filter-panel is-active"
@@ -197,23 +214,9 @@ add_shortcode( 'pdf_document_filter', function() {
 
         </div>
 
-        <div class="pdf-filter-toolbar">
-            <label for="<?php echo esc_attr( $instance_id . '-sort' ); ?>">
-                Sort Product Name
-            </label>
-
-            <select id="<?php echo esc_attr( $instance_id . '-sort' ); ?>"
-                    class="pdf-filter-sort">
-                <option value="asc">A–Z</option>
-                <option value="desc">Z–A</option>
-            </select>
-
-            <button type="button" class="pdf-filter-reset">
-                Clear filters
-            </button>
-        </div>
-
         <div class="pdf-filter-status" aria-live="polite"></div>
+
+        <!-- i need to show every checked file type name here -->
 
         <div class="pdf-filter-results" aria-live="polite">
             <p>Select a File Type or Product Name to filter documents.</p>
