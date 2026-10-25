@@ -19,7 +19,6 @@ function rakib_pdf_filter_config() {
 
 /* -------------------------------------------------------
  * 2. GET ACF PDF URL
- * Supports ACF URL, File Array, and Attachment ID.
  * ----------------------------------------------------- */
 
 function rakib_pdf_filter_get_file_url( $post_id ) {
@@ -367,18 +366,55 @@ function rakib_pdf_filter_ajax() {
         return 'desc' === $sort ? -$comparison : $comparison;
     } );
 
-    ob_start();
+ob_start();
 
-    if ( $documents ) {
+if ( $documents ) {
+
+    // Group documents by their assigned File Type terms.
+    $grouped_documents = array();
+
+    foreach ( $documents as $document ) {
+        $file_terms = get_the_terms(
+            $document['id'],
+            $config['file_taxonomy']
+        );
+
+        if ( is_wp_error( $file_terms ) || empty( $file_terms ) ) {
+            continue;
+        }
+
+        foreach ( $file_terms as $term ) {
+
+            // Show only selected File Types when selections exist.
+            if ( $file_ids && ! in_array( (int) $term->term_id, $file_ids, true ) ) {
+                continue;
+            }
+
+            $grouped_documents[ $term->term_id ]['name'] = $term->name;
+            $grouped_documents[ $term->term_id ]['documents'][] = $document;
+        }
+    }
+
+    // Sort File Type headings alphabetically.
+    uasort( $grouped_documents, function ( $a, $b ) {
+        return strnatcasecmp( $a['name'], $b['name'] );
+    } );
+
+    foreach ( $grouped_documents as $group ) {
+
+        echo '<section class="pdf-document-group">';
+
+        echo '<h2 class="pdf-document-status-heading">' .
+            esc_html( $group['name'] ) .
+            '</h2>';
+
         echo '<div class="pdf-document-grid">';
 
-        foreach ( $documents as $document ) {
-            
-            echo '<article class="pdf-document-card">';
+        foreach ( $group['documents'] as $document ) {
 
+            echo '<article class="pdf-document-card">';
             echo '<div class="pdf-document-preview">';
 
-            // Featured image
             $thumbnail = get_the_post_thumbnail(
                 $document['id'],
                 'medium',
@@ -393,7 +429,6 @@ function rakib_pdf_filter_ajax() {
                 echo wp_kses_post( $thumbnail );
             }
 
-            // Download ribbon
             echo '<a class="pdf-document-download" href="' .
                 esc_url( $document['url'] ) .
                 '" target="_blank" rel="noopener" download>';
@@ -401,24 +436,25 @@ function rakib_pdf_filter_ajax() {
             echo '<img src="https://prevor.pekingdesign.com/wp-content/uploads/2026/10/imgi_19_default.webp" alt="Download PDF">';
 
             echo '</a>';
-
             echo '</div>';
 
-            // Document title
             echo '<h3 class="pdf-document-title">' .
                 esc_html( $document['title'] ) .
                 '</h3>';
 
             echo '</article>';
-
         }
 
         echo '</div>';
-    } else {
-        echo '<p class="pdf-filter-no-results">No matching PDF documents found.</p>';
+        echo '</section>';
     }
 
-    $html = ob_get_clean();
+} else {
+    echo '<p class="pdf-filter-no-results">No matching PDF documents found.</p>';
+}
+
+$html = ob_get_clean();
+
 
     wp_send_json_success( array(
         'html'  => $html,

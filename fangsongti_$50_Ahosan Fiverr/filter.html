@@ -1,7 +1,25 @@
 
 <style>
+    .pdf-document-group {
+    margin-bottom: 36px;
+}
+
+.pdf-document-status-heading {
+    margin: 0 0 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #075bd8;
+    color: #243746;
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 1.4;
+}
+
+.pdf-document-group .pdf-document-grid {
+    margin-top: 0;
+}
     .pdf_fiter_head {
     display: flex;
+
 }
 
 .pdf-filter-status {
@@ -18,15 +36,9 @@
     line-height: 1.4;
 }
 
-    /* .pdf-filter-sort-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-} */
-
 .pdf-filter-sort-btn {
     padding: 10px 16px;
-    border: 1px solid #2872E3;
+    border: none;
     border-radius: 4px;
     background: #fff;
     color: #243746;
@@ -36,10 +48,10 @@
     transition: background 0.2s ease, color 0.2s ease;
 }
 
-.pdf-filter-sort-btn:hover,
-.pdf-filter-sort-btn.is-active {
-    background: #2872E3;
-    color: #fff;
+/* .pdf-filter-sort-btn.is-active */
+
+.pdf-filter-sort-btn:hover {
+    background: #243746;
 }
 
 /* Main filter wrapper */
@@ -58,13 +70,10 @@
     display: flex;
     align-items: stretch;
     gap: 8px;
-    margin-bottom: 20px;
-    border-bottom: 1px solid var(--pdf-filter-border);
 }
 
 .pdf-filter-tab {
     appearance: none;
-    border: 1px solid var(--pdf-filter-border);
     border-bottom: 0;
     padding: 13px 22px;
     background: #f5f8fa;
@@ -73,6 +82,7 @@
     font-weight: 600;
     cursor: pointer;
     transition: background 0.2s ease, color 0.2s ease;
+    border: none;
 }
 
 .pdf-filter-tab:hover,
@@ -121,19 +131,6 @@
     overflow-wrap: anywhere;
 }
 
-/* Sorting and reset controls */
-/* .pdf-filter-toolbar {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 12px;
-    margin: 12px 0 20px;
-}
-
-.pdf-filter-toolbar label {
-    font-size: 14px;
-    font-weight: 600;
-} */
 
 .pdf-filter-sort {
     min-width: 100px;
@@ -145,20 +142,6 @@
     font: inherit;
 }
 
-/* .pdf-filter-reset {
-    margin-left: auto;
-    padding: 9px 14px;
-    border: 1px solid var(--pdf-filter-border);
-    border-radius: 5px;
-    background: #fff;
-    color: var(--pdf-filter-accent);
-    font: inherit;
-    cursor: pointer;
-}
-
-.pdf-filter-reset:hover {
-    background: #f0f5f8;
-} */
 
 /* Filter status and empty messages */
 .pdf-filter-status {
@@ -177,7 +160,7 @@
 .pdf-document-grid {
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 18px;
+    gap: 30px;
 }
 
 /* Individual document card */
@@ -230,8 +213,8 @@
 /* Blue download ribbon */
 .pdf-document-download {
     position: absolute;
-    right: -1px;
-    bottom: 20px;
+    right: -20px;
+    bottom: -12px;
     z-index: 2;
 }
 
@@ -264,6 +247,8 @@
 @media (max-width: 767px) {
     .pdf-filter-tabs {
         gap: 5px;
+        margin-bottom: 20px;
+        border-bottom: 2px solid var(--pdf-filter-border);
     }
 
     .pdf-filter-tab {
@@ -281,14 +266,7 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 20px 14px;
     }
-/* 
-    .pdf-filter-toolbar {
-        align-items: flex-start;
-    } */
 
-    /* .pdf-filter-reset {
-        margin-left: 0;
-    } */
 }
 </style>
 
@@ -309,11 +287,10 @@
         const tabs = root.querySelectorAll('.pdf-filter-tab');
         const panels = root.querySelectorAll('.pdf-filter-panel');
         const checkboxes = root.querySelectorAll('.pdf-filter-checkbox');
-        // const sortSelect = root.querySelector('.pdf-filter-sort');
         const sortButtons = root.querySelectorAll('.pdf-filter-sort-btn');
-        // const resetButton = root.querySelector('.pdf-filter-reset');
         const results = root.querySelector('.pdf-filter-results');
         const status = root.querySelector('.pdf-filter-status');
+        
 
         let requestController = null;
         let requestNumber = 0;
@@ -327,6 +304,8 @@
                 return {};
             }
         }
+
+        localStorage.removeItem(storageKey);
 
         function saveState() {
             const state = {
@@ -362,27 +341,6 @@
             });
         });
 
-        function updateFileTypeHeadings() {
-            status.innerHTML = '';
-
-            const checkedFileTypes = root.querySelectorAll(
-                '[data-group="file"]:checked'
-            );
-
-            checkedFileTypes.forEach(function (checkbox) {
-                const label = checkbox.closest('label');
-                const name = label
-                    ? label.querySelector('span')?.textContent.trim()
-                    : '';
-
-                if (name) {
-                    const heading = document.createElement('h2');
-                    heading.className = 'pdf-filter-status-heading';
-                    heading.textContent = name;
-                    status.appendChild(heading);
-                }
-            });
-        }
 
         function restoreState() {
             const state = readState();
@@ -396,9 +354,6 @@
                     savedIds.includes(input.value);
             });
 
-            // if (state.sort === 'asc' || state.sort === 'desc') {
-            //     sortSelect.value = state.sort;
-            // }
         }
 
         function switchTab(name) {
@@ -463,15 +418,12 @@
                     );
                 }
 
-                // HTML is generated and escaped by our WordPress PHP handler.
                 results.innerHTML = json.data.html;
-                // status.textContent =json.data.count + ' document(s) found.';
             } catch (error) {
                 if (error.name === 'AbortError') return;
 
                 if (currentRequest === requestNumber) {
                     results.textContent = 'Could not load documents. Please try again.';
-                    // status.textContent = 'An error occurred.';
                 }
             } finally {
                 if (currentRequest === requestNumber) {
@@ -494,26 +446,12 @@
 
         checkboxes.forEach(input => {
             input.addEventListener('change',function (){
-                updateFileTypeHeadings();
                 scheduleUpdate();
             });
         });
 
-        // sortSelect.addEventListener('change', scheduleUpdate);
-
-        // resetButton.addEventListener('click', () => {
-        //     checkboxes.forEach(input => {
-        //         input.checked = false;
-        //     });
-
-        //     sortSelect.value = 'asc';
-        //     saveState();
-        //     fetchDocuments();
-        // });
-
         restoreState();
         switchTab('file');
-        updateFileTypeHeadings();
         fetchDocuments();
     }
 
