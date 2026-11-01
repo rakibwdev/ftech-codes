@@ -1,0 +1,214 @@
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    const loops = document.querySelectorAll('.projection_loop');
+    const canvas = document.querySelector('#off-canvas-5bdc0d6');
+
+    if (!loops.length || !canvas) return;
+
+    loops.forEach(function (loop) {
+
+        loop.style.cursor = 'pointer';
+
+        loop.addEventListener('click', function (e) {
+
+            // Prevent clicks on links or buttons from triggering the loop
+            if (e.target.closest('a, button')) return;
+
+            //  loop title
+            const loopTitle = loop.querySelector(
+                '.loop_title h4'
+            )?.textContent.trim() || '';
+
+            const postTitle = canvas.querySelector('.post_title h2');
+
+            if (postTitle) {
+                postTitle.textContent = loopTitle;
+            }
+
+
+            // open_tag
+            const openTag = loop.querySelector('[open_tag]')
+                ?.getAttribute('open_tag') || '';
+
+            const openTagElement = canvas.querySelector('.open_tag h2');
+
+            if (openTagElement) {
+                openTagElement.textContent = openTag;
+            }
+
+            // pdf show
+            const pdfLink = loop.querySelector('.loop_pdf h2 a')?.getAttribute('href') || '';
+            const iframeContainer = canvas.querySelector('.pdf_show');
+             if (iframeContainer) {
+                if (pdfLink) {
+                    iframeContainer.innerHTML = `<iframe src="${pdfLink}#toolbar=0&navpanes=0" width="100%" height="600px" style="border:0;"></iframe>`;
+                } else {
+                    iframeContainer.innerHTML = '';
+                }
+            }
+
+            // image show
+            const imageLink = loop.querySelector('.loop_image h2 a')?.getAttribute('href') || '';
+            const imageContainer = canvas.querySelector('.image_show');
+
+            if (imageContainer) {
+                if (imageLink) {
+                    imageContainer.innerHTML = `<img src="${imageLink}" alt="" style="width:100%;height:auto;">`;
+                } else {
+                    imageContainer.innerHTML = '';
+                }
+            }
+
+            // Open Elementor Off-Canvas
+            const openButton = document.querySelector(
+                    '.projection_canvas_trigger a, a.projection_canvas_trigger'
+                );
+
+                if (openButton) {
+                    openButton.click();
+                }
+            if (openButton) {
+                openButton.click();
+            }
+
+        });
+
+    });
+
+});
+
+</script>
+
+
+<style>
+    /* offcanvas Trigger */
+    .projection_canvas_trigger {
+    display: none !important;
+}
+</style>
+
+<!-- 
+function get_file_view_shortcode() {
+    $post_id = get_the_ID();
+
+    $value = get_field('portfolio_details', $post_id);
+
+    if (empty($value)) {
+        return '';
+    }
+
+    $url = is_array($value) ? $value['url'] : $value;
+
+    $extension = strtolower(pathinfo(parse_url($url, PHP_URL_PATH), PATHINFO_EXTENSION));
+
+    if ($extension === 'pdf') {
+        return sprintf(
+            '<iframe src="%s#toolbar=0&navpanes=0" width="100%%" height="600px" style="border:0;"></iframe>',
+            esc_url($url)
+        );
+    }
+
+    return sprintf(
+        '<img src="%s" alt="" style="width:100%%;height:auto;">',
+        esc_url($url)
+    );
+}
+
+add_shortcode('get_file_view', 'get_file_view_shortcode'); -->
+
+<div data-elementor-type="loop-item" data-elementor-id="3159" class="elementor elementor-3159 swiper-slide e-loop-item e-loop-item-3208 post-3208 portfolio type-portfolio status-publish has-post-thumbnail hentry swiper-slide-active" data-elementor-post-type="elementor_library" role="group" aria-roledescription="slide" data-custom-edit-handle="1" aria-label="1 / 12" style="width: 390px; margin-right: 47px;">
+			<div class="elementor-element elementor-element-c7bb4fb e-con-full projection_loop e-flex e-con e-child" data-id="c7bb4fb" data-element_type="container" data-e-type="container">
+		<div class="elementor-element elementor-element-8bfbf82 e-con-full e-flex e-con e-child" data-id="8bfbf82" data-element_type="container" data-e-type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+				<div class="elementor-element elementor-element-e4c8e74 elementor-absolute elementor-widget elementor-widget-heading" data-id="e4c8e74" data-element_type="widget" data-e-type="widget" data-settings="{&quot;_position&quot;:&quot;absolute&quot;}" data-widget_type="heading.default">
+					<h2 class="elementor-heading-title elementor-size-default">Infographic</h2>				</div>
+				</div>
+		<div class="elementor-element elementor-element-4cfcea2 e-con-full e-flex e-con e-child" data-id="4cfcea2" data-element_type="container" data-e-type="container">
+		<div class="elementor-element elementor-element-914d1a1 e-con-full e-flex e-con e-child" data-id="914d1a1" data-element_type="container" data-e-type="container">
+				<div class="elementor-element elementor-element-be15f08 elementor-widget elementor-widget-shortcode" data-id="be15f08" data-element_type="widget" data-e-type="widget" data-widget_type="shortcode.default">
+							<div class="elementor-shortcode"><div class="dynamic-icon"><img decoding="async" src="https://quokkaricedione94127.wpcomstaging.com/wp-content/uploads/2026/10/download-4.svg" alt="Icon"></div></div>
+						</div>
+				<div class="elementor-element elementor-element-0ccd636 elementor-widget elementor-widget-icon-box" data-id="0ccd636" data-element_type="widget" data-e-type="widget" data-widget_type="icon-box.default">
+							<div class="elementor-icon-box-wrapper">
+
+			
+						<div class="elementor-icon-box-content">
+
+									<h3 class="elementor-icon-box-title">
+						<span>
+							Hartstichting						</span>
+					</h3>
+				
+				
+			</div>
+			
+		</div>
+						</div>
+				</div>
+				<div class="elementor-element elementor-element-d4173f7 elementor-widget elementor-widget-heading" data-id="d4173f7" data-element_type="widget" data-e-type="widget" open_tag="Opdrachtgever: Hartstichting" data-widget_type="heading.default">
+					<h4 class="elementor-heading-title elementor-size-default">Bewegen en hartgezondheid</h4>				</div>
+				<div class="elementor-element elementor-element-9978309 elementor-widget elementor-widget-theme-post-content" data-id="9978309" data-element_type="widget" data-e-type="widget" data-widget_type="theme-post-content.default">
+					
+<p class="wp-block-paragraph">Het schrijven van teksten op basis van onderzoek onder patiënten naar belemmeringen bij bewegen bij mensen met hart- en vaataandoeningen. Daarnaast het opstellen van praktische handvatten voor zorgverleners en het adviseren over de vormgeving van de infographic.</p>
+				</div>
+				<div class="elementor-element elementor-element-d9ae84d elementor-widget elementor-widget-button" data-id="d9ae84d" data-element_type="widget" data-e-type="widget" data-widget_type="button.default">
+										<a class="elementor-button elementor-size-sm" role="button">
+						<span class="elementor-button-content-wrapper">
+						<span class="elementor-button-icon">
+				<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#082F49" stroke-width="2px" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right ml-2 group-hover:translate-x-1 transition-transform" aria-hidden="true"><path d="M5 12h14" stroke="#082F49" fill="none" stroke-width="2px"></path><path d="m12 5 7 7-7 7" stroke="#082F49" fill="none" stroke-width="2px"></path></svg>			</span>
+									<span class="elementor-button-text">Bekijk project</span>
+					</span>
+					</a>
+								</div>
+				</div>
+				</div>
+				</div>
+
+                this is projection single loop
+
+.projection_loop when i click this loop then i need to open this bellow offcanvas. 
+when open offcanvas then under the off canvas 
+.post_title = will be loop_title 
+.open_tag = will be  open_tag="" (attribute)
+
+<div id="off-canvas-5bdc0d6" class="e-off-canvas no-animation" role="dialog" aria-hidden="true" aria-label="projection_canvas" aria-modal="true" inert="">
+			<div class="e-off-canvas__overlay"></div>
+			<div class="e-off-canvas__main">
+				<div class="e-off-canvas__content">
+					<div class="elementor-element elementor-element-dd07312 e-con-full e-flex e-con e-child" data-id="dd07312" data-element_type="container" data-e-type="container">
+		<div class="elementor-element elementor-element-1eb4cba e-con-full e-flex e-con e-child" data-id="1eb4cba" data-element_type="container" data-e-type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+		<div class="elementor-element elementor-element-f1e167c e-con-full e-flex e-con e-child" data-id="f1e167c" data-element_type="container" data-e-type="container">
+		<div class="elementor-element elementor-element-96bee70 e-con-full e-flex e-con e-child" data-id="96bee70" data-element_type="container" data-e-type="container">
+				<div class="elementor-element elementor-element-6f164d8 post_title elementor-widget elementor-widget-heading" data-id="6f164d8" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
+					<h2 class="elementor-heading-title elementor-size-default">Post Title</h2>				</div>
+				<div class="elementor-element elementor-element-00ddd61 open_tag elementor-widget elementor-widget-heading" data-id="00ddd61" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
+					<h2 class="elementor-heading-title elementor-size-default">open tag</h2>				</div>
+				</div>
+		<div class="elementor-element elementor-element-9e9e01b e-con-full e-flex e-con e-child" data-id="9e9e01b" data-element_type="container" data-e-type="container">
+				<div class="elementor-element elementor-element-6b9afe3 elementor-view-default elementor-widget elementor-widget-icon" data-id="6b9afe3" data-element_type="widget" data-e-type="widget" data-widget_type="icon.default">
+							<div class="elementor-icon-wrapper">
+			<div class="elementor-icon">
+			<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download" aria-hidden="true"><path d="M12 15V3"></path><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path></svg>			</div>
+		</div>
+						</div>
+				<div class="elementor-element elementor-element-b33fc52 elementor-view-default elementor-widget elementor-widget-icon" data-id="b33fc52" data-element_type="widget" data-e-type="widget" data-widget_type="icon.default">
+							<div class="elementor-icon-wrapper">
+			<a class="elementor-icon" href="#elementor-action%3Aaction%3Doff_canvas%3Aclose%26settings%3DeyJpZCI6IjViZGMwZDYiLCJkaXNwbGF5TW9kZSI6ImNsb3NlIn0%3D" aria-controls="off-canvas-5bdc0d6" aria-expanded="false">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>			</a>
+		</div>
+						</div>
+				</div>
+				</div>
+		<div class="elementor-element elementor-element-5f35651 e-con-full e-flex e-con e-child" data-id="5f35651" data-element_type="container" data-e-type="container">
+				<div class="elementor-element elementor-element-51a613e elementor-widget__width-initial elementor-widget elementor-widget-shortcode" data-id="51a613e" data-element_type="widget" data-e-type="widget" data-widget_type="shortcode.default">
+							<div class="elementor-shortcode"></div>
+						</div>
+				</div>
+				</div>
+				</div>
+						</div>
+			</div>
+		</div>
+	
