@@ -39,26 +39,41 @@ document.addEventListener('DOMContentLoaded', function () {
                 openTagElement.textContent = openTag;
             }
 
-            // pdf show
+           // PDF show
             const pdfLink = loop.querySelector('.loop_pdf h2 a')?.getAttribute('href') || '';
             const iframeContainer = canvas.querySelector('.pdf_show');
-             if (iframeContainer) {
+
+            if (iframeContainer) {
                 if (pdfLink) {
-                    iframeContainer.innerHTML = `<iframe src="${pdfLink}#toolbar=0&navpanes=0" width="100%" height="600px" style="border:0;"></iframe>`;
+                    iframeContainer.style.display = 'block';
+
+                    iframeContainer.innerHTML = `
+                        <iframe src="${pdfLink}#toolbar=0&navpanes=0"
+                            width="100%" height="100%"
+                            style="border:0;">
+                        </iframe>`;
                 } else {
                     iframeContainer.innerHTML = '';
+                    iframeContainer.style.display = 'none';
                 }
             }
 
-            // image show
+
+            // Image show
             const imageLink = loop.querySelector('.loop_image h2 a')?.getAttribute('href') || '';
             const imageContainer = canvas.querySelector('.image_show');
 
             if (imageContainer) {
                 if (imageLink) {
-                    imageContainer.innerHTML = `<img src="${imageLink}" alt="" style="width:100%;height:auto;">`;
+                    imageContainer.style.display = 'block';
+
+                    imageContainer.innerHTML = `
+                        <img src="${imageLink}"
+                            alt=""
+                            style="width:100%;height:auto;">`;
                 } else {
                     imageContainer.innerHTML = '';
+                    imageContainer.style.display = 'none';
                 }
             }
 
