@@ -1,3 +1,59 @@
+<style>
+    .acor_title{
+        cursor: pointer;
+    }
+    .acor_description{
+        display: none;
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const acorTitles = document.querySelectorAll('.acor_title');
+
+    acorTitles.forEach(function (title) {
+        title.addEventListener('click', function () {
+            const description = this.nextElementSibling;
+            title.classList.toggle('active');
+
+            if (description && description.classList.contains('acor_description')) {
+                description.style.display = description.style.display === 'block' ? 'none' : 'block';
+            }
+        });
+    });
+});
+</script>
+
+<style>
+    .post_acordian_title{
+        cursor: pointer;
+    }
+    .post_acordian{
+        display: none;
+    }
+
+
+.post_acordian_title.active + .post_acordian {
+    display: block;
+}
+
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const acorTitles = document.querySelectorAll('.post_acordian_title');
+    const postAcordians = document.querySelectorAll('.post_acordian');
+
+    acorTitles.forEach(function (title) {
+        title.addEventListener('click', function () {
+            const description = this.nextElementSibling;
+            title.classList.toggle('active');
+        });
+    });
+});
+</script>
+
+
 
 <script>
 
