@@ -5,6 +5,10 @@
     .acor_description{
         display: none;
     }
+    .acor_title.active + .acor_description {
+        display: block;
+    }
+
 </style>
 
 <script>
@@ -16,9 +20,9 @@ document.addEventListener('DOMContentLoaded', function () {
             const description = this.nextElementSibling;
             title.classList.toggle('active');
 
-            if (description && description.classList.contains('acor_description')) {
-                description.style.display = description.style.display === 'block' ? 'none' : 'block';
-            }
+            // if (description && description.classList.contains('acor_description')) {
+            //     description.style.display = description.style.display === 'block' ? 'none' : 'block';
+            // }
         });
     });
 });
@@ -45,11 +49,27 @@ document.addEventListener('DOMContentLoaded', function () {
     const postAcordians = document.querySelectorAll('.post_acordian');
 
     acorTitles.forEach(function (title) {
-        title.addEventListener('click', function () {
-            const description = this.nextElementSibling;
-            title.classList.toggle('active');
+            postAcordians.forEach(function (acordian) {
+                acordian.classList.toggle('active');
+            });
         });
     });
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    document.querySelectorAll('.post_acordian').forEach(function (accordion) {
+
+        const parent = accordion.closest('.e-con');
+        const items = accordion.querySelectorAll('.e-n-accordion-item');
+
+        if (!items.length) {
+            parent.style.display = 'none';
+        }
+
+    });
+
 });
 </script>
 
