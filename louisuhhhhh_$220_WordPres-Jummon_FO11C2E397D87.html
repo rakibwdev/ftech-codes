@@ -1,3 +1,33 @@
+
+<!-- Offcanvas Close on Outside Click -->
+<script>
+
+
+document.addEventListener('click', function (event) {
+
+    if (event.target.closest('.projection_loop, .projection_canvas_trigger')) {
+        return;
+    }
+
+    const content = document.querySelector('.offcanvas_file_view');
+
+    if (!content) return;
+
+    if (!content.contains(event.target)) {
+
+        const closeButton = document.querySelector('.offcanvas_close a');
+
+        if (closeButton) {
+            closeButton.click();
+        }
+    }
+
+});
+
+
+</script>
+
+
 <style>
     .acor_title{
         cursor: pointer;
