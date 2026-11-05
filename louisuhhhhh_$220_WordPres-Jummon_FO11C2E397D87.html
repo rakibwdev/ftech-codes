@@ -1,4 +1,56 @@
 
+<script>
+    // carousol scrool slider
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const section = document.getElementById('horizontal-section');
+    if (!section) return;
+
+    const swiperWrapper = section.querySelector('.swiper-wrapper');
+    const swiperContainer = section.querySelector('.elementor-loop-carousel, .swiper');
+
+    if (!swiperWrapper || !swiperContainer) return;
+
+    let currentTranslate = 0;
+
+    section.addEventListener('wheel', function (e) {
+
+        // Check Elementor Off-Canvas state
+        const canvas = document.querySelector('#off-canvas-5bdc0d6');
+
+        if (canvas && canvas.getAttribute('aria-hidden') === 'false') {
+            return;
+        }
+
+        const maxTranslate = swiperWrapper.scrollWidth - swiperContainer.offsetWidth;
+
+        if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+
+            const direction = e.deltaY > 0 ? 1 : -1;
+
+            if (
+                (direction > 0 && currentTranslate < maxTranslate) ||
+                (direction < 0 && currentTranslate > 0)
+            ) {
+
+                e.preventDefault();
+
+                currentTranslate += e.deltaY * 0.5;
+
+                currentTranslate = Math.max(0, Math.min(maxTranslate, currentTranslate));
+
+                swiperWrapper.style.transform = `translate3d(-${currentTranslate}px, 0px, 0px)`;
+            }
+        }
+
+    }, { passive: false });
+
+});
+
+</script>
+
+
 <!-- Offcanvas Close on Outside Click -->
 <script>
 
