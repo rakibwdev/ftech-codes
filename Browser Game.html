@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pixel Quest — Platformer</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; display: grid; place-items: center;
+    background: radial-gradient(circle at top, #25385b, #101827 65%);
+    color: #f8fafc; font-family: system-ui, sans-serif; padding: 18px;
+  }
+  .wrap { width: min(100%, 980px); }
+  header { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:12px; }
+  h1 { font-size: clamp(20px, 4vw, 30px); margin:0; letter-spacing:1px; }
+  .tag { color:#a9c7e8; font-size:12px; letter-spacing:2px; text-transform:uppercase; }
+  .hud { display:flex; gap:10px; flex-wrap:wrap; }
+  .pill { background:#17243a; border:1px solid #3b5275; border-radius:9px; padding:8px 12px; font-weight:700; }
+  .game-shell { position:relative; border:4px solid #536b91; border-radius:14px; overflow:hidden; background:#7bc8ed; box-shadow:0 18px 55px #0008; }
+  canvas { display:block; width:100%; height:auto; image-rendering:pixelated; image-rendering:crisp-edges; }
+  .overlay { position:absolute; inset:0; display:grid; place-items:center; background:#0b1428b9; text-align:center; padding:20px; }
+  .panel { max-width:480px; background:#17243a; border:2px solid #7e9bc4; border-radius:12px; padding:24px; box-shadow:0 8px 0 #0a1020; }
+  .panel h2 { margin:0 0 8px; font-size:clamp(24px,5vw,38px); color:#ffe58a; }
+  .panel p { color:#d7e5f7; line-height:1.5; margin:8px 0 18px; }
+  button { border:0; border-radius:8px; background:#f4b942; color:#241b0b; padding:12px 20px; font-weight:900; font-size:15px; cursor:pointer; box-shadow:0 4px 0 #a86d1d; }
+  button:active { transform:translateY(2px); box-shadow:0 2px 0 #a86d1d; }
+  .help { display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap; color:#c3d2e7; font-size:13px; margin-top:12px; }
+  .touch { display:none; justify-content:space-between; gap:12px; margin-top:12px; user-select:none; }
+  .touch button { flex:1; padding:15px 8px; font-size:20px; touch-action:none; }
+  @media (pointer:coarse) { .touch { display:flex; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div><div class="tag">A tiny pixel adventure</div><h1>PIXEL QUEST</h1></div>
+    <div class="hud">
+      <div class="pill">🪙 <span id="score">0</span></div>
+      <div class="pill">❤️ <span id="lives">3</span></div>
+      <div class="pill">LEVEL <span id="level">1</span></div>
+    </div>
+  </header>
+  <div class="game-shell">
+    <canvas id="game" width="800" height="450" aria-label="Pixel platformer game"></canvas>
+    <div class="overlay" id="overlay">
+      <div class="panel">
+        <h2 id="overlayTitle">PIXEL QUEST</h2>
+        <p id="overlayText">Run, jump, collect coins and reach the golden flag. Watch out for the slimes!</p>
+        <button id="startBtn">START ADVENTURE</button>
+      </div>
+    </div>
+  </div>
+  <div class="help">
+    <span>⌨ Move: A / D or ← / → &nbsp; • &nbsp; Jump: W / ↑ / Space</span>
+    <span>Collect every coin you can. Reach the flag to advance.</span>
+  </div>
+  <div class="touch">
+    <button id="leftBtn" aria-label="Move left">◀</button>
+    <button id="jumpBtn" aria-label="Jump">⬆ JUMP</button>
+    <button id="rightBtn" aria-label="Move right">▶</button>
+  </div>
+</div>
+<script>
+(() => {
+  const canvas = document.getElementById('game');
+  const ctx = canvas.getContext('2d');
+  ctx.imageSmoothingEnabled = false;
+
+  const scoreEl = document.getElementById('score');
+  const livesEl = document.getElementById('lives');
+  const levelEl = document.getElementById('level');
+  const overlay = document.getElementById('overlay');
+  const overlayTitle = document.getElementById('overlayTitle');
+  const overlayText = document.getElementById('overlayText');
+  const startBtn = document.getElementById('startBtn');
+
+  const W = canvas.width, H = canvas.height, TILE = 40;
+  const keys = {};
+  let touchLeft = false, touchRight = false, touchJump = false;
+  let score = 0, lives = 3, level = 1, running = false, gameOver = false;
+  let cameraX = 0, frame = 0, platforms = [], coins = [], enemies = [], goal = null;
+  const player = { x: 60, y: 300, w: 25, h: 34, vx: 0, vy: 0, onGround: false, invuln: 0, facing: 1 };
+
+  function buildLevel(n) {
+    const length = 2200 + (n - 1) * 350;
+    platforms = [{x:0,y:390,w:length,h:60}];
+    // Floating platforms form a readable jump path.
+    for (let x = 260; x < length - 220; x += 310) {
+      const y = 300 - ((Math.floor(x / 310) + n) % 3) * 38;
+      platforms.push({x, y, w:120, h:18});
+      if (x % 620 === 260) platforms.push({x:x+165, y:y+55, w:90, h:18});
+    }
+    coins = [];
+    for (let x = 180; x < length - 100; x += 145) {
+      const base = 330 - ((Math.floor(x / 310) + n) % 3) * 28;
+      coins.push({x, y:base - (x % 2 ? 22 : 0), r:9, got:false, bob:Math.random()*6});
+    }
+    enemies = [];
+    for (let x = 500; x < length - 180; x += 470) {
+      enemies.push({x, start:x, y:360, w:28, h:24, dir:1, speed:1.1 + n*.12, alive:true});
+    }
+    goal = {x:length-110, y:310};
+    player.x = 60; player.y = 300; player.vx = 0; player.vy = 0;
+    cameraX = 0;
+    levelEl.textContent = level;
+  }
+
+  function showOverlay(title, text, button) {
+    overlayTitle.textContent = title;
+    overlayText.textContent = text;
+    startBtn.textContent = button;
+    overlay.style.display = 'grid';
+  }
+  function startGame() {
+    if (gameOver) { score=0; lives=3; level=1; gameOver=false; }
+    buildLevel(level);
+    updateHud();
+    overlay.style.display = 'none';
+    running = true;
+    lastTime = performance.now();
+    requestAnimationFrame(loop);
+  }
+  function updateHud() {
+    scoreEl.textContent = score;
+    livesEl.textContent = lives;
+    levelEl.textContent = level;
+  }
+  function hit(a,b) {
+    return a.x < b.x+b.w && a.x+a.w > b.x && a.y < b.y+b.h && a.y+a.h > b.y;
+  }
+  function respawn() {
+    lives--;
+    updateHud();
+    if (lives <= 0) {
+      running=false; gameOver=true;
+      showOverlay('GAME OVER', `You collected ${score} coins. Ready for another run?`, 'PLAY AGAIN');
+    } else {
+      player.x=60; player.y=300; player.vx=0; player.vy=0; player.invuln=100;
+      cameraX=0;
+    }
+  }
+
+  function update(dt) {
+    frame++;
+    const left = keys.ArrowLeft || keys.KeyA || touchLeft;
+    const right = keys.ArrowRight || keys.KeyD || touchRight;
+    const jump = keys.Space || keys.ArrowUp || keys.KeyW || touchJump;
+    const accel = 0.65 * dt;
+    if (left) { player.vx -= accel; player.facing=-1; }
+    if (right) { player.vx += accel; player.facing=1; }
+    if (!left && !right) player.vx *= Math.pow(0.78, dt);
+    player.vx = Math.max(-4.4, Math.min(4.4, player.vx));
+    if (jump && player.onGround) { player.vy=-11.8; player.onGround=false; }
+    player.vy += 0.58 * dt;
+    player.vy = Math.min(player.vy, 13);
+
+    player.x += player.vx * dt;
+    for (const p of platforms) {
+      if (hit(player,p)) {
+        if (player.vx > 0) player.x=p.x-player.w;
+        else if (player.vx < 0) player.x=p.x+p.w;
+        player.vx=0;
+      }
+    }
+    player.y += player.vy * dt;
+    player.onGround=false;
+    for (const p of platforms) {
+      if (hit(player,p)) {
+        if (player.vy > 0) { player.y=p.y-player.h; player.onGround=true; }
+        else if (player.vy < 0) player.y=p.y+p.h;
+        player.vy=0;
+      }
+    }
+    if (player.x < 0) player.x=0;
+    if (player.y > H+100) respawn();
+
+    if (player.invuln > 0) player.invuln -= dt;
+    for (const c of coins) {
+      if (!c.got && hit(player,{x:c.x-9,y:c.y-9+Math.sin(frame*.08+c.bob)*3,w:18,h:18})) {
+        c.got=true; score+=10; updateHud();
+      }
+    }
+    for (const e of enemies) {
+      if (!e.alive) continue;
+      e.x += e.dir * e.speed * dt;
+      if (e.x < e.start-55 || e.x > e.start+55) e.dir *= -1;
+      if (hit(player,e)) {
+        if (player.vy > 1 && player.y+player.h-e.y < 18) {
+          e.alive=false; player.vy=-8; score+=20; updateHud();
+        } else if (player.invuln <= 0) respawn();
+      }
+    }
+    if (player.x > goal.x-25) {
+      level++; updateHud(); buildLevel(level);
+    }
+    cameraX = Math.max(0, Math.min(player.x - 250, goal.x - 500));
+  }
+
+  function rect(x,y,w,h,color) { ctx.fillStyle=color; ctx.fillRect(Math.round(x-cameraX),Math.round(y),w,h); }
+  function drawBackground() {
+    const sky=ctx.createLinearGradient(0,0,0,H);
+    sky.addColorStop(0,'#75c9ee'); sky.addColorStop(1,'#d6f3ff');
+    ctx.fillStyle=sky; ctx.fillRect(0,0,W,H);
+    // Parallax hills and clouds.
+    for (let i=0;i<7;i++) {
+      const x=((i*190-cameraX*.25)%(W+220))-100;
+      ctx.fillStyle='#9bdcaa'; ctx.beginPath(); ctx.arc(x,360,95,Math.PI,0); ctx.fill();
+      ctx.fillStyle='#fff8'; ctx.fillRect(((i*157-cameraX*.12)%(W+100)),75+(i%3)*35,58,12);
+      ctx.fillRect(((i*157-cameraX*.12)%(W+100))+14,63+(i%3)*35,30,12);
+    }
+  }
+  function drawPlatform(p) {
+    rect(p.x,p.y,p.w,p.h,'#8b542e');
+    rect(p.x,p.y,p.w,7,'#55a943');
+    for(let x=p.x+8;x<p.x+p.w-4;x+=18) rect(x,p.y+12,8,5,'#a96b3c');
+    rect(p.x,p.y+p.h-4,p.w,4,'#603a2a');
+  }
+  function drawPlayer() {
+    const x=Math.round(player.x-cameraX), y=Math.round(player.y);
+    if (player.invuln>0 && Math.floor(frame/5)%2===0) return;
+    // Shadow
+    ctx.fillStyle='#31506a55'; ctx.fillRect(x-3,y+player.h,31,4);
+    // boots
+    ctx.fillStyle='#49352c'; ctx.fillRect(x+2,y+27,9,7); ctx.fillRect(x+15,y+27,9,7);
+    // body / shirt
+    ctx.fillStyle='#2877c7'; ctx.fillRect(x+3,y+14,20,15);
+    ctx.fillStyle='#f1c27d'; ctx.fillRect(x+5,y+2,17,14);
+    // hair
+    ctx.fillStyle='#553321'; ctx.fillRect(x+4,y,18,6); ctx.fillRect(x+2,y+4,5,6);
+    // face and eye
+    ctx.fillStyle='#2b2522'; ctx.fillRect(x+(player.facing>0?17:7),y+8,3,3);
+    // backpack
+    ctx.fillStyle='#e09b35'; ctx.fillRect(x+(player.facing>0?0:20),y+15,5,11);
+    ctx.fillStyle='#f4d35e'; ctx.fillRect(x+7,y+17,12,3);
+  }
+  function drawCoin(c) {
+    if(c.got) return;
+    const bob=Math.sin(frame*.08+c.bob)*3, x=Math.round(c.x-cameraX), y=Math.round(c.y+bob);
+    ctx.fillStyle='#d68a16'; ctx.fillRect(x-6,y-9,12,18);
+    ctx.fillStyle='#ffdf4d'; ctx.fillRect(x-4,y-8,8,16);
+    ctx.fillStyle='#fff3a6'; ctx.fillRect(x-2,y-6,3,5);
+  }
+  function drawEnemy(e) {
+    if(!e.alive) return;
+    const x=Math.round(e.x-cameraX), y=e.y;
+    ctx.fillStyle='#397d54'; ctx.fillRect(x+2,y+8,24,15);
+    ctx.fillStyle='#58b875'; ctx.fillRect(x+5,y+3,18,12);
+    ctx.fillStyle='#fff'; ctx.fillRect(x+7,y+8,5,6); ctx.fillRect(x+17,y+8,5,6);
+    ctx.fillStyle='#17251d'; ctx.fillRect(x+9,y+10,2,3); ctx.fillRect(x+19,y+10,2,3);
+    ctx.fillStyle='#24533b'; ctx.fillRect(x+5,y+21,6,3); ctx.fillRect(x+19,y+21,6,3);
+  }
+  function drawGoal() {
+    const x=Math.round(goal.x-cameraX);
+    ctx.fillStyle='#e9edf4'; ctx.fillRect(x,goal.y,6,80);
+    ctx.fillStyle='#f7c843'; ctx.fillRect(x+6,goal.y+4,42,25);
+    ctx.fillStyle='#d88a25'; ctx.fillRect(x+6,goal.y+25,42,4);
+    ctx.fillStyle='#fff2a8'; ctx.fillRect(x+11,goal.y+9,8,7);
+  }
+  function draw() {
+    drawBackground();
+    for(const p of platforms) drawPlatform(p);
+    for(const c of coins) drawCoin(c);
+    for(const e of enemies) drawEnemy(e);
+    drawGoal();
+    drawPlayer();
+    // Small level label in canvas.
+    ctx.fillStyle='#17314d'; ctx.font='bold 14px monospace'; ctx.fillText('FIND THE FLAG!',18,26);
+  }
+  let lastTime=0;
+  function loop(now) {
+    if(!running) return;
+    const dt=Math.min((now-lastTime)/16.67,2.2); lastTime=now;
+    update(dt); draw();
+    if(running) requestAnimationFrame(loop);
+  }
+  window.addEventListener('keydown',e=>{
+    if(['ArrowLeft','ArrowRight','ArrowUp','Space'].includes(e.code)) e.preventDefault();
+    keys[e.code]=true;
+  });
+  window.addEventListener('keyup',e=>keys[e.code]=false);
+  function bindHold(id, setter) {
+    const el=document.getElementById(id);
+    el.addEventListener('pointerdown',e=>{e.preventDefault();setter(true);});
+    ['pointerup','pointerleave','pointercancel'].forEach(ev=>el.addEventListener(ev,()=>setter(false)));
+  }
+  bindHold('leftBtn',v=>touchLeft=v);
+  bindHold('rightBtn',v=>touchRight=v);
+  bindHold('jumpBtn',v=>touchJump=v);
+  startBtn.addEventListener('click',startGame);
+  buildLevel(1); draw(); updateHud();
+})();
+</script>
+</body>
+</html>

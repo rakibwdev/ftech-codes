@@ -1,0 +1,151 @@
+<style>
+    .woocommerce-product-details__short-description.is-collapsed {
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 3 !important;
+    overflow: hidden !important;
+}
+
+.woocommerce-product-details__short-description.is-expanded {
+    display: block !important;
+    overflow: visible !important;
+}
+
+.description-toggle {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: #0073aa;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.description-toggle:hover {
+    text-decoration: underline;
+}
+</style>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+    const description = document.querySelector(
+        '.woocommerce-product-details__short-description'
+    );
+
+    if (!description) return;
+
+    // Add collapsed class
+    description.classList.add('is-collapsed');
+
+    // Create See More button
+    const button = document.createElement('button');
+
+    button.type = 'button';
+    button.className = 'description-toggle';
+    button.textContent = 'See More';
+
+    description.after(button);
+
+    // Toggle description
+    button.addEventListener('click', function () {
+
+        const isExpanded = description.classList.toggle('is-expanded');
+
+        description.classList.toggle('is-collapsed', !isExpanded);
+
+        button.textContent = isExpanded ? 'See Less' : 'See More';
+
+    });
+
+});
+</script>
+
+
+BUY 1 OZ, GET 2 OZ <a href="https://thcavalley.com/collections/bogo-shake">FREE - $44.99</a> (random strain)
+
+WHOLESALE: Buy 1LB + get QP free | Buy HP+ get 56G <a href="https://thcavalley.com/collections/thca-flower-wholesale">free</a>
+
+CLEARANCE <a href="https://thcavalley.com/collections/weekly-clearance-limited-time-flower-deals">$165/QP</a>
+
+FREE SHIPPING OVER $75 | Lab tested | Discreet packaging
+
+Bulk order or custom deal? Message us - real humans reply fast
+
+<style>
+  selector{
+        .elementor-icon-list-items {
+        min-height: 30px;
+        overflow: hidden;
+    }
+
+    .elementor-icon-list-items .elementor-icon-list-item {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        transform: translateY(100%);
+        transition: opacity .5s ease, transform .5s ease;
+        white-space: nowrap;
+        pointer-events: none;
+    }
+
+    .elementor-icon-list-items .elementor-icon-list-item.is-active {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+    }
+
+    .elementor-icon-list-items .elementor-icon-list-item.is-exiting {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+}
+</style>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+    document.querySelectorAll('.elementor-icon-list-items').forEach(function (list) {
+
+        const items = Array.from(list.querySelectorAll('.elementor-icon-list-item'));
+
+        if (items.length <= 1) return;
+
+        let currentIndex = 0;
+
+        // Set initial active item
+        items.forEach((item, index) => {
+            item.classList.toggle('is-active', index === currentIndex);
+        });
+
+        function showRandomItem() {
+
+            let nextIndex;
+
+            // Prevent showing the same item twice consecutively
+            do {
+                nextIndex = Math.floor(Math.random() * items.length);
+            } while (nextIndex === currentIndex);
+
+            const currentItem = items[currentIndex];
+            const nextItem = items[nextIndex];
+
+            currentItem.classList.remove('is-active');
+            currentItem.classList.add('is-exiting');
+
+            nextItem.classList.remove('is-exiting');
+            nextItem.classList.add('is-active');
+
+            setTimeout(() => {
+                currentItem.classList.remove('is-exiting');
+            }, 500);
+
+            currentIndex = nextIndex;
+        }
+
+        setInterval(showRandomItem, 3000);
+
+    });
+
+});
+</script>
