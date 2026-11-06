@@ -149,3 +149,398 @@ Bulk order or custom deal? Message us - real humans reply fast
 
 });
 </script>
+
+
+<style>
+    
+ /* Main menu wrapper */
+.wp-slide-menu {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    transition: height .4s ease;
+}
+
+/* All menu panels */
+.wp-slide-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Main menu */
+.wp-slide-menu > ul {
+    position: relative;
+    width: 100%;
+}
+
+/* Submenu panels */
+.wp-slide-menu .sub-menu {
+    position: absolute !important;
+    inset: 0 auto auto 0;
+    width: 100% !important;
+
+    display: block !important;
+    min-width: 100% !important;
+
+    visibility: hidden;
+    opacity: 0;
+    transform: translateX(100%);
+
+    pointer-events: none;
+
+    transition:
+        transform .4s ease,
+        opacity .4s ease,
+        visibility .4s ease;
+
+    background: #fff;
+    z-index: 2;
+}
+
+/* Active panel */
+.wp-slide-menu ul.is-active {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+}
+
+/* Previous panel slides to left */
+/* .wp-slide-menu ul.is-before {
+    visibility: hidden;
+    opacity: 0;
+    transform: translateX(-100%);
+    pointer-events: none;
+} */
+
+/* Menu links */
+.wp-slide-menu .menu-item > a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 15px;
+    text-decoration: none;
+    color: #222;
+}
+
+/* Parent menu arrow */
+.wp-slide-menu .menu-item-has-children > a::after {
+    content: "›";
+    font-size: 24px;
+    margin-left: 10px;
+}
+
+/* Back button */
+.wp-slide-menu .wp-slide-menu__back > a {
+    justify-content: flex-start;
+    font-weight: 600;
+    border-bottom: 1px solid #eee;
+}
+
+.wp-slide-menu .wp-slide-menu__back > a::before {
+    content: "←";
+    margin-right: 10px;
+    font-size: 20px;
+}
+</style>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+
+    document.querySelectorAll('.wp-slide-menu').forEach(function (wrapper) {
+
+        const mainMenu = wrapper.querySelector(':scope > ul');
+
+        if (!mainMenu) return;
+
+        let currentPanel = mainMenu;
+        const history = [];
+
+        // Set initial panel
+        mainMenu.classList.add('is-active');
+
+        // Set wrapper height
+        function updateHeight() {
+            wrapper.style.height = currentPanel.scrollHeight + 'px';
+        }
+
+        // Create back buttons for all submenu levels
+        wrapper.querySelectorAll('.sub-menu').forEach(function (submenu) {
+
+            if (submenu.querySelector(':scope > .wp-slide-menu__back')) return;
+
+            const backItem = document.createElement('li');
+            backItem.className = 'wp-slide-menu__back';
+
+            const backLink = document.createElement('a');
+            backLink.href = '#';
+            backLink.textContent = 'Back';
+
+            backItem.appendChild(backLink);
+            submenu.prepend(backItem);
+
+        });
+
+        updateHeight();
+
+        // Handle menu clicks
+        wrapper.addEventListener('click', function (event) {
+
+            // Back button
+            const backButton = event.target.closest('.wp-slide-menu__back a');
+
+            if (backButton) {
+
+                event.preventDefault();
+
+                if (!history.length) return;
+
+                currentPanel.classList.remove('is-active');
+
+                const previousPanel = history.pop();
+
+                currentPanel.classList.remove('is-before');
+
+                currentPanel = previousPanel;
+
+                currentPanel.classList.remove('is-before');
+                currentPanel.classList.add('is-active');
+
+                updateHeight();
+
+                return;
+            }
+
+            // Parent menu link
+            const link = event.target.closest('a');
+
+            if (!link || !wrapper.contains(link)) return;
+
+            const item = link.closest('li');
+
+            if (!item) return;
+
+            const submenu = item.querySelector(':scope > ul.sub-menu');
+
+            // Allow normal navigation for menu items without children
+            if (!submenu) return;
+
+            event.preventDefault();
+
+            // Save current panel
+            history.push(currentPanel);
+
+            // Slide current panel out
+            currentPanel.classList.remove('is-active');
+            currentPanel.classList.add('is-before');
+
+            // Show next panel
+            currentPanel = submenu;
+
+            currentPanel.classList.remove('is-before');
+            currentPanel.classList.add('is-active');
+
+            updateHeight();
+
+        });
+
+    });
+
+});
+</script>
+
+<!-- wp -->
+ <style>
+
+/* Main menu wrapper */
+.elementor-nav-menu--dropdown {
+    overflow: hidden !important;
+    position: relative !important;
+    transition: height .4s ease !important;
+}
+
+/* Main menu and submenu panels */
+.elementor-nav-menu--dropdown .elementor-nav-menu,
+.elementor-nav-menu--dropdown .sub-menu {
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Main panel */
+.elementor-nav-menu--dropdown > ul.elementor-nav-menu {
+    position: relative !important;
+    width: 100% !important;
+}
+
+/* Submenu panels */
+.elementor-nav-menu--dropdown .sub-menu {
+    position: absolute !important;
+    inset: 0 auto auto 0 !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+
+    display: block !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+
+    transform: translateX(100%) !important;
+    pointer-events: none !important;
+
+    transition:
+        transform .4s ease,
+        opacity .4s ease,
+        visibility .4s ease !important;
+
+    background: #fff !important;
+    z-index: 2 !important;
+}
+
+/* Active panel */
+.elementor-nav-menu--dropdown ul.is-active {
+    visibility: visible !important;
+    opacity: 1 !important;
+    transform: translateX(0) !important;
+    pointer-events: auto !important;
+}
+
+/* Menu links */
+.elementor-nav-menu--dropdown .menu-item > a {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Back button */
+.elementor-nav-menu--dropdown .slide-menu-back > a {
+    justify-content: flex-start !important;
+    font-weight: 600 !important;
+    border-bottom: 1px solid #eee;
+}
+
+.elementor-nav-menu--dropdown .slide-menu-back > a::before {
+    content: "←";
+    margin-right: 10px;
+    font-size: 20px;
+}
+
+ </style>
+ <script>
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    document.querySelectorAll(
+        '.elementor-nav-menu--dropdown'
+    ).forEach(function (wrapper) {
+
+        const mainMenu = wrapper.querySelector(
+            ':scope > ul.elementor-nav-menu'
+        );
+
+        if (!mainMenu) return;
+
+        let currentPanel = mainMenu;
+        const history = [];
+
+        // Initialize main panel
+        mainMenu.classList.add('is-active');
+
+        // Create back buttons
+        wrapper.querySelectorAll('.sub-menu').forEach(function (submenu) {
+
+            if (submenu.querySelector(':scope > .slide-menu-back')) {
+                return;
+            }
+
+            const backItem = document.createElement('li');
+            backItem.className = 'slide-menu-back';
+
+            const backLink = document.createElement('a');
+            backLink.href = '#';
+            backLink.textContent = 'Back';
+
+            backItem.appendChild(backLink);
+            submenu.prepend(backItem);
+
+        });
+
+        // Update wrapper height
+        function updateHeight() {
+            wrapper.style.height = currentPanel.scrollHeight + 'px';
+        }
+
+        updateHeight();
+
+        // Handle navigation
+        wrapper.addEventListener('click', function (event) {
+
+            // Back button
+            const backButton = event.target.closest(
+                '.slide-menu-back > a'
+            );
+
+            if (backButton) {
+
+                event.preventDefault();
+
+                if (!history.length) return;
+
+                currentPanel.classList.remove('is-active');
+
+                currentPanel = history.pop();
+
+                currentPanel.classList.add('is-active');
+
+                updateHeight();
+
+                return;
+            }
+
+            // Parent menu link
+            const link = event.target.closest(
+                '.menu-item-has-children > a'
+            );
+
+            if (!link || !wrapper.contains(link)) return;
+
+            const item = link.closest('li');
+
+            const submenu = item.querySelector(
+                ':scope > ul.sub-menu'
+            );
+
+            if (!submenu) return;
+
+            event.preventDefault();
+
+            // Save previous panel
+            history.push(currentPanel);
+
+            // Hide current panel
+            currentPanel.classList.remove('is-active');
+
+            // Show next panel
+            currentPanel = submenu;
+
+            currentPanel.classList.add('is-active');
+
+            updateHeight();
+
+        });
+
+        // Recalculate height when menu opens
+        const observer = new MutationObserver(function () {
+            requestAnimationFrame(updateHeight);
+        });
+
+        observer.observe(wrapper, {
+            attributes: true,
+            attributeFilter: ['class', 'style']
+        });
+
+    });
+
+});
+
+ </script>
