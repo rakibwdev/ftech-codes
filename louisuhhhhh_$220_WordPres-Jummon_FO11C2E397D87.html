@@ -1,3 +1,43 @@
+<!-- carousol touchpad scrool slider -->
+ <script>
+document.addEventListener("DOMContentLoaded", function () {
+    const section = document.getElementById('horizontal-section');
+    if (!section) return;
+
+    const swiperWrapper = section.querySelector('.swiper-wrapper');
+    const swiperContainer = section.querySelector('.elementor-loop-carousel, .swiper');
+
+    if (!swiperWrapper || !swiperContainer) return;
+
+    let currentTranslate = 0;
+
+    section.addEventListener('wheel', function (e) {
+
+        if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+
+        const maxTranslate = Math.max(
+            0,
+            swiperWrapper.scrollWidth - swiperContainer.offsetWidth
+        );
+
+        const direction = e.deltaX > 0 ? 1 : -1;
+
+        if (
+            (direction > 0 && currentTranslate < maxTranslate) ||
+            (direction < 0 && currentTranslate > 0)
+        ) {
+            e.preventDefault(); 
+
+            currentTranslate += e.deltaX * 0.5; // change 0.5 to adjust speed
+            currentTranslate = Math.max(0, Math.min(maxTranslate, currentTranslate));
+
+            swiperWrapper.style.transform =
+                `translate3d(-${currentTranslate}px, 0px, 0px)`;
+        }
+
+    }, { passive: false });
+});
+ </script>
 
 <script>
     // carousol scrool slider

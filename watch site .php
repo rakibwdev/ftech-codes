@@ -1322,6 +1322,14 @@ add_action( 'wp_footer', function() {
                 var applyButton = filter.querySelector('.cpf-apply');
                 var clearButton = filter.querySelector('.cpf-clear');
 
+                function getProductLoopContainer() {
+
+                var loop = document.querySelector('#product_loop');
+
+                if (!loop) return null;
+
+                return loop.querySelector('.elementor-loop-container');
+                }   
 
                 function getCategoryValue() {
                     var selectedCategory = filter.querySelector('.cpf-category:checked');
@@ -1622,8 +1630,7 @@ add_action( 'wp_footer', function() {
                                         : 'Filtering failed.'
                                 );
                             }
-
-                            var container = loop.querySelector('.elementor-loop-container');
+                            var container = getProductLoopContainer();
 
                             if (!container) {
                                 throw new Error(
@@ -1785,50 +1792,75 @@ add_action( 'wp_footer', function() {
                  * If URL already has filters,
                  * matching checkboxes are rendered checked by PHP.
                  */
-                if (filter.dataset.hasFilters === '1') {
+              if (filter.dataset.hasFilters === '1') {
 
-    var attempts = 0;
+                var initialFilterStarted = false;
+                var initialFilterObserver = null;
+                var initialFilterTimeout = null;
 
-    function runInitialFilter() {
+                function runInitialFilter() {
 
-        var loop = document.querySelector('#product_loop');
+                    if (initialFilterStarted) return;
 
-        var container = loop
-            ? loop.querySelector('.elementor-loop-container')
-            : null;
+                    var container = getProductLoopContainer();
 
-        // Wait until Elementor Product Loop is ready
-        if (loop && container) {
+                    // Elementor Loop Grid is not ready yet
+                    if (!container) return;
 
-            updateProducts();
-            return;
-        }
+                    // Prevent multiple AJAX requests
+                    initialFilterStarted = true;
 
-        // Retry if Elementor has not loaded yet
-        if (attempts < 20) {
+                    // Stop observing DOM changes
+                    if (initialFilterObserver) {
+                        initialFilterObserver.disconnect();
+                    }
 
-            attempts++;
+                    if (initialFilterTimeout) {
+                        clearTimeout(initialFilterTimeout);
+                    }
 
-            setTimeout(runInitialFilter, 250);
+                    console.log('CPF: Elementor Product Loop is ready.');
 
-        } else {
+                    // Apply URL filters
+                    updateProducts();
+                }
 
-            status.textContent = 'Product Loop could not be loaded.';
-        }
-    }
+                // Observe Elementor DOM rendering
+                initialFilterObserver = new MutationObserver(function() {
 
-    // Wait until the complete page has loaded
-    if (document.readyState === 'complete') {
+                    runInitialFilter();
 
-        runInitialFilter();
+                });
 
-    } else {
+                initialFilterObserver.observe(document.documentElement, {
+                    childList: true,
+                    subtree: true
+                });
 
-        window.addEventListener('load', runInitialFilter, {
-            once: true
-        });
-    }
-}
+                // Check immediately
+                runInitialFilter();
+
+                // Maximum waiting time: 30 seconds
+                initialFilterTimeout = setTimeout(function() {
+
+                    if (!initialFilterStarted) {
+
+                        initialFilterObserver.disconnect();
+
+                        console.error('CPF: Product Loop was not rendered.');
+
+                        console.log(
+                            'Product Loop element:',
+                            document.querySelector('#product_loop')
+                        );
+
+                        status.textContent = 'Product Loop could not be loaded.';
+                    }
+
+                }, 30000);
+
+            }
+            
             });
         }
 
