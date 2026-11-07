@@ -1,0 +1,306 @@
+<style>
+    .your-target ul{ 
+    list-style: none; 
+    padding: 0;
+}
+
+.your-target .sidebar_panel{ position: absolute;
+    top: 0; 
+    left: 100%; 
+    background-color: #f1f1f1;
+    width: 100% !important; 
+    height: 100% !important; 
+    overflow-y: auto; 
+    overflow-x: hidden;
+    z-index: 1000000;
+}
+.sidebar_panel .sidebar_header{ 
+    display: flex;
+    
+} 
+
+.sidebar_panel .sidebar_header button{ 
+    padding: 0px !important;
+} 
+.sidebar_panel .sidebar_header h3{ 
+  font-size: 14px !important;
+  font-weight: 400;
+  letter-spacing: 0.28px;
+  line-height: 14px;
+}
+
+.your-target a{
+    color: #000;
+}
+
+
+selector li{
+    padding-top: 16px;
+}
+
+.sidebar_header {
+    display: flex;
+    justify-content: space-between;
+}
+
+button.return-btn, .close-btn {
+    border: none;
+    background: transparent;
+    color: #000;
+}
+
+
+.return-btn:hover{
+    background: transparent;
+}
+.return-btn img {
+    width: 20px;
+    height: 20px;
+    display: block;
+}
+
+.close-btn {
+    font-size: 28px;
+    line-height: 1;
+}
+
+
+.sidebar_panel {
+    transition: left 0.4s ease;
+    background-color: #fff !important;
+}
+
+.sidebar_panel[style*="left: 0px"] {
+    left: 0 !important;
+}
+
+
+.your-target{
+    overflow-x: hidden !important;
+}
+
+@media (max-width: 1024px) {
+    .elementor-element-b24940f {
+        --min-height: 100%;
+    }
+}
+
+
+
+.elementor-element-b24940f > ul > li:nth-last-child(-n+5) > a {
+    font-family: 'F37 Blanka';
+    font-size: 14px !important;
+    font-weight: 400 !important;
+}
+
+.elementor-element-b24940f > ul > li:nth-last-child(5) {
+   margin-top: 20px;
+   padding-top: 20px;
+    border-top: 1px solid #d9d9d9;
+}
+
+
+@media (max-width: 767px) {
+    .e-con.e-flex {
+    --flex-wrap: none;
+    }
+}
+
+
+
+</style>
+
+<!-- Floating List -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+    document.querySelectorAll('.elementor-icon-list-items').forEach(function (list) {
+
+        const items = Array.from(list.querySelectorAll('.elementor-icon-list-item'));
+
+        if (items.length <= 1) return;
+
+        let currentIndex = 0;
+
+        items.forEach((item, index) => {
+            item.classList.toggle('is-active', index === currentIndex);
+        });
+
+        function showRandomItem() {
+
+            let nextIndex;
+
+            do {
+                nextIndex = Math.floor(Math.random() * items.length);
+            } while (nextIndex === currentIndex);
+
+            const currentItem = items[currentIndex];
+            const nextItem = items[nextIndex];
+
+            currentItem.classList.remove('is-active');
+            currentItem.classList.add('is-exiting');
+
+            nextItem.classList.remove('is-exiting');
+            nextItem.classList.add('is-active');
+
+            setTimeout(() => {
+                currentItem.classList.remove('is-exiting');
+            }, 500);
+
+            currentIndex = nextIndex;
+        }
+
+        setInterval(showRandomItem, 3000);
+
+    });
+
+});
+</script>
+
+
+<!-- Mobile Menu -->
+<script>
+    const existingMenu = document.querySelector(
+    '.elementor-nav-menu--dropdown .elementor-nav-menu'
+);
+const target = document.querySelector('.your-target');
+
+function buildMenu(source) {
+    const ul = document.createElement('ul');
+
+    source.querySelectorAll(':scope > li').forEach(item => {
+
+        const li = document.createElement('li');
+
+        // Get direct link
+        const link = item.querySelector(':scope > a');
+        if (!link) return;
+
+        // Create link
+        const a = document.createElement('a');
+        a.href = link.href;
+        a.textContent = link.textContent;
+        li.appendChild(a);
+
+        // Get direct submenu
+        const submenu = item.querySelector(':scope > .sub-menu');
+
+        if (submenu) {
+
+            // Create sidebar panel
+            const panel = document.createElement('div');
+            panel.className = 'sidebar_panel';
+
+            // Create header
+            const header = document.createElement('div');
+            header.className = 'sidebar_header';
+
+            // Back button
+            const backBtn = document.createElement('button');
+            backBtn.className = 'return-btn';
+
+            // Back SVG icon
+            const backIcon = document.createElement('img');
+            backIcon.src = 'https://staging.rodeovault.com/wp-content/uploads/2026/09/arrow-prev-svgrepo-com.svg';
+            backIcon.alt = 'Back';
+
+            backBtn.appendChild(backIcon);
+					
+					// Title
+            const title = document.createElement('h3');
+            title.textContent = link.textContent;
+
+            // Close button
+            const closeBtn = document.createElement('button');
+            closeBtn.className = 'close-btn';
+
+            // Times icon
+            closeBtn.innerHTML = '&times;';
+
+            // Header structure
+            header.appendChild(backBtn);
+            header.appendChild(title);
+            header.appendChild(closeBtn);
+
+            // Build submenu recursively
+            const subMenu = buildMenu(submenu);
+
+            subMenu.classList.add('sub-menu');
+
+            // Panel structure
+            panel.appendChild(header);
+            panel.appendChild(subMenu);
+
+            // Add panel inside current LI
+            li.appendChild(panel);
+        }
+
+        ul.appendChild(li);
+    });
+
+    return ul;
+}
+
+
+function initSidebarMenu(menu) {
+
+    // Menu item click
+    menu.querySelectorAll('li').forEach(item => {
+
+        const link = item.querySelector(':scope > a');
+        const panel = item.querySelector(':scope > .sidebar_panel');
+
+        // Only items that have a sidebar panel
+        if (link && panel) {
+
+            link.addEventListener('click', function (e) {
+
+                e.preventDefault();
+
+                panel.style.left = '0';
+            });
+        }
+    });
+
+
+    // Back button click
+    menu.querySelectorAll('.return-btn').forEach(button => {
+
+        button.addEventListener('click', function (e) {
+
+            e.preventDefault();
+
+            const panel = button.closest('.sidebar_panel');
+
+            if (panel) {
+                panel.style.left = '100%';
+            }
+        });
+    });
+
+
+    // Close button
+    menu.querySelectorAll('.close-btn').forEach(button => {
+
+        button.addEventListener('click', function (e) {
+
+            e.preventDefault();
+
+            const panel = button.closest('.sidebar_panel');
+
+            if (panel) {
+                panel.style.left = '100%';
+            }
+        });
+    });
+}
+
+
+// Build new menu
+	if (existingMenu && target) {
+		const newMenu = buildMenu(existingMenu);
+
+    target.appendChild(newMenu);
+    initSidebarMenu(newMenu);
+}
+</script>
