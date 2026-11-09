@@ -1,0 +1,37 @@
+
+
+<script>
+    
+    document.addEventListener('DOMContentLoaded', function () {
+
+    const headings = document.querySelectorAll('[dwn_cat]');
+
+    headings.forEach(function (heading) {
+
+        const category = heading.getAttribute('dwn_cat')
+            .replace(/<[^>]*>/g, '')
+            .trim();
+
+        const section = heading.closest('.e-con');
+
+        if (!section) return;
+
+        const loopItems = section.querySelectorAll(
+            '.elementor-loop-container > .e-loop-item'
+        );
+
+        loopItems.forEach(function (item) {
+
+            if (item.classList.contains('download-category-' + category)) {
+                item.style.display = '';
+            } else {
+                item.style.display = 'none';
+            }
+
+        });
+
+    });
+
+});
+
+</script>
