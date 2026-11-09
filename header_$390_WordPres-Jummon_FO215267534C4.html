@@ -47,6 +47,7 @@ button.return-btn, .close-btn {
     border: none;
     background: transparent;
     color: #000;
+    transform: rotate(180deg);
 }
 
 
@@ -201,16 +202,14 @@ function buildMenu(source) {
 
             // Back SVG icon
             const backIcon = document.createElement('img');
-            backIcon.src = 'https://staging.rodeovault.com/wp-content/uploads/2026/09/arrow-prev-svgrepo-com.svg';
+            backIcon.src = 'https://thcavalley.wpcomstaging.com/wp-content/uploads/2026/11/download-4.svg';
             backIcon.alt = 'Back';
 
             backBtn.appendChild(backIcon);
 					
-					// Title
             const title = document.createElement('h3');
             title.textContent = link.textContent;
 
-            // Close button
             const closeBtn = document.createElement('button');
             closeBtn.className = 'close-btn';
 
