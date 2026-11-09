@@ -1,0 +1,483 @@
+
+<script>
+(function () {
+    function initCategoryFilter() {
+        const widgets = document.querySelectorAll(
+            '.category_filter.elementor-widget-taxonomy-filter, ' +
+            '.elementor-widget-taxonomy-filter.category_filter, ' +
+            '.category_filter'
+        );
+
+        widgets.forEach(function (widget) {
+            const filter = widget.matches('.e-filter')
+                ? widget
+                : widget.querySelector('.e-filter');
+
+            if (!filter || filter.dataset.nativeSelectReady === 'true') {
+                return;
+            }
+
+            const buttons = Array.from(
+                filter.querySelectorAll('.e-filter-item')
+            );
+
+            if (!buttons.length) return;
+
+            const select = document.createElement('select');
+            select.className = 'taxonomy-native-select';
+            select.setAttribute('aria-label', '选择类别');
+
+            const placeholder = document.createElement('option');
+            placeholder.value = '';
+            placeholder.textContent = '选择类别';
+            select.appendChild(placeholder);
+
+            buttons.forEach(function (button, index) {
+                const option = document.createElement('option');
+
+                option.value = String(index);
+                option.textContent = button.textContent.trim();
+
+                select.appendChild(option);
+            });
+
+            filter.parentNode.insertBefore(select, filter);
+
+            filter.classList.add('taxonomy-filter-source-hidden');
+            filter.dataset.nativeSelectReady = 'true';
+
+            select.addEventListener('change', function () {
+                if (select.value === '') return;
+
+                const button = buttons[Number(select.value)];
+
+                if (button) {
+                    button.click();
+                }
+            });
+
+            function syncSelection() {
+                const activeIndex = buttons.findIndex(function (button) {
+                    return button.getAttribute('aria-pressed') === 'true';
+                });
+
+                select.value = activeIndex >= 0
+                    ? String(activeIndex)
+                    : '';
+            }
+
+            buttons.forEach(function (button) {
+                button.addEventListener('click', function () {
+                    setTimeout(syncSelection, 0);
+                });
+            });
+
+            syncSelection();
+        });
+    }
+
+    function start() {
+        initCategoryFilter();
+
+        const observer = new MutationObserver(function () {
+            initCategoryFilter();
+        });
+
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', start);
+    } else {
+        start();
+    }
+})();
+</script>
+
+<script>
+(function () {
+    function initTaxSelectFilter() {
+        document.querySelectorAll('.tax-select-filter').forEach(function (widget) {
+            const filter = widget.matches('.e-filter')
+                ? widget
+                : widget.querySelector('.e-filter');
+
+            if (!filter || filter.dataset.nativeSelectReady === 'true') {
+                return;
+            }
+
+            const buttons = Array.from(
+                filter.querySelectorAll('.e-filter-item')
+            );
+
+            if (!buttons.length) return;
+
+            const select = document.createElement('select');
+            select.className = 'taxonomy-native-select';
+            select.setAttribute('aria-label', 'Select category');
+
+            const placeholder = document.createElement('option');
+            placeholder.value = '';
+            placeholder.textContent = '选择部位';
+            select.appendChild(placeholder);
+
+            buttons.forEach(function (button, index) {
+                const option = document.createElement('option');
+                option.value = String(index);
+                option.textContent = button.textContent.trim();
+                select.appendChild(option);
+            });
+
+            filter.parentNode.insertBefore(select, filter);
+            filter.classList.add('taxonomy-filter-source-hidden');
+            filter.dataset.nativeSelectReady = 'true';
+
+            select.addEventListener('change', function () {
+                if (select.value === '') return;
+
+                const button = buttons[Number(select.value)];
+
+                if (button) button.click();
+            });
+
+            function syncSelection() {
+                const activeIndex = buttons.findIndex(function (button) {
+                    return button.getAttribute('aria-pressed') === 'true';
+                });
+
+                select.value = activeIndex >= 0
+                    ? String(activeIndex)
+                    : '';
+            }
+
+            buttons.forEach(function (button) {
+                button.addEventListener('click', function () {
+                    setTimeout(syncSelection, 0);
+                });
+            });
+
+            syncSelection();
+        });
+    }
+
+    function start() {
+        initTaxSelectFilter();
+
+        const observer = new MutationObserver(initTaxSelectFilter);
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', start);
+    } else {
+        start();
+    }
+})();
+</script>
+
+<script>
+(function () {
+    function initDependentFilters() {
+        const firstWidget = document.querySelector('.category_filter');
+        const secondWidget = document.querySelector('.tax-select-filter');
+
+        if (!firstWidget || !secondWidget) return;
+
+        const firstFilter = firstWidget.matches('.e-filter')
+            ? firstWidget
+            : firstWidget.querySelector('.e-filter');
+
+        const secondFilter = secondWidget.matches('.e-filter')
+            ? secondWidget
+            : secondWidget.querySelector('.e-filter');
+
+        if (!firstFilter || !secondFilter) return;
+
+        const firstButtons = Array.from(
+            firstFilter.querySelectorAll('.e-filter-item')
+        );
+
+        if (!firstButtons.length) return;
+
+        function getActiveButton() {
+            return firstButtons.find(function (button) {
+                return button.getAttribute('aria-pressed') === 'true'
+                    && button.dataset.filter !== '*'
+                    && button.getAttribute('data-filter') !== '*';
+            });
+        }
+
+        function updateSecondFilter() {
+            const selected = getActiveButton();
+            const secondSelect = secondWidget.querySelector(
+                '.taxonomy-native-select'
+            );
+
+            secondWidget.classList.toggle('is-disabled', !selected);
+
+            if (secondSelect) {
+                secondSelect.disabled = !selected;
+
+                if (!selected) {
+                    secondSelect.value = '';
+                }
+            }
+        }
+
+        firstButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                setTimeout(updateSecondFilter, 100);
+            });
+        });
+
+        updateSecondFilter();
+
+        if (!firstWidget.dataset.dependentFilterObserver) {
+            firstWidget.dataset.dependentFilterObserver = 'true';
+
+            const observer = new MutationObserver(updateSecondFilter);
+
+            observer.observe(firstFilter, {
+                attributes: true,
+                subtree: true,
+                attributeFilter: ['aria-pressed', 'class']
+            });
+        }
+    }
+
+    function start() {
+        initDependentFilters();
+
+        const observer = new MutationObserver(initDependentFilters);
+
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', start);
+    } else {
+        start();
+    }
+})();
+</script>
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const firstFilter = document.querySelector('.category_filter select');
+    const secondFilter = document.querySelector('.tax-select-filter select');
+
+    if (!firstFilter || !secondFilter) {
+        console.log('Filter select not found!');
+        return;
+    }
+
+    const originalOptions = Array.from(secondFilter.options).map(option => ({
+        value: option.value,
+        text: option.textContent.trim()
+    }));
+
+    const dependentOptions = {
+        '腐蚀性、刺激性化学品': [
+            '大面积皮肤喷溅',
+            '局部皮肤喷溅',
+            '眼部喷溅'
+        ],
+        '氢氟酸及其及酸性介质中的氟化物': [
+            '眼部喷溅',
+            '皮肤喷溅'
+        ]
+    };
+
+    function updateSecondFilter() {
+        const selectedValue = firstFilter.value;
+        const selectedText = firstFilter.options[
+            firstFilter.selectedIndex
+        ]?.textContent.trim();
+
+        const allowedOptions =
+            dependentOptions[selectedValue] ||
+            dependentOptions[selectedText] ||
+            [];
+
+        secondFilter.innerHTML = '';
+
+        originalOptions.forEach(option => {
+            if (
+                option.value === '' ||
+                allowedOptions.includes(option.value) ||
+                allowedOptions.includes(option.text)
+            ) {
+                secondFilter.add(
+                    new Option(option.text, option.value)
+                );
+            }
+        });
+
+        secondFilter.dispatchEvent(
+            new Event('change', { bubbles: true })
+        );
+
+        console.log('First filter value:', selectedValue);
+        console.log('First filter text:', selectedText);
+        console.log('Allowed options:', allowedOptions);
+        console.log('Second filter options:', secondFilter.options.length);
+    }
+
+    firstFilter.addEventListener('change', updateSecondFilter);
+    updateSecondFilter();
+});
+</script>
+
+
+<script>
+(function () {
+    function initPrevorProductMessage() {
+        const categoryWidget = document.querySelector('.category_filter');
+        const productWidget = document.querySelector('.tax-select-filter');
+
+        const loopGrid = document.querySelector(
+            '.elementor-widget-loop-grid'
+        );
+
+        if (!categoryWidget || !productWidget || !loopGrid) return;
+
+        // Create the message once, before the Loop Grid
+        let message = document.querySelector('.prevor-filter-message');
+
+        if (!message) {
+            message = document.createElement('div');
+            message.className = 'prevor-filter-message';
+            message.textContent =
+                '选择以上条件以查看符合条件的产品。';
+
+            loopGrid.parentNode.insertBefore(message, loopGrid);
+        }
+
+        function getSelectedFilter(widget) {
+            const select = widget.querySelector(
+                'select.taxonomy-native-select'
+            );
+
+            if (select) {
+                if (select.disabled || select.value === '') {
+                    return false;
+                }
+
+                const filter = widget.querySelector('.e-filter');
+                const buttons = filter
+                    ? Array.from(filter.querySelectorAll('.e-filter-item'))
+                    : [];
+
+                const selectedButton = buttons[Number(select.value)];
+
+                if (!selectedButton) return false;
+
+                const filterValue =
+                    selectedButton.getAttribute('data-filter');
+
+                return filterValue !== '*';
+            }
+
+            const filter = widget.matches('.e-filter')
+                ? widget
+                : widget.querySelector('.e-filter');
+
+            if (!filter) return false;
+
+            return Array.from(
+                filter.querySelectorAll('.e-filter-item')
+            ).some(function (button) {
+                return button.getAttribute('aria-pressed') === 'true'
+                    && button.getAttribute('data-filter') !== '*';
+            });
+        }
+
+        function updateProductVisibility() {
+            const categorySelected = getSelectedFilter(categoryWidget);
+            const productSelected = getSelectedFilter(productWidget);
+
+            const bothSelected =
+                categorySelected && productSelected;
+
+            loopGrid.classList.toggle(
+                'prevor-grid-hidden',
+                !bothSelected
+            );
+
+            message.classList.toggle(
+                'is-visible',
+                !bothSelected
+            );
+        }
+
+        // Listen for native select changes
+        document.addEventListener('change', function (event) {
+            if (
+                event.target.matches(
+                    '.category_filter select, .tax-select-filter select'
+                )
+            ) {
+                setTimeout(updateProductVisibility, 100);
+            }
+        });
+
+        // Listen for original Elementor filter clicks
+        [categoryWidget, productWidget].forEach(function (widget) {
+            widget.addEventListener('click', function () {
+                setTimeout(updateProductVisibility, 100);
+            });
+        });
+
+        // Keep state updated when Elementor changes filter attributes
+        const observer = new MutationObserver(function () {
+            updateProductVisibility();
+        });
+
+        [categoryWidget, productWidget].forEach(function (widget) {
+            observer.observe(widget, {
+                attributes: true,
+                subtree: true,
+                childList: true,
+                attributeFilter: [
+                    'aria-pressed',
+                    'data-filter',
+                    'disabled',
+                    'value'
+                ]
+            });
+        });
+
+        updateProductVisibility();
+    }
+
+    function start() {
+        initPrevorProductMessage();
+
+        const observer = new MutationObserver(function () {
+            initPrevorProductMessage();
+        });
+
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', start);
+    } else {
+        start();
+    }
+})();
+</script>
