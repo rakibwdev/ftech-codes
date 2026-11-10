@@ -1,483 +1,360 @@
+<style>
+.prevor-check-dropdown {
+    position: relative;
+    width: 100%;
+}
 
-<script>
-(function () {
-    function initCategoryFilter() {
-        const widgets = document.querySelectorAll(
-            '.category_filter.elementor-widget-taxonomy-filter, ' +
-            '.elementor-widget-taxonomy-filter.category_filter, ' +
-            '.category_filter'
-        );
+.prevor-dropdown-toggle {
+    width: 100%;
+    padding: 12px 15px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-align: left;
+    cursor: pointer;
+    font-size: 14px;
+}
 
-        widgets.forEach(function (widget) {
-            const filter = widget.matches('.e-filter')
-                ? widget
-                : widget.querySelector('.e-filter');
+.prevor-dropdown-toggle::after {
+    content: "▾";
+    float: right;
+}
 
-            if (!filter || filter.dataset.nativeSelectReady === 'true') {
-                return;
-            }
+.prevor-dropdown-panel {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 250px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    z-index: 9999;
+    padding: 8px 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,.1);
+}
 
-            const buttons = Array.from(
-                filter.querySelectorAll('.e-filter-item')
-            );
+.prevor-check-dropdown.is-open .prevor-dropdown-panel {
+    display: block;
+}
 
-            if (!buttons.length) return;
+.prevor-checkbox-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    cursor: pointer;
+    font-size: 14px;
+}
 
-            const select = document.createElement('select');
-            select.className = 'taxonomy-native-select';
-            select.setAttribute('aria-label', '选择类别');
+.prevor-checkbox-option:hover {
+    background: #f3f6f8;
+}
 
-            const placeholder = document.createElement('option');
-            placeholder.value = '';
-            placeholder.textContent = '选择类别';
-            select.appendChild(placeholder);
+.prevor-checkbox-option input {
+    margin: 0;
+    cursor: pointer;
+}
 
-            buttons.forEach(function (button, index) {
-                const option = document.createElement('option');
+.prevor-no-options {
+    padding: 8px 12px;
+    margin: 0;
+    font-size: 13px;
+}
 
-                option.value = String(index);
-                option.textContent = button.textContent.trim();
-
-                select.appendChild(option);
-            });
-
-            filter.parentNode.insertBefore(select, filter);
-
-            filter.classList.add('taxonomy-filter-source-hidden');
-            filter.dataset.nativeSelectReady = 'true';
-
-            select.addEventListener('change', function () {
-                if (select.value === '') return;
-
-                const button = buttons[Number(select.value)];
-
-                if (button) {
-                    button.click();
-                }
-            });
-
-            function syncSelection() {
-                const activeIndex = buttons.findIndex(function (button) {
-                    return button.getAttribute('aria-pressed') === 'true';
-                });
-
-                select.value = activeIndex >= 0
-                    ? String(activeIndex)
-                    : '';
-            }
-
-            buttons.forEach(function (button) {
-                button.addEventListener('click', function () {
-                    setTimeout(syncSelection, 0);
-                });
-            });
-
-            syncSelection();
-        });
-    }
-
-    function start() {
-        initCategoryFilter();
-
-        const observer = new MutationObserver(function () {
-            initCategoryFilter();
-        });
-
-        observer.observe(document.body, {
-            childList: true,
-            subtree: true
-        });
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', start);
-    } else {
-        start();
-    }
-})();
-</script>
-
-<script>
-(function () {
-    function initTaxSelectFilter() {
-        document.querySelectorAll('.tax-select-filter').forEach(function (widget) {
-            const filter = widget.matches('.e-filter')
-                ? widget
-                : widget.querySelector('.e-filter');
-
-            if (!filter || filter.dataset.nativeSelectReady === 'true') {
-                return;
-            }
-
-            const buttons = Array.from(
-                filter.querySelectorAll('.e-filter-item')
-            );
-
-            if (!buttons.length) return;
-
-            const select = document.createElement('select');
-            select.className = 'taxonomy-native-select';
-            select.setAttribute('aria-label', 'Select category');
-
-            const placeholder = document.createElement('option');
-            placeholder.value = '';
-            placeholder.textContent = '选择部位';
-            select.appendChild(placeholder);
-
-            buttons.forEach(function (button, index) {
-                const option = document.createElement('option');
-                option.value = String(index);
-                option.textContent = button.textContent.trim();
-                select.appendChild(option);
-            });
-
-            filter.parentNode.insertBefore(select, filter);
-            filter.classList.add('taxonomy-filter-source-hidden');
-            filter.dataset.nativeSelectReady = 'true';
-
-            select.addEventListener('change', function () {
-                if (select.value === '') return;
-
-                const button = buttons[Number(select.value)];
-
-                if (button) button.click();
-            });
-
-            function syncSelection() {
-                const activeIndex = buttons.findIndex(function (button) {
-                    return button.getAttribute('aria-pressed') === 'true';
-                });
-
-                select.value = activeIndex >= 0
-                    ? String(activeIndex)
-                    : '';
-            }
-
-            buttons.forEach(function (button) {
-                button.addEventListener('click', function () {
-                    setTimeout(syncSelection, 0);
-                });
-            });
-
-            syncSelection();
-        });
-    }
-
-    function start() {
-        initTaxSelectFilter();
-
-        const observer = new MutationObserver(initTaxSelectFilter);
-        observer.observe(document.body, {
-            childList: true,
-            subtree: true
-        });
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', start);
-    } else {
-        start();
-    }
-})();
-</script>
-
-<script>
-(function () {
-    function initDependentFilters() {
-        const firstWidget = document.querySelector('.category_filter');
-        const secondWidget = document.querySelector('.tax-select-filter');
-
-        if (!firstWidget || !secondWidget) return;
-
-        const firstFilter = firstWidget.matches('.e-filter')
-            ? firstWidget
-            : firstWidget.querySelector('.e-filter');
-
-        const secondFilter = secondWidget.matches('.e-filter')
-            ? secondWidget
-            : secondWidget.querySelector('.e-filter');
-
-        if (!firstFilter || !secondFilter) return;
-
-        const firstButtons = Array.from(
-            firstFilter.querySelectorAll('.e-filter-item')
-        );
-
-        if (!firstButtons.length) return;
-
-        function getActiveButton() {
-            return firstButtons.find(function (button) {
-                return button.getAttribute('aria-pressed') === 'true'
-                    && button.dataset.filter !== '*'
-                    && button.getAttribute('data-filter') !== '*';
-            });
-        }
-
-        function updateSecondFilter() {
-            const selected = getActiveButton();
-            const secondSelect = secondWidget.querySelector(
-                '.taxonomy-native-select'
-            );
-
-            secondWidget.classList.toggle('is-disabled', !selected);
-
-            if (secondSelect) {
-                secondSelect.disabled = !selected;
-
-                if (!selected) {
-                    secondSelect.value = '';
-                }
-            }
-        }
-
-        firstButtons.forEach(function (button) {
-            button.addEventListener('click', function () {
-                setTimeout(updateSecondFilter, 100);
-            });
-        });
-
-        updateSecondFilter();
-
-        if (!firstWidget.dataset.dependentFilterObserver) {
-            firstWidget.dataset.dependentFilterObserver = 'true';
-
-            const observer = new MutationObserver(updateSecondFilter);
-
-            observer.observe(firstFilter, {
-                attributes: true,
-                subtree: true,
-                attributeFilter: ['aria-pressed', 'class']
-            });
-        }
-    }
-
-    function start() {
-        initDependentFilters();
-
-        const observer = new MutationObserver(initDependentFilters);
-
-        observer.observe(document.body, {
-            childList: true,
-            subtree: true
-        });
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', start);
-    } else {
-        start();
-    }
-})();
-</script>
-
+</style>
 
 
 <script>
+
 document.addEventListener('DOMContentLoaded', function () {
-    const firstFilter = document.querySelector('.category_filter select');
-    const secondFilter = document.querySelector('.tax-select-filter select');
 
-    if (!firstFilter || !secondFilter) {
-        console.log('Filter select not found!');
+    const categoryWidget = document.querySelector('.category_filter');
+    const bodyPartWidget = document.querySelector('.tax-select-filter');
+
+    const grid = document.querySelector(
+        '.elementor-element-86b27dd, .prevor-product-grid'
+    );
+
+    if (!categoryWidget || !bodyPartWidget || !grid) {
+        console.warn('Prevor filters: Required widgets not found.');
         return;
     }
 
-    const originalOptions = Array.from(secondFilter.options).map(option => ({
-        value: option.value,
-        text: option.textContent.trim()
-    }));
+    const categoryFilter = categoryWidget.querySelector('.e-filter');
+    const bodyPartFilter = bodyPartWidget.querySelector('.e-filter');
 
-    const dependentOptions = {
-        '腐蚀性、刺激性化学品': [
-            '大面积皮肤喷溅',
-            '局部皮肤喷溅',
-            '眼部喷溅'
-        ],
-        '氢氟酸及其及酸性介质中的氟化物': [
-            '眼部喷溅',
-            '皮肤喷溅'
-        ]
-    };
+    if (!categoryFilter || !bodyPartFilter) return;
 
-    function updateSecondFilter() {
-        const selectedValue = firstFilter.value;
-        const selectedText = firstFilter.options[
-            firstFilter.selectedIndex
-        ]?.textContent.trim();
+    // Hide original Elementor buttons.
+    categoryFilter.style.display = 'none';
+    bodyPartFilter.style.display = 'none';
 
-        const allowedOptions =
-            dependentOptions[selectedValue] ||
-            dependentOptions[selectedText] ||
-            [];
-
-        secondFilter.innerHTML = '';
-
-        originalOptions.forEach(option => {
-            if (
-                option.value === '' ||
-                allowedOptions.includes(option.value) ||
-                allowedOptions.includes(option.text)
-            ) {
-                secondFilter.add(
-                    new Option(option.text, option.value)
-                );
-            }
-        });
-
-        secondFilter.dispatchEvent(
-            new Event('change', { bubbles: true })
-        );
-
-        console.log('First filter value:', selectedValue);
-        console.log('First filter text:', selectedText);
-        console.log('Allowed options:', allowedOptions);
-        console.log('Second filter options:', secondFilter.options.length);
+    // Get original taxonomy terms.
+    function getTerms(filter) {
+        return Array.from(
+            filter.querySelectorAll('button[data-filter]')
+        )
+        .filter(button =>
+            button.dataset.filter &&
+            button.dataset.filter !== '__all'
+        )
+        .map(button => ({
+            slug: button.dataset.filter,
+            name: button.textContent.trim()
+        }));
     }
 
-    firstFilter.addEventListener('change', updateSecondFilter);
-    updateSecondFilter();
-});
-</script>
+    const allCategories = getTerms(categoryFilter);
+    const allBodyParts = getTerms(bodyPartFilter);
 
+    let selectedCategories = [];
+    let selectedBodyParts = [];
 
-<script>
-(function () {
-    function initPrevorProductMessage() {
-        const categoryWidget = document.querySelector('.category_filter');
-        const productWidget = document.querySelector('.tax-select-filter');
+    // Create checkbox dropdown.
+    function createDropdown(widget, id, title) {
 
-        const loopGrid = document.querySelector(
-            '.elementor-widget-loop-grid'
-        );
+        const wrapper = document.createElement('div');
+        wrapper.className = 'prevor-check-dropdown';
+        wrapper.id = id;
 
-        if (!categoryWidget || !productWidget || !loopGrid) return;
+        const toggle = document.createElement('button');
+        toggle.type = 'button';
+        toggle.className = 'prevor-dropdown-toggle';
+        toggle.textContent = title;
 
-        // Create the message once, before the Loop Grid
-        let message = document.querySelector('.prevor-filter-message');
+        const panel = document.createElement('div');
+        panel.className = 'prevor-dropdown-panel';
 
-        if (!message) {
-            message = document.createElement('div');
-            message.className = 'prevor-filter-message';
-            message.textContent =
-                '选择以上条件以查看符合条件的产品。';
+        wrapper.appendChild(toggle);
+        wrapper.appendChild(panel);
 
-            loopGrid.parentNode.insertBefore(message, loopGrid);
-        }
+        widget.insertBefore(wrapper, widget.firstChild);
 
-        function getSelectedFilter(widget) {
-            const select = widget.querySelector(
-                'select.taxonomy-native-select'
-            );
+        toggle.addEventListener('click', function () {
+            wrapper.classList.toggle('is-open');
+        });
 
-            if (select) {
-                if (select.disabled || select.value === '') {
-                    return false;
+        return {
+            wrapper,
+            toggle,
+            panel
+        };
+    }
+
+    const categoryUI = createDropdown(
+        categoryWidget,
+        'prevor-category-dropdown',
+        'Select Chemical Categories'
+    );
+
+    const bodyPartUI = createDropdown(
+        bodyPartWidget,
+        'prevor-bodypart-dropdown',
+        'Select Body Parts'
+    );
+
+    // Close dropdown when clicking outside.
+    document.addEventListener('click', function (event) {
+
+        document.querySelectorAll('.prevor-check-dropdown.is-open')
+            .forEach(function (dropdown) {
+
+                if (!dropdown.contains(event.target)) {
+                    dropdown.classList.remove('is-open');
                 }
 
-                const filter = widget.querySelector('.e-filter');
-                const buttons = filter
-                    ? Array.from(filter.querySelectorAll('.e-filter-item'))
-                    : [];
+            });
 
-                const selectedButton = buttons[Number(select.value)];
+    });
 
-                if (!selectedButton) return false;
+    // Update dropdown label.
+    function updateDropdownLabel(ui, selected, defaultText) {
 
-                const filterValue =
-                    selectedButton.getAttribute('data-filter');
+        if (!selected.length) {
+            ui.toggle.textContent = defaultText;
+            return;
+        }
 
-                return filterValue !== '*';
+        ui.toggle.textContent = selected.length + ' selected';
+    }
+
+    // Render checkbox options.
+    function renderOptions(ui, terms, selectedValues, onChange) {
+
+        ui.panel.innerHTML = '';
+
+        if (!terms.length) {
+
+            const empty = document.createElement('p');
+            empty.className = 'prevor-no-options';
+            empty.textContent = 'No options available';
+
+            ui.panel.appendChild(empty);
+
+            return;
+        }
+
+        terms.forEach(function (term) {
+
+            const label = document.createElement('label');
+            label.className = 'prevor-checkbox-option';
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.value = term.slug;
+            checkbox.checked = selectedValues.includes(term.slug);
+
+            const text = document.createElement('span');
+            text.textContent = term.name;
+
+            checkbox.addEventListener('change', function () {
+
+                let selected = selectedValues.slice();
+
+                if (checkbox.checked) {
+
+                    if (!selected.includes(term.slug)) {
+                        selected.push(term.slug);
+                    }
+
+                } else {
+
+                    selected = selected.filter(
+                        value => value !== term.slug
+                    );
+
+                }
+
+                onChange(selected);
+
+            });
+
+            label.appendChild(checkbox);
+            label.appendChild(text);
+
+            ui.panel.appendChild(label);
+
+        });
+
+    }
+
+    // Synchronize selected options with Elementor.
+    function syncElementorFilter(filter, selectedValues) {
+
+        const selected = new Set(selectedValues);
+
+        filter.querySelectorAll('button[data-filter]').forEach(function (button) {
+
+            const value = button.dataset.filter;
+
+            if (!value || value === '__all') return;
+
+            const shouldSelect = selected.has(value);
+
+            const isSelected =
+                button.getAttribute('aria-pressed') === 'true';
+
+            if (shouldSelect !== isSelected) {
+                button.click();
             }
 
-            const filter = widget.matches('.e-filter')
-                ? widget
-                : widget.querySelector('.e-filter');
+        });
 
-            if (!filter) return false;
+        // Reset Elementor filter when no option is selected.
+        if (selectedValues.length === 0) {
 
-            return Array.from(
-                filter.querySelectorAll('.e-filter-item')
-            ).some(function (button) {
-                return button.getAttribute('aria-pressed') === 'true'
-                    && button.getAttribute('data-filter') !== '*';
-            });
-        }
-
-        function updateProductVisibility() {
-            const categorySelected = getSelectedFilter(categoryWidget);
-            const productSelected = getSelectedFilter(productWidget);
-
-            const bothSelected =
-                categorySelected && productSelected;
-
-            loopGrid.classList.toggle(
-                'prevor-grid-hidden',
-                !bothSelected
+            const allButton = filter.querySelector(
+                'button[data-filter="__all"]'
             );
 
-            message.classList.toggle(
-                'is-visible',
-                !bothSelected
-            );
-        }
-
-        // Listen for native select changes
-        document.addEventListener('change', function (event) {
             if (
-                event.target.matches(
-                    '.category_filter select, .tax-select-filter select'
-                )
+                allButton &&
+                allButton.getAttribute('aria-pressed') !== 'true'
             ) {
-                setTimeout(updateProductVisibility, 100);
+                allButton.click();
             }
-        });
 
-        // Listen for original Elementor filter clicks
-        [categoryWidget, productWidget].forEach(function (widget) {
-            widget.addEventListener('click', function () {
-                setTimeout(updateProductVisibility, 100);
-            });
-        });
+        }
 
-        // Keep state updated when Elementor changes filter attributes
-        const observer = new MutationObserver(function () {
-            updateProductVisibility();
-        });
-
-        [categoryWidget, productWidget].forEach(function (widget) {
-            observer.observe(widget, {
-                attributes: true,
-                subtree: true,
-                childList: true,
-                attributeFilter: [
-                    'aria-pressed',
-                    'data-filter',
-                    'disabled',
-                    'value'
-                ]
-            });
-        });
-
-        updateProductVisibility();
     }
 
-    function start() {
-        initPrevorProductMessage();
+    // Render Chemical Categories.
+    function renderCategories() {
 
-        const observer = new MutationObserver(function () {
-            initPrevorProductMessage();
-        });
+        renderOptions(
+            categoryUI,
+            allCategories,
+            selectedCategories,
+            function (selected) {
 
-        observer.observe(document.body, {
-            childList: true,
-            subtree: true
-        });
+                selectedCategories = selected;
+
+                updateDropdownLabel(
+                    categoryUI,
+                    selectedCategories,
+                    'Select Chemical Categories'
+                );
+
+                syncElementorFilter(
+                    categoryFilter,
+                    selectedCategories
+                );
+
+                // Keep ALL Body Part options visible.
+                updateBodyParts();
+
+            }
+        );
+
     }
 
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', start);
-    } else {
-        start();
+    // Always render ALL Body Part options.
+    function updateBodyParts() {
+
+        renderBodyParts(allBodyParts);
+
     }
-})();
+
+    // Render Body Parts.
+    function renderBodyParts(terms) {
+
+        renderOptions(
+            bodyPartUI,
+            terms,
+            selectedBodyParts,
+            function (selected) {
+
+                selectedBodyParts = selected;
+
+                updateDropdownLabel(
+                    bodyPartUI,
+                    selectedBodyParts,
+                    'Select Body Parts'
+                );
+
+                syncElementorFilter(
+                    bodyPartFilter,
+                    selectedBodyParts
+                );
+
+            }
+        );
+
+        updateDropdownLabel(
+            bodyPartUI,
+            selectedBodyParts,
+            'Select Body Parts'
+        );
+
+    }
+
+    // Initial rendering.
+    renderCategories();
+    updateBodyParts();
+
+});
+
 </script>
