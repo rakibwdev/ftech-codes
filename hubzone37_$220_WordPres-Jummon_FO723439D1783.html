@@ -1,0 +1,26 @@
+<style>
+    .post_acordian_title{
+        cursor: pointer;
+    }
+    .post_acordian{
+        display: none;
+    }
+
+
+.post_acordian.active{
+    display: block;
+}
+
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const acorTitles = document.querySelector('.post_acordian_title');
+    const postAcordians = document.querySelector('.post_acordian');
+
+    acorTitles.addEventListener('click', function () {
+        postAcordians.classList.toggle('active');
+    });
+});
+</script>
+

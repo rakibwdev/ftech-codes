@@ -1,8 +1,5 @@
 <style>
-.prevor-check-dropdown {
-    position: relative;
-    width: 100%;
-}
+.prevor-check-dropdown { position: relative; width: 100%; }
 
 .prevor-dropdown-toggle {
     width: 100%;
@@ -13,12 +10,9 @@
     text-align: left;
     cursor: pointer;
     font-size: 14px;
+    color: #000;
 }
-
-.prevor-dropdown-toggle::after {
-    content: "▾";
-    float: right;
-}
+.prevor-dropdown-toggle::after { content: "▾"; float: right; }
 
 .prevor-dropdown-panel {
     display: none;
@@ -35,10 +29,7 @@
     padding: 8px 0;
     box-shadow: 0 4px 12px rgba(0,0,0,.1);
 }
-
-.prevor-check-dropdown.is-open .prevor-dropdown-panel {
-    display: block;
-}
+.prevor-check-dropdown.is-open .prevor-dropdown-panel { display: block; }
 
 .prevor-checkbox-option {
     display: flex;
@@ -48,77 +39,59 @@
     cursor: pointer;
     font-size: 14px;
 }
+.prevor-checkbox-option:hover { background: #f3f6f8; }
+.prevor-checkbox-option input { margin: 0; cursor: pointer; }
 
-.prevor-checkbox-option:hover {
-    background: #f3f6f8;
-}
+.prevor-no-options { padding: 8px 12px; margin: 0; font-size: 13px; }
 
-.prevor-checkbox-option input {
-    margin: 0;
-    cursor: pointer;
-}
-
-.prevor-no-options {
-    padding: 8px 12px;
-    margin: 0;
-    font-size: 13px;
-}
-
+.prevor-no-products { grid-column: 1 / -1; padding: 20px 0; text-align: center; }
+.prevor-product-grid.is-loading .elementor-loop-container { opacity: .4; pointer-events: none; transition: opacity .2s; }
 </style>
 
-
 <script>
-
 document.addEventListener('DOMContentLoaded', function () {
 
     const categoryWidget = document.querySelector('.category_filter');
     const bodyPartWidget = document.querySelector('.tax-select-filter');
-
-    const grid = document.querySelector(
-        '.elementor-element-86b27dd, .prevor-product-grid'
-    );
+    const grid = document.querySelector('.prevor-product-grid, .elementor-element-86b27dd');
 
     if (!categoryWidget || !bodyPartWidget || !grid) {
-        console.warn('Prevor filters: Required widgets not found.');
+        console.warn('Prevor filters: required widgets not found.');
         return;
     }
 
+    // Prevent double initialisation.
+    if (categoryWidget.querySelector('.prevor-check-dropdown')) return;
+
     const categoryFilter = categoryWidget.querySelector('.e-filter');
     const bodyPartFilter = bodyPartWidget.querySelector('.e-filter');
-
     if (!categoryFilter || !bodyPartFilter) return;
 
-    // Hide original Elementor buttons.
+    // Hide Elementor's own filter - we only read its terms, never click it.
     categoryFilter.style.display = 'none';
     bodyPartFilter.style.display = 'none';
 
-    // Get original taxonomy terms.
-    function getTerms(filter) {
-        return Array.from(
-            filter.querySelectorAll('button[data-filter]')
-        )
-        .filter(button =>
-            button.dataset.filter &&
-            button.dataset.filter !== '__all'
-        )
-        .map(button => ({
-            slug: button.dataset.filter,
-            name: button.textContent.trim()
-        }));
+    const config = window.prevorFilterData;
+    if (!config || !config.ajaxUrl) {
+        console.warn('Prevor filters: prevorFilterData missing.');
+        return;
     }
 
-    const allCategories = getTerms(categoryFilter);
-    const allBodyParts = getTerms(bodyPartFilter);
+    function getTerms(filter) {
+        return Array.from(filter.querySelectorAll('button[data-filter]'))
+            .filter(b => b.dataset.filter && b.dataset.filter !== '__all')
+            .map(b => ({ slug: b.dataset.filter, name: b.textContent.trim() }));
+    }
 
-    let selectedCategories = [];
-    let selectedBodyParts = [];
+    const state = {
+        categories: [],
+        bodyParts: []
+    };
 
-    // Create checkbox dropdown.
-    function createDropdown(widget, id, title) {
+    function createDropdown(widget, title, stateKey, terms) {
 
         const wrapper = document.createElement('div');
         wrapper.className = 'prevor-check-dropdown';
-        wrapper.id = id;
 
         const toggle = document.createElement('button');
         toggle.type = 'button';
@@ -128,233 +101,105 @@ document.addEventListener('DOMContentLoaded', function () {
         const panel = document.createElement('div');
         panel.className = 'prevor-dropdown-panel';
 
-        wrapper.appendChild(toggle);
-        wrapper.appendChild(panel);
-
+        wrapper.append(toggle, panel);
         widget.insertBefore(wrapper, widget.firstChild);
 
-        toggle.addEventListener('click', function () {
-            wrapper.classList.toggle('is-open');
+        toggle.addEventListener('click', function (e) {
+            e.stopPropagation();
+            const willOpen = !wrapper.classList.contains('is-open');
+            document.querySelectorAll('.prevor-check-dropdown.is-open')
+                .forEach(d => d.classList.remove('is-open'));
+            wrapper.classList.toggle('is-open', willOpen);
         });
 
-        return {
-            wrapper,
-            toggle,
-            panel
-        };
-    }
-
-    const categoryUI = createDropdown(
-        categoryWidget,
-        'prevor-category-dropdown',
-        'Select Chemical Categories'
-    );
-
-    const bodyPartUI = createDropdown(
-        bodyPartWidget,
-        'prevor-bodypart-dropdown',
-        'Select Body Parts'
-    );
-
-    // Close dropdown when clicking outside.
-    document.addEventListener('click', function (event) {
-
-        document.querySelectorAll('.prevor-check-dropdown.is-open')
-            .forEach(function (dropdown) {
-
-                if (!dropdown.contains(event.target)) {
-                    dropdown.classList.remove('is-open');
-                }
-
-            });
-
-    });
-
-    // Update dropdown label.
-    function updateDropdownLabel(ui, selected, defaultText) {
-
-        if (!selected.length) {
-            ui.toggle.textContent = defaultText;
-            return;
-        }
-
-        ui.toggle.textContent = selected.length + ' selected';
-    }
-
-    // Render checkbox options.
-    function renderOptions(ui, terms, selectedValues, onChange) {
-
-        ui.panel.innerHTML = '';
+        // Clicking inside the panel must not close it.
+        panel.addEventListener('click', e => e.stopPropagation());
 
         if (!terms.length) {
-
             const empty = document.createElement('p');
             empty.className = 'prevor-no-options';
             empty.textContent = 'No options available';
-
-            ui.panel.appendChild(empty);
-
-            return;
+            panel.appendChild(empty);
         }
 
         terms.forEach(function (term) {
-
             const label = document.createElement('label');
             label.className = 'prevor-checkbox-option';
 
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
             checkbox.value = term.slug;
-            checkbox.checked = selectedValues.includes(term.slug);
 
             const text = document.createElement('span');
             text.textContent = term.name;
 
             checkbox.addEventListener('change', function () {
+                // Always read the CURRENT state (fixes stale-closure bug).
+                const list = state[stateKey];
+                const index = list.indexOf(term.slug);
 
-                let selected = selectedValues.slice();
+                if (checkbox.checked && index === -1) list.push(term.slug);
+                if (!checkbox.checked && index !== -1) list.splice(index, 1);
 
-                if (checkbox.checked) {
+                toggle.textContent = list.length
+                    ? list.length + ' selected'
+                    : title;
 
-                    if (!selected.includes(term.slug)) {
-                        selected.push(term.slug);
-                    }
-
-                } else {
-
-                    selected = selected.filter(
-                        value => value !== term.slug
-                    );
-
-                }
-
-                onChange(selected);
-
+                loadProducts();
             });
 
-            label.appendChild(checkbox);
-            label.appendChild(text);
-
-            ui.panel.appendChild(label);
-
+            label.append(checkbox, text);
+            panel.appendChild(label);
         });
-
     }
 
-    // Synchronize selected options with Elementor.
-    function syncElementorFilter(filter, selectedValues) {
+    createDropdown(categoryWidget, 'Select Chemical Categories', 'categories', getTerms(categoryFilter));
+    createDropdown(bodyPartWidget, 'Select Body Parts', 'bodyParts', getTerms(bodyPartFilter));
 
-        const selected = new Set(selectedValues);
+    // Close dropdowns when clicking outside.
+    document.addEventListener('click', function () {
+        document.querySelectorAll('.prevor-check-dropdown.is-open')
+            .forEach(d => d.classList.remove('is-open'));
+    });
 
-        filter.querySelectorAll('button[data-filter]').forEach(function (button) {
+    // ---------- AJAX ----------
+    let controller = null;
 
-            const value = button.dataset.filter;
+    function loadProducts() {
 
-            if (!value || value === '__all') return;
+        const container = grid.querySelector('.elementor-loop-container');
+        if (!container) return;
 
-            const shouldSelect = selected.has(value);
+        // Cancel any in-flight request so old responses can't overwrite new ones.
+        if (controller) controller.abort();
+        controller = new AbortController();
 
-            const isSelected =
-                button.getAttribute('aria-pressed') === 'true';
+        const body = new URLSearchParams();
+        body.append('action', 'prevor_filter_products');
+        state.categories.forEach(slug => body.append('categories[]', slug));
+        state.bodyParts.forEach(slug => body.append('body_parts[]', slug));
 
-            if (shouldSelect !== isSelected) {
-                button.click();
-            }
+        grid.classList.add('is-loading');
 
+        fetch(config.ajaxUrl, {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+            body: body.toString(),
+            signal: controller.signal
+        })
+        .then(r => r.json())
+        .then(function (response) {
+            if (!response || !response.success) throw new Error('Filter request failed');
+            container.innerHTML = response.data.html;
+            grid.classList.remove('is-loading');
+        })
+        .catch(function (err) {
+            if (err.name === 'AbortError') return;
+            console.error('Prevor filters:', err);
+            grid.classList.remove('is-loading');
         });
-
-        // Reset Elementor filter when no option is selected.
-        if (selectedValues.length === 0) {
-
-            const allButton = filter.querySelector(
-                'button[data-filter="__all"]'
-            );
-
-            if (
-                allButton &&
-                allButton.getAttribute('aria-pressed') !== 'true'
-            ) {
-                allButton.click();
-            }
-
-        }
-
     }
-
-    // Render Chemical Categories.
-    function renderCategories() {
-
-        renderOptions(
-            categoryUI,
-            allCategories,
-            selectedCategories,
-            function (selected) {
-
-                selectedCategories = selected;
-
-                updateDropdownLabel(
-                    categoryUI,
-                    selectedCategories,
-                    'Select Chemical Categories'
-                );
-
-                syncElementorFilter(
-                    categoryFilter,
-                    selectedCategories
-                );
-
-                // Keep ALL Body Part options visible.
-                updateBodyParts();
-
-            }
-        );
-
-    }
-
-    // Always render ALL Body Part options.
-    function updateBodyParts() {
-
-        renderBodyParts(allBodyParts);
-
-    }
-
-    // Render Body Parts.
-    function renderBodyParts(terms) {
-
-        renderOptions(
-            bodyPartUI,
-            terms,
-            selectedBodyParts,
-            function (selected) {
-
-                selectedBodyParts = selected;
-
-                updateDropdownLabel(
-                    bodyPartUI,
-                    selectedBodyParts,
-                    'Select Body Parts'
-                );
-
-                syncElementorFilter(
-                    bodyPartFilter,
-                    selectedBodyParts
-                );
-
-            }
-        );
-
-        updateDropdownLabel(
-            bodyPartUI,
-            selectedBodyParts,
-            'Select Body Parts'
-        );
-
-    }
-
-    // Initial rendering.
-    renderCategories();
-    updateBodyParts();
 
 });
-
 </script>
