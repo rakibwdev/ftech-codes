@@ -1,0 +1,183 @@
+/* Rodeo Vault Product Filter */
+
+.cpf-filter {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	color: #10243d;
+	font-family: "Figtree", sans-serif;
+	font-size: 14px;
+	box-sizing: border-box;
+}
+.cpf-filter *, .cpf-filter *::before, .cpf-filter *::after { box-sizing: border-box; }
+
+/* Price (shown first) */
+.cpf-price { order: -1; width: 100%; padding: 12px 0 16px; margin: 0; }
+.cpf-price h4 { margin: 0 0 20px; color: #10243d; font-size: 15px; font-weight: 600; }
+.cpf-price-inputs { display: flex; gap: 30px; width: 100%; }
+.cpf-price-inputs label { display: block; flex: 1; min-width: 0; margin: 0; }
+.cpf-price-inputs label span { display: block; margin-bottom: 5px; font-size: 13px; font-weight: 400; }
+.cpf-price-inputs input {
+	display: block;
+	width: 100%;
+	padding: 6px 8px 9px;
+	border: 0;
+	border-bottom: 1px solid #333;
+	border-radius: 0;
+	background: transparent;
+	color: #64748b;
+	font-family: inherit;
+	/* 16px stops iOS Safari from zooming the page when an input is focused */
+	font-size: 16px;
+	outline: none;
+	box-shadow: none;
+	-webkit-appearance: none;
+	appearance: none;
+}
+.cpf-price-inputs input:focus { border-bottom-color: #10243d; }
+
+/* Groups */
+.cpf-group { width: 100%; margin: 0; border-bottom: 1px solid #dedede; }
+.cpf-heading {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	padding: 15px 0 10px;
+	color: #10243d;
+	font-size: 15px;
+	font-weight: 600;
+	line-height: 1.4;
+}
+.cpf-options { display: block; width: 100%; padding: 5px 0 14px; }
+
+.cpf-option {
+	position: relative;
+	display: flex;
+	align-items: center;
+	width: 100%;
+	padding: 10px 0;
+	margin: 0;
+	color: #64748b;
+	font-size: 13px;
+	line-height: 1.5;
+	cursor: pointer;
+	-webkit-tap-highlight-color: transparent;
+}
+.cpf-option .cpf-label { color: #10243d; font-size: 13px; font-weight: 400; }
+.cpf-check { display: none; }
+
+/* Native input stays clickable but invisible */
+.cpf-option input {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	opacity: 0;
+	cursor: pointer;
+	z-index: 2;
+}
+
+/* Selected (sibling selector: works on every iOS version, unlike :has()) */
+.cpf-option input:checked ~ .cpf-label {
+	display: inline-block;
+	width: fit-content;
+	padding-bottom: 2px;
+	border-bottom: 1px solid #777;
+	font-weight: 600;
+}
+
+.cpf-option.cpf-hidden { display: none !important; }
+
+.cpf-view-more {
+	display: inline-block;
+	margin: 8px 0 10px;
+	padding: 0 !important;
+	border: 0 !important;
+	background: transparent !important;
+	color: #10243d !important;
+	font-family: inherit;
+	font-size: 13px;
+	font-weight: 600;
+	text-decoration: underline;
+	cursor: pointer;
+	box-shadow: none !important;
+}
+
+/*
+ * Action buttons.
+ * position: sticky instead of position: fixed. A fixed element inside an Elementor
+ * off-canvas (which uses transform) breaks on iOS Safari: it is positioned against the
+ * panel, jumps with the dynamic toolbar and can cover the whole filter.
+ */
+.cpf-actions {
+	order: 99;
+	position: sticky;
+	bottom: 0;
+	z-index: 100;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	padding: 10px 0 calc(10px + env(safe-area-inset-bottom, 0px));
+	background: #fff;
+}
+
+.cpf-filter .cpf-apply,
+.cpf-filter .cpf-clear {
+	display: block;
+	width: 100%;
+	padding: 12px 18px;
+	border-radius: 8px !important;
+	font-family: inherit;
+	font-size: 14px;
+	font-weight: 400;
+	text-transform: uppercase;
+	cursor: pointer;
+	-webkit-appearance: none;
+	appearance: none;
+}
+.cpf-filter .cpf-apply { margin-top: 14px; border: 1px solid #000 !important; background: #000 !important; color: #fff !important; transition: opacity .25s ease; }
+.cpf-filter .cpf-apply:hover { opacity: .8; }
+.cpf-filter .cpf-clear { margin-top: 10px; border: 1px solid #ccc; background: #fff; color: #222; }
+.cpf-filter .cpf-clear:hover, .cpf-filter .cpf-clear:focus { background: #000; border-color: #000; color: #fff; }
+
+.cpf-status { margin: 5px 0; color: #64748b; font-size: 13px; line-height: 1.5; }
+.cpf-loading { opacity: .6; pointer-events: none; }
+
+/* Product loop loader */
+#product_loop { position: relative; min-height: 260px; }
+#product_loop.cpf-loop-loading > * { opacity: .25; transition: opacity .2s ease; pointer-events: none; }
+#product_loop.cpf-loop-loading::after {
+	content: "";
+	position: absolute;
+	top: 120px;
+	left: 50%;
+	width: 42px;
+	height: 42px;
+	margin-left: -21px;
+	border: 3px solid #e2e2e2;
+	border-top-color: #000;
+	border-radius: 50%;
+	animation: cpf-spin .7s linear infinite;
+	z-index: 5;
+}
+#product_loop .cpf-loading-text { display: none; }
+#product_loop.cpf-loop-loading .cpf-loading-text {
+	display: block;
+	position: absolute;
+	top: 175px;
+	left: 0;
+	width: 100%;
+	text-align: center;
+	color: #10243d;
+	font-size: 14px;
+	z-index: 5;
+	opacity: 1 !important;
+}
+@keyframes cpf-spin { to { transform: rotate(360deg); } }
+
+.cpf-no-products { width: 100%; padding: 40px 0; text-align: center; color: #64748b; }
+
+@media (max-width: 480px) {
+	.cpf-price-inputs { gap: 20px; }
+}
